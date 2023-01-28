@@ -1,14 +1,4 @@
-//
-// Created by Goh Zheng Teck on 26/1/23.
-//
-
-#ifndef SPA_TOKENIZER_H
-#define SPA_TOKENIZER_H
-
+#pragma once
 
 class Tokenizer {
-
 };
-
-
-#endif //SPA_TOKENIZER_H
