@@ -45,4 +45,4 @@ jobs:
       - name: Run Linter
         run: |
           cd Team26/Code26/src/spa
-          cpplint --recursive --filter=-legal/copyright --linelength=120 extensions=cpp,h .
+          cpplint --recursive --filter=-legal/copyright,-runtime/references --linelength=120 extensions=cpp,h .
