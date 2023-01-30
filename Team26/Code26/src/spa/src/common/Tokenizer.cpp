@@ -3,43 +3,51 @@
 
 Tokenizer::Tokenizer(std::istream* stream) : istream(stream) {}
 
-Tokenizer::Tokenizer(std::string query) {
-    std::stringstream* inputStringStream = new std::stringstream(query);
+Tokenizer::Tokenizer(const std::string& query) {
+    auto* inputStringStream = new std::stringstream(query);
     istream = inputStringStream;
 }
 
 char Tokenizer::nextChar() {
-    return istream->get();
+    return (char) istream->get();
 }
 
 char Tokenizer::peekChar() {
-    return istream->peek();
+    return (char) istream->peek();
 }
 
-std::string Tokenizer::getCurrent() {
-    return this->curr;
+std::string Tokenizer::getCurrentToken() {
+    return this->currentToken;
 }
 
-void Tokenizer::nextInteger() {
+void Tokenizer::readInteger() {
     char c = peekChar();
     while (isdigit(c)) {
-        curr += nextChar();
+        currentToken += nextChar();
         c = peekChar();
+    }
+
+    if (hasLeadingZero()) {
+        // TODO: Throw exception.
     }
 }
 
-void Tokenizer::nextName() {
+bool Tokenizer::hasLeadingZero() {
+    return currentToken.size() > 1 && currentToken.at(0) == '0';
+}
+
+void Tokenizer::readName() {
     char c = peekChar();
     while (isalnum(c)) {
-        curr += nextChar();
+        currentToken += nextChar();
         c = peekChar();
     }
 }
 
-void Tokenizer::addToken(Token* token) {
+void Tokenizer::addToken(std::shared_ptr<Token> token) {
     tokens.push_back(token);
 }
 
-std::vector<Token*> Tokenizer::getTokens() {
+std::vector<std::shared_ptr<Token>> Tokenizer::getTokens() {
     return this->tokens;
 }

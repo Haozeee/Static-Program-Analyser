@@ -6,5 +6,5 @@ class SourceTokenizer : public Tokenizer {
  public:
     SourceTokenizer(std::istream* stream);
 
-    std::vector<Token*> tokenize();
+    std::vector<std::shared_ptr<Token>> tokenize();
 };
