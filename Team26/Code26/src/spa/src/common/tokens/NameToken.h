@@ -1,11 +1,10 @@
 #pragma once
 
-#include "Token.h"
-
 #include <string>
+#include "Token.h"
 
 
 class NameToken : public Token {
  public:
-    NameToken(std::string value);
+    explicit NameToken(std::string value);
 };

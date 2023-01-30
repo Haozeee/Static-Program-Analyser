@@ -1,16 +1,15 @@
 #pragma once
 
-#include "common/tokens/Token.h"
-
 #include <vector>
 #include <string>
+#include <memory>
+#include "common/tokens/Token.h"
 
 /**
  * The tokenizer class tokenize an input stream into a token list.
  * */
 class Tokenizer {
-
-private:
+ private:
     /**
      * This function loads the next punctuation from the stream to the currentToken.
      * */
@@ -23,7 +22,7 @@ private:
      * */
      bool hasLeadingZero();
 
-protected:
+ protected:
     /**
      * The incoming stream to read from.
      * */
@@ -84,8 +83,7 @@ protected:
      * */
     std::vector<std::shared_ptr<Token>> getTokens();
 
-public:
-
+ public:
     /**
      * Constructor for the Source Processor initialization.
      *

@@ -1,5 +1,6 @@
 #include "Tokenizer.h"
 #include <sstream>
+#include <memory>
 
 Tokenizer::Tokenizer(std::istream* stream) : istream(stream) {}
 
@@ -9,11 +10,11 @@ Tokenizer::Tokenizer(const std::string& query) {
 }
 
 char Tokenizer::nextChar() {
-    return (char) istream->get();
+    return static_cast<char>(istream->get());
 }
 
 char Tokenizer::peekChar() {
-    return (char) istream->peek();
+    return static_cast<char>(istream->peek());
 }
 
 std::string Tokenizer::getCurrentToken() {
@@ -28,7 +29,7 @@ void Tokenizer::readInteger() {
     }
 
     if (hasLeadingZero()) {
-        // TODO: Throw exception.
+        // TODO(laughingkid-sg): Throw exception.
     }
 }
 

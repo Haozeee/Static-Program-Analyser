@@ -1,10 +1,13 @@
 #pragma once
 
+#include <vector>
+#include <memory>
 #include "common/Tokenizer.h"
-class SourceTokenizer : public Tokenizer {
 
+
+class SourceTokenizer : public Tokenizer {
  public:
-    SourceTokenizer(std::istream* stream);
+    explicit SourceTokenizer(std::istream* stream);
 
     std::vector<std::shared_ptr<Token>> tokenize();
 };

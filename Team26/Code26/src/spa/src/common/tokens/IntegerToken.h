@@ -1,11 +1,10 @@
 #pragma once
 
-#include "Token.h"
-
 #include <string>
+#include "Token.h"
 
 
 class IntegerToken : public Token {
-public:
-    IntegerToken(std::string value);
+ public:
+    explicit IntegerToken(std::string value);
 };
