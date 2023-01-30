@@ -4,8 +4,8 @@
 Tokenizer::Tokenizer(std::istream* stream) : istream(stream) {}
 
 Tokenizer::Tokenizer(std::string query) {
-    std::stringstream* iss = new std::stringstream(query);
-    istream = iss;
+    std::stringstream* inputStringStream = new std::stringstream(query);
+    istream = inputStringStream;
 }
 
 char Tokenizer::nextChar() {
