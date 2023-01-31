@@ -18,7 +18,7 @@ char Tokenizer::peekChar() {
 }
 
 std::string Tokenizer::getCurrentToken() {
-    return this->currentToken;
+    return currentToken;
 }
 
 void Tokenizer::readInteger() {
@@ -50,5 +50,5 @@ void Tokenizer::addToken(std::shared_ptr<Token> token) {
 }
 
 std::vector<std::shared_ptr<Token>> Tokenizer::getTokens() {
-    return this->tokens;
+    return tokens;
 }
