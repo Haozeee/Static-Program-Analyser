@@ -11,9 +11,11 @@
 class Tokenizer {
  private:
     /**
-     * This function loads the next punctuation from the stream to the currentToken.
+     * This function loads the next special character from the stream to the currentToken.
+     * A special character is a character that is not an alphabetic or numeric character.
+     * Punctuation marks and other symbols are examples of special characters.
      * */
-    virtual void readPunctuation() = 0;
+    virtual void readSpecialChar() = 0;
 
     /**
      * This functions checks if there exist leading zeros the current token.

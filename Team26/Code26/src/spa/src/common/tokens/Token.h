@@ -4,8 +4,10 @@
 
 // enum class is preferred, values do not implicitly convert to other types
 enum class TokenType {
-    NAME,
-    INTEGER,
+    TOKEN_NAME,
+    TOKEN_INTEGER,
+    TOKEN_END_OF_FILE,
+    TOKEN_SPECIAL_CHAR
 };
 
 // Base Class Abstract Class
