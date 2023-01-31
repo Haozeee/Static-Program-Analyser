@@ -50,7 +50,7 @@ class Tokenizer {
     /**
      * Returns the next character in the input sequence without extracting it.
      *
-     * @returns The next character in the input sequence, as a vale of type char.
+     * @returns The next character in the input sequence, as a value of type char.
      * */
     char peekChar();
 

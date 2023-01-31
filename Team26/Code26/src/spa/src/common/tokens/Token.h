@@ -13,13 +13,13 @@ enum class TokenType {
 // Base Class Abstract Class
 class Token {
  protected:
+    const std::string value;
     TokenType type;
-    std::string value;
 
  public:
     Token(TokenType type, std::string value);
 
-    TokenType getType() { return this->type; }
-
-    std::string getValue() { return this->value; }
+    // TODO(zhengteck): Reconsider getter and setters is required.
+    TokenType getType();
+    std::string getValue();
 };
