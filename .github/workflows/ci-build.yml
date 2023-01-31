@@ -3,6 +3,10 @@ name: CI for Cmake Project - MacOS
 on:
   schedule:
     - cron: "0 15,23 * * *"
+  
+  workflow_dispatch:     
+    branches:     
+      - master
 
 env:
     BUILD_TYPE: Release
@@ -37,8 +41,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: '3.11.1'
-          cache: 'pip'
-
+          
       - name: Install cpplint
         run: pip install cpplint
 
