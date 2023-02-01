@@ -6,7 +6,7 @@
 #include "common/tokens/EndOfFileToken.h"
 #include "common/tokens/StringExpressionToken.h"
 
-std::unordered_set<std::string> specialChars({";", ",", "_"});
+std::unordered_set<std::string> specialChars({";", ",", "_", "=", "*", "(", ")"});
 
 QueryTokenizer::QueryTokenizer(const std::string& query) : Tokenizer(query) {}
 
