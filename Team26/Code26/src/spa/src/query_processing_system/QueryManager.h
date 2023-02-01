@@ -2,6 +2,6 @@
 #include <string>
 
 class QueryManager {
-public:
+ public:
     void process(const std::string& query);
 };

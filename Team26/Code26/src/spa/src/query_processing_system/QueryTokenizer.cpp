@@ -1,5 +1,6 @@
-#include <unordered_set>
 #include "QueryTokenizer.h"
+#include <unordered_set>
+#include <string>
 #include "common/tokens/NameToken.h"
 #include "common/tokens/IntegerToken.h"
 #include "common/tokens/SpecialCharToken.h"
@@ -13,7 +14,7 @@ QueryTokenizer::QueryTokenizer(const std::string& query) : Tokenizer(query) {}
 void QueryTokenizer::readSpecialChar() {
     if (specialChars.find(getCurrentToken()) == specialChars.end()) {
         // Invalid punctuation
-        // TODO - Throw custom exception
+        // TODO(haoze): Throw custom exception
         throw std::invalid_argument("Invalid punctuation");
     }
 }
@@ -37,7 +38,6 @@ std::vector<std::shared_ptr<Token>> QueryTokenizer::tokenize() {
     char c = nextChar();
 
     while (c != EOF) {
-
         currentToken += c;
         if (c == '\n' || isspace(c)) {
         } else if (isalpha(c)) {

@@ -1,6 +1,9 @@
 #pragma once
-#include "common/Parser.h"
+#include <memory>
+#include <vector>
 #include "query_processing_system/parser/Query.h"
+#include "common/Parser.h"
+
 
 class QueryParser : public Parser {
  private:

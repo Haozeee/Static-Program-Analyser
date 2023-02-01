@@ -1,9 +1,12 @@
 #include "QueryManager.h"
 #include "QueryTokenizer.h"
+#include <iostream>
+#include <memory>
+#include <vector>
 #include "QueryEvaluator.h"
 #include "parser/QueryParser.h"
 #include "parser/Query.h"
-#include "iostream"
+
 
 void QueryManager::process(const std::string& query) {
     // Tokenize QPS query
@@ -20,5 +23,4 @@ void QueryManager::process(const std::string& query) {
     // Validate Query
 
     // Evaluate query
-
 }
