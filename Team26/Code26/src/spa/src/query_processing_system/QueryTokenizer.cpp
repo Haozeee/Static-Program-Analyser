@@ -48,7 +48,7 @@ std::vector<std::shared_ptr<Token>> QueryTokenizer::tokenize() {
             addToken(std::make_shared<IntegerToken>(getCurrentToken()));
         } else if (c == '"') {
             readStringExpression();
-        } else if (c == ',') {
+        } else {
             readSpecialChar();
             addToken(std::make_shared<SpecialCharToken>(getCurrentToken()));
         }
