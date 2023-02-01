@@ -1,5 +1,24 @@
 #pragma once
+#include "common/Parser.h"
+#include "query_processing_system/parser/Query.h"
 
-class QueryParser {
+class QueryParser : public Parser {
+ private:
+    /**
+     * Query wrapper object
+     */
+    Query* query;
 
+ public:
+    /**
+     * Constructor for the query parser.
+     * @param tokens The list of tokens to be parsed.
+     * @param query The Query wrapper object to be updated.
+     */
+    explicit QueryParser(std::vector<std::shared_ptr<Token>> tokens, Query* query);
+
+    /**
+     * Parse tokens and return Query wrapper object.
+     */
+    void parse();
 };
