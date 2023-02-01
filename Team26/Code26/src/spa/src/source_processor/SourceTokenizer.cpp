@@ -16,16 +16,16 @@ std::unordered_set<std::string> firstOp({"&", "|", ">", "<", "=", "!"});
 std::unordered_set<char> secondOp({'&', '|', '='});
 
 bool SourceTokenizer::isValidSpecialChar() {
-    return (specialChar.find(currentToken) != specialChar.end());
+    return (specialChar.find(getCurrentToken()) != specialChar.end());
 }
 
 bool SourceTokenizer::isPossibleLogicalOp() {
-    return (firstOp.find(currentToken) != firstOp.end() && secondOp.find(peekChar()) != secondOp.end());
+    return (firstOp.find(getCurrentToken()) != firstOp.end() && secondOp.find(peekChar()) != secondOp.end());
 }
 
 bool SourceTokenizer::isValidLogicalOp() {
     currentToken += nextChar();
-    return validLogicalOps.find(currentToken) != validLogicalOps.end();
+    return validLogicalOps.find(getCurrentToken()) != validLogicalOps.end();
 }
 
 void SourceTokenizer::readSpecialChar() {
@@ -47,13 +47,13 @@ std::vector<std::shared_ptr<Token>> SourceTokenizer::tokenize() {
         if (isspace(c)) {
         } else if (isalpha(c)) {
             readName();
-            addToken(std::make_shared<NameToken>(currentToken));
+            addToken(std::make_shared<NameToken>(getCurrentToken()));
         } else if (isdigit(c)) {
             readInteger();
-            addToken(std::make_shared<IntegerToken>(currentToken));
+            addToken(std::make_shared<IntegerToken>(getCurrentToken()));
         } else {
             readSpecialChar();
-            addToken(std::make_shared<SpecialCharToken>(currentToken));
+            addToken(std::make_shared<SpecialCharToken>(getCurrentToken()));
         }
         currentToken = "";
     }
