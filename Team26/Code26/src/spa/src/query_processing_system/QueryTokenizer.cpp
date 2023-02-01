@@ -26,7 +26,7 @@ void QueryTokenizer::readStringExpression() {
         currentToken += nextChar();
         c = peekChar();
     }
-    addToken(std::make_shared<StringExpressionToken>(getCurrentToken()));\
+    addToken(std::make_shared<StringExpressionToken>(getCurrentToken()));
 
     if (nextChar() == '"') {
         tokens.push_back(std::make_shared<SpecialCharToken>("'"));
