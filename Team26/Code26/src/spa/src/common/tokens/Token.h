@@ -7,7 +7,8 @@ enum class TokenType {
     TOKEN_NAME,
     TOKEN_INTEGER,
     TOKEN_END_OF_FILE,
-    TOKEN_SPECIAL_CHAR
+    TOKEN_SPECIAL_CHAR,
+    TOKEN_STRING_EXPRESSION
 };
 
 // Base Class Abstract Class
