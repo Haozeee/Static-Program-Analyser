@@ -6,8 +6,8 @@
 
 class StmtListNode : public Node {
  protected:
-    std::vector<std::unique_ptr<StmtNode>> stmtList;
+    std::vector<std::shared_ptr<StmtNode>> stmtList;
 
  public:
-    StmtListNode(std::vector<std::unique_ptr<StmtNode>> stmtList);
+    StmtListNode(std::vector<std::shared_ptr<StmtNode>> stmtList);
 };

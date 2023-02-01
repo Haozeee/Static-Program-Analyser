@@ -7,8 +7,8 @@
 
 class ProgramNode : public Node {
  protected:
-    std::vector<std::unique_ptr<ProcedureNode>> procedureList;
+    std::vector<std::shared_ptr<ProcedureNode>> procedureList;
 
  public:
-    ProgramNode(std::vector<std::unique_ptr<ProcedureNode>> procedureList);
+    ProgramNode(std::vector<std::shared_ptr<ProcedureNode>> procedureList);
 };

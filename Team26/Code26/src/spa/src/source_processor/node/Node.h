@@ -1,5 +1,10 @@
 #pragma once
 
+#include <string>
+#include <variant>
+
+using factor = std::variant<std::string, int>;
+
 // Abstract base class
 class Node {
  public:

@@ -8,8 +8,8 @@
 class ProcedureNode : public Node {
  protected:
     std::string procedureName;
-    std::unique_ptr<StmtListNode> stmtListNode;
+    std::shared_ptr<StmtListNode> stmtListNode;
 
  public:
-    ProcedureNode(std::string procedureName, std::unique_ptr<StmtListNode> stmtListNode);
+    ProcedureNode(std::string procedureName, std::shared_ptr<StmtListNode> stmtListNode);
 };

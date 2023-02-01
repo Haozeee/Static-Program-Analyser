@@ -1,4 +1,4 @@
 #include "StmtListNode.h"
 
-StmtListNode::StmtListNode(std::vector<std::unique_ptr<StmtNode>> stmtList) 
+StmtListNode::StmtListNode(std::vector<std::shared_ptr<StmtNode>> stmtList)
 	: stmtList(stmtList) {};

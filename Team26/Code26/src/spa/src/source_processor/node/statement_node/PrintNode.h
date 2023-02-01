@@ -3,7 +3,7 @@
 #include <string>
 #include "StmtNode.h"
 
-class PrintNode : public StmtNode {.
+class PrintNode : public StmtNode {
  protected:
     std::string varName;
 
