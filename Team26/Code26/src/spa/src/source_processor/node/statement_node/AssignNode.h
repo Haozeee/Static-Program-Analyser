@@ -6,9 +6,9 @@
 class AssignNode : public StmtNode {
  protected:
     std::string varName;
-    int value;
+    Factor value;
 
  public:
     // TODO(oviya): Replace with Expr
-    AssignNode(int stmtIndex, std::string varName, int value);
+    AssignNode(int stmtIndex, std::string varName, Factor value);
 };

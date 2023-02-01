@@ -3,7 +3,7 @@
 #include <string>
 #include <variant>
 
-using factor = std::variant<std::string, int>;
+using Factor = std::variant<std::string, int>;
 
 // Abstract base class
 class Node {
