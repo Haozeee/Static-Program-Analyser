@@ -11,5 +11,5 @@ class StaticProgramAnalyzer {
 
  public:
     void readProgramFromFile(std::string filename);
-    void evalauteQuery(std::string query, std::list<std::string>& results);
+    void evaluateQuery(std::string query, std::list<std::string>& results);
 };
