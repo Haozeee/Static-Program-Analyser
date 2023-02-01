@@ -1,5 +1,8 @@
 #pragma once
 
+#include <memory>
+#include <vector>
+#include <string>
 #include "Synonym.h"
 
 class SelectClause {
@@ -7,7 +10,7 @@ class SelectClause {
     std::shared_ptr<std::vector<Synonym>> selectClauseItems;
 
  public:
-    SelectClause(std::shared_ptr<std::vector<Synonym>> selectClauseItems);
+    explicit SelectClause(std::shared_ptr<std::vector<Synonym>> selectClauseItems);
 
     std::string toString();
 
