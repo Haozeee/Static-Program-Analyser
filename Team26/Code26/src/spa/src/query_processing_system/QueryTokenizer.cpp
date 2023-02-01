@@ -1,6 +1,7 @@
 #include "QueryTokenizer.h"
 #include <unordered_set>
 #include <string>
+#include <stdexcept>   
 #include "common/tokens/NameToken.h"
 #include "common/tokens/IntegerToken.h"
 #include "common/tokens/SpecialCharToken.h"
