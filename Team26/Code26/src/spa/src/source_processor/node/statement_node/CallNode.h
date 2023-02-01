@@ -1,12 +1,12 @@
 #pragma once
 
-#include "StmtNode.h"
 #include <string>
+#include "StmtNode.h"
 
 class CallNode : public StmtNode {
-protected:
+ protected:
     std::string processName;
 
-public:
+ public:
     CallNode(int stmtIndex, std::string processName);
 };

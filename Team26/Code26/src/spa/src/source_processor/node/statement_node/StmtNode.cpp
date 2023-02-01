@@ -1,3 +1,3 @@
 #include "StmtNode.h"
 
-StmtNode::StmtNode(int stmtIndex) : stmtIndex(stmtIndex) {}
+StmtNode::StmtNode(int stmtIndex) : stmtIndex(stmtIndex) {};

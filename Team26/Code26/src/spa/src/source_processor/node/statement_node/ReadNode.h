@@ -1,7 +1,7 @@
 #pragma once
 
-#include "StmtNode.h"
 #include <string>
+#include "StmtNode.h"
 
 class ReadNode : public StmtNode {
  protected:

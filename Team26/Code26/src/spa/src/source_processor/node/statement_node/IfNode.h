@@ -1,8 +1,12 @@
 #pragma once
 
 #include "StmtNode.h"
-#include "../StmtListNode.h"
+#include "source_processor/node/StmtListNode.h"
 
 class IfNode : public StmtNode {
-	// TODO(oviya)
+ protected:
+    // TODO(oviya)
+
+ public:
+    // TODO(oviya)
 };

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Node.h"
-#include "ProcedureNode.h"
 #include <memory>
 #include <string>
+#include "Node.h"
+#include "ProcedureNode.h"
 
 class ProgramNode : public Node {
  protected:

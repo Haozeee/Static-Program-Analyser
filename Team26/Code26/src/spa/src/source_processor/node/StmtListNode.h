@@ -1,8 +1,8 @@
 #pragma once
 
-#include "statement_node/StmtNode.h"
 #include <memory>
 #include <vector>
+#include "statement_node/StmtNode.h"
 
 class StmtListNode : public Node {
  protected:

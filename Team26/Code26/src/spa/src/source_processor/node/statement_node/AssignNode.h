@@ -1,14 +1,14 @@
 #pragma once
 
-#include "StmtNode.h"
 #include <string>
+#include "StmtNode.h"
 
 class AssignNode : public StmtNode {
-protected:
+ protected:
     std::string varName;
     int value;
 
-public:
+ public:
     // TODO(oviya): Replace with Expr
     AssignNode(int stmtIndex, std::string varName, int value);
 };
