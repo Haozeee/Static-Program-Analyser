@@ -6,6 +6,7 @@
 class StaticProgramAnalyzer {
  private:
     SourceManager sourceManager;
+    QueryManager queryManager;
 
  public:
     void readProgramFromFile(std::string filename);
