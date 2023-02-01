@@ -1,11 +1,4 @@
-#pragma once
+#include "AssignNode.h"
 
-#include "StmtNode.h"
-
-class AssignNode : public StmtNode {
-protected:
-    // TODO(oviya)
-
-public:
-    // TODO(oviya)
-};
+AssignNode::AssignNode(int stmtIndex, std::string varName, int value)
+	: StmtNode(stmtIndex), varName(varName), value(value) {}
