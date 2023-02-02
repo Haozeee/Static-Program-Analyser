@@ -3,3 +3,4 @@
 
 class ConstantManager : public EntityManager<int> {
 };
+

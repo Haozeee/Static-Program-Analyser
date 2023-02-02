@@ -14,6 +14,3 @@ class RelationshipManager: public ReadOnlyRelationshipManager<Entity, Relationsh
     bool contains(Entity, Relationship);
     std::unordered_map<Entity, Relationship> getAllRelationships();
 };
-
-
-

@@ -6,12 +6,12 @@
 template <typename Entity>
 
 class EntityManager : WriteOnlyEntityManager<Entity> , ReadOnlyEntityManager<Entity> {
-    private :
-        std::unordered_set<Entity> entities_set;
-    public:
-        bool insertEntity(Entity entity);
+ private :
+    std::unordered_set<Entity> entities_set;
+ public:
+    bool insertEntity(Entity entity);
 
-        std::unordered_set<Entity> getAllEntitiesEntries();
+    std::unordered_set<Entity> getAllEntitiesEntries();
 
-        bool isEmpty();
+    bool isEmpty();
 };
