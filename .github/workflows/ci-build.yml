@@ -1,51 +1,31 @@
-name: CI for Cmake Project - MacOS
+name: CI for Cmake Project - Windows
 
-on:
-  schedule:
-    - cron: "0 15,23 * * *"
-  
-  workflow_dispatch:     
-    branches:     
-      - master
-
-env:
-    BUILD_TYPE: Release
+on: [pull_request]
 
 jobs:
-  build:
-    runs-on: macos-latest
-    timeout-minutes: 3
-    strategy:
-      fail-fast: true
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Create Build Environment
-        run: cmake -E make_directory ${{runner.workspace}}/build
-
-      - name: Configure CMake
-        shell: bash
-        working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE/Team26/Code26/ -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-
-      - name: Build Project
-        working-directory: ${{runner.workspace}}/build
-        shell: bash
-        run: cmake --build . --config $BUILD_TYPE
-
   checkstyle:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Windows, X64]
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.11.1'
-          
-      - name: Install cpplint
-        run: pip install cpplint
 
       - name: Run Linter
         run: |
-          cd Team26/Code26/src/spa
+          cd .\Team26\Code26\src\spa
           cpplint --recursive --filter=-legal/copyright,-runtime/references --linelength=120 extensions=cpp,h .
+  build:
+      runs-on: [self-hosted, Windows, X64]
+      timeout-minutes: 10
+      strategy:
+        fail-fast: true
+
+      steps:
+        - uses: actions/checkout@v3
+        - name: Build Project
+          shell: powershell
+          run: |
+            cd .\Team26\Code26
+            mkdir build
+            cd build
+            cmake ..
+            cmake --build . --target autotester --config Release
+            cd ../..
