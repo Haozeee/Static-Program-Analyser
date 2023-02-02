@@ -55,6 +55,8 @@ std::shared_ptr<StmtListNode> SourceParser::parseStmtList() {
             stmtNode = parsePrint();
         } else if (nameToken->getValue() == READ_KEYWORD) {
             stmtNode = parseRead();
+        } else if (isValueOf(EQUAL_KEYWORD)) {
+            stmtNode = parseAssign(nameToken);
         } else {
             // TODO(oviya): Throw exception
         }
