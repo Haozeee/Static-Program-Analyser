@@ -67,7 +67,7 @@ std::shared_ptr<Synonym> QueryParser::parseSynonym(std::shared_ptr<Token> token)
 
 void QueryParser::parse() {
     // First, parse Declaration.
-    parseDeclaration();
+    parseAllDeclarations();
 
     // Next, handle the Select Clause.
     parseSelectClause();
