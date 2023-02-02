@@ -1,4 +1,5 @@
 #include "Query.h"
+#include <algorithm>
 
 Query::Query() {}
 
