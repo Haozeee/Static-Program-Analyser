@@ -47,7 +47,8 @@ class StorageFacade {
         return usesSManager;
     }
 
-    RELATIONSHIP_READ_OR_WRITE<std::string, std::string>* getModifiesPManager() {
+    RELATIONSHIP_READ_OR_WRITE<std::string,
+    std::string>* getModifiesPManager() {
         return modifiesPManager;
     }
 
