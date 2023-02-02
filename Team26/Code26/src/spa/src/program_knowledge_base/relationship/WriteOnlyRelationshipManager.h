@@ -1,4 +1,4 @@
 #pragma once
 
-class WriteOnlyRelationshipManger {
-};
+template <typename T, typename U>
+class WriteOnlyRelationshipManger {};
