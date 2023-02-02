@@ -8,6 +8,7 @@
 #define PRINT_KEYWORD "print"
 #define READ_KEYWORD "read"
 #define STMT_END ";"
+#define EQUAL_KEYWORD "="
 
 SourceParser::SourceParser(std::vector<std::shared_ptr<Token>> tokens)
     : Parser(tokens), stmtIndex(INITIAL_STMT_INDEX) {}
@@ -91,4 +92,30 @@ std::shared_ptr<ReadNode> SourceParser::parseRead() {
     stmtIndex++;
 
     return std::make_shared<ReadNode>(stmtIndex, nameToken->getValue());
+}
+
+std::shared_ptr<ExprNode> SourceParser::parseExpr(std::shared_ptr<std::string> expr) {
+    std::shared_ptr<Token> exprToken;
+
+    if (isTypeOf(TokenType::TOKEN_NAME)) {
+        exprToken = parseNext(TokenType::TOKEN_NAME);
+    }
+    else if (isTypeOf(TokenType::TOKEN_INTEGER)) {
+        exprToken = parseNext(TokenType::TOKEN_INTEGER);
+    }
+    else {
+        // TODO(oviya): throw exception
+    }
+
+    return std::make_shared<ExprNode>(exprToken->getValue());
+}
+
+std::shared_ptr<AssignNode> SourceParser::parseAssign(std::shared_ptr<Token> nameToken) {
+    parseNext(EQUAL_KEYWORD);
+    std::shared_ptr<std::string> expr = std::make_shared<std::string>();
+    ExprNode exprNode = *parseExpr(expr);
+    parseNext(STMT_END);
+    stmtIndex++;
+
+    return std::make_shared<AssignNode>(stmtIndex, nameToken->getValue(), exprNode);
 }
