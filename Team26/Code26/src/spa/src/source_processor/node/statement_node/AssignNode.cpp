@@ -1,4 +1,4 @@
 #include "AssignNode.h"
 
-AssignNode::AssignNode(int stmtIndex, std::string varName, Factor value)
-	: StmtNode(stmtIndex), varName(varName), value(value) {};
+AssignNode::AssignNode(int stmtIndex, std::string varName, ExprNode exprNode)
+	: StmtNode(stmtIndex), varName(varName), exprNode(exprNode) {};
