@@ -1,5 +1,4 @@
 #include "QueryManager.h"
-
 #include <iostream>
 #include <memory>
 #include <vector>
