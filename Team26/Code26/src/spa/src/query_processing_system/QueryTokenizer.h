@@ -2,12 +2,22 @@
 
 #include <vector>
 #include <memory>
+#include <string>
 #include "common/Tokenizer.h"
 
 
 class QueryTokenizer : public Tokenizer {
-public:
-    explicit QueryTokenizer(std::string query);
+ private:
+    void readSpecialChar() override;
 
-    std::vector<std::shared_ptr<Token>> tokenize();
+ protected:
+    /**
+     * This function reads a string that is contained within a set of inverted commas.
+     */
+    void readStringExpression();
+
+ public:
+    explicit QueryTokenizer(const std::string& query);
+
+    std::vector<std::shared_ptr<Token>> tokenize() override;
 };

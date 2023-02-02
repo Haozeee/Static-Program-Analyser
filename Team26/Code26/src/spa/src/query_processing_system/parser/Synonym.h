@@ -8,7 +8,7 @@
 class Synonym {
  public:
     std::string ident;
-    Synonym(std::string ident);
+    explicit Synonym(std::string ident);
 
     std::string toString();
 

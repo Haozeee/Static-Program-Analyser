@@ -2,6 +2,8 @@
 
 Query::Query() {}
 
+Query::~Query() {}
+
 std::shared_ptr<SelectClause> Query::getSelectClause() {
     return selectClause;
 }

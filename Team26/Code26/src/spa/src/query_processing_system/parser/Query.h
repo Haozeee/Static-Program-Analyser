@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vector"
+#include <vector>
 #include "SelectClause.h"
 #include "Declaration.h"
 #include "Synonym.h"
@@ -14,6 +14,8 @@ private:
 
 public:
     Query();
+
+    ~Query();
 
     std::shared_ptr<SelectClause> getSelectClause();
 
