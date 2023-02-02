@@ -1,18 +1,19 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 #include "SelectClause.h"
 #include "Declaration.h"
 #include "Synonym.h"
 
 class Query {
-private:
+ private:
     // Select clause of the Query
     std::shared_ptr<SelectClause> selectClause;
     // List of declarations in the query
     std::vector<std::shared_ptr<Declaration>> declarations;
 
-public:
+ public:
     Query();
 
     ~Query();

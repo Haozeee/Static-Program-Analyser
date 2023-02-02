@@ -3,11 +3,11 @@
 #include "DesignEntity.h"
 
 class Declaration {
-private:
+ private:
     Synonym synonym;
     DesignEntity designEntity;
 
-public:
+ public:
     Declaration(Synonym synonym, DesignEntity designEntity);
 
     Synonym getSynonym();
