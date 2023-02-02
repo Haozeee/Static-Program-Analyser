@@ -1,3 +1,3 @@
 #include "ExprNode.h"
 
-ExprNode::ExprNode(Factor expr) : expr(expr) {};
+ExprNode::ExprNode(Factor expr) : expr(expr) {}

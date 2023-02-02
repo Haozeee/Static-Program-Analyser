@@ -3,9 +3,9 @@
 #include "source_processor/node/Node.h"
 
 class StmtNode : public Node {
- protected: 
+ protected:
     int stmtIndex;
 
  public:
-    StmtNode(int stmtIndex);
+    explicit StmtNode(int stmtIndex);
 };

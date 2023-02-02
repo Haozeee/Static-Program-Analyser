@@ -9,5 +9,5 @@ class StmtListNode : public Node {
     std::vector<std::shared_ptr<StmtNode>> stmtList;
 
  public:
-    StmtListNode(std::vector<std::shared_ptr<StmtNode>> stmtList);
+    explicit StmtListNode(std::vector<std::shared_ptr<StmtNode>> stmtList);
 };
