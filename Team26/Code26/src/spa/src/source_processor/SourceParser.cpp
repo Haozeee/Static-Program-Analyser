@@ -1,4 +1,6 @@
 #include "SourceParser.h"
+#include <memory>
+#include <string>
 
 #define INITIAL_STMT_INDEX 1
 #define PROCEDURE_KEYWORD "procedure"
@@ -49,14 +51,11 @@ std::shared_ptr<StmtListNode> SourceParser::parseStmtList() {
 
         if (nameToken->getValue() == CALL_KEYWORD) {
             stmtNode = parseCall();
-        }
-        else if (nameToken->getValue() == PRINT_KEYWORD) {
+        } else if (nameToken->getValue() == PRINT_KEYWORD) {
             stmtNode = parsePrint();
-        }
-        else if (nameToken->getValue() == READ_KEYWORD) {
+        } else if (nameToken->getValue() == READ_KEYWORD) {
             stmtNode = parseRead();
-        }
-        else {
+        } else {
             // TODO(oviya): Throw exception
         }
 
@@ -99,11 +98,9 @@ std::shared_ptr<ExprNode> SourceParser::parseExpr(std::shared_ptr<std::string> e
 
     if (isTypeOf(TokenType::TOKEN_NAME)) {
         exprToken = parseNext(TokenType::TOKEN_NAME);
-    }
-    else if (isTypeOf(TokenType::TOKEN_INTEGER)) {
+    } else if (isTypeOf(TokenType::TOKEN_INTEGER)) {
         exprToken = parseNext(TokenType::TOKEN_INTEGER);
-    }
-    else {
+    } else {
         // TODO(oviya): throw exception
     }
 
