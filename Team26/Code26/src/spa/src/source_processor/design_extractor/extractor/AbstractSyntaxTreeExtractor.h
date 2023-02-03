@@ -5,7 +5,6 @@
 #include "source_processor/node/ProcedureNode.h"
 #include "source_processor/node/StmtListNode.h"
 
-
 class AbstractSyntaxTreeExtractor {
  protected:
     int stmtNo = 0;
