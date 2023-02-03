@@ -5,7 +5,7 @@ void StaticProgramAnalyzer::readProgramFromFile(std::string filename) {
     SourceManager::process(std::move(filename));
 }
 
-void StaticProgramAnalyzer::evaluateQuery(std::string query, std::list<std::string> &results) {
+void StaticProgramAnalyzer::evaluateQuery(std::string query, std::list<std::string>& results) {
     // queryManager
     queryManager.process(query);
     // storageManager
