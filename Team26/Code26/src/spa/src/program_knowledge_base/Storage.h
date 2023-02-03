@@ -19,7 +19,8 @@
 #include "program_knowledge_base/entity/entity_child_managers/CallManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/ProcedureManager.h"
 
-template<template<typename, typename> typename RELATIONSHIP_READ_OR_WRITE, template<typename> typename ENTITY_READ_OR_WRITE>
+template<template<typename, typename> typename RELATIONSHIP_READ_OR_WRITE,
+         template<typename> typename ENTITY_READ_OR_WRITE>
 class Storage {
  private:
     // relationship managers
