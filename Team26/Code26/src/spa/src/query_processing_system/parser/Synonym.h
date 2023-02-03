@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <ostream>
 
 // According to Basic PQL under Lexical Tokens:
 // synonym : IDENT

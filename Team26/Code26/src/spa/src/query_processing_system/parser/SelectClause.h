@@ -3,6 +3,8 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <ostream>
+#include <variant>
 #include "Synonym.h"
 
 using SelectClauseItem = std::variant<std::shared_ptr<Synonym>>;
