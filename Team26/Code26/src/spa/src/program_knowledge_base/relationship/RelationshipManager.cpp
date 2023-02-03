@@ -1,21 +1,21 @@
 #include "RelationshipManager.h"
 #include <unordered_map>
 
-template <typename T, typename U>
-bool RelationshipManager<T, U>::isEmpty() {
-    return relationships.empty();
+template <typename Entity, typename Relationship>
+bool RelationshipManager<Entity, Relationship>::isEmpty() {
+    return relationships_map.empty();
 }
 
-template <typename T, typename U>
-bool RelationshipManager<T, U>::contains(T first, U second) {
-    if (relationships.contains(first)) {
-        auto keyValuePair = relationships.find(first);
-        return keyValuePair->second == second;
+template <typename Entity, typename Relationship>
+bool RelationshipManager<Entity, Relationship>::contains(Entity entity, Relationship relationship) {
+    if (relationships_map.contains(entity)) {
+        auto keyValuePair = relationships_map.find(entity);
+        return keyValuePair->relationship == relationship;
     }
     return false;
 }
 
-template <typename T, typename U>
-std::unordered_map<T, U> RelationshipManager<T, U>::getAllRelationships() {
-    return relationships;
+template <typename Entity, typename Relationship>
+std::unordered_map<Entity, Relationship> RelationshipManager<Entity, Relationship>::getAllRelationshipEntries() {
+    return relationships_map;
 }
