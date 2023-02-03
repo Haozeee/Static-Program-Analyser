@@ -5,6 +5,4 @@
 #include "relationship/ReadOnlyRelationshipManager.h"
 
 class ReadOnlyStorage: public Storage<ReadOnlyRelationshipManager,
-        ReadOnlyEntityManager> {
-
-};
+        ReadOnlyEntityManager> {};
