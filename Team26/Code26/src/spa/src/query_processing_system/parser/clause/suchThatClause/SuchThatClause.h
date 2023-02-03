@@ -2,7 +2,7 @@
 #include "../Clause.h"
 #include "../../Argument.h"
 
-class SuchThatClause : Clause {
+class SuchThatClause : public Clause {
 private:
     Argument leftArg;
     Argument rightArg;

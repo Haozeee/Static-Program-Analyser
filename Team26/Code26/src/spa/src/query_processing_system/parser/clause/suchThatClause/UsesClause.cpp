@@ -1,5 +1,6 @@
-//
-// Created by Tey Hao Ze on 4/2/23.
-//
-
 #include "UsesClause.h"
+#include "../../../evaluator/clauseEvaluator/suchThatClauseEvaluator/UsesClauseEvaluator.h"
+
+ClauseEvaluator* UsesClause::getClauseEvaluator() {
+    return new UsesClauseEvaluator(getLeftArg(), getRightArg());
+}

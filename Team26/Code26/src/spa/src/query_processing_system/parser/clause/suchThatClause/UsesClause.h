@@ -1,6 +1,8 @@
 #pragma once
+#include "SuchThatClause.h"
 
-class UsesClause {
-
+class UsesClause : public SuchThatClause {
+public:
+    ClauseEvaluator* getClauseEvaluator() override;
 };
 
