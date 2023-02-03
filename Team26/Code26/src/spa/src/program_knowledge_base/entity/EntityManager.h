@@ -6,7 +6,7 @@
 template <typename Entity>
 
 class EntityManager : WriteOnlyEntityManager<Entity> , ReadOnlyEntityManager<Entity> {
- private :
+ private:
     std::unordered_set<Entity> entities_set;
  public:
     bool insertEntity(Entity entity);
