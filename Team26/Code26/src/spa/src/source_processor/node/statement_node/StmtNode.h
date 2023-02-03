@@ -2,7 +2,7 @@
 
 #include "source_processor/node/Node.h"
 
-class AbstractSyntaxTreeExtractor;
+class AbstractSyntaxTreeExtractor;  // forward declaration
 
 class StmtNode : public Node {
  public:

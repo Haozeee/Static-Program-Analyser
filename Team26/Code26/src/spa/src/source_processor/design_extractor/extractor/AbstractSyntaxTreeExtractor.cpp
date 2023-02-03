@@ -21,6 +21,5 @@ void AbstractSyntaxTreeExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
     node->evaluate(*this);
 }
 
-AbstractSyntaxTreeExtractor::AbstractSyntaxTreeExtractor(std::shared_ptr<WriteOnlyStorage> storage) : storage(storage)
-{
+AbstractSyntaxTreeExtractor::AbstractSyntaxTreeExtractor(std::shared_ptr<WriteOnlyStorage> storage) : storage(storage) {
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "source_processor/design_extractor/extractor/AbstractSyntaxTreeExtractor.h"
 
 class EntityExtractor : public AbstractSyntaxTreeExtractor {
