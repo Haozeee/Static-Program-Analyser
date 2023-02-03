@@ -17,6 +17,10 @@ void AbstractSyntaxTreeExtractor::extractStmtList(std::shared_ptr<StmtListNode> 
 }
 
 void AbstractSyntaxTreeExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
-    stmtNo = node->stmtIndex;
+    currentStmtNo = node->stmtIndex;
     node->evaluate(*this);
+}
+
+AbstractSyntaxTreeExtractor::AbstractSyntaxTreeExtractor(std::shared_ptr<WriteOnlyStorage> storage) : storage(storage)
+{
 }
