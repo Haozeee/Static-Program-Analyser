@@ -4,7 +4,6 @@
 #include "Token.h"
 
 class StringExpressionToken : public Token {
-
-public:
+ public:
     explicit StringExpressionToken(std::string value);
 };

@@ -1,4 +1,5 @@
 #include "Query.h"
+#include <algorithm>
 
 Query::Query() {}
 
@@ -17,9 +18,8 @@ void Query::addDeclaration(Synonym synonym, DesignEntity designEntity) {
     declarations.push_back(declaration);
 }
 
-// TODO
+// TODO(TBD): Implement
 void Query::setSelectClause() {
-
 }
 
 bool Query::operator==(const Query &other) const {
@@ -31,7 +31,7 @@ bool Query::operator==(const Query &other) const {
     bool sameDeclarations = std::is_permutation(declarations.begin(), declarations.end(),
                                                 other.declarations.begin(), other.declarations.end(),
                                                 ptrComparisonPredicate);
-    // TODO
+    // TODO(TBD): Implement
     bool sameSelectClause = 1;
 
     return sameDeclarations && sameSelectClause;
