@@ -1,14 +1,14 @@
 #pragma once
 
 #include <string>
-#include "relationship/FollowsManager.h"
-#include "relationship/FollowsTManager.h"
-#include "relationship/ParentManager.h"
-#include "relationship/ParentTManager.h"
-#include "relationship/UsesPManager.h"
-#include "relationship/UsesSManager.h"
-#include "relationship/ModifiesPManager.h"
-#include "relationship/ModifiesSManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/FollowsManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/FollowsTManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/ParentManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/ParentTManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/UsesPManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/UsesSManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/ModifiesPManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/ModifiesSManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/AssignManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/PrintManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/ReadManager.h"
@@ -20,7 +20,7 @@
 #include "program_knowledge_base/entity/entity_child_managers/ProcedureManager.h"
 
 template<template<typename, typename> typename RELATIONSHIP_READ_OR_WRITE, template<typename> typename ENTITY_READ_OR_WRITE>
-class StorageFacade {
+class Storage {
  private:
     // relationship managers
     FollowsManager* followsManager = new FollowsManager();

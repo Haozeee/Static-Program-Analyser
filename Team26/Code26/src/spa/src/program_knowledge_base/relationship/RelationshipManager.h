@@ -12,5 +12,5 @@ class RelationshipManager: public ReadOnlyRelationshipManager<Entity, Relationsh
  public:
     bool isEmpty();
     bool contains(Entity, Relationship);
-    std::unordered_map<Entity, Relationship> getAllRelationships();
+    std::unordered_map<Entity, Relationship> getAllRelationshipEntries();
 };

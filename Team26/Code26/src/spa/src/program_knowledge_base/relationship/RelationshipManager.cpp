@@ -16,6 +16,6 @@ bool RelationshipManager<Entity, Relationship>::contains(Entity entity, Relation
 }
 
 template <typename Entity, typename Relationship>
-std::unordered_map<Entity, Relationship> RelationshipManager<Entity, Relationship>::getAllRelationships() {
+std::unordered_map<Entity, Relationship> RelationshipManager<Entity, Relationship>::getAllRelationshipEntries() {
     return relationships_map;
 }

@@ -1,4 +1,4 @@
 #pragma once
-#include "RelationshipManager.h"
+#include "program_knowledge_base/relationship/RelationshipManager.h"
 
 class ParentTManager : public RelationshipManager<int, int> { };
