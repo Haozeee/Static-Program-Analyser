@@ -13,6 +13,18 @@ std::vector<std::shared_ptr<Declaration>> Query::getDeclarations() {
     return declarations;
 }
 
+std::vector<std::shared_ptr<SuchThatClause>> Query::getSuchThatClauses() {
+    return suchThatClauses;
+}
+
+// TODO(TBD): Implement
+void Query::setSelectClause() {
+}
+
+void Query::addSuchThatClause(std::shared_ptr<SuchThatClause> clause) {
+    suchThatClauses.push_back(clause);
+}
+
 void Query::addDeclaration(const Synonym& synonym, DesignEntity designEntity) {
     auto declaration = std::make_shared<Declaration>(synonym, designEntity);
     declarations.push_back(declaration);
@@ -26,10 +38,6 @@ DesignEntity Query::getSynonymDesignEntity(const Synonym& synonym) {
         throw std::exception();
     }
     return res->second;
-}
-
-// TODO(TBD): Implement
-void Query::setSelectClause() {
 }
 
 bool Query::operator==(const Query &other) const {
