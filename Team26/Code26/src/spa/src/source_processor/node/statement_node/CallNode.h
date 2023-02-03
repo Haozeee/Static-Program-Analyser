@@ -4,9 +4,7 @@
 #include "StmtNode.h"
 
 class CallNode : public StmtNode {
- protected:
-    std::string processName;
-
  public:
+    std::string processName;
     CallNode(int stmtIndex, std::string processName);
 };
