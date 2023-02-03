@@ -1,3 +1,4 @@
+#include <string>
 #include "QueryParser.h"
 
 QueryParser::QueryParser(std::vector<std::shared_ptr<Token>> tokens, Query* query) :
@@ -22,7 +23,7 @@ bool QueryParser::parseDeclaration() {
     DesignEntity designEntity;
     designEntity = getDesignEntityFromStr(designEntityString);
 
-    getNext(); // Consumes first Design Entity token and moves to second token.
+    getNext();  // Consumes first Design Entity token and moves to second token.
 
     // Handle second token which is a Synonym.
     std::shared_ptr<Token> synonymToken;
@@ -71,6 +72,5 @@ void QueryParser::parse() {
 
     // Next, handle the Select Clause.
     parseSelectClause();
-
 }
 
