@@ -2,3 +2,6 @@
 
 AssignNode::AssignNode(int stmtIndex, std::string varName, ExprNode exprNode)
     : StmtNode(stmtIndex), varName(varName), exprNode(exprNode) {}
+
+void AssignNode::evaluate(const AbstractSyntaxTreeExtractor &extractor) {
+}
