@@ -11,15 +11,20 @@ bool EntityManager<Entity>::insertEntity(Entity entity) {
 }
 
 template<typename Entity>
-std::unordered_set<Entity> EntityManager<Entity>::getAllEntitiesEntries() {
-    return entities_set;
-}
-
-template<typename Entity>
 bool EntityManager<Entity>::isEmpty() {
     bool flag = true;
     if (entities_set.size() != 0) {
         flag = false;
     }
     return flag;
+}
+
+template<typename Entity>
+bool EntityManager<Entity>::contains(Entity entity) {
+    return entities_set.contains(entity);
+}
+
+template<typename Entity>
+std::unordered_set<Entity> EntityManager<Entity>::getAllEntitiesEntries() {
+    return entities_set;
 }
