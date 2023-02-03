@@ -7,9 +7,7 @@
 #include "ProcedureNode.h"
 
 class ProgramNode : public Node {
- protected:
-    std::vector<std::shared_ptr<ProcedureNode>> procedureList;
-
  public:
+    std::vector<std::shared_ptr<ProcedureNode>> procedureList;
     explicit ProgramNode(std::vector<std::shared_ptr<ProcedureNode>> procedureList);
 };
