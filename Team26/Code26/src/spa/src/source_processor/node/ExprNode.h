@@ -7,11 +7,8 @@
 using Factor = std::variant<std::string, int>;
 
 class ExprNode : public Node {
- protected:
-    Factor expr;
-    // TODO(oviya)
-
  public:
+    Factor expr;
     // TODO(oviya): Replace with Expr, add operator==
     explicit ExprNode(Factor expr);
 };
