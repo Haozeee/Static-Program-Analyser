@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include "SourceTokenizer.h"
+#include "SourceParser.h"
 
 void SourceManager::process(std::string filename) {
     std::ifstream input(filename);
@@ -12,6 +13,9 @@ void SourceManager::process(std::string filename) {
 
     SourceTokenizer sourceTokenizer = SourceTokenizer(&input);
     auto tokens = sourceTokenizer.tokenize();
+    SourceParser sourceParser = SourceParser(tokens);
+
+
     input.close();
 
     // TODO(future): Add Parsing, Design Extractor, Storage

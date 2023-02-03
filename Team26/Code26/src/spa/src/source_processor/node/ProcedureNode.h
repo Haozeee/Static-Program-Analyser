@@ -6,7 +6,6 @@
 #include "StmtListNode.h"
 
 class ProcedureNode : public Node {
-
  public:
     std::string procedureName;
     std::shared_ptr<StmtListNode> stmtListNode;
