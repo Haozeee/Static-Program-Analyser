@@ -1,0 +1,14 @@
+name: CI for Linting - Windows
+
+on: [push]
+
+jobs:
+  checkstyle:
+    runs-on: [self-hosted, Windows, X64]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run Linter
+        run: |
+          cd .\Team26\Code26\src\spa
+          cpplint --recursive --filter=-legal/copyright,-runtime/references --linelength=120 extensions=cpp,h .
