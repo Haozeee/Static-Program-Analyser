@@ -4,9 +4,7 @@
 #include "StmtNode.h"
 
 class PrintNode : public StmtNode {
- protected:
-    std::string varName;
-
  public:
+    std::string varName;
     PrintNode(int stmtIndex, std::string varName);
 };
