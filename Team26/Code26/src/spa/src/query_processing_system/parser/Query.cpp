@@ -13,9 +13,19 @@ std::vector<std::shared_ptr<Declaration>> Query::getDeclarations() {
     return declarations;
 }
 
-void Query::addDeclaration(Synonym synonym, DesignEntity designEntity) {
+void Query::addDeclaration(const Synonym& synonym, DesignEntity designEntity) {
     auto declaration = std::make_shared<Declaration>(synonym, designEntity);
     declarations.push_back(declaration);
+    synonymToDesignEntityMap.insert({synonym.getIdent(), declaration->getDesignEntity()});
+}
+
+DesignEntity Query::getSynonymDesignEntity(const Synonym& synonym) {
+    auto res = synonymToDesignEntityMap.find(synonym.getIdent());
+    if (res == synonymToDesignEntityMap.end()) {
+        // TODO
+        throw std::exception();
+    }
+    return res->second;
 }
 
 // TODO(TBD): Implement
@@ -31,8 +41,8 @@ bool Query::operator==(const Query &other) const {
     bool sameDeclarations = std::is_permutation(declarations.begin(), declarations.end(),
                                                 other.declarations.begin(), other.declarations.end(),
                                                 ptrComparisonPredicate);
-    // TODO(TBD): Implement
-    bool sameSelectClause = 1;
+
+    bool sameSelectClause = selectClause == other.selectClause;
 
     return sameDeclarations && sameSelectClause;
 }

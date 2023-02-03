@@ -25,6 +25,8 @@ void QueryManager::process(const std::string& query) {
     // Validate Query
 
     // Evaluate query
+    QueryEvaluator evaluator = QueryEvaluator(queryObject);
+    evaluator.evaluateQuery();
 
     // Memory management
     // Delete created query object

@@ -36,4 +36,7 @@ class Synonym {
      * @param ident The identifier that is a Synonym.
      */
     explicit Synonym(std::string ident);
+
+    std::string getIdent() const;
+
 };
