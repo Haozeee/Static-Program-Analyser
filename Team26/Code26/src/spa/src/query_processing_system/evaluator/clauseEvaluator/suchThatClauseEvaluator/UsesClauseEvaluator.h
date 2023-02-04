@@ -2,7 +2,7 @@
 #include "SuchThatClauseEvaluator.h"
 
 class UsesClauseEvaluator : public SuchThatClauseEvaluator {
-public:
+ public:
     UsesClauseEvaluator(Argument left, Argument right);
 
     bool evaluateClause() override;

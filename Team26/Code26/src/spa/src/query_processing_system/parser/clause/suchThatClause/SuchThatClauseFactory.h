@@ -4,7 +4,7 @@
 #include "../../Argument.h"
 #include "UsesClause.h"
 
-const std::string USESRELATION = "uses";
+const char USESRELATION[] = "uses";
 
 class SuchThatClauseFactory {
  public:
