@@ -4,10 +4,12 @@
 #include "ReadOnlyEntityManager.h"
 
 template <typename Entity>
-class EntityManager : public WriteOnlyEntityManager<Entity> , public ReadOnlyEntityManager<Entity> {
- private :
+class EntityManager : public WriteOnlyEntityManager<Entity>,
+        public ReadOnlyEntityManager<Entity> {
+ private:
     std::unordered_set<Entity> entities_set;
-public:
+
+ public:
     bool insertEntity(Entity entity) {
         bool flag = entities_set.insert(entity).second;
         return flag;
