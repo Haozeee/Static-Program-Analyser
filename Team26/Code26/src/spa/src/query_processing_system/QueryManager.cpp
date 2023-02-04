@@ -27,8 +27,8 @@ void QueryManager::process(const std::string& query) {
 
     // Evaluate query
     std::shared_ptr<ReadOnlyStorage> storage = std::make_shared<ReadOnlyStorage>();
-    //QueryEvaluator evaluator = QueryEvaluator(queryObject, storage);
-    //evaluator.evaluateQuery();
+    // QueryEvaluator evaluator = QueryEvaluator(queryObject, storage);
+    // evaluator.evaluateQuery();
 
     // Memory management
     // Delete created query object
