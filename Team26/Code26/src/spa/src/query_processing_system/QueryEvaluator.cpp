@@ -1,7 +1,8 @@
 #include "QueryEvaluator.h"
 #include "evaluator/QueryResult.h"
 
-QueryEvaluator::QueryEvaluator(Query* query) : query(query) {};
+QueryEvaluator::QueryEvaluator(Query *query, std::shared_ptr<ReadOnlyStorage> storage)
+    : query(query), storage(storage) {}
 
 QueryResult QueryEvaluator::evaluateQuery() {
     // Evaluate select clauses
@@ -23,5 +24,6 @@ void QueryEvaluator::evaluateSelectClause() {
         // Add identity to results
         queryResult.addNewIdentity(syn->ident);
         // Get data from pkb
+        // storage->getVariableManager().getAllEntitiesEntries();
     }
 }

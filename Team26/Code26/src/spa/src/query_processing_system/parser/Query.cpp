@@ -21,7 +21,7 @@ std::vector<SuchThatClause*> Query::getSuchThatClauses() {
     return suchThatClauses;
 }
 
-// TODO(TBD): Implement
+// TODO(Hao Ze): Implement
 void Query::setSelectClause() {
 }
 

@@ -38,5 +38,4 @@ class Synonym {
     explicit Synonym(std::string ident);
 
     std::string getIdent() const;
-
 };

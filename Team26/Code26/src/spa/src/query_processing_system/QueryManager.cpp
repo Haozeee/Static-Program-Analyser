@@ -6,6 +6,7 @@
 #include "QueryEvaluator.h"
 #include "parser/QueryParser.h"
 #include "parser/Query.h"
+#include "../program_knowledge_base/ReadOnlyStorage.h"
 
 void QueryManager::process(const std::string& query) {
     // Create Query object
@@ -25,9 +26,11 @@ void QueryManager::process(const std::string& query) {
     // Validate Query
 
     // Evaluate query
-    QueryEvaluator evaluator = QueryEvaluator(queryObject);
-    evaluator.evaluateQuery();
+    std::shared_ptr<ReadOnlyStorage> storage = std::make_shared<ReadOnlyStorage>();
+    //QueryEvaluator evaluator = QueryEvaluator(queryObject, storage);
+    //evaluator.evaluateQuery();
 
     // Memory management
     // Delete created query object
+    delete queryObject;
 }

@@ -11,12 +11,21 @@ enum class ArgumentType {
     NUMBER
 };
 
+/**
+ * Stores an argument of a query clause.
+ */
 class Argument {
-private:
+ private:
+    /**
+     * The type of the argument.
+     */
     ArgumentType argumentType;
+    /**
+     * The value of the argument
+     */
     std::string value;
 
-public:
+ public:
     Argument(ArgumentType type, std::string value);
 
     std::string getValue();

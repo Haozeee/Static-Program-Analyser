@@ -1,6 +1,6 @@
 #include "QueryResult.h"
 
-QueryResult::QueryResult() {};
+QueryResult::QueryResult() {}
 
 void QueryResult::addNewIdentity(std::string identity) {
     auto iterator = results.find(identity);
@@ -23,4 +23,5 @@ std::ostream& operator <<(std::ostream& os, const QueryResult& queryResult) {
         }
         os << "\n";
     }
+    return os;
 }

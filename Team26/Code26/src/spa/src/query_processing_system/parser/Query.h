@@ -21,7 +21,7 @@ class Query {
     // Map of synonyms to design entity
     std::unordered_map<std::string, DesignEntity> synonymToDesignEntityMap;
 
-public:
+ public:
     Query();
 
     ~Query();

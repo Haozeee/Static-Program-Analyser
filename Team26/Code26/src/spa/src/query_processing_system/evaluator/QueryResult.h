@@ -14,11 +14,15 @@ using ResultMap = std::unordered_map<std::string, std::unordered_set<std::string
  * Stores the result of a query
  */
 class QueryResult {
-private:
+ private:
+    /**
+     * The keys of the map should contain the identity in the select clauses.
+     * The values are the results of the keys, represented as an unordered set.
+     */
     ResultMap results;
 
-public:
-    explicit QueryResult();
+ public:
+    QueryResult();
 
     /**
      * Add a new identity that will be outputted in the result.

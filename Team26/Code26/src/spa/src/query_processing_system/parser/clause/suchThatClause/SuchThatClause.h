@@ -3,11 +3,11 @@
 #include "../../Argument.h"
 
 class SuchThatClause : public Clause {
-private:
+ private:
     Argument leftArg;
     Argument rightArg;
 
-public:
+ public:
     SuchThatClause(Argument left, Argument right);
 
     virtual ~SuchThatClause() = default;

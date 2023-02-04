@@ -3,11 +3,11 @@
 #include "../../../parser/Argument.h"
 
 class SuchThatClauseEvaluator : public ClauseEvaluator {
-private:
+ private:
     Argument leftArg;
     Argument rightArg;
 
-public:
+ public:
     SuchThatClauseEvaluator(Argument left, Argument right);
 
     Argument getLeftArg();
