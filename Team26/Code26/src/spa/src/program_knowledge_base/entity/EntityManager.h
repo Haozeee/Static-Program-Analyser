@@ -10,8 +10,7 @@ class EntityManager : WriteOnlyEntityManager<Entity> , ReadOnlyEntityManager<Ent
     std::unordered_set<Entity> entities_set;
  public:
     bool insertEntity(Entity entity);
-
-    std::unordered_set<Entity> getAllEntitiesEntries();
-
     bool isEmpty();
+    bool contains(Entity);
+    std::unordered_set<Entity> getAllEntitiesEntries();
 };
