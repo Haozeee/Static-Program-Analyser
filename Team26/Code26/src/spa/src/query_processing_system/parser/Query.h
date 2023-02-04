@@ -17,7 +17,7 @@ class Query {
     // List of declarations in the query
     std::vector<std::shared_ptr<Declaration>> declarations;
     // List of such that clauses in the query
-    std::vector<std::shared_ptr<SuchThatClause>> suchThatClauses;
+    std::vector<SuchThatClause*> suchThatClauses;
     // Map of synonyms to design entity
     std::unordered_map<std::string, DesignEntity> synonymToDesignEntityMap;
 
@@ -32,7 +32,7 @@ public:
 
     std::vector<std::shared_ptr<Declaration>> getDeclarations();
 
-    std::vector<std::shared_ptr<SuchThatClause>> getSuchThatClauses();
+    std::vector<SuchThatClause*> getSuchThatClauses();
 
     void setSelectClause();
 
@@ -47,7 +47,7 @@ public:
      * Add a new such that clause to the query.
      * @param clause The such that clause to be added.
      */
-    void addSuchThatClause(std::shared_ptr<SuchThatClause> clause);
+    void addSuchThatClause(SuchThatClause* clause);
 
     bool operator==(const Query& other) const;
 };

@@ -3,7 +3,11 @@
 
 Query::Query() {}
 
-Query::~Query() {}
+Query::~Query() {
+    for (auto clause : suchThatClauses) {
+        delete clause;
+    }
+}
 
 std::shared_ptr<SelectClause> Query::getSelectClause() {
     return selectClause;
@@ -13,7 +17,7 @@ std::vector<std::shared_ptr<Declaration>> Query::getDeclarations() {
     return declarations;
 }
 
-std::vector<std::shared_ptr<SuchThatClause>> Query::getSuchThatClauses() {
+std::vector<SuchThatClause*> Query::getSuchThatClauses() {
     return suchThatClauses;
 }
 
@@ -21,7 +25,7 @@ std::vector<std::shared_ptr<SuchThatClause>> Query::getSuchThatClauses() {
 void Query::setSelectClause() {
 }
 
-void Query::addSuchThatClause(std::shared_ptr<SuchThatClause> clause) {
+void Query::addSuchThatClause(SuchThatClause* clause) {
     suchThatClauses.push_back(clause);
 }
 

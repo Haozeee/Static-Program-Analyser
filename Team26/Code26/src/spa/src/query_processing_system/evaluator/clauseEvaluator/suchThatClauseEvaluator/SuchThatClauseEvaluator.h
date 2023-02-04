@@ -10,7 +10,6 @@ private:
 public:
     SuchThatClauseEvaluator(Argument left, Argument right);
 
-
     Argument getLeftArg();
 
     Argument getRightArg();

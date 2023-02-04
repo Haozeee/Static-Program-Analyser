@@ -10,6 +10,8 @@ private:
 public:
     SuchThatClause(Argument left, Argument right);
 
+    virtual ~SuchThatClause() = default;
+
     Argument getLeftArg();
 
     Argument getRightArg();
