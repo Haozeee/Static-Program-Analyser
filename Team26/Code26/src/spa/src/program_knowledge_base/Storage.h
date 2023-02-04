@@ -19,8 +19,8 @@
 #include "program_knowledge_base/entity/entity_child_managers/CallManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/ProcedureManager.h"
 
-template<template<typename, typename> typename RELATIONSHIP_READ_OR_WRITE,
-         template<typename> typename ENTITY_READ_OR_WRITE>
+template<template<typename, typename> typename Relationship_Read_Or_Write,
+         template<typename> typename Entity_Read_Or_Write>
 class Storage {
  private:
     // relationship managers
@@ -45,72 +45,72 @@ class Storage {
     VariableManager* variableManager = new VariableManager();
 
  public:
-    RELATIONSHIP_READ_OR_WRITE<int, int>* getFollowsManager() {
+    Relationship_Read_Or_Write<int, int>* getFollowsManager() {
         return followsManager;
     }
 
-    RELATIONSHIP_READ_OR_WRITE<int, int>* getFollowsTManager() {
+    Relationship_Read_Or_Write<int, int>* getFollowsTManager() {
         return followsTManager;
     }
 
-    RELATIONSHIP_READ_OR_WRITE<int, int>* getParentManager() {
+    Relationship_Read_Or_Write<int, int>* getParentManager() {
         return parentManager;
     }
 
-    RELATIONSHIP_READ_OR_WRITE<int, int>* getParentTManager() {
+    Relationship_Read_Or_Write<int, int>* getParentTManager() {
         return parentTManager;
     }
 
-    RELATIONSHIP_READ_OR_WRITE<std::string, std::string>* getUsesPManager() {
+    Relationship_Read_Or_Write<std::string, std::string>* getUsesPManager() {
         return usesPManager;
     }
 
-    RELATIONSHIP_READ_OR_WRITE<int, std::string>* getUsesSManager() {
+    Relationship_Read_Or_Write<int, std::string>* getUsesSManager() {
         return usesSManager;
     }
 
-    RELATIONSHIP_READ_OR_WRITE<std::string,
+    Relationship_Read_Or_Write<std::string,
     std::string>* getModifiesPManager() {
         return modifiesPManager;
     }
 
-    RELATIONSHIP_READ_OR_WRITE<int, std::string>* getModifiesSManager() {
+    Relationship_Read_Or_Write<int, std::string>* getModifiesSManager() {
         return modifiesSManager;
     }
 
-    ENTITY_READ_OR_WRITE<int> getAssignManager() {
+    Entity_Read_Or_Write<int>* getAssignManager() {
         return assignManager;
     }
 
-    ENTITY_READ_OR_WRITE<int> getCallManager() {
+    Entity_Read_Or_Write<int>* getCallManager() {
         return callManager;
     }
 
-    ENTITY_READ_OR_WRITE<int> getConstantManager() {
+    Entity_Read_Or_Write<int>* getConstantManager() {
         return constantManager;
     }
 
-    ENTITY_READ_OR_WRITE<int> getIfManager() {
+    Entity_Read_Or_Write<int>* getIfManager() {
         return ifManager;
     }
 
-    ENTITY_READ_OR_WRITE<int> getPrintManager() {
+    Entity_Read_Or_Write<int>* getPrintManager() {
         return printManager;
     }
 
-    ENTITY_READ_OR_WRITE<std::string> getProcedureManager() {
+    Entity_Read_Or_Write<std::string>* getProcedureManager() {
         return procedureManager;
     }
 
-    ENTITY_READ_OR_WRITE<int> getReadManager() {
+    Entity_Read_Or_Write<int>* getReadManager() {
         return readManager;
     }
 
-    ENTITY_READ_OR_WRITE<int> getStmtManager() {
+    Entity_Read_Or_Write<int>* getStmtManager() {
         return stmtManager;
     }
 
-    ENTITY_READ_OR_WRITE<std::string> getVariableManager() {
+    Entity_Read_Or_Write<std::string> getVariableManager() {
         return variableManager;
     }
 };

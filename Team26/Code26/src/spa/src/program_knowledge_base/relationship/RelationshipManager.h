@@ -10,7 +10,23 @@ class RelationshipManager: public ReadOnlyRelationshipManager<Entity, Relationsh
  private:
     std::unordered_map<Entity, Relationship> relationships_map;
  public:
-    bool isEmpty();
-    bool contains(Entity, Relationship);
-    std::unordered_map<Entity, Relationship> getAllRelationshipEntries();
+    bool isEmpty() {
+        return relationships_map.empty();
+    }
+
+    bool contains(Entity entity, Relationship relationship) {
+        auto key = relationships_map.find(entity);
+        if (key != relationships_map.end()) {
+            return key->second == relationship;
+        }
+        return false;
+    }
+
+    std::unordered_map<Entity, Relationship> getAllRelationshipEntries() {
+        return relationships_map;
+    }
+
+    bool insertRelationship(Entity entity, Relationship relationship) {
+        return true;
+    }
 };
