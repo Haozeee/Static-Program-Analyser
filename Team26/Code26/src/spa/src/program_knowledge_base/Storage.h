@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <string>
 #include "program_knowledge_base/relationship/relationship_child_managers/FollowsManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/FollowsTManager.h"
@@ -24,93 +25,92 @@ template<template<typename, typename> typename Relationship_Read_Or_Write,
 class Storage {
  private:
     // relationship managers
-    FollowsManager* followsManager = new FollowsManager();
-    FollowsTManager* followsTManager = new FollowsTManager();
-    ParentManager* parentManager = new ParentManager();
-    ParentTManager* parentTManager = new ParentTManager();
-    UsesPManager* usesPManager = new UsesPManager();
-    UsesSManager* usesSManager = new UsesSManager();
-    ModifiesPManager* modifiesPManager = new ModifiesPManager();
-    ModifiesSManager* modifiesSManager = new ModifiesSManager();
+    std::shared_ptr<FollowsManager> followsManager = std::make_shared<FollowsManager>();
+    std::shared_ptr<FollowsTManager> followsTManager = std::make_shared<FollowsTManager>();
+    std::shared_ptr<ParentManager> parentManager = std::make_shared<ParentManager>();
+    std::shared_ptr<ParentTManager> parentTManager = std::make_shared<ParentTManager>();
+    std::shared_ptr<UsesPManager> usesPManager = std::make_shared<UsesPManager>();
+    std::shared_ptr<UsesSManager> usesSManager = std::make_shared<UsesSManager>();
+    std::shared_ptr<ModifiesPManager> modifiesPManager = std::make_shared<ModifiesPManager>();
+    std::shared_ptr<ModifiesSManager> modifiesSManager = std::make_shared<ModifiesSManager>();
 
     // entity managers
-    AssignManager* assignManager = new AssignManager();
-    CallManager* callManager = new CallManager();
-    ConstantManager* constantManager = new ConstantManager();
-    IfManager* ifManager = new IfManager();
-    PrintManager* printManager = new PrintManager();
-    ProcedureManager* procedureManager = new ProcedureManager();
-    ReadManager* readManager = new ReadManager();
-    StmtManager* stmtManager = new StmtManager();
-    VariableManager* variableManager = new VariableManager();
+    std::shared_ptr<AssignManager> assignManager = std::make_shared<AssignManager>();
+    std::shared_ptr<CallManager> callManager = std::make_shared<CallManager>();
+    std::shared_ptr<ConstantManager> constantManager = std::make_shared<ConstantManager>();
+    std::shared_ptr<IfManager> ifManager = std::make_shared<IfManager>();
+    std::shared_ptr<PrintManager> printManager = std::make_shared<PrintManager>();
+    std::shared_ptr<ProcedureManager> procedureManager = std::make_shared<ProcedureManager>();
+    std::shared_ptr<ReadManager> readManager = std::make_shared<ReadManager>();
+    std::shared_ptr<StmtManager> stmtManager = std::make_shared<StmtManager>();
+    std::shared_ptr<VariableManager> variableManager = std::make_shared<VariableManager>();
 
  public:
-    Relationship_Read_Or_Write<int, int>* getFollowsManager() {
+    std::shared_ptr<Relationship_Read_Or_Write<int, int>> getFollowsManager() {
         return followsManager;
     }
 
-    Relationship_Read_Or_Write<int, int>* getFollowsTManager() {
+    std::shared_ptr<Relationship_Read_Or_Write<int, int>> getFollowsTManager() {
         return followsTManager;
     }
 
-    Relationship_Read_Or_Write<int, int>* getParentManager() {
+    std::shared_ptr<Relationship_Read_Or_Write<int, int>> getParentManager() {
         return parentManager;
     }
 
-    Relationship_Read_Or_Write<int, int>* getParentTManager() {
+    std::shared_ptr<Relationship_Read_Or_Write<int, int>> getParentTManager() {
         return parentTManager;
     }
 
-    Relationship_Read_Or_Write<std::string, std::string>* getUsesPManager() {
+    std::shared_ptr<Relationship_Read_Or_Write<std::string, std::string>> getUsesPManager() {
         return usesPManager;
     }
 
-    Relationship_Read_Or_Write<int, std::string>* getUsesSManager() {
+    std::shared_ptr<Relationship_Read_Or_Write<int, std::string>> getUsesSManager() {
         return usesSManager;
     }
 
-    Relationship_Read_Or_Write<std::string,
-    std::string>* getModifiesPManager() {
+    std::shared_ptr<Relationship_Read_Or_Write<std::string, std::string>> getModifiesPManager() {
         return modifiesPManager;
     }
 
-    Relationship_Read_Or_Write<int, std::string>* getModifiesSManager() {
+    std::shared_ptr<Relationship_Read_Or_Write<int, std::string>> getModifiesSManager() {
         return modifiesSManager;
     }
 
-    Entity_Read_Or_Write<int>* getAssignManager() {
+    std::shared_ptr<Entity_Read_Or_Write<int>> getAssignManager() {
         return assignManager;
     }
 
-    Entity_Read_Or_Write<int>* getCallManager() {
+    std::shared_ptr<Entity_Read_Or_Write<int>> getCallManager() {
         return callManager;
     }
 
-    Entity_Read_Or_Write<int>* getConstantManager() {
+    std::shared_ptr<Entity_Read_Or_Write<int>> getConstantManager() {
         return constantManager;
     }
 
-    Entity_Read_Or_Write<int>* getIfManager() {
+    std::shared_ptr<Entity_Read_Or_Write<int>> getIfManager() {
         return ifManager;
     }
 
-    Entity_Read_Or_Write<int>* getPrintManager() {
+    std::shared_ptr<Entity_Read_Or_Write<int>> getPrintManager() {
         return printManager;
     }
 
-    Entity_Read_Or_Write<std::string>* getProcedureManager() {
+    std::shared_ptr<Entity_Read_Or_Write<std::string>> getProcedureManager() {
         return procedureManager;
     }
 
-    Entity_Read_Or_Write<int>* getReadManager() {
+    std::shared_ptr<Entity_Read_Or_Write<int>> getReadManager() {
         return readManager;
     }
 
-    Entity_Read_Or_Write<int>* getStmtManager() {
+    std::shared_ptr<Entity_Read_Or_Write<int>> getStmtManager() {
         return stmtManager;
     }
 
-    Entity_Read_Or_Write<std::string> getVariableManager() {
+    std::shared_ptr<Entity_Read_Or_Write<std::string>> getVariableManager() {
         return variableManager;
     }
 };
