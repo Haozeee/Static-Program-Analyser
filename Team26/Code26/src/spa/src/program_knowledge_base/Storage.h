@@ -1,6 +1,8 @@
 #pragma once
 
+#include <memory>
 #include <string>
+#include "StorageSingleton.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/FollowsManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/FollowsTManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/ParentManager.h"
@@ -19,98 +21,80 @@
 #include "program_knowledge_base/entity/entity_child_managers/CallManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/ProcedureManager.h"
 
-template<template<typename, typename> typename RELATIONSHIP_READ_OR_WRITE,
-         template<typename> typename ENTITY_READ_OR_WRITE>
+template<template<typename, typename> typename Relationship_Read_Or_Write,
+         template<typename> typename Entity_Read_Or_Write>
 class Storage {
  private:
-    // relationship managers
-    FollowsManager* followsManager = new FollowsManager();
-    FollowsTManager* followsTManager = new FollowsTManager();
-    ParentManager* parentManager = new ParentManager();
-    ParentTManager* parentTManager = new ParentTManager();
-    UsesPManager* usesPManager = new UsesPManager();
-    UsesSManager* usesSManager = new UsesSManager();
-    ModifiesPManager* modifiesPManager = new ModifiesPManager();
-    ModifiesSManager* modifiesSManager = new ModifiesSManager();
-
-    // entity managers
-    AssignManager* assignManager = new AssignManager();
-    CallManager* callManager = new CallManager();
-    ConstantManager* constantManager = new ConstantManager();
-    IfManager* ifManager = new IfManager();
-    PrintManager* printManager = new PrintManager();
-    ProcedureManager* procedureManager = new ProcedureManager();
-    ReadManager* readManager = new ReadManager();
-    StmtManager* stmtManager = new StmtManager();
-    VariableManager* variableManager = new VariableManager();
+    StorageSingleton* storage;
 
  public:
-    RELATIONSHIP_READ_OR_WRITE<int, int>* getFollowsManager() {
-        return followsManager;
+    explicit Storage(StorageSingleton* storageSingleton) : storage(storageSingleton) {}
+
+    std::shared_ptr<Relationship_Read_Or_Write<int, int>> getFollowsManager() {
+        return storage->getFollowsManager();
     }
 
-    RELATIONSHIP_READ_OR_WRITE<int, int>* getFollowsTManager() {
-        return followsTManager;
+    std::shared_ptr<Relationship_Read_Or_Write<int, int>> getFollowsTManager() {
+        return storage->getFollowsTManager();
     }
 
-    RELATIONSHIP_READ_OR_WRITE<int, int>* getParentManager() {
-        return parentManager;
+    std::shared_ptr<Relationship_Read_Or_Write<int, int>> getParentManager() {
+        return storage->getParentManager();
     }
 
-    RELATIONSHIP_READ_OR_WRITE<int, int>* getParentTManager() {
-        return parentTManager;
+    std::shared_ptr<Relationship_Read_Or_Write<int, int>> getParentTManager() {
+        return storage->getParentTManager();
     }
 
-    RELATIONSHIP_READ_OR_WRITE<std::string, std::string>* getUsesPManager() {
-        return usesPManager;
+    std::shared_ptr<Relationship_Read_Or_Write<std::string, std::string>> getUsesPManager() {
+        return storage->getUsesPManager();
     }
 
-    RELATIONSHIP_READ_OR_WRITE<int, std::string>* getUsesSManager() {
-        return usesSManager;
+    std::shared_ptr<Relationship_Read_Or_Write<int, std::string>> getUsesSManager() {
+        return storage->getUsesSManager();
     }
 
-    RELATIONSHIP_READ_OR_WRITE<std::string,
-    std::string>* getModifiesPManager() {
-        return modifiesPManager;
+    std::shared_ptr<Relationship_Read_Or_Write<std::string, std::string>> getModifiesPManager() {
+        return storage->getModifiesPManager();
     }
 
-    RELATIONSHIP_READ_OR_WRITE<int, std::string>* getModifiesSManager() {
-        return modifiesSManager;
+    std::shared_ptr<Relationship_Read_Or_Write<int, std::string>> getModifiesSManager() {
+        return storage->getModifiesSManager();
     }
 
-    ENTITY_READ_OR_WRITE<int> getAssignManager() {
-        return assignManager;
+    std::shared_ptr<Entity_Read_Or_Write<int>> getAssignManager() {
+        return storage->getAssignManager();
     }
 
-    ENTITY_READ_OR_WRITE<int> getCallManager() {
-        return callManager;
+    std::shared_ptr<Entity_Read_Or_Write<int>> getCallManager() {
+        return storage->getCallManager();
     }
 
-    ENTITY_READ_OR_WRITE<int> getConstantManager() {
-        return constantManager;
+    std::shared_ptr<Entity_Read_Or_Write<int>> getConstantManager() {
+        return storage->getConstantManager();
     }
 
-    ENTITY_READ_OR_WRITE<int> getIfManager() {
-        return ifManager;
+    std::shared_ptr<Entity_Read_Or_Write<int>> getIfManager() {
+        return storage->getIfManager();
     }
 
-    ENTITY_READ_OR_WRITE<int> getPrintManager() {
-        return printManager;
+    std::shared_ptr<Entity_Read_Or_Write<int>> getPrintManager() {
+        return storage->getPrintManager();
     }
 
-    ENTITY_READ_OR_WRITE<std::string> getProcedureManager() {
-        return procedureManager;
+    std::shared_ptr<Entity_Read_Or_Write<std::string>> getProcedureManager() {
+        return storage->getProcedureManager();
     }
 
-    ENTITY_READ_OR_WRITE<int> getReadManager() {
-        return readManager;
+    std::shared_ptr<Entity_Read_Or_Write<int>> getReadManager() {
+        return storage->getReadManager();
     }
 
-    ENTITY_READ_OR_WRITE<int> getStmtManager() {
-        return stmtManager;
+    std::shared_ptr<Entity_Read_Or_Write<int>> getStmtManager() {
+        return storage->getStmtManager();
     }
 
-    ENTITY_READ_OR_WRITE<std::string> getVariableManager() {
-        return variableManager;
+    std::shared_ptr<Entity_Read_Or_Write<std::string>> getVariableManager() {
+        return storage->getVariableManager();
     }
 };
