@@ -2,10 +2,10 @@
 
 #include <unordered_set>
 
-template<typename Entity>
+template<typename T>
 class ReadOnlyEntityManager {
  public:
     virtual bool isEmpty() = 0;
-    virtual bool contains(Entity) = 0;
-    virtual std::unordered_set<Entity> getAllEntitiesEntries() = 0;
+    virtual bool contains(T) = 0;
+    virtual std::unordered_set<T> getAllEntitiesEntries() = 0;
 };
