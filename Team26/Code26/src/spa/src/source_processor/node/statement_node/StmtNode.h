@@ -2,12 +2,12 @@
 
 #include "source_processor/node/Node.h"
 
-class AbstractSyntaxTreeExtractor;  // forward declaration
+class AbstractSyntaxTreeExtractor;
 
 class StmtNode : public Node {
  public:
     int stmtIndex;
 
-    virtual void evaluate(const AbstractSyntaxTreeExtractor& extractor) = 0;
+    virtual void evaluate(AbstractSyntaxTreeExtractor& extractor) = 0;
     explicit StmtNode(int stmtIndex);
 };
