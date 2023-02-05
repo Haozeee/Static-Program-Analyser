@@ -2,6 +2,7 @@
 
 #include <memory>
 #include "source_processor/design_extractor/extractor/AbstractSyntaxTreeExtractor.h"
+#include "source_processor/node/statement_node/ReadNode.h"
 
 class EntityExtractor : public AbstractSyntaxTreeExtractor {
  public:
@@ -9,12 +10,13 @@ class EntityExtractor : public AbstractSyntaxTreeExtractor {
     void extractProcedure(std::shared_ptr<ProcedureNode> node) override;
     void extractStmtList(std::shared_ptr<StmtListNode> node) override;
     void extractStmt(std::shared_ptr<StmtNode> node) override;
-    void extractRead() override;
+    void extractRead(std::shared_ptr<ReadNode> node) override;
+    void extractPrint(std::shared_ptr<PrintNode> node) override;
+    void extractAssign(std::shared_ptr<AssignNode> node) override;
+    void extractCall(std::shared_ptr<CallNode> node) override;
     void extractIf() override;
     void extractWhile() override;
     void extractCondExpr() override;
     void extractExpr() override;
-    void extractPrint() override;
-    void extractAssign() override;
-    void extractCall() override;
+
 };
