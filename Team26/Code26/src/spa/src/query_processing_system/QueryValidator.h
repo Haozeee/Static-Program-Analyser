@@ -1,6 +1,8 @@
 #pragma once
 
 #include "query_processing_system/parser/Query.h"
+#include "query_processing_system/exception/QueryException.h"
+#include "query_processing_system/exception/QueryExceptionMessages.h"
 
 class QueryValidator {
  private:
@@ -25,7 +27,7 @@ class QueryValidator {
      *
      * @param query Query that is passed.
      */
-    void validateSynonymInSelectClauseWasDeclared (Query&);
+    void validateSynonymInSelectClauseWasDeclared(Query&);
 
 
  public:

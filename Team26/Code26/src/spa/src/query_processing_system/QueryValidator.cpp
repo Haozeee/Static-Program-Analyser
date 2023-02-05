@@ -1,7 +1,8 @@
 #include "QueryValidator.h"
-#include "query_processing_system/exception/QueryException.h"
-#include "query_processing_system/exception/QueryExceptionMessages.h"
+#include <memory>
+#include <string>
 #include <unordered_set>
+#include <vector>
 
 QueryValidator::QueryValidator() = default;
 
@@ -16,7 +17,7 @@ void QueryValidator::validateNoDuplicateSynonymsInDeclaration(Query& query) {
     }
 }
 
-void QueryValidator::validateSynonymInSelectClauseWasDeclared (Query& query) {
+void QueryValidator::validateSynonymInSelectClauseWasDeclared(Query& query) {
     std::vector<std::shared_ptr<Declaration>> declarations;
     declarations = query.getDeclarations();
     std::unordered_set<std::string> declarationSynonyms;

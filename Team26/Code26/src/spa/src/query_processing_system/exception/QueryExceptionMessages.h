@@ -2,5 +2,5 @@
 
 #include <string>
 
-extern const std::string QueryValidatorDuplicatedSynonymInDeclaration;
-extern const std::string QueryValidatorSynonymInSelectClauseNotDeclared;
+extern const char QueryValidatorDuplicatedSynonymInDeclaration[];
+extern const char QueryValidatorSynonymInSelectClauseNotDeclared[];
