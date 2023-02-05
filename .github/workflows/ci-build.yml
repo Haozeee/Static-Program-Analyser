@@ -32,6 +32,7 @@ jobs:
 
         - name: Runs Autotester
           shell: powershell
+          timeout-minutes: 1
           run: |
             cd .\Team26\Code26\build\src\autotester\Release\
             .\autotester.exe ..\..\..\..\..\Test26\Sample_source.txt ..\..\..\..\..\Test26\Sample_queries.txt ..\..\..\..\..\out.xml
