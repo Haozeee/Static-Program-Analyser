@@ -1,5 +1,4 @@
 #include <string>
-#include <iostream>
 #include "QueryParser.h"
 
 QueryParser::QueryParser(std::vector<std::shared_ptr<Token>> tokens, Query* query) :
@@ -60,7 +59,6 @@ void QueryParser::parseSelectClause() {
     SelectClauseItem selectClauseItem = parseSynonym(synonymToken);
     auto selectClauseItems = std::make_shared<std::vector<SelectClauseItem>>();
     selectClauseItems->push_back(selectClauseItem);
-    std::cout << selectClauseItems << "\n";
     auto selectClauses = std::make_shared<SelectClause>(selectClauseItems);
     query->setSelectClause(selectClauses);
 }

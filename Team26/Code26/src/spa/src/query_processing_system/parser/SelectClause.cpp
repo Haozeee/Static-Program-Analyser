@@ -27,3 +27,8 @@ std::ostream& operator << (std::ostream& os, const SelectClause& selectClause) {
 std::shared_ptr<std::vector<SelectClauseItem>> SelectClause::getSelectClauseItems() {
     return this->selectClauseItems;
 }
+
+std::string SelectClause::getSynonym(SelectClauseItem selectClauseItem) {
+    std::shared_ptr<Synonym> synonym = std::get<std::shared_ptr<Synonym>>(selectClauseItem);
+    return synonym->ident;
+}

@@ -16,6 +16,7 @@ class SelectClause {
  public:
     /**
      * Compares two SelectClause objects.
+     *
      * @param other Second SelectClause object to be compared against.
      * @return Returns true if both SelectClause objects are the same, false otherwise.
      */
@@ -23,6 +24,7 @@ class SelectClause {
 
     /**
      * Overloading operator<< to output SelectClause as a stream object.
+     *
      * @param ostream Output type for the object std::cout.
      * @param synonym SelectClause object to be output.
      * @return
@@ -36,7 +38,16 @@ class SelectClause {
     std::shared_ptr<std::vector<SelectClauseItem>> getSelectClauseItems();
 
     /**
+     * Gets the Synonym of the Select Clause Item.
+     *
+     * @param selectClauseItem The Select Clause Item that is passed.
+     * @return Returns the Synonym in the passed Select Clause Item.
+     */
+    static std::string getSynonym(SelectClauseItem selectClauseItem);
+
+    /**
      * Constructor for the SelectClause.
+     *
      * @param selectClauseItems stored in a list of Synonym objects.
      */
     explicit SelectClause(std::shared_ptr<std::vector<SelectClauseItem>> selectClauseItems);
