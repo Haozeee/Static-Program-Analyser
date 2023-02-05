@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <utility>
 #include "ReadOnlyRelationshipManager.h"
 #include "WriteOnlyRelationshipManager.h"
 
@@ -26,7 +27,9 @@ class RelationshipManager: public ReadOnlyRelationshipManager<T, U>,
         return relationships_map;
     }
 
+    // TODO(wei-yutong): complete implementation by including 2 way mapping
     bool insertRelationship(T first_param, U second_param) {
-        return true;
+        auto flag = relationships_map.insert(std::make_pair(first_param, second_param));
+        return flag.second;
     }
 };
