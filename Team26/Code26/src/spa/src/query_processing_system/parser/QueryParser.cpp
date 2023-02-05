@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream>
 #include "QueryParser.h"
 
 QueryParser::QueryParser(std::vector<std::shared_ptr<Token>> tokens, Query* query) :
@@ -22,13 +23,14 @@ bool QueryParser::parseDeclaration() {
     std::string designEntityString = designEntityToken->getValue();
     DesignEntity designEntity;
     designEntity = getDesignEntityFromStr(designEntityString);
-
     getNext();  // Consumes first Design Entity token and moves to second token.
+    if (!isValidDesignEntity(designEntity)) return false;
 
     // Handle second token which is a Synonym.
     std::shared_ptr<Token> synonymToken;
     synonymToken = getNext();
     Synonym firstSynonym = Synonym(synonymToken->getValue());
+    std::string synonymString = synonymToken->getValue();
     std::vector<Synonym> synonyms;
     synonyms.push_back(firstSynonym);
 
@@ -40,6 +42,7 @@ bool QueryParser::parseDeclaration() {
         Synonym nextSynonym = Synonym(nextSynonymToken->getValue());
         synonyms.push_back(nextSynonym);
     }
+
     parseNext(";");
 
     // Put Synonyms and their corresponding Design Entities into the Query wrapper object as one Declaration.

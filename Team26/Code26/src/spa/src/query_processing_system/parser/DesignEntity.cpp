@@ -15,3 +15,10 @@ DesignEntity getDesignEntityFromStr(std::string str) {
     }
     return iterator->second;
 }
+
+bool isValidDesignEntity(DesignEntity designEntity) {
+    return (designEntity == DesignEntity::STMT
+            || designEntity == DesignEntity::VARIABLE
+            || designEntity == DesignEntity::PROCEDURE
+            || designEntity == DesignEntity::ASSIGN);
+}
