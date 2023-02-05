@@ -3,7 +3,11 @@
 
 Query::Query() {}
 
-Query::~Query() {}
+Query::~Query() {
+    for (auto clause : suchThatClauses) {
+        delete clause;
+    }
+}
 
 std::shared_ptr<SelectClause> Query::getSelectClause() {
     return selectClause;
@@ -13,13 +17,31 @@ std::vector<std::shared_ptr<Declaration>> Query::getDeclarations() {
     return declarations;
 }
 
-void Query::addDeclaration(Synonym synonym, DesignEntity designEntity) {
-    auto declaration = std::make_shared<Declaration>(synonym, designEntity);
-    declarations.push_back(declaration);
+std::vector<SuchThatClause*> Query::getSuchThatClauses() {
+    return suchThatClauses;
 }
 
-// TODO(TBD): Implement
-void Query::setSelectClause() {
+void Query::setSelectClause(std::shared_ptr<SelectClause> selectClause_) {
+    selectClause = selectClause_;
+}
+
+void Query::addSuchThatClause(SuchThatClause* clause) {
+    suchThatClauses.push_back(clause);
+}
+
+void Query::addDeclaration(const Synonym& synonym, DesignEntity designEntity) {
+    auto declaration = std::make_shared<Declaration>(synonym, designEntity);
+    declarations.push_back(declaration);
+    synonymToDesignEntityMap.insert({synonym.getIdent(), declaration->getDesignEntity()});
+}
+
+DesignEntity Query::getSynonymDesignEntity(std::shared_ptr<Synonym> synonym) {
+    auto res = synonymToDesignEntityMap.find(synonym->getIdent());
+    if (res == synonymToDesignEntityMap.end()) {
+        // TODO(Hao Ze): Custom exception
+        throw std::exception();
+    }
+    return res->second;
 }
 
 bool Query::operator==(const Query &other) const {
@@ -31,8 +53,22 @@ bool Query::operator==(const Query &other) const {
     bool sameDeclarations = std::is_permutation(declarations.begin(), declarations.end(),
                                                 other.declarations.begin(), other.declarations.end(),
                                                 ptrComparisonPredicate);
-    // TODO(TBD): Implement
-    bool sameSelectClause = 1;
+
+    bool sameSelectClause = selectClause == other.selectClause;
 
     return sameDeclarations && sameSelectClause;
+}
+
+std::ostream& operator << (std::ostream& os, const Query& query) {
+    os << "Displaying query object\n\n";
+
+    // Output declarations
+    os << "Declarations: \n";
+    for (auto i : query.declarations) {
+        os << *i << "\n";
+    }
+
+    // Output select clauses
+    os << "Select clauses: " << query.selectClause << "\n";
+    return os;
 }

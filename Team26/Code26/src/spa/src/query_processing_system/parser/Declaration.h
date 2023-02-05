@@ -15,4 +15,6 @@ class Declaration {
     DesignEntity getDesignEntity();
 
     bool operator==(const Declaration& other) const;
+
+    friend std::ostream& operator << (std::ostream& os, const Declaration& declaration);
 };
