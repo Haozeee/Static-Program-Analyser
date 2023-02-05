@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <unordered_set>
+#include <string>
 #include "parser/Query.h"
 #include "evaluator/QueryResult.h"
 #include "parser/DesignEntity.h"
