@@ -9,5 +9,6 @@
 class ProgramNode : public Node {
  public:
     std::vector<std::shared_ptr<ProcedureNode>> procedureList;
+
     explicit ProgramNode(std::vector<std::shared_ptr<ProcedureNode>> procedureList);
 };

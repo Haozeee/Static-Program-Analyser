@@ -6,5 +6,8 @@
 class CallNode : public StmtNode {
  public:
     std::string processName;
+
     CallNode(int stmtIndex, std::string processName);
+
+    void evaluate(AbstractSyntaxTreeExtractor& extractor) override;
 };
