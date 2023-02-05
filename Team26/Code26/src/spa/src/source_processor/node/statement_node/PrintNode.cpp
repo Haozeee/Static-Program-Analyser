@@ -3,5 +3,5 @@
 PrintNode::PrintNode(int stmtIndex, std::string varName)
     : StmtNode(stmtIndex), varName(varName) {}
 
-void PrintNode::evaluate(const AbstractSyntaxTreeExtractor &extractor) {
+void PrintNode::evaluate(AbstractSyntaxTreeExtractor &extractor) {
 }

@@ -9,5 +9,5 @@ class PrintNode : public StmtNode {
 
     PrintNode(int stmtIndex, std::string varName);
 
-    void evaluate(const AbstractSyntaxTreeExtractor& extractor) override;
+    void evaluate(AbstractSyntaxTreeExtractor& extractor) override;
 };
