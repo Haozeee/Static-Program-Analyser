@@ -1,5 +1,8 @@
 #include "AbstractSyntaxTreeExtractor.h"
 
+AbstractSyntaxTreeExtractor::AbstractSyntaxTreeExtractor(std::shared_ptr<WriteOnlyStorage> storage) : storage(storage) {
+}
+
 void AbstractSyntaxTreeExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
     for (auto& procedure : node->procedureList) {
         extractProcedure(procedure);
@@ -19,7 +22,4 @@ void AbstractSyntaxTreeExtractor::extractStmtList(std::shared_ptr<StmtListNode> 
 void AbstractSyntaxTreeExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
     currentStmtNo = node->stmtIndex;
     node->evaluate(*this);
-}
-
-AbstractSyntaxTreeExtractor::AbstractSyntaxTreeExtractor(std::shared_ptr<WriteOnlyStorage> storage) : storage(storage) {
 }
