@@ -21,7 +21,8 @@ std::vector<SuchThatClause*> Query::getSuchThatClauses() {
     return suchThatClauses;
 }
 
-void Query::setSelectClause() {
+void Query::setSelectClause(std::shared_ptr<SelectClause> selectClause_) {
+    selectClause = selectClause_;
 }
 
 void Query::addSuchThatClause(SuchThatClause* clause) {
@@ -34,8 +35,8 @@ void Query::addDeclaration(const Synonym& synonym, DesignEntity designEntity) {
     synonymToDesignEntityMap.insert({synonym.getIdent(), declaration->getDesignEntity()});
 }
 
-DesignEntity Query::getSynonymDesignEntity(const Synonym& synonym) {
-    auto res = synonymToDesignEntityMap.find(synonym.getIdent());
+DesignEntity Query::getSynonymDesignEntity(std::shared_ptr<Synonym> synonym) {
+    auto res = synonymToDesignEntityMap.find(synonym->getIdent());
     if (res == synonymToDesignEntityMap.end()) {
         // TODO(Hao Ze): Custom exception
         throw std::exception();
@@ -56,4 +57,18 @@ bool Query::operator==(const Query &other) const {
     bool sameSelectClause = selectClause == other.selectClause;
 
     return sameDeclarations && sameSelectClause;
+}
+
+std::ostream& operator << (std::ostream& os, const Query& query) {
+    os << "Displaying query object\n\n";
+
+    // Output declarations
+    os << "Declarations: \n";
+    for (auto i : query.declarations) {
+        os << *i << "\n";
+    }
+
+    // Output select clauses
+    os << "Select clauses: " << query.selectClause << "\n";
+    return os;
 }

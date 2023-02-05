@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <string>
+#include <list>
 #include "../parser/SelectClause.h"
 
 /**
@@ -31,9 +32,20 @@ class QueryResult {
      */
     void addNewIdentity(std::string identity);
 
+    /**
+     * Add new results to an identity. This will override any existing results for the identity.
+     * @param identity The identity whose results is to be updated.
+     * @param toAdd The new results.
+     */
     void addResultsToIdentity(std::string identity, std::unordered_set<std::string> toAdd);
 
     void addSingleResultToIdentity(std::string identity, std::string toAdd);
+
+    /**
+     * Copy the query result into the qps results.
+     * @param qpsResult The list containg the qps results, should be empty initially.
+     */
+    void copyToQpsResult(std::list<std::string> &qpsResult);
 
     bool operator ==(const QueryResult& other) const;
 

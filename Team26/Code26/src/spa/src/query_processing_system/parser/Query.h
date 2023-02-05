@@ -26,7 +26,7 @@ class Query {
 
     ~Query();
 
-    DesignEntity getSynonymDesignEntity(const Synonym& synonym);
+    DesignEntity getSynonymDesignEntity(std::shared_ptr<Synonym> synonym);
 
     std::shared_ptr<SelectClause> getSelectClause();
 
@@ -34,7 +34,7 @@ class Query {
 
     std::vector<SuchThatClause*> getSuchThatClauses();
 
-    void setSelectClause();
+    void setSelectClause(std::shared_ptr<SelectClause> selectClause);
 
     /**
      * Add a new declaration to the Query object.
@@ -50,4 +50,6 @@ class Query {
     void addSuchThatClause(SuchThatClause* clause);
 
     bool operator==(const Query& other) const;
+
+    friend std::ostream& operator << (std::ostream& os, const Query& query);
 };

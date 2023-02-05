@@ -1,12 +1,24 @@
 #include "QueryResult.h"
+#include <iostream>
 
 QueryResult::QueryResult() {}
 
 void QueryResult::addNewIdentity(std::string identity) {
-    auto iterator = results.find(identity);
-    if (iterator == results.end()) {
-        std::unordered_set<std::string> emptyResults;
-        results.insert({identity, emptyResults});
+    results.insert({identity, {}});
+}
+
+void QueryResult::addResultsToIdentity(std::string identity, std::unordered_set<std::string> toAdd) {
+    auto it = results.find(identity);
+    if (it != results.end()) {
+        it->second = toAdd;
+    }
+}
+
+void QueryResult::copyToQpsResult(std::list<std::string> &qpsResult) {
+    for (auto const& item : results) {
+        for (auto str : item.second) {
+            qpsResult.push_back(str);
+        }
     }
 }
 
@@ -15,11 +27,12 @@ bool QueryResult::operator ==(const QueryResult &other) const {
 }
 
 std::ostream& operator <<(std::ostream& os, const QueryResult& queryResult) {
+    os << "Displaying Query Result: \n";
     for (auto i : queryResult.results) {
-        os << "Identity" << i.first << "\n";
-        os << "Results:" << "\n";
+        os << "Identity: " << i.first << "\n";
+        os << "Results: ";
         for (auto j : i.second) {
-            os << j << "\n";
+            os << j << " ";
         }
         os << "\n";
     }

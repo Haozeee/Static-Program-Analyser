@@ -60,12 +60,13 @@ void QueryParser::parseSelectClause() {
     SelectClauseItem selectClauseItem = parseSynonym(synonymToken);
     auto selectClauseItems = std::make_shared<std::vector<SelectClauseItem>>();
     selectClauseItems->push_back(selectClauseItem);
+    std::cout << selectClauseItems << "\n";
     auto selectClauses = std::make_shared<SelectClause>(selectClauseItems);
+    query->setSelectClause(selectClauses);
 }
 
 std::shared_ptr<Synonym> QueryParser::parseSynonym(std::shared_ptr<Token> token) {
     auto synonym = std::make_shared<Synonym>(token->getValue());
-
     return synonym;
 }
 
