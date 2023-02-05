@@ -29,3 +29,10 @@ jobs:
             cmake ..
             cmake --build . --target autotester --config Release
             cd ../..
+
+        - name: Runs Autotester
+          shell: powershell
+          timeout-minutes: 1
+          run: |
+            cd .\Team26\Code26\build\src\autotester\Release\
+            .\autotester.exe ..\..\..\..\..\Tests26\Sample_source.txt ..\..\..\..\..\Tests26\Sample_queries.txt ..\..\..\..\..\Tests26\out.xml
