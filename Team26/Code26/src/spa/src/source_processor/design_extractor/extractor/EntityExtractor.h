@@ -18,5 +18,4 @@ class EntityExtractor : public AbstractSyntaxTreeExtractor {
     void extractWhile() override;
     void extractCondExpr() override;
     void extractExpr() override;
-
 };

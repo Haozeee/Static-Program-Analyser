@@ -1,4 +1,5 @@
 #include "ReadNode.h"
+#include "memory"
 #include "source_processor/design_extractor/extractor/AbstractSyntaxTreeExtractor.h"
 
 ReadNode::ReadNode(int stmtIndex, std::string varName)

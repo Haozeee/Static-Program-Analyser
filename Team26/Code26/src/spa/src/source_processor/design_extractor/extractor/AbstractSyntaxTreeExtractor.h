@@ -15,7 +15,7 @@ class AbstractSyntaxTreeExtractor {
     int currentStmtNo = -1;
     std::shared_ptr<WriteOnlyStorage> storage;
  public:
-    AbstractSyntaxTreeExtractor(std::shared_ptr<WriteOnlyStorage> storage);
+    explicit AbstractSyntaxTreeExtractor(std::shared_ptr<WriteOnlyStorage> storage);
 
     virtual void extractProgram(std::shared_ptr<ProgramNode> node);
     virtual void extractProcedure(std::shared_ptr<ProcedureNode> node);

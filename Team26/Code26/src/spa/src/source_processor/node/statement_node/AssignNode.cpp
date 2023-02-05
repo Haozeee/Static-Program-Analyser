@@ -1,4 +1,5 @@
 #include "AssignNode.h"
+#include "memory"
 #include "source_processor/design_extractor/extractor/AbstractSyntaxTreeExtractor.h"
 
 AssignNode::AssignNode(int stmtIndex, std::string varName, ExprNode exprNode)

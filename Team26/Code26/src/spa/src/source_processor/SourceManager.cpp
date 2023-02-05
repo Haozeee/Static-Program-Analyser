@@ -1,6 +1,7 @@
 #include "SourceManager.h"
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include "SourceTokenizer.h"
 #include "SourceParser.h"
 #include "program_knowledge_base/StorageSingleton.h"

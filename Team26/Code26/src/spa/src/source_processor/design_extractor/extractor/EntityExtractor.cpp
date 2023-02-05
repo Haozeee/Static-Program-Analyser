@@ -31,7 +31,6 @@ void EntityExtractor::extractCall(std::shared_ptr<CallNode> node) {
 }
 
 void EntityExtractor::extractAssign(std::shared_ptr<AssignNode> node) {
-
 }
 
 void EntityExtractor::extractIf() {

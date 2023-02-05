@@ -1,4 +1,5 @@
 #include "PrintNode.h"
+#include "memory"
 #include "source_processor/design_extractor/extractor/AbstractSyntaxTreeExtractor.h"
 
 PrintNode::PrintNode(int stmtIndex, std::string varName)
