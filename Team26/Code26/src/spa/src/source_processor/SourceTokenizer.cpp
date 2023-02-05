@@ -43,6 +43,12 @@ std::vector<std::shared_ptr<Token>> SourceTokenizer::tokenize() {
 
     while (!istream->eof()) {
         c = nextChar();
+
+        if (c == EOF) {
+            addToken(std::make_shared<EndOfFileToken>());
+            break;
+        }
+
         currentToken += c;
         if (isspace(c)) {
         } else if (isalpha(c)) {
@@ -57,8 +63,6 @@ std::vector<std::shared_ptr<Token>> SourceTokenizer::tokenize() {
         }
         currentToken = "";
     }
-
-    addToken(std::make_shared<EndOfFileToken>());
 
     // TODO(zhengteck): Remove when not required
     // FOR DEBUGGING
