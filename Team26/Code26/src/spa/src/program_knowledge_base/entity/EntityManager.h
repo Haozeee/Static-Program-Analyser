@@ -3,15 +3,15 @@
 #include "WriteOnlyEntityManager.h"
 #include "ReadOnlyEntityManager.h"
 
-template <typename Entity>
-class EntityManager : public WriteOnlyEntityManager<Entity>,
-        public ReadOnlyEntityManager<Entity> {
+template <typename T>
+class EntityManager : public WriteOnlyEntityManager<T>,
+        public ReadOnlyEntityManager<T> {
  private:
-    std::unordered_set<Entity> entities_set;
+    std::unordered_set<T> entities_set;
 
  public:
-    bool insertEntity(Entity entity) {
-        bool flag = entities_set.insert(entity).second;
+    bool insertEntity(T name_or_stmtNo) {
+        bool flag = entities_set.insert(name_or_stmtNo).second;
         return flag;
     }
 
@@ -23,12 +23,12 @@ class EntityManager : public WriteOnlyEntityManager<Entity>,
         return flag;
     }
 
-    bool contains(Entity entity) {
-        auto element = entities_set.find(entity);
+    bool contains(T name_or_stmtNo) {
+        auto element = entities_set.find(name_or_stmtNo);
         return element != entities_set.end();
     }
 
-    std::unordered_set<Entity> getAllEntitiesEntries() {
+    std::unordered_set<T> getAllEntitiesEntries() {
         return entities_set;
     }
 };

@@ -2,10 +2,10 @@
 
 #include <unordered_map>
 
-template <typename Entity, typename Relationship>
+template <typename T, typename U>
 class ReadOnlyRelationshipManager {
  public:
     virtual bool isEmpty() = 0;
-    virtual bool contains(Entity, Relationship) = 0;
-    virtual std::unordered_map<Entity, Relationship> getAllRelationshipEntries() = 0;
+    virtual bool contains(T, U) = 0;
+    virtual std::unordered_map<T, U> getAllRelationshipEntries() = 0;
 };

@@ -1,7 +1,7 @@
 #pragma once
 
-template <typename Entity>
+template <typename T>
 class WriteOnlyEntityManager {
  public:
-    virtual bool insertEntity(Entity entity) = 0;
+    virtual bool insertEntity(T name_or_stmtNo) = 0;
 };
