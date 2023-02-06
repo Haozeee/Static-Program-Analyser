@@ -15,17 +15,19 @@ void QueryManager::process(const std::string& query, std::list<std::string> &res
     std::vector<std::shared_ptr<Token>> tokens = tokenizer.tokenize();
 
     // For testing (Print tokens)
+    /**
     std::cout << "Tokens:\n";
     for (const auto& token : tokens) {
         std::cout << "value: " << token->getValue() << "\n";
     }
+    */
 
     // Parse tokens with Parser
     QueryParser parser = QueryParser(tokens, queryObject);
     parser.parse();
 
     // Validate Query
-    std::cout << *queryObject << "\n";
+    // std::cout << *queryObject << "\n";
 
     // Create pkb read instance
     StorageSingleton* storageSingleton = StorageSingleton::getStorage();
@@ -34,7 +36,7 @@ void QueryManager::process(const std::string& query, std::list<std::string> &res
     // Evaluate query
     QueryEvaluator evaluator = QueryEvaluator(queryObject, storage);
     QueryResult queryResult = evaluator.evaluateQuery();
-    std::cout << queryResult << "\n";
+    // std::cout << queryResult << "\n";
     // Add to qps result
     queryResult.copyToQpsResult(results);
 

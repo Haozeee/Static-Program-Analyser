@@ -25,6 +25,10 @@ void QueryResult::copyToQpsResult(std::list<std::string> &qpsResult) {
 }
 
 void QueryResult::addClauseResultToQuery(std::shared_ptr<ClauseResult> clauseResult) {
+    if (clauseResult->hasNoResults()) {
+        // If a clause returns nothing, then the query has no results at all
+        results = {};
+    }
     for (auto const& [k, v] : clauseResult->getResults()) {
         auto it = results.find(k);
         if (it != results.end()) {
