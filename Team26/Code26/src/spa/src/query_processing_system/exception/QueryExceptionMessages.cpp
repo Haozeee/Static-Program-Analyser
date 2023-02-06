@@ -5,5 +5,7 @@ const char QueryValidatorDuplicatedSynonymInDeclaration[] =
 const char QueryValidatorSynonymInSelectClauseNotDeclared[] =
         "Please select a synonym that was in the declaration. This synonym has yet to be declared: ";
 
-const char QueryInvalidRelationshipInSelectClause[] =
-        " is not a valid relationship. Please modify your input.";
+const char QueryParserInvalidRelationshipInSelectClause[] =
+        " is not a valid relationship, please modify your input. Note that PQL is case-sensitive.";
+const char QueryParserInvalidRelRefArgument[] =
+        "Invalid argument in relationship. Please modify your input.";

@@ -12,6 +12,6 @@ SuchThatClause *SuchThatClauseFactory::createSuchThatClause(std::string relation
         return new FollowsClause(std::move(leftArg), std::move(rightArg));
     } else {
         // No such clause, throw error
-        throw QueryInvalidRelationship(relation + QueryInvalidRelationshipInSelectClause);
+        throw QueryInvalidRelationship(relation + QueryParserInvalidRelationshipInSelectClause);
     }
 }
