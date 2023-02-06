@@ -4,6 +4,9 @@
 #include "query_processing_system/exception/QueryException.h"
 #include "query_processing_system/exception/QueryExceptionMessages.h"
 
+#include <algorithm>
+#include <unordered_set>
+
 class QueryValidator {
  private:
     // Validation for Declarations
@@ -28,6 +31,9 @@ class QueryValidator {
      * @param query Query that is passed.
      */
     void validateSynonymInSelectClauseWasDeclared(Query&);
+
+    bool containsSelectClauseSynonymInDeclaration(const std::unordered_set<std::string>& declarationSynonyms,
+                                      const std::unordered_set<std::string>& selectClauseSynonyms);
 
 
  public:
