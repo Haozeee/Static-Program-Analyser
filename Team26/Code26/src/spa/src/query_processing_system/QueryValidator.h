@@ -5,6 +5,9 @@
 #include "query_processing_system/exception/QueryExceptionMessages.h"
 
 #include <algorithm>
+#include <memory>
+#include <string>
+#include <vector>
 #include <unordered_set>
 
 class QueryValidator {

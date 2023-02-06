@@ -1,7 +1,4 @@
 #include "QueryValidator.h"
-#include <memory>
-#include <string>
-#include <vector>
 
 QueryValidator::QueryValidator() = default;
 
