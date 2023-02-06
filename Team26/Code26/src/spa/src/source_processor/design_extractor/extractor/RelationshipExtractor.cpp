@@ -18,7 +18,7 @@ void RelationshipExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
     AbstractSyntaxTreeExtractor::extractStmt(node);
 
     if (!simpleFollow->empty()) {
-//      std::cerr << "PAIR: " << simpleFollow->back() << " and  " << currentStmtNo << std::endl;
+        // std::cerr << "PAIR: " << simpleFollow->back() << " and  " << currentStmtNo << std::endl;
         storage->getFollowsManager()->insertRelationship(simpleFollow->back(), currentStmtNo);
     }
     simpleFollow->push_back(currentStmtNo);
