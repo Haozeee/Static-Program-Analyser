@@ -16,6 +16,6 @@ bool Declaration::operator==(const Declaration &other) const {
 
 std::ostream &operator<<(std::ostream &os, const Declaration &declaration) {
     os << "synonym: " << declaration.synonym.getIdent() << ", ";
-    os << "Entity: " << static_cast<int>(declaration.designEntity) << "\n";
+    os << "Entity: " << toString(declaration.designEntity) << "\n";
     return os;
 }

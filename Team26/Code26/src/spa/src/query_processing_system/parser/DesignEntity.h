@@ -8,6 +8,12 @@ enum class DesignEntity {
     VARIABLE,
     PROCEDURE,
     ASSIGN,
+    READ,
+    PRINT,
+    CALL,
+    WHILE,
+    IF,
+    CONSTANT,
     NONE
 };
 
