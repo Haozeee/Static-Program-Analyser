@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "SuchThatClauseEvaluator.h"
 
 class UsesClauseEvaluator : public SuchThatClauseEvaluator {
