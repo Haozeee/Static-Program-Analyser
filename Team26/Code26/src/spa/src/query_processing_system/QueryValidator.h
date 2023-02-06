@@ -1,5 +1,11 @@
 #pragma once
 
+#include <algorithm>
+#include <memory>
+#include <string>
+#include <vector>
+#include <unordered_set>
+
 #include "query_processing_system/parser/Query.h"
 #include "query_processing_system/exception/QueryException.h"
 #include "query_processing_system/exception/QueryExceptionMessages.h"
@@ -28,6 +34,9 @@ class QueryValidator {
      * @param query Query that is passed.
      */
     void validateSynonymInSelectClauseWasDeclared(Query&);
+
+    bool containsSelectClauseSynonymInDeclaration(const std::unordered_set<std::string>& declarationSynonyms,
+                                      const std::unordered_set<std::string>& selectClauseSynonyms);
 
 
  public:

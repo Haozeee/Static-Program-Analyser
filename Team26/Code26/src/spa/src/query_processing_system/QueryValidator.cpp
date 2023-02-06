@@ -1,9 +1,4 @@
 #include "QueryValidator.h"
-#include <memory>
-#include <string>
-#include <unordered_set>
-#include <vector>
-#include <algorithm>
 
 QueryValidator::QueryValidator() = default;
 
@@ -35,13 +30,18 @@ void QueryValidator::validateSynonymInSelectClauseWasDeclared(Query& query) {
         selectClauseSynonyms.insert(selectClauseSynonym);
     }
 
-    std::unordered_set<std::string> result;
-    std::set_difference(selectClauseSynonyms.begin(), selectClauseSynonyms.end(),
-                        declarationSynonyms.begin(), declarationSynonyms.end(), std::inserter(result, result.begin()));
-
-    if (result.size() > 0) {
-        throw QueryValidationException(QueryValidatorSynonymInSelectClauseNotDeclared + *result.begin());
+    if (!containsSelectClauseSynonymInDeclaration(declarationSynonyms, selectClauseSynonyms)) {
+        throw QueryValidationException(QueryValidatorSynonymInSelectClauseNotDeclared + *selectClauseSynonyms.begin());
     }
+}
+
+bool QueryValidator::containsSelectClauseSynonymInDeclaration(
+        const std::unordered_set<std::string> &declarationSynonyms,
+        const std::unordered_set<std::string> &selectClauseSynonyms) {
+    return std::all_of(selectClauseSynonyms.begin(), selectClauseSynonyms.end(),
+                       [&declarationSynonyms](const std::string& elem) {
+                           return declarationSynonyms.find(elem) != declarationSynonyms.end();
+                       });
 }
 
 void QueryValidator::validateQuery(Query& query) {
