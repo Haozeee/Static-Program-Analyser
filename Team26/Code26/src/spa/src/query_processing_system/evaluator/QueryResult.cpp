@@ -1,5 +1,7 @@
 #include "QueryResult.h"
 #include <iostream>
+#include <algorithm>
+#include <iterator>
 
 QueryResult::QueryResult() {}
 
@@ -18,6 +20,18 @@ void QueryResult::copyToQpsResult(std::list<std::string> &qpsResult) {
     for (auto const& item : results) {
         for (auto str : item.second) {
             qpsResult.push_back(str);
+        }
+    }
+}
+
+void QueryResult::addClauseResultToQuery(std::shared_ptr<ClauseResult> clauseResult) {
+    for (auto const& [k, v] : clauseResult->getResults()) {
+        auto it = results.find(k);
+        if (it != results.end()) {
+            std::unordered_set<std::string> intersect;
+            std::set_intersection(it->second.begin(), it->second.end(), v.begin(), v.end(),
+                                  std::inserter(intersect, intersect.begin()));
+            it->second = intersect;
         }
     }
 }

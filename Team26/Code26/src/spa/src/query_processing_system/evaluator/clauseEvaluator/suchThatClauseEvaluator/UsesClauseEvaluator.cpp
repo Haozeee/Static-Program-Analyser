@@ -3,6 +3,6 @@
 UsesClauseEvaluator::UsesClauseEvaluator(Argument left, Argument right)
     : SuchThatClauseEvaluator(left, right) {}
 
-bool UsesClauseEvaluator::evaluateClause() {
-    return true;
+std::shared_ptr<ClauseResult> UsesClauseEvaluator::evaluateClause(std::shared_ptr<ReadOnlyStorage> storage) {
+    return {};
 }
