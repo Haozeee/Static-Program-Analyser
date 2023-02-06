@@ -1,5 +1,10 @@
 #include <string>
+
 #include "QueryParser.h"
+
+#include "query_processing_system/exception/QueryException.h"
+#include "query_processing_system/exception/QueryExceptionMessages.h"
+#include "query_processing_system/parser/clause/suchThatClause/SuchThatClauseFactory.h"
 
 QueryParser::QueryParser(std::vector<std::shared_ptr<Token>> tokens, Query* query) :
 query(query), Parser(tokens) {}
@@ -68,11 +73,50 @@ std::shared_ptr<Synonym> QueryParser::parseSynonym(std::shared_ptr<Token> token)
     return synonym;
 }
 
+bool QueryParser::parseSuchThatClause() {
+    parseNext("such");
+    parseNext("that");
+    parseRelRef();
+    return true;
+}
+
+void QueryParser::parseRelRef() {
+    auto relRefToken = getNext();
+    std::string relRefString = relRefToken->getValue();
+    parseNext("(");
+    Argument leftArgument = parseArgument();
+    parseNext(",");
+    Argument rightArgument = parseArgument();
+    auto relRefClause = SuchThatClauseFactory::createSuchThatClause(relRefString, leftArgument, rightArgument);
+    query->addSuchThatClause(relRefClause);
+}
+
+Argument QueryParser::parseArgument() {
+    if (isTypeOf(TokenType::TOKEN_INTEGER)) {
+        // Token Type Integer means line number
+        std::shared_ptr<Token> integerToken = parseNext(TokenType::TOKEN_INTEGER);
+        std::string integerString = integerToken->getValue();
+        Argument integerArgument(ArgumentType::NUMBER, integerString);
+        return integerArgument;
+    } else if (isTypeOf(TokenType::TOKEN_NAME)) {
+        // Token Type Name means Synonym
+        std::shared_ptr<Token> nameToken = parseNext(TokenType::TOKEN_NAME);
+        std::string nameString = nameToken->getValue();
+        Argument nameArgument(ArgumentType::SYNONYM, nameString);
+        return nameArgument;
+    } else {
+        throw QueryParserException(QueryParserInvalidRelRefArgument);
+    }
+}
+
 void QueryParser::parse() {
     // First, parse Declaration.
     parseAllDeclarations();
 
     // Next, handle the Select Clause.
     parseSelectClause();
-}
 
+    if (hasNext()) parseSuchThatClause();
+
+    // Add throw unexpected token error here.
+}
