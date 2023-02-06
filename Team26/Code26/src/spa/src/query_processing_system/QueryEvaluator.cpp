@@ -1,6 +1,6 @@
 #include "QueryEvaluator.h"
 #include <algorithm>
-#include "evaluator/QueryResult.h"
+#include <iterator>
 
 QueryEvaluator::QueryEvaluator(Query* query, std::shared_ptr<ReadOnlyStorage> storage)
     : query(query), storage(storage) {}
@@ -9,12 +9,18 @@ QueryResult QueryEvaluator::evaluateQuery() {
     // Evaluate select clauses
     evaluateSelectClause();
 
-    // Get filters
-
-    // Apply filters to result
+    // Evaluate such that clauses
+    evaluateSuchThatClause();
 
     // Return QueryResult
     return queryResult;
+}
+
+void QueryEvaluator::evaluateSuchThatClause() {
+    for (SuchThatClause* clause : query->getSuchThatClauses()) {
+        auto clauseResult = clause->getClauseEvaluator()->evaluateClause(storage);
+        queryResult.addClauseResultToQuery(clauseResult);
+    }
 }
 
 void QueryEvaluator::evaluateSelectClause() {
@@ -53,6 +59,18 @@ std::unordered_set<std::string> QueryEvaluator::getEntitiesFromPkb(DesignEntity 
             return intSetToStringSet(storage->getStmtManager()->getAllEntitiesEntries());
         case DesignEntity::PROCEDURE:
             return storage->getProcedureManager()->getAllEntitiesEntries();
+        case DesignEntity::READ:
+            return intSetToStringSet(storage->getReadManager()->getAllEntitiesEntries());
+        case DesignEntity::CONSTANT:
+            return intSetToStringSet(storage->getConstantManager()->getAllEntitiesEntries());
+        case DesignEntity::PRINT:
+            return intSetToStringSet(storage->getPrintManager()->getAllEntitiesEntries());
+        case DesignEntity::IF:
+            return intSetToStringSet(storage->getIfManager()->getAllEntitiesEntries());
+        case DesignEntity::CALL:
+            return intSetToStringSet(storage->getCallManager()->getAllEntitiesEntries());
+        case DesignEntity::WHILE:
+            return {};
         case DesignEntity::NONE:
             return {};
     }

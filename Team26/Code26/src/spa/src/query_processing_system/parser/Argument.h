@@ -5,10 +5,14 @@
  * Types of arguments in clauses
  * Synonyms: Declarations
  * Number: Statement numbers
+ * Wildcard: _
+ * CharacterString: String within a set of inverted commas
  */
 enum class ArgumentType {
     SYNONYM,
-    NUMBER
+    WILDCARD,
+    NUMBER,
+    CHARACTERSTRING
 };
 
 /**

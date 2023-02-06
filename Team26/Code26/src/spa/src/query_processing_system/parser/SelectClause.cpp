@@ -18,7 +18,7 @@ bool SelectClause::operator==(const SelectClause &other) const {
 std::ostream& operator << (std::ostream& os, const SelectClause& selectClause) {
     for (SelectClauseItem item : *selectClause.selectClauseItems) {
         std::shared_ptr<Synonym> syn = std::get<std::shared_ptr<Synonym>>(item);
-        os << *syn;
+        os << (*syn);
     }
 
     return os;

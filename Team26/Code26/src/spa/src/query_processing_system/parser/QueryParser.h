@@ -35,6 +35,25 @@ class QueryParser : public Parser {
      */
     std::shared_ptr<Synonym> parseSynonym(std::shared_ptr<Token>);
 
+    /**
+     * Parses Such That Clause if any.
+     */
+    bool parseSuchThatClause();
+
+    /**
+     * Handles parsing of relRef:
+     * Follows | FollowsT | Parent | ParentT | UsesS | UsesP | ModifiesS | ModifiesP
+     */
+    void parseRelRef();
+
+    /**
+     * Parse Arguments of any relRef relationships.
+     * Example: Follows(1, 2) Left argument is 1 and right argument is 2.
+     *
+     * @return Left or right Argument of relRef.
+     */
+    Argument parseArgument();
+
  public:
     /**
      * Constructor for the query parser.

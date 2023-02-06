@@ -19,14 +19,4 @@ class SuchThatClauseFactory {
      * @return The SuchThatClause object.
      */
     static SuchThatClause* createSuchThatClause(std::string relation, Argument leftArg, Argument rightArg);
-
-    /**
-     * Factory method to create a new Follows Clause.
-     *
-     * @param relation The type of relation.
-     * @param leftArg The left argument for the clause.
-     * @param rightArg The right argument for the clause.
-     * @return The FollowsClause object.
-     */
-    static FollowsClause* createFollowsClause(std::string relation, Argument leftArg, Argument rightArg);
 };
