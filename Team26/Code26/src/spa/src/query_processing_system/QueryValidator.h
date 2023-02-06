@@ -1,14 +1,14 @@
 #pragma once
 
-#include "query_processing_system/parser/Query.h"
-#include "query_processing_system/exception/QueryException.h"
-#include "query_processing_system/exception/QueryExceptionMessages.h"
-
 #include <algorithm>
 #include <memory>
 #include <string>
 #include <vector>
 #include <unordered_set>
+
+#include "query_processing_system/parser/Query.h"
+#include "query_processing_system/exception/QueryException.h"
+#include "query_processing_system/exception/QueryExceptionMessages.h"
 
 class QueryValidator {
  private:
