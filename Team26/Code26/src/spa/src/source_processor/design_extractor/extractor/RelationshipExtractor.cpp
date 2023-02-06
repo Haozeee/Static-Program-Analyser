@@ -14,6 +14,11 @@ void RelationshipExtractor::extractStmtList(std::shared_ptr<StmtListNode> node) 
 
 void RelationshipExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
     AbstractSyntaxTreeExtractor::extractStmt(node);
+
+    if (!simpleFollow->empty()) {
+        storage->getFollowsManager()->insertRelationship(simpleFollow->back(), currentStmtNo);
+    }
+    simpleFollow->push_back(currentStmtNo);
 }
 
 void RelationshipExtractor::extractRead(std::shared_ptr<ReadNode> node) {
