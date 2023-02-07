@@ -5,7 +5,7 @@
 #include "parser/Query.h"
 #include "evaluator/QueryResult.h"
 #include "parser/DesignEntity.h"
-#include "evaluator/clauseEvaluator/ClauseResult.h"
+#include "evaluator/clause_evaluator/ClauseResult.h"
 #include "../program_knowledge_base/ReadOnlyStorage.h"
 
 class QueryEvaluator {

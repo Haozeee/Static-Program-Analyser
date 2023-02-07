@@ -1,5 +1,5 @@
 #pragma once
-#include "../../evaluator/clauseEvaluator/ClauseEvaluator.h"
+#include "../../evaluator/clause_evaluator/ClauseEvaluator.h"
 
 class Clause {
  public:
