@@ -1,12 +1,13 @@
 #pragma once
 
+#include <memory>
 #include "Storage.h"
-#include "StorageSingleton.h"
+#include "StorageUtil.h"
 #include "entity/ReadOnlyEntityManager.h"
 #include "relationship/ReadOnlyRelationshipManager.h"
 
 class ReadOnlyStorage: public Storage<ReadOnlyRelationshipManager,
         ReadOnlyEntityManager> {
  public:
-    explicit ReadOnlyStorage(StorageSingleton* storageSingleton) : Storage(storageSingleton) {}
+    explicit ReadOnlyStorage(std::shared_ptr<StorageUtil> storageUtil) : Storage(storageUtil) {}
 };
