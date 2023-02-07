@@ -6,7 +6,7 @@
 
 #include "query_processing_system/exception/QueryException.h"
 #include "query_processing_system/exception/QueryExceptionMessages.h"
-#include "query_processing_system/parser/clause/suchThatClause/SuchThatClauseFactory.h"
+#include "query_processing_system/parser/clause/such_that_clause/SuchThatClauseFactory.h"
 
 QueryParser::QueryParser(std::vector<std::shared_ptr<Token>> tokens, Query* query) :
 query(query), Parser(tokens) {}

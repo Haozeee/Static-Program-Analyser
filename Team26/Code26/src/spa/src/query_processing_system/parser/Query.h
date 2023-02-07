@@ -8,7 +8,7 @@
 #include "SelectClause.h"
 #include "Declaration.h"
 #include "Synonym.h"
-#include "clause/suchThatClause/SuchThatClause.h"
+#include "clause/such_that_clause/SuchThatClause.h"
 
 class Query {
  private:
