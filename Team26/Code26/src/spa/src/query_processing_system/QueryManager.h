@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <list>
+#include <memory>
 #include "../program_knowledge_base/StorageUtil.h"
 #include "../program_knowledge_base/ReadOnlyStorage.h"
 

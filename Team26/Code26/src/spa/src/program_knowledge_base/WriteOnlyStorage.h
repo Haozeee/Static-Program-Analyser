@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "Storage.h"
 #include "StorageUtil.h"
 #include "entity/WriteOnlyEntityManager.h"

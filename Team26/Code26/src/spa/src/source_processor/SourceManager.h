@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 #include "../program_knowledge_base/StorageUtil.h"
 
 class SourceManager {

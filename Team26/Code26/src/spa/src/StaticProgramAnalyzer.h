@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <list>
-#include <vector>
+#include <memory>
 #include "source_processor/SourceManager.h"
 #include "query_processing_system/QueryManager.h"
 #include "program_knowledge_base/StorageUtil.h"

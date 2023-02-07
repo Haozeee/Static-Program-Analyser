@@ -7,7 +7,8 @@
 #include "parser/QueryParser.h"
 #include "parser/Query.h"
 
-void QueryManager::process(const std::string& query, std::list<std::string> &results, std::shared_ptr<StorageUtil> storageUtil) {
+void QueryManager::process(const std::string& query, std::list<std::string> &results,
+                           std::shared_ptr<StorageUtil> storageUtil) {
     // Create Query object
     auto * queryObject = new Query();
     // Tokenize QPS query
