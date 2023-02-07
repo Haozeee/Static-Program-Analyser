@@ -7,7 +7,7 @@
 #include "parser/QueryParser.h"
 #include "parser/Query.h"
 
-void QueryManager::process(const std::string& query, std::list<std::string> &results) {
+void QueryManager::process(const std::string& query, std::list<std::string> &results, StorageUtil* storageUtil) {
     // Create Query object
     auto * queryObject = new Query();
     // Tokenize QPS query
@@ -30,8 +30,7 @@ void QueryManager::process(const std::string& query, std::list<std::string> &res
     // std::cout << *queryObject << "\n";
 
     // Create pkb read instance
-    StorageSingleton* storageSingleton = StorageSingleton::getStorage();
-    auto storage = std::make_shared<ReadOnlyStorage>(storageSingleton);
+    auto storage = std::make_shared<ReadOnlyStorage>(storageUtil);
 
     // Evaluate query
     QueryEvaluator evaluator = QueryEvaluator(queryObject, storage);
