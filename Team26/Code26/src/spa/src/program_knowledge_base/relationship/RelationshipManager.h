@@ -9,10 +9,10 @@
 template <typename T, typename U>
 class RelationshipManager: public ReadOnlyRelationshipManager<T, U>,
                            public WriteOnlyRelationshipManger<T, U> {
-private:
+ private:
     std::unordered_map<T, std::unordered_set<U>> relationships_map;
     std::unordered_map<U, std::unordered_set<T>> reversed_relationships_map;
-public:
+ public:
     bool isEmpty() {
         return relationships_map.empty();
     }
