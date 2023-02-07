@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "DesignEntity.h"
 
 /**
  * Types of arguments in clauses
@@ -24,15 +25,23 @@ class Argument {
      * The type of the argument.
      */
     ArgumentType argumentType;
+
     /**
-     * The value of the argument
+     * The value of the argument.
      */
     std::string value;
 
+    /**
+     * The design entity of the argument.
+     */
+    DesignEntity designEntity;
+
  public:
-    Argument(ArgumentType type, std::string value);
+    Argument(ArgumentType type, std::string value, DesignEntity designEntity);
 
     std::string getValue();
 
     ArgumentType getArgumentType();
+
+    DesignEntity getDesignEntity();
 };
