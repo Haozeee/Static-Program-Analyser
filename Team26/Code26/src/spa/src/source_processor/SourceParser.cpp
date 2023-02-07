@@ -106,7 +106,14 @@ std::shared_ptr<ExprNode> SourceParser::parseExpr(std::shared_ptr<std::string> e
         // TODO(oviya): throw exception
     }
 
-    return std::make_shared<ExprNode>(exprToken->getValue());
+    // TODO(oviya): proper parsing of ExprNode
+    Term* term2;
+    ExprNode* expr2;
+    Factor factor = 1;
+    auto termOptionalParams = std::make_optional(std::pair(TermOperatorType::OPERATOR_MULTIPLY, term2));
+    Term term = { factor,  termOptionalParams };
+    auto exprOptionalParams = std::make_optional(std::make_pair(ExprOperatorType::OPERATOR_ADD, expr2));
+    return std::make_shared<ExprNode>(term, exprOptionalParams);
 }
 
 std::shared_ptr<AssignNode> SourceParser::parseAssign(std::shared_ptr<Token> nameToken) {
