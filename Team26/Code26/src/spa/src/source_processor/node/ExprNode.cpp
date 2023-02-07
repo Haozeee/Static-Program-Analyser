@@ -1,3 +1,4 @@
 #include "ExprNode.h"
 
-ExprNode::ExprNode(Factor expr) : expr(expr) {}
+ExprNode::ExprNode(Term term, std::optional<std::pair<ExprOperatorType, ExprNode*>> optionalParams)
+    : term(term), optionalParams(optionalParams) {}

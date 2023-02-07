@@ -9,7 +9,6 @@ class AssignNode : public StmtNode {
     std::string varName;
     ExprNode exprNode;
 
-    // TODO(oviya): Replace with Expr
     AssignNode(int stmtIndex, std::string varName, ExprNode exprNode);
 
     void evaluate(AbstractSyntaxTreeExtractor& extractor) override;
