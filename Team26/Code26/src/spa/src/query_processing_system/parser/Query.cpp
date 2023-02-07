@@ -36,7 +36,7 @@ void Query::addDeclaration(const Synonym& synonym, DesignEntity designEntity) {
 }
 
 DesignEntity Query::getSynonymDesignEntity(std::shared_ptr<Synonym> synonym) {
-    getSynonymDesignEntity(synonym->getIdent());
+    return getSynonymDesignEntity(synonym->getIdent());
 }
 
 DesignEntity Query::getSynonymDesignEntity(std::string string) {
