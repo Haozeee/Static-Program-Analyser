@@ -4,11 +4,11 @@
 #include <memory>
 #include "SourceTokenizer.h"
 #include "SourceParser.h"
-#include "program_knowledge_base/StorageSingleton.h"
+#include "program_knowledge_base/StorageUtil.h"
 #include "program_knowledge_base/WriteOnlyStorage.h"
 #include "source_processor/design_extractor/DesignExtractor.h"
 
-void SourceManager::process(std::string filename) {
+void SourceManager::process(std::string filename, std::shared_ptr<StorageUtil> storageUtil) {
     std::ifstream input(filename);
 
     if (!input) {
@@ -21,8 +21,8 @@ void SourceManager::process(std::string filename) {
     SourceParser sourceParser = SourceParser(tokens);
     auto programNode = sourceParser.parse();
 
-    StorageSingleton* storage = StorageSingleton::getStorage();
-    std::shared_ptr<WriteOnlyStorage> writeStorage  = std::make_shared<WriteOnlyStorage>(storage);
+    std::shared_ptr<WriteOnlyStorage> writeStorage  = std::make_shared<WriteOnlyStorage>(storageUtil);
+
     DesignExtractor designExtractor = DesignExtractor(writeStorage);
     designExtractor.extract(programNode);
 

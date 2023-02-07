@@ -1,8 +1,10 @@
 #pragma once
 
 #include <string>
+#include <memory>
+#include "../program_knowledge_base/StorageUtil.h"
 
 class SourceManager {
  public:
-    static void process(std::string filename);
+    void process(std::string filename, std::shared_ptr<StorageUtil> storageUtil);
 };

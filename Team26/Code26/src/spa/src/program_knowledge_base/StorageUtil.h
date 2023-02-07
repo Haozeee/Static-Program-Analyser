@@ -20,9 +20,8 @@
 #include "program_knowledge_base/entity/entity_child_managers/CallManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/ProcedureManager.h"
 
-class StorageSingleton {
+class StorageUtil {
  private:
-    static StorageSingleton *singleton;
     std::shared_ptr<FollowsManager> followsManager;
     std::shared_ptr<FollowsTManager> followsTManager;
     std::shared_ptr<ParentManager> parentManager;
@@ -42,7 +41,8 @@ class StorageSingleton {
     std::shared_ptr<StmtManager> stmtManager;
     std::shared_ptr<VariableManager> variableManager;
 
-    StorageSingleton() {
+ public:
+    StorageUtil() {
         followsManager = std::make_shared<FollowsManager>();
         followsTManager = std::make_shared<FollowsTManager>();
         parentManager = std::make_shared<ParentManager>();
@@ -62,14 +62,6 @@ class StorageSingleton {
         readManager = std::make_shared<ReadManager>();
         stmtManager = std::make_shared<StmtManager>();
         variableManager = std::make_shared<VariableManager>();
-    }
-
- public:
-    static StorageSingleton *getStorage() {
-        if (singleton == nullptr) {
-            singleton = new StorageSingleton();
-        }
-        return singleton;
     }
 
     std::shared_ptr<FollowsManager> getFollowsManager() {
