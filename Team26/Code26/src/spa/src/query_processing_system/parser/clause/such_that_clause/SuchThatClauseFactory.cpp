@@ -7,7 +7,7 @@
 
 SuchThatClause *SuchThatClauseFactory::createSuchThatClause(std::string relation, Argument leftArg, Argument rightArg) {
     if (relation == USESRELATION) {
-        return new UsesClause(std::move(leftArg), std::move(rightArg));
+        return new UsesSClause(std::move(leftArg), std::move(rightArg));
     } else if (relation == FOLLOWSRELATION) {
         return new FollowsClause(std::move(leftArg), std::move(rightArg));
     } else {

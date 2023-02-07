@@ -2,7 +2,7 @@
 #include <string>
 #include "SuchThatClause.h"
 #include "../../Argument.h"
-#include "UsesClause.h"
+#include "UsesSClause.h"
 #include "FollowsClause.h"
 
 const char USESRELATION[] = "Uses";

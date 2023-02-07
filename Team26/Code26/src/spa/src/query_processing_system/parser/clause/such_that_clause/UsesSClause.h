@@ -2,9 +2,10 @@
 
 #include "SuchThatClause.h"
 
-class FollowsClause : public SuchThatClause {
+class UsesSClause : public SuchThatClause {
  public:
-    FollowsClause(Argument leftArg, Argument rightArg);
+    UsesSClause(Argument leftArg, Argument rightArg);
 
     ClauseEvaluator* getClauseEvaluator() override;
 };
+
