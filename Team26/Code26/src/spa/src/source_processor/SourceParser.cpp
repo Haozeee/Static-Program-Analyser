@@ -2,7 +2,7 @@
 #include <memory>
 #include <string>
 
-#define INITIAL_STMT_INDEX 1
+#define INITIAL_STMT_INDEX 0
 #define PROCEDURE_KEYWORD "procedure"
 #define STMTLIST_START "{"
 #define STMTLIST_END "}"
