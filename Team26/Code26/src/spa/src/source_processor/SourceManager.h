@@ -5,5 +5,5 @@
 
 class SourceManager {
  public:
-    static void process(std::string filename, StorageUtil* storageUtil);
+    void process(std::string filename, std::shared_ptr<StorageUtil> storageUtil);
 };

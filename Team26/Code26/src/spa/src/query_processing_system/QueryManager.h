@@ -8,5 +8,5 @@ class ReadOnlyStorage;
 
 class QueryManager {
  public:
-    void process(const std::string& query, std::list<std::string> &results, StorageUtil* storageUtil);
+    void process(const std::string& query, std::list<std::string> &results, std::shared_ptr<StorageUtil> storageUtil);
 };

@@ -25,10 +25,10 @@ template<template<typename, typename> typename Relationship_Read_Or_Write,
          template<typename> typename Entity_Read_Or_Write>
 class Storage {
  private:
-    StorageUtil* storage;
+    std::shared_ptr<StorageUtil> storage;
 
  public:
-    explicit Storage(StorageUtil* storageUtil) : storage(storageUtil) {}
+    explicit Storage(std::shared_ptr<StorageUtil> storageUtil) : storage(storageUtil) {}
 
     std::shared_ptr<Relationship_Read_Or_Write<int, int>> getFollowsManager() {
         return storage->getFollowsManager();

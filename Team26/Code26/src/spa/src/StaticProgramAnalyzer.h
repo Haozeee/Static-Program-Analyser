@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <list>
+#include <vector>
 #include "source_processor/SourceManager.h"
 #include "query_processing_system/QueryManager.h"
 #include "program_knowledge_base/StorageUtil.h"
@@ -8,7 +9,8 @@
 class StaticProgramAnalyzer {
  private:
     QueryManager queryManager;
-    StorageUtil* storageUtil = new StorageUtil();
+    SourceManager sourceManager;
+    std::shared_ptr<StorageUtil> storageUtil =  std::make_shared<StorageUtil>();
 
  public:
     void readProgramFromFile(std::string filename);

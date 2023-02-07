@@ -8,5 +8,5 @@
 class ReadOnlyStorage: public Storage<ReadOnlyRelationshipManager,
         ReadOnlyEntityManager> {
  public:
-    explicit ReadOnlyStorage(StorageUtil* storageUtil) : Storage(storageUtil) {}
+    explicit ReadOnlyStorage(std::shared_ptr<StorageUtil> storageUtil) : Storage(storageUtil) {}
 };

@@ -8,5 +8,5 @@
 class WriteOnlyStorage : public Storage<WriteOnlyRelationshipManger,
         WriteOnlyEntityManager> {
  public:
-    explicit WriteOnlyStorage(StorageUtil* storageUtil) : Storage(storageUtil) {}
+    explicit WriteOnlyStorage(std::shared_ptr<StorageUtil> storageUtil) : Storage(storageUtil) {}
 };
