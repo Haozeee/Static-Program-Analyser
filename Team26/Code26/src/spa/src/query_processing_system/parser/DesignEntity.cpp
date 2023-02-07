@@ -8,6 +8,13 @@ std::unordered_map<std::string, DesignEntity> stringToDesignEntityMap = {
         {"assign", DesignEntity::ASSIGN}
 };
 
+std::unordered_map<DesignEntity, std::string> designEntityToStringMap({
+      {DesignEntity::STMT, "stmt"},
+      {DesignEntity::VARIABLE, "variable"},
+      {DesignEntity::PROCEDURE, "procedure"},
+      {DesignEntity::ASSIGN, "assign"},
+});
+
 DesignEntity getDesignEntityFromStr(std::string str) {
     auto iterator = stringToDesignEntityMap.find(str);
     if (iterator == stringToDesignEntityMap.end()) {
@@ -21,4 +28,10 @@ bool isValidDesignEntity(DesignEntity designEntity) {
             || designEntity == DesignEntity::VARIABLE
             || designEntity == DesignEntity::PROCEDURE
             || designEntity == DesignEntity::ASSIGN);
+}
+
+std::string toString(DesignEntity designEntity) {
+    auto result = designEntityToStringMap.find(designEntity);
+    // throw exception here if design entity not found
+    return result->second;
 }

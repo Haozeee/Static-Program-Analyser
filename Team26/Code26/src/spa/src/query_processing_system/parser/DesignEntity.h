@@ -1,12 +1,19 @@
 #pragma once
 #include <string>
 #include <ostream>
+#include <unordered_map>
 
 enum class DesignEntity {
     STMT,
     VARIABLE,
     PROCEDURE,
     ASSIGN,
+    READ,
+    PRINT,
+    CALL,
+    WHILE,
+    IF,
+    CONSTANT,
     NONE
 };
 
@@ -25,3 +32,11 @@ DesignEntity getDesignEntityFromStr(std::string str);
  * @return Returns true if the Design Entity passed belongs to the Enum class, and false otherwise.
  */
 bool isValidDesignEntity(DesignEntity designEntity);
+
+/**
+ * Converts Design Entity object to string.
+ *
+ * @param designEntity The Design Entity to be converted to a string.
+ * @return Returns the Design Entity passed in string.
+ */
+std::string toString(DesignEntity designEntity);

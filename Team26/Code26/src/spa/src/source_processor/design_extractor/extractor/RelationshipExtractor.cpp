@@ -1,4 +1,6 @@
 #include "RelationshipExtractor.h"
+#include <sstream>
+#include <iostream>
 
 RelationshipExtractor::RelationshipExtractor(std::shared_ptr<WriteOnlyStorage> storage) : AbstractSyntaxTreeExtractor(
         storage) {
@@ -14,6 +16,12 @@ void RelationshipExtractor::extractStmtList(std::shared_ptr<StmtListNode> node) 
 
 void RelationshipExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
     AbstractSyntaxTreeExtractor::extractStmt(node);
+
+    if (!simpleFollow->empty()) {
+        // std::cerr << "PAIR: " << simpleFollow->back() << " and  " << currentStmtNo << std::endl;
+        storage->getFollowsManager()->insertRelationship(simpleFollow->back(), currentStmtNo);
+    }
+    simpleFollow->push_back(currentStmtNo);
 }
 
 void RelationshipExtractor::extractRead(std::shared_ptr<ReadNode> node) {
