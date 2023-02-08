@@ -1,6 +1,8 @@
 #pragma once
 
 #include <memory>
+#include <string>
+#include <variant>
 #include <optional>
 #include "Node.h"
 
