@@ -9,6 +9,7 @@
 #include "source_processor/node/ProcedureNode.h"
 #include "source_processor/node/StmtListNode.h"
 #include "source_processor/node/ExprNode.h"
+#include "source_processor/node/TermNode.h"
 #include "source_processor/node/statement_node/ReadNode.h"
 #include "source_processor/node/statement_node/PrintNode.h"
 #include "source_processor/node/statement_node/CallNode.h"
@@ -28,10 +29,13 @@ class Parser : public AbstractParser {
     std::shared_ptr<PrintNode> parsePrint();
     std::shared_ptr<CallNode> parseCall();
     std::shared_ptr<WhileNode> parseWhile();
+    std::shared_ptr<IfNode> parseIf();
     std::shared_ptr<AssignNode> parseAssign(std::shared_ptr<Token> nameToken);
     std::shared_ptr<CondExprNode> parseCondExprNode(std::string condExpr);
-    std::shared_ptr<ExprNode> parseExpr(std::string expr);
-    std::shared_ptr<Term> parseTerm(std::string term);
+    std::shared_ptr<RelExpr> parseRelExpr(std::string relExpr);
+    std::shared_ptr<ExprNode> parseExprNode(std::string expr);
+    std::shared_ptr<TermNode> parseTermNode(std::string term);
+    std::shared_ptr<Factor> parseFactor(std::string factor);
 
  public:
     explicit Parser(std::vector<std::shared_ptr<Token>> tokens);

@@ -6,8 +6,10 @@
 
 class WhileNode : public StmtNode {
  public:
-     CondExprNode condExprNode;
-     StmtListNode stmtListNode;
+     std::shared_ptr<CondExprNode> condExprNode;
+     std::shared_ptr<StmtListNode> stmtListNode;
 
-     WhileNode(int stmtIndex, CondExprNode condExprNode, StmtListNode stmtListNode);
+     WhileNode(int stmtIndex, std::shared_ptr<CondExprNode> condExprNode, std::shared_ptr<StmtListNode> stmtListNode);
+
+     void evaluate(AbstractExtractor& extractor) override;
 };

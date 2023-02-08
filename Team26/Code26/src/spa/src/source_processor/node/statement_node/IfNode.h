@@ -6,9 +6,12 @@
 
 class IfNode : public StmtNode {
  public:
-     CondExprNode condExprNode;
-     StmtListNode thenStmtListNode;
-     StmtListNode elseStmtListNode;
+     std::shared_ptr<CondExprNode> condExprNode;
+     std::shared_ptr<StmtListNode> thenStmtListNode;
+     std::shared_ptr<StmtListNode> elseStmtListNode;
 
-    IfNode(int stmtIndex, CondExprNode condExprNode, StmtListNode thenStmtListNode, StmtListNode elseStmtListNode);
+    IfNode(int stmtIndex, std::shared_ptr<CondExprNode> condExprNode, std::shared_ptr<StmtListNode> thenStmtListNode,
+        std::shared_ptr<StmtListNode> elseStmtListNode);
+
+    void evaluate(AbstractExtractor& extractor) override;
 };
