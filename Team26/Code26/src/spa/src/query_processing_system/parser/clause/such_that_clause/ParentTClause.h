@@ -3,7 +3,7 @@
 #include "SuchThatClause.h"
 
 class ParentTClause : public SuchThatClause {
-public:
+ public:
     ParentTClause(Argument leftArg, Argument rightArg);
 
     ClauseEvaluator* getClauseEvaluator() override;

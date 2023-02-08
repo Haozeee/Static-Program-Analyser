@@ -8,25 +8,26 @@ bool SuchThatClauseFactory::isModifiesOrUsesRelation(std::string relation) {
     return (relation == ModifiesRelation || relation == UsesRelation);
 }
 
-SuchThatClause* SuchThatClauseFactory::createModifiesOrUsesClause(std::string relation, Argument leftArg, Argument rightArg) {
+SuchThatClause* SuchThatClauseFactory::createModifiesOrUsesClause(std::string relation,
+                                                  Argument leftArg, Argument rightArg) {
     ArgumentType leftArgType = leftArg.getArgumentType();
-    if (leftArgType == ArgumentType::SYNONYM) { // checks if first argument type is a Synonym
+    if (leftArgType == ArgumentType::SYNONYM) {  // checks if first argument type is a Synonym
         Query query;
         DesignEntity leftArgDesignEntity = leftArg.getDesignEntity();
-        if (leftArgDesignEntity == DesignEntity::PROCEDURE) { // check if Synonym is a procedure
+        if (leftArgDesignEntity == DesignEntity::PROCEDURE) {  // check if Synonym is a procedure
             if (relation == ModifiesRelation) {
                 return new ModifiesPClause(leftArg, rightArg);
             } else {
                 return new UsesPClause(leftArg, rightArg);
             }
-        } else { // else the Synonym is a statement
+        } else {  // else the Synonym is a statement
             if (relation == ModifiesRelation) {
                 return new ModifiesSClause(leftArg, rightArg);
             } else {
                 return new UsesSClause(leftArg, rightArg);
             }
         }
-    } else { // unknown Argument Type
+    } else {  // unknown Argument Type
         throw QueryInvalidRelationship(relation + QueryParserInvalidRelationshipInSelectClause);
     }
 }
