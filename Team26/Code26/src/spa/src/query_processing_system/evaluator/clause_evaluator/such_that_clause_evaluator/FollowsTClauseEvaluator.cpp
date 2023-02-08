@@ -15,10 +15,6 @@ std::shared_ptr<ClauseResult> FollowsTClauseEvaluator::evaluateClause(std::share
     return clauseResult;
 }
 
-void FollowsTClauseEvaluator::evaluateNumberNumber(std::shared_ptr<ReadOnlyStorage> storage) {
+void FollowsTClauseEvaluator::evaluateNumberNumber(std::shared_ptr<ReadOnlyStorage> storage) {}
 
-}
-
-void FollowsTClauseEvaluator::evaluateNumberSynonym(std::shared_ptr<ReadOnlyStorage> storage) {
-
-}
+void FollowsTClauseEvaluator::evaluateNumberSynonym(std::shared_ptr<ReadOnlyStorage> storage) {}
