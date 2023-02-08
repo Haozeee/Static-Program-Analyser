@@ -1,4 +1,4 @@
-#include "SourceParser.h"
+#include "Parser.h"
 #include <memory>
 #include <string>
 #include <utility>
@@ -22,10 +22,10 @@
 #define THEN_KEYWORD "then"
 #define ELSE_KEYWORD "else"
 
-SourceParser::SourceParser(std::vector<std::shared_ptr<Token>> tokens)
-    : Parser(tokens), stmtIndex(INITIAL_STMT_INDEX) {}
+Parser::Parser(std::vector<std::shared_ptr<Token>> tokens)
+    : AbstractParser(tokens), stmtIndex(INITIAL_STMT_INDEX) {}
 
-std::shared_ptr<ProgramNode> SourceParser::parse() {
+std::shared_ptr<ProgramNode> Parser::parse() {
     std::vector<std::shared_ptr<ProcedureNode>> procedureList;
     while (!isTypeOf(TokenType::TOKEN_END_OF_FILE)) {
         procedureList.emplace_back(parseProcedure());
@@ -38,7 +38,7 @@ std::shared_ptr<ProgramNode> SourceParser::parse() {
     return std::make_shared<ProgramNode>(procedureList);
 }
 
-std::shared_ptr<ProcedureNode> SourceParser::parseProcedure() {
+std::shared_ptr<ProcedureNode> Parser::parseProcedure() {
     parseNext(PROCEDURE_KEYWORD);
     std::shared_ptr<Token> nameToken = parseNext(TokenType::TOKEN_NAME);
     parseNext(STMTLIST_START);
@@ -48,7 +48,7 @@ std::shared_ptr<ProcedureNode> SourceParser::parseProcedure() {
     return std::make_shared<ProcedureNode>(nameToken->getValue(), stmtListNode);
 }
 
-std::shared_ptr<StmtListNode> SourceParser::parseStmtList() {
+std::shared_ptr<StmtListNode> Parser::parseStmtList() {
     std::vector<std::shared_ptr<StmtNode>> stmtList;
 
     while (!isValueOf(STMTLIST_END)) {
@@ -85,7 +85,7 @@ std::shared_ptr<StmtListNode> SourceParser::parseStmtList() {
     return std::make_shared<StmtListNode>(stmtList);
 }
 
-std::shared_ptr<WhileNode> SourceParser::parseWhile() {
+std::shared_ptr<WhileNode> Parser::parseWhile() {
     parseNext(BRACKETS_START);
     std::string condExprStr = "";
     while (!isValueOf(BRACKETS_END)) {
@@ -102,7 +102,7 @@ std::shared_ptr<WhileNode> SourceParser::parseWhile() {
     return std::make_shared<WhileNode>(stmtIndex, condExprNode, stmtListNode);
 }
 
-std::shared_ptr<CondExprNode> SourceParser::parseCondExprNode(std::string condExpr) {
+std::shared_ptr<CondExprNode> Parser::parseCondExprNode(std::string condExpr) {
     if (getNext()->getValue() == BRACKETS_START) {
         // 
     }
@@ -110,7 +110,7 @@ std::shared_ptr<CondExprNode> SourceParser::parseCondExprNode(std::string condEx
     // handle operators
 }
 
-std::shared_ptr<ExprNode> SourceParser::parseExpr(std::string expr) {
+std::shared_ptr<ExprNode> Parser::parseExpr(std::string expr) {
     std::shared_ptr<Token> exprToken;
 
     if (isTypeOf(TokenType::TOKEN_NAME)) {
@@ -133,7 +133,7 @@ std::shared_ptr<ExprNode> SourceParser::parseExpr(std::string expr) {
     return std::make_shared<ExprNode>(term, exprOptionalParams);
 }
 
-std::shared_ptr<Term> SourceParser::parseTerm(std::string term) {
+std::shared_ptr<Term> Parser::parseTerm(std::string term) {
     std::string firstSubStr = "";
     std::string secondSubStr = "";
     std::optional<TermOperatorType> opType;

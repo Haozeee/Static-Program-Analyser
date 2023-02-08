@@ -9,5 +9,5 @@ class CallNode : public StmtNode {
 
     CallNode(int stmtIndex, std::string processName);
 
-    void evaluate(AbstractSyntaxTreeExtractor& extractor) override;
+    void evaluate(AbstractExtractor& extractor) override;
 };

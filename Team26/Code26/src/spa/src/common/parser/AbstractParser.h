@@ -3,9 +3,9 @@
 #include <vector>
 #include <memory>
 #include <string>
-#include "common/tokens/Token.h"
+#include "common/tokenizer/token/Token.h"
 
-class Parser {
+class AbstractParser {
  protected:
     /**
      * The index of the current token.
@@ -86,6 +86,6 @@ class Parser {
     *
     * @param tokens The token list to be parse.
     * */
-    explicit Parser(std::vector<std::shared_ptr<Token>> tokens);
+    explicit AbstractParser(std::vector<std::shared_ptr<Token>> tokens);
 };
 
