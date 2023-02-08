@@ -2,9 +2,14 @@
 
 #include <memory>
 #include <vector>
-#include "query_processing_system/parser/Query.h"
-#include "common/Parser.h"
+
 #include "Argument.h"
+#include "Query.h"
+#include "common/Parser.h"
+#include "query_processing_system/exception/QueryException.h"
+#include "query_processing_system/exception/QueryExceptionMessages.h"
+#include "query_processing_system/parser/Query.h"
+#include "query_processing_system/parser/clause/such_that_clause/SuchThatClauseFactory.h"
 
 
 class QueryParser : public Parser {
@@ -43,7 +48,7 @@ class QueryParser : public Parser {
 
     /**
      * Handles parsing of relRef:
-     * Follows | FollowsT | Parent | ParentT | UsesS | UsesP | ModifiesS | ModifiesP
+     * Follows | FollowsT | Parent | ParentT | UsesSClause | UsesPClause | ModifiesS | ModifiesP
      */
     void parseRelRef();
 
@@ -54,6 +59,8 @@ class QueryParser : public Parser {
      * @return Left or right Argument of relRef.
      */
     Argument parseArgument();
+
+    void parseEndingSemicolon();
 
  public:
     /**

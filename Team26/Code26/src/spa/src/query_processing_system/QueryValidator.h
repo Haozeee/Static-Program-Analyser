@@ -12,6 +12,11 @@
 
 class QueryValidator {
  private:
+    /**
+     * Query wrapper object.
+     */
+    Query* query;
+
     // Validation for Declarations
     // Structure: design-entity (',', synonym)*';'
     // Example: variable v; assign a; procedure p; constant c; stmt s;
@@ -19,10 +24,8 @@ class QueryValidator {
     // Invalid example: variable, v, v, v; assign a, a; procedure p, p;
     /**
      * Validate that during Declaration, there are no duplicated Synonyms.
-     *
-     * @param query Query that is passed.
      */
-    void validateNoDuplicateSynonymsInDeclaration(Query&);
+    void validateNoDuplicateSynonymsInDeclaration();
 
     // Validation for Select Clauses
     // Structure: select-cl: declaration* 'Select' synonym
@@ -30,17 +33,17 @@ class QueryValidator {
     // Invalid example: variable v;  Select v1;
     /**
      * Validate that the Synonym in the Select Clause was previously declared.
-     *
-     * @param query Query that is passed.
      */
-    void validateSynonymInSelectClauseWasDeclared(Query&);
+    void validateSynonymInSelectClauseWasDeclared();
+
+    std::unordered_set<std::string> getDeclarationSynonyms();
 
     bool containsSelectClauseSynonymInDeclaration(const std::unordered_set<std::string>& declarationSynonyms,
                                       const std::unordered_set<std::string>& selectClauseSynonyms);
 
 
  public:
-    QueryValidator();
+    explicit QueryValidator(Query* query);
 
-    void validateQuery(Query&);
+    void validateQuery();
 };

@@ -1,10 +1,10 @@
 #include "QueryValidator.h"
 
-QueryValidator::QueryValidator() = default;
+QueryValidator::QueryValidator(Query* query) : query(query) {}
 
-void QueryValidator::validateNoDuplicateSynonymsInDeclaration(Query& query) {
+void QueryValidator::validateNoDuplicateSynonymsInDeclaration() {
     std::unordered_set<std::string> declaration;
-    for (const auto &d : query.getDeclarations()) {
+    for (const auto &d : query->getDeclarations()) {
         std::string synonym = d->getSynonym().ident;
         if (declaration.find(synonym) != declaration.end()) {
             throw QueryValidationException(QueryValidatorDuplicatedSynonymInDeclaration + synonym);
@@ -13,17 +13,10 @@ void QueryValidator::validateNoDuplicateSynonymsInDeclaration(Query& query) {
     }
 }
 
-void QueryValidator::validateSynonymInSelectClauseWasDeclared(Query& query) {
-    std::vector<std::shared_ptr<Declaration>> declarations;
-    declarations = query.getDeclarations();
-    std::unordered_set<std::string> declarationSynonyms;
-    for (auto it = declarations.begin(); it != declarations.end(); ++it) {
-        auto declaration = *it;
-        std::string declarationSynonym = declaration->getSynonym().ident;
-        declarationSynonyms.insert(declarationSynonym);
-    }
+void QueryValidator::validateSynonymInSelectClauseWasDeclared() {
+    std::unordered_set<std::string> declarationSynonyms = getDeclarationSynonyms();
 
-    auto selectClauseItems = query.getSelectClause()->getSelectClauseItems();
+    auto selectClauseItems = query->getSelectClause()->getSelectClauseItems();
     std::unordered_set<std::string> selectClauseSynonyms;
     for (auto item : *selectClauseItems) {
         std::string selectClauseSynonym = SelectClause::getSynonym(item);
@@ -31,8 +24,20 @@ void QueryValidator::validateSynonymInSelectClauseWasDeclared(Query& query) {
     }
 
     if (!containsSelectClauseSynonymInDeclaration(declarationSynonyms, selectClauseSynonyms)) {
-        throw QueryValidationException(QueryValidatorSynonymInSelectClauseNotDeclared + *selectClauseSynonyms.begin());
+        throw QueryValidationException(QueryValidatorUndeclaredSelectClauseSynonym + *selectClauseSynonyms.begin());
     }
+}
+
+std::unordered_set<std::string> QueryValidator::getDeclarationSynonyms() {
+    std::vector<std::shared_ptr<Declaration>> declarations;
+    declarations = query->getDeclarations();
+    std::unordered_set<std::string> declarationSynonyms;
+    for (auto it = declarations.begin(); it != declarations.end(); ++it) {
+        auto declaration = *it;
+        std::string declarationSynonym = declaration->getSynonym().ident;
+        declarationSynonyms.insert(declarationSynonym);
+    }
+    return declarationSynonyms;
 }
 
 bool QueryValidator::containsSelectClauseSynonymInDeclaration(
@@ -44,8 +49,8 @@ bool QueryValidator::containsSelectClauseSynonymInDeclaration(
                        });
 }
 
-void QueryValidator::validateQuery(Query& query) {
-    validateNoDuplicateSynonymsInDeclaration(query);
+void QueryValidator::validateQuery() {
+    validateNoDuplicateSynonymsInDeclaration();
 
-    validateSynonymInSelectClauseWasDeclared(query);
+    validateSynonymInSelectClauseWasDeclared();
 }

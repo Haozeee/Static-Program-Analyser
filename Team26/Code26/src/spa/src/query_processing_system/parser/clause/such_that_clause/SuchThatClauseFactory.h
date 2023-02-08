@@ -1,14 +1,37 @@
 #pragma once
-#include <string>
-#include "SuchThatClause.h"
-#include "../../Argument.h"
-#include "UsesSClause.h"
-#include "FollowsClause.h"
 
-const char USESRELATION[] = "Uses";
-const char FOLLOWSRELATION[] = "Follows";
+#include <string>
+
+#include "FollowsClause.h"
+#include "FollowsTClause.h"
+#include "ModifiesPClause.h"
+#include "ModifiesSClause.h"
+#include "ParentClause.h"
+#include "ParentTClause.h"
+#include "UsesPClause.h"
+#include "UsesSClause.h"
+#include "SuchThatClauseFactory.h"
+#include "query_processing_system/exception/QueryException.h"
+#include "query_processing_system/exception/QueryExceptionMessages.h"
+#include "query_processing_system/parser/Argument.h"
+#include "query_processing_system/parser/Query.h"
+
+const char FollowsRelation[] = "Follows";
+const char FollowsTRelation[] = "Follows*";
+
+const char ModifiesRelation[] = "Modifies";
+
+const char ParentRelation[] = "Parent";
+const char ParentTRelation[] = "Parent*";
+
+const char UsesRelation[] = "Uses";
 
 class SuchThatClauseFactory {
+ private:
+    static bool isModifiesOrUsesRelation(std::string);
+
+    static SuchThatClause* createModifiesOrUsesClause(std::string, Argument leftArg, Argument rightArg);
+
  public:
     /**
      * Factory method to create a new Such That Clause.

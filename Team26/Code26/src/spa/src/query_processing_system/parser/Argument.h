@@ -44,4 +44,6 @@ class Argument {
     ArgumentType getArgumentType();
 
     DesignEntity getDesignEntity();
+
+    bool isValidArgumentType(ArgumentType arg);
 };

@@ -1,12 +1,7 @@
 #include <string>
 #include <iostream>
 
-#include "Query.h"
 #include "QueryParser.h"
-
-#include "query_processing_system/exception/QueryException.h"
-#include "query_processing_system/exception/QueryExceptionMessages.h"
-#include "query_processing_system/parser/clause/such_that_clause/SuchThatClauseFactory.h"
 
 QueryParser::QueryParser(std::vector<std::shared_ptr<Token>> tokens, Query* query) :
 query(query), Parser(tokens) {}
@@ -36,7 +31,6 @@ bool QueryParser::parseDeclaration() {
     std::shared_ptr<Token> synonymToken;
     synonymToken = getNext();
     Synonym firstSynonym = Synonym(synonymToken->getValue());
-    std::string synonymString = synonymToken->getValue();
     std::vector<Synonym> synonyms;
     synonyms.push_back(firstSynonym);
 
@@ -50,6 +44,8 @@ bool QueryParser::parseDeclaration() {
     }
 
     parseNext(";");
+
+//    std::cout << getToken()->getValue() << std::endl; // Select is here
 
     // Put Synonyms and their corresponding Design Entities into the Query wrapper object as one Declaration.
     for (const Synonym& syn : synonyms) {
@@ -85,19 +81,17 @@ bool QueryParser::parseSuchThatClause() {
 void QueryParser::parseRelRef() {
     auto relRefToken = getNext();
     std::string relRefString = relRefToken->getValue();
+    if (isValueOf("*")) {
+        std::shared_ptr<Token> asteriskToken = parseNext("*");
+        relRefString += asteriskToken->getValue();
+    }
     parseNext("(");
     Argument leftArgument = parseArgument();
     parseNext(",");
     Argument rightArgument = parseArgument();
+    parseNext(")");
     auto relRefClause = SuchThatClauseFactory::createSuchThatClause(relRefString, leftArgument, rightArgument);
     query->addSuchThatClause(relRefClause);
-
-//    for (const auto& i : query->getSuchThatClauses()) {
-//        std::cout << "LEFT ARG " << i->getLeftArg().getValue() << std::endl;
-//        std::cout << "LEFT ARG DESIGN ENTITY" << toString(i->getLeftArg().getDesignEntity()) << std::endl;
-//        std::cout << "RIGHT ARG " << i->getRightArg().getValue() << std::endl;
-//        std::cout << "RIGHT ARG DESIGN ENTITY" << toString(i->getRightArg().getDesignEntity()) << std::endl;
-//    }
 }
 
 Argument QueryParser::parseArgument() {
@@ -115,7 +109,15 @@ Argument QueryParser::parseArgument() {
         Argument nameArgument(ArgumentType::SYNONYM, nameString, designEntity);
         return nameArgument;
     } else {
-        throw QueryParserException(QueryParserInvalidRelRefArgument);
+        throw QueryParserException(QueryParserInvalidTokenForRelationshipArgument);
+    }
+}
+
+void QueryParser::parseEndingSemicolon() {
+    if (isValueOf(";")) {
+        throw QueryParserException(QueryParserInvalidEndingSemicolon);
+    } else {
+        throw QueryParserException(QueryParserUnexpectedToken + getToken()->getValue());
     }
 }
 
@@ -128,5 +130,5 @@ void QueryParser::parse() {
 
     if (hasNext()) parseSuchThatClause();
 
-    // Add throw unexpected token error here.
+    if (hasNext()) parseEndingSemicolon();
 }
