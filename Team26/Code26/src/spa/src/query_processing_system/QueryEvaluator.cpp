@@ -33,7 +33,7 @@ void QueryEvaluator::evaluateSelectClause() {
         // Get respective entities from pkb
         auto entities = getEntitiesFromPkb(query->getSynonymDesignEntity(syn));
         // Add entities to query result
-        queryResult.addResultsToIdentity(syn->ident, entities);
+        queryResult.addNewResult(syn->ident, entities);
     }
 }
 

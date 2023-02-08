@@ -9,13 +9,6 @@ void QueryResult::addNewIdentity(std::string identity) {
     results.insert({identity, {}});
 }
 
-void QueryResult::addResultsToIdentity(std::string identity, std::unordered_set<std::string> toAdd) {
-    auto it = results.find(identity);
-    if (it != results.end()) {
-        it->second = toAdd;
-    }
-}
-
 void QueryResult::copyToQpsResult(std::list<std::string> &qpsResult) {
     for (auto const& item : results) {
         for (auto str : item.second) {
