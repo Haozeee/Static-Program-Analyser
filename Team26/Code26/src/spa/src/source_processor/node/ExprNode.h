@@ -17,5 +17,6 @@ class ExprNode : public Node {
  public:
     std::shared_ptr<TermNode> term;
     std::optional<std::pair<ExprOperatorType, std::shared_ptr<ExprNode>>> optionalParams;
-    ExprNode(std::shared_ptr<TermNode> term, std::optional<std::pair<ExprOperatorType, std::shared_ptr<ExprNode>>> optionalParams);
+    ExprNode(std::shared_ptr<TermNode> term, std::optional<std::pair<ExprOperatorType,
+        std::shared_ptr<ExprNode>>> optionalParams);
 };

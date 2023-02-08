@@ -97,7 +97,7 @@ std::shared_ptr<StmtListNode> Parser::parseStmtList() {
     return std::make_shared<StmtListNode>(stmtList);
 }
 
- std::shared_ptr<WhileNode> Parser::parseWhile() {
+std::shared_ptr<WhileNode> Parser::parseWhile() {
     parseNext(BRACKETS_START);
     std::string condExprStr = "";
 
@@ -115,44 +115,44 @@ std::shared_ptr<StmtListNode> Parser::parseStmtList() {
     parseNext(STMTLIST_END);
 
     return std::make_shared<WhileNode>(stmtIndex, condExprNode, stmtListNode);
- }
+}
 
- std::shared_ptr<IfNode> Parser::parseIf() {
-     parseNext(BRACKETS_START);
-     std::string condExprStr = "";
+std::shared_ptr<IfNode> Parser::parseIf() {
+    parseNext(BRACKETS_START);
+    std::string condExprStr = "";
 
-     while (!isValueOf(BRACKETS_END)) {
-         condExprStr += getToken()->getValue();
-         getNext();
-     }
-     std::shared_ptr<CondExprNode> condExprNode = parseCondExprNode(condExprStr);
-     parseNext(BRACKETS_END);
+    while (!isValueOf(BRACKETS_END)) {
+        condExprStr += getToken()->getValue();
+        getNext();
+    }
+    std::shared_ptr<CondExprNode> condExprNode = parseCondExprNode(condExprStr);
+    parseNext(BRACKETS_END);
 
-     std::shared_ptr<Token> nameToken = parseNext(TokenType::TOKEN_NAME);
-     if (nameToken->getValue() != THEN_KEYWORD) {
-         // TODO(oviya): throw error
-     }
+    std::shared_ptr<Token> nameToken = parseNext(TokenType::TOKEN_NAME);
+    if (nameToken->getValue() != THEN_KEYWORD) {
+        // TODO(oviya): throw error
+    }
 
-     stmtIndex++;
+    stmtIndex++;
 
-     parseNext(STMTLIST_START);
-     std::shared_ptr<StmtListNode> thenStmtListNode = parseStmtList();
-     parseNext(STMTLIST_END);
+    parseNext(STMTLIST_START);
+    std::shared_ptr<StmtListNode> thenStmtListNode = parseStmtList();
+    parseNext(STMTLIST_END);
 
-     nameToken = parseNext(TokenType::TOKEN_NAME);
-     if (nameToken->getValue() != ELSE_KEYWORD) {
-         // TODO(oviya): throw error
-     }
+    nameToken = parseNext(TokenType::TOKEN_NAME);
+    if (nameToken->getValue() != ELSE_KEYWORD) {
+        // TODO(oviya): throw error
+    }
 
-     stmtIndex++;
+    stmtIndex++;
 
-     parseNext(STMTLIST_START);
-     std::shared_ptr<StmtListNode> elseStmtListNode = parseStmtList();
-     parseNext(STMTLIST_END);
-     
+    parseNext(STMTLIST_START);
+    std::shared_ptr<StmtListNode> elseStmtListNode = parseStmtList();
+    parseNext(STMTLIST_END);
 
-     return std::make_shared<IfNode>(stmtIndex, condExprNode, thenStmtListNode, elseStmtListNode);
- }
+
+    return std::make_shared<IfNode>(stmtIndex, condExprNode, thenStmtListNode, elseStmtListNode);
+}
 
 std::shared_ptr<CondExprNode> Parser::parseCondExprNode(std::string condExpr) {
     if (condExpr.length() == 0) {
@@ -172,7 +172,7 @@ std::shared_ptr<CondExprNode> Parser::parseCondExprNode(std::string condExpr) {
     }
 
     // Check for '&&' operator.
-    std::optional<BinaryCondExprOperatorType> opType = std::nullopt; 
+    std::optional<BinaryCondExprOperatorType> opType = std::nullopt;
     std::size_t opPos = condExpr.find(BRACKETS_END[0] + AND_OPERATOR[0]
         + BRACKETS_START[0]);
     if (opPos != std::string::npos) {
@@ -200,13 +200,12 @@ std::shared_ptr<CondExprNode> Parser::parseCondExprNode(std::string condExpr) {
     }
 
     std::string firstSubStr = condExpr.substr(0, opPos - 1);
-    std::string secondSubStr =condExpr.substr(opPos + 1, condExpr.length());
+    std::string secondSubStr = condExpr.substr(opPos + 1, condExpr.length());
 
     auto condExprNode1 = parseCondExprNode(firstSubStr);
     auto condExprNode2 = parseCondExprNode(secondSubStr);
 
     return std::make_shared<CondExprNode>(std::make_tuple(opType.value(), condExprNode1, condExprNode2));
-
 }
 
 std::shared_ptr<RelExpr> Parser::parseRelExpr(std::string relExpr) {
@@ -215,7 +214,7 @@ std::shared_ptr<RelExpr> Parser::parseRelExpr(std::string relExpr) {
     }
 
     std::optional<RelExprOperatorType> opType;
-    
+
     // Check for '>' operator.
     std::size_t opPos = relExpr.find(GT_OPERATOR);
     if (opPos != std::string::npos) {
@@ -224,7 +223,7 @@ std::shared_ptr<RelExpr> Parser::parseRelExpr(std::string relExpr) {
         }
 
         opType = RelExprOperatorType::OPERATOR_GT;
-    } 
+    }
 
     // Check for '>=' operator.
     if (!opType.has_value()) {
@@ -330,7 +329,7 @@ std::shared_ptr<ExprNode> Parser::parseExprNode(std::string expr) {
 
         std::pair<ExprOperatorType, std::shared_ptr<ExprNode>> optionalParams =
             std::make_pair(opType.value(), parseExprNode(firstSubStr));
-        getNext(); // Skip operator
+        getNext();  // Skip operator
         return std::make_shared<ExprNode>(parseTermNode(secondSubStr), optionalParams);
     }
 
@@ -372,10 +371,10 @@ std::shared_ptr<TermNode> Parser::parseTermNode(std::string term) {
         if (secondSubStr.empty()) {
             // TODO(oviya): throw error
         }
-        
+
         std::pair<TermOperatorType, std::shared_ptr<TermNode>> optionalParams
             = std::make_pair(opType.value(), parseTermNode(firstSubStr));
-        getNext(); // Skip operator
+        getNext();  // Skip operator
         return std::make_shared<TermNode>(parseFactor(secondSubStr), optionalParams);
     }
 
@@ -388,8 +387,8 @@ std::shared_ptr<Factor> Parser::parseFactor(std::string factor) {
     }
 
     if (factor[0] == BRACKETS_START[0] && factor.back() == BRACKETS_END[0]) {
-        return parseFactor(factor.substr(1,factor.length()-2));
-    } 
+        return parseFactor(factor.substr(1, factor.length() - 2));
+    }
 
     std::shared_ptr<Token> token;
 
