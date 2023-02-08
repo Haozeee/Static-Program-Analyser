@@ -1,5 +1,5 @@
 #pragma once
-
+#include <iostream>
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
@@ -9,7 +9,7 @@
 template <typename T, typename U>
 class RelationshipManager: public ReadOnlyRelationshipManager<T, U>,
                            public WriteOnlyRelationshipManger<T, U> {
- private:
+ protected:
     std::unordered_map<T, std::unordered_set<U>> relationships_map;
     std::unordered_map<U, std::unordered_set<T>> reversed_relationships_map;
  public:
@@ -34,6 +34,7 @@ class RelationshipManager: public ReadOnlyRelationshipManager<T, U>,
     }
 
     bool insertRelationship(T first_param, U second_param) {
+        // std::cout << "NON-Override " << first_param << " " << second_param << "\n";
         bool flag = false;
         bool flag1 = false;
         // the key is not a key in the map
@@ -57,5 +58,10 @@ class RelationshipManager: public ReadOnlyRelationshipManager<T, U>,
             flag1 = res.second;
         }
         return flag && flag1;
+    }
+
+    bool insertRelationship(T first_param, U second_param,
+                            std::shared_ptr<WriteOnlyRelationshipManger<T, U>> manager) {
+        return false;
     }
 };
