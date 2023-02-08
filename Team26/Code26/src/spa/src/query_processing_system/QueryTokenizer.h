@@ -3,10 +3,10 @@
 #include <vector>
 #include <memory>
 #include <string>
-#include "common/Tokenizer.h"
+#include "common/tokenizer/AbsractTokenizer.h"
 
 
-class QueryTokenizer : public Tokenizer {
+class QueryTokenizer : public AbsractTokenizer {
  private:
     void readSpecialChar() override;
 

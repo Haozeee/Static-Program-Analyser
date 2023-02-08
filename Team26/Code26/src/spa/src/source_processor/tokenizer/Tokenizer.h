@@ -2,10 +2,10 @@
 
 #include <vector>
 #include <memory>
-#include "common/Tokenizer.h"
+#include "common/tokenizer/AbsractTokenizer.h"
 
 
-class SourceTokenizer : public Tokenizer {
+class Tokenizer : public AbsractTokenizer {
  private:
     bool isValidSpecialChar();
     bool isPossibleLogicalOp();
@@ -14,7 +14,7 @@ class SourceTokenizer : public Tokenizer {
     void readSpecialChar() override;
 
  public:
-    explicit SourceTokenizer(std::istream* stream);
+    explicit Tokenizer(std::istream* stream);
 
     std::vector<std::shared_ptr<Token>> tokenize() override;
 };

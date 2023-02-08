@@ -1,10 +1,10 @@
 #pragma once
 
 #include <memory>
-#include "source_processor/design_extractor/extractor/AbstractSyntaxTreeExtractor.h"
+#include "source_processor/design_extractor/extractor/AbstractExtractor.h"
 #include "source_processor/node/statement_node/ReadNode.h"
 
-class EntityExtractor : public AbstractSyntaxTreeExtractor {
+class EntityExtractor : public AbstractExtractor {
  public:
     explicit EntityExtractor(std::shared_ptr<WriteOnlyStorage> storage);
     void extractProcedure(std::shared_ptr<ProcedureNode> node) override;

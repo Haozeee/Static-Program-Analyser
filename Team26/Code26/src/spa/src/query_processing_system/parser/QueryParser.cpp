@@ -9,7 +9,7 @@
 #include "query_processing_system/parser/clause/such_that_clause/SuchThatClauseFactory.h"
 
 QueryParser::QueryParser(std::vector<std::shared_ptr<Token>> tokens, Query* query) :
-query(query), Parser(tokens) {}
+query(query), AbstractParser(tokens) {}
 
 void QueryParser::parseAllDeclarations() {
     while (hasNext()) {
