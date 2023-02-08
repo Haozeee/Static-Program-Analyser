@@ -1,5 +1,4 @@
 #include "QueryResult.h"
-#include <algorithm>
 #include <iterator>
 
 QueryResult::QueryResult() {}

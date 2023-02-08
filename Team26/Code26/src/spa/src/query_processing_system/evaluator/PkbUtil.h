@@ -1,12 +1,14 @@
 #pragma once
 #include <memory>
+#include <unordered_set>
+#include <algorithm>
 #include "../parser/DesignEntity.h"
 #include "../../program_knowledge_base/ReadOnlyStorage.h"
 
 using EntitySet = std::unordered_set<std::string>;
 
 class PkbUtil {
-public:
+ public:
     static EntitySet getEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage, DesignEntity entity);
 
 
