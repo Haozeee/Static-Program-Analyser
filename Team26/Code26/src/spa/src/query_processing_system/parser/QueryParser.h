@@ -9,7 +9,6 @@
 #include "Query.h"
 #include "query_processing_system/exception/QueryException.h"
 #include "query_processing_system/exception/QueryExceptionMessages.h"
-#include "query_processing_system/parser/Query.h"
 #include "query_processing_system/parser/clause/such_that_clause/SuchThatClauseFactory.h"
 
 
