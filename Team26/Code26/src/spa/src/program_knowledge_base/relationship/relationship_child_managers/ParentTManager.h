@@ -1,4 +1,16 @@
 #pragma once
 #include "program_knowledge_base/relationship/RelationshipManager.h"
 
-class ParentTManager : public RelationshipManager<int, int> { };
+class ParentTManager : public RelationshipManager<int, int> {
+ public:
+    bool insertRelationship(int first, int second){
+        bool flag = RelationshipManager::insertRelationship(first, second);
+        if (reversed_relationships_map.count(first)) {
+            auto res = reversed_relationships_map[first];
+            for (auto itr : res) {
+                flag = flag && RelationshipManager::insertRelationship(itr, second);
+            }
+        }
+        return flag;
+    }
+};
