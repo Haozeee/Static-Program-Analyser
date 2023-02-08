@@ -22,7 +22,7 @@ void FollowsClauseEvaluator::evaluateNumberNumber(std::shared_ptr<ReadOnlyStorag
     auto iterator = store.find(stoi(getLeftArg().getValue()));
     auto rightValue = stoi(getRightArg().getValue());
 
-    if (iterator == store.end() || !store.count(rightValue) ||iterator->second.count(rightValue)) {
+    if (iterator == store.end() || !iterator->second.count(rightValue)) {
         std::cout << "Counting\n";
         clauseResult->setNoResults();
     }

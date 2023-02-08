@@ -5,6 +5,7 @@
 #include <list>
 #include <memory>
 #include "Result.h"
+#include "PkbUtil.h"
 #include "clause_evaluator/ClauseResult.h"
 #include "../parser/SelectClause.h"
 
