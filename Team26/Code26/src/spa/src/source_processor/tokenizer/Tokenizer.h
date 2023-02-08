@@ -5,7 +5,7 @@
 #include "common/tokenizer/AbsractTokenizer.h"
 
 
-class SourceTokenizer : public AbsractTokenizer {
+class Tokenizer : public AbsractTokenizer {
  private:
     bool isValidSpecialChar();
     bool isPossibleLogicalOp();
@@ -14,7 +14,7 @@ class SourceTokenizer : public AbsractTokenizer {
     void readSpecialChar() override;
 
  public:
-    explicit SourceTokenizer(std::istream* stream);
+    explicit Tokenizer(std::istream* stream);
 
     std::vector<std::shared_ptr<Token>> tokenize() override;
 };

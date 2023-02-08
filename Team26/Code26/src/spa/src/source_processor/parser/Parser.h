@@ -5,18 +5,18 @@
 #include <vector>
 #include "common/parser/AbstractParser.h"
 #include "common/tokenizer/token/Token.h"
-#include "node/ProgramNode.h"
-#include "node/ProcedureNode.h"
-#include "node/StmtListNode.h"
-#include "node/ExprNode.h"
-#include "node/statement_node/ReadNode.h"
-#include "node/statement_node/PrintNode.h"
-#include "node/statement_node/CallNode.h"
-#include "node/statement_node/AssignNode.h"
+#include "source_processor/node/ProgramNode.h"
+#include "source_processor/node/ProcedureNode.h"
+#include "source_processor/node/StmtListNode.h"
+#include "source_processor/node/ExprNode.h"
+#include "source_processor/node/statement_node/ReadNode.h"
+#include "source_processor/node/statement_node/PrintNode.h"
+#include "source_processor/node/statement_node/CallNode.h"
+#include "source_processor/node/statement_node/AssignNode.h"
 
 
 
-class SourceParser : public AbstractParser {
+class Parser : public AbstractParser {
  private:
     typedef AbstractParser Super;
     int stmtIndex;
@@ -29,6 +29,6 @@ class SourceParser : public AbstractParser {
     std::shared_ptr<ExprNode> parseExpr(std::shared_ptr<std::string> expr);
 
  public:
-    explicit SourceParser(std::vector<std::shared_ptr<Token>> tokens);
+    explicit Parser(std::vector<std::shared_ptr<Token>> tokens);
     std::shared_ptr<ProgramNode> parse();
 };
