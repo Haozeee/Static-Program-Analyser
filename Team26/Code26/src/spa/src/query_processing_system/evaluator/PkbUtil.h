@@ -2,6 +2,7 @@
 #include <memory>
 #include <unordered_set>
 #include <algorithm>
+#include <string>
 #include "../parser/DesignEntity.h"
 #include "../../program_knowledge_base/ReadOnlyStorage.h"
 
