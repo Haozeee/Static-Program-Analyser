@@ -6,5 +6,4 @@ WhileNode::WhileNode(int stmtIndex, std::shared_ptr<CondExprNode> condExprNode,
 
 
 void WhileNode::evaluate(AbstractExtractor& extractor) {
-    // TODO
 }

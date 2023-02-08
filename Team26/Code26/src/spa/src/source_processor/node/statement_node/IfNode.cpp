@@ -6,5 +6,4 @@ IfNode::IfNode(int stmtIndex, std::shared_ptr<CondExprNode> condExprNode,
     elseStmtListNode(elseStmtListNode) {}
 
 void IfNode::evaluate(AbstractExtractor& extractor) {
-    // TODO
 }
