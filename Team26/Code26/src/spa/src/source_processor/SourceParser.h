@@ -3,8 +3,8 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include "common/Parser.h"
-#include "common/tokens/Token.h"
+#include "common/parser/AbstractParser.h"
+#include "common/tokenizer/token/Token.h"
 #include "node/ProgramNode.h"
 #include "node/ProcedureNode.h"
 #include "node/StmtListNode.h"
@@ -16,9 +16,9 @@
 
 
 
-class SourceParser : public Parser {
+class SourceParser : public AbstractParser {
  private:
-    typedef Parser Super;
+    typedef AbstractParser Super;
     int stmtIndex;
     std::shared_ptr<ProcedureNode> parseProcedure();
     std::shared_ptr<StmtListNode> parseStmtList();

@@ -1,18 +1,18 @@
 #include "EntityExtractor.h"
 
-EntityExtractor::EntityExtractor(std::shared_ptr<WriteOnlyStorage> storage) : AbstractSyntaxTreeExtractor(storage) {}
+EntityExtractor::EntityExtractor(std::shared_ptr<WriteOnlyStorage> storage) : AbstractExtractor(storage) {}
 
 void EntityExtractor::extractProcedure(std::shared_ptr<ProcedureNode> node) {
     storage->getProcedureManager()->insertEntity(node->procedureName);
-    AbstractSyntaxTreeExtractor::extractProcedure(node);
+    AbstractExtractor::extractProcedure(node);
 }
 
 void EntityExtractor::extractStmtList(std::shared_ptr<StmtListNode> node) {
-    AbstractSyntaxTreeExtractor::extractStmtList(node);
+    AbstractExtractor::extractStmtList(node);
 }
 
 void EntityExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
-    AbstractSyntaxTreeExtractor::extractStmt(node);
+    AbstractExtractor::extractStmt(node);
     storage->getStmtManager()->insertEntity(currentStmtNo);
 }
 

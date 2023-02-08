@@ -11,5 +11,5 @@ class AssignNode : public StmtNode {
 
     AssignNode(int stmtIndex, std::string varName, ExprNode exprNode);
 
-    void evaluate(AbstractSyntaxTreeExtractor& extractor) override;
+    void evaluate(AbstractExtractor& extractor) override;
 };

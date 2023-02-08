@@ -14,7 +14,7 @@
 #define EQUAL_KEYWORD "="
 
 SourceParser::SourceParser(std::vector<std::shared_ptr<Token>> tokens)
-    : Parser(tokens), stmtIndex(INITIAL_STMT_INDEX) {}
+    : AbstractParser(tokens), stmtIndex(INITIAL_STMT_INDEX) {}
 
 std::shared_ptr<ProgramNode> SourceParser::parse() {
     std::vector<std::shared_ptr<ProcedureNode>> procedureList;
