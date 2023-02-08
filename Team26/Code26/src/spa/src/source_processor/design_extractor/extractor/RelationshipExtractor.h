@@ -2,12 +2,14 @@
 #include <memory>
 #include <vector>
 #include "source_processor/design_extractor/extractor/AbstractExtractor.h"
+#include "source_processor/storage/RelationshipStore.h"
 
 class RelationshipExtractor : public AbstractExtractor {
  private:
+    std::shared_ptr<RelationshipStore> relationshipStore;
     std::shared_ptr<std::vector<int>> simpleFollow = std::make_shared<std::vector<int>>();
  public:
-    explicit RelationshipExtractor(std::shared_ptr<WriteOnlyStorage> storage);
+    explicit RelationshipExtractor(std::shared_ptr<RelationshipStore> storage);
     void extractProcedure(std::shared_ptr<ProcedureNode> node) override;
     void extractStmtList(std::shared_ptr<StmtListNode> node) override;
     void extractStmt(std::shared_ptr<StmtNode> node) override;
