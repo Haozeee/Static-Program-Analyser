@@ -1,5 +1,9 @@
 #include "catch.hpp"
 #include "program_knowledge_base/relationship/RelationshipManager.h"
+#include "program_knowledge_base/relationship/WriteOnlyRelationshipManager.h"
+#include "program_knowledge_base/StorageUtil.h"
+#include "program_knowledge_base/ReadOnlyStorage.h"
+#include "program_knowledge_base/WriteOnlyStorage.h"
 
 TEST_CASE("RelationshipManager insertRelationship int,int") {
     RelationshipManager<int, int> relationshipManager;
@@ -106,4 +110,21 @@ TEST_CASE("RelationshipManager getAllReversedRelationshipEntries string,string")
     REQUIRE(relationshipManager.insertRelationship("x", "a"));
     REQUIRE(relationshipManager.insertRelationship("x", "b"));
     REQUIRE(relationshipManager.getAllReversedRelationshipEntries() == test_map);
+}
+
+TEST_CASE("RelationshipManager _insert int,int,WriteOnlyRelationshipManager") {
+    RelationshipManager<int, int> relationshipManager;
+
+    REQUIRE(relationshipManager.insertRelationship(0, 1,
+                                                   std::shared_ptr<WriteOnlyRelationshipManger<int, int>>()) == false);
+    REQUIRE(relationshipManager.insertRelationship(1, 0,
+                                                   std::shared_ptr<WriteOnlyRelationshipManger<int, int>>()) == false);
+
+}
+
+TEST_CASE("FollowsManager _insert int,int,WriteOnlyRelationshipManager") {
+    std::shared_ptr<StorageUtil> storageUtil = std::make_shared<StorageUtil>();
+    WriteOnlyStorage* writeOnlyStorage = new WriteOnlyStorage(storageUtil);
+    REQUIRE(writeOnlyStorage->getFollowsManager()->insertRelationship(1, 2,
+                                                                      writeOnlyStorage->getFollowsTManager()));
 }
