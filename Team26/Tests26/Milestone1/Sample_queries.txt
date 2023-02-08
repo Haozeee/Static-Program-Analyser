@@ -1,0 +1,5 @@
+1 - procedure
+procedure p;
+Select p
+a
+5000
