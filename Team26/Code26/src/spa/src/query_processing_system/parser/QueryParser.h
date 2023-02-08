@@ -3,11 +3,11 @@
 #include <memory>
 #include <vector>
 #include "query_processing_system/parser/Query.h"
-#include "common/Parser.h"
+#include "common/parser/AbstractParser.h"
 #include "Argument.h"
 
 
-class QueryParser : public Parser {
+class QueryParser : public AbstractParser {
  private:
     /**
      * Query wrapper object.

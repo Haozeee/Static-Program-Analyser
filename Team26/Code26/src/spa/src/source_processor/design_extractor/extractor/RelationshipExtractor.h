@@ -1,9 +1,9 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include "source_processor/design_extractor/extractor/AbstractSyntaxTreeExtractor.h"
+#include "source_processor/design_extractor/extractor/AbstractExtractor.h"
 
-class RelationshipExtractor : public AbstractSyntaxTreeExtractor {
+class RelationshipExtractor : public AbstractExtractor {
  private:
     std::shared_ptr<std::vector<int>> simpleFollow = std::make_shared<std::vector<int>>();
  public:

@@ -1,34 +1,34 @@
-#include "SourceTokenizer.h"
+#include "Tokenizer.h"
 #include <string>
 #include <unordered_set>
 #include <sstream>
 #include <iostream>
-#include "common/tokens/EndOfFileToken.h"
-#include "common/tokens/NameToken.h"
-#include "common/tokens/IntegerToken.h"
-#include "common/tokens/SpecialCharToken.h"
+#include "common/tokenizer/token/EndOfFileToken.h"
+#include "common/tokenizer/token/NameToken.h"
+#include "common/tokenizer/token/IntegerToken.h"
+#include "common/tokenizer/token/SpecialCharToken.h"
 
-SourceTokenizer::SourceTokenizer(std::istream* stream) : Tokenizer(stream) {}
+Tokenizer::Tokenizer(std::istream* stream) : AbsractTokenizer(stream) {}
 
 std::unordered_set<std::string> specialChar({"{", "}", ";", "(", ")", "=", ">", "<", "+", "-", "*", "/", "%", "!"});
 std::unordered_set<std::string> validLogicalOps({"&&", "||", ">=", "<=", "==", "!="});
 std::unordered_set<std::string> firstOp({"&", "|", ">", "<", "=", "!"});
 std::unordered_set<char> secondOp({'&', '|', '='});
 
-bool SourceTokenizer::isValidSpecialChar() {
+bool Tokenizer::isValidSpecialChar() {
     return (specialChar.find(getCurrentToken()) != specialChar.end());
 }
 
-bool SourceTokenizer::isPossibleLogicalOp() {
+bool Tokenizer::isPossibleLogicalOp() {
     return (firstOp.find(getCurrentToken()) != firstOp.end() && secondOp.find(peekChar()) != secondOp.end());
 }
 
-bool SourceTokenizer::isValidLogicalOp() {
+bool Tokenizer::isValidLogicalOp() {
     currentToken += nextChar();
     return validLogicalOps.find(getCurrentToken()) != validLogicalOps.end();
 }
 
-void SourceTokenizer::readSpecialChar() {
+void Tokenizer::readSpecialChar() {
     if (isValidSpecialChar()) /* valid special char */ {
         if (isPossibleLogicalOp() && !isValidLogicalOp()) /* invalid logical operation */ {
             // TODO(zhengteck): throw exception
@@ -38,7 +38,7 @@ void SourceTokenizer::readSpecialChar() {
     }
 }
 
-std::vector<std::shared_ptr<Token>> SourceTokenizer::tokenize() {
+std::vector<std::shared_ptr<Token>> Tokenizer::tokenize() {
     char c = 0;
 
     while (!istream->eof()) {
@@ -66,7 +66,7 @@ std::vector<std::shared_ptr<Token>> SourceTokenizer::tokenize() {
 
     // TODO(zhengteck): Remove when not required
     // FOR DEBUGGING
-    //    for (const auto& element : tokens) {
+    //    for (const auto& element : token) {
     //        std::cerr << element->getValue() << std::endl;
     //    }
 

@@ -10,12 +10,12 @@
 #include "source_processor/node/statement_node/CallNode.h"
 #include "program_knowledge_base/WriteOnlyStorage.h"
 
-class AbstractSyntaxTreeExtractor {
+class AbstractExtractor {
  protected:
     int currentStmtNo = -1;
     std::shared_ptr<WriteOnlyStorage> storage;
  public:
-    explicit AbstractSyntaxTreeExtractor(std::shared_ptr<WriteOnlyStorage> storage);
+    explicit AbstractExtractor(std::shared_ptr<WriteOnlyStorage> storage);
 
     virtual void extractProgram(std::shared_ptr<ProgramNode> node);
     virtual void extractProcedure(std::shared_ptr<ProcedureNode> node);
