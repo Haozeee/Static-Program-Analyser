@@ -1,6 +1,6 @@
 #include "AbstractExtractor.h"
 
-AbstractExtractor::AbstractExtractor(std::shared_ptr<WriteOnlyStorage> storage) : storage(storage) {
+AbstractExtractor::AbstractExtractor() {
 }
 
 void AbstractExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
@@ -23,3 +23,4 @@ void AbstractExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
     currentStmtNo = node->stmtIndex;
     node->evaluate(*this);
 }
+
