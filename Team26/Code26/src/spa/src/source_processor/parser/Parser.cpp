@@ -203,6 +203,8 @@ std::shared_ptr<CondExprNode> Parser::parseCondExprNode(std::string condExpr) {
     std::string secondSubStr = condExpr.substr(opPos + 1, condExpr.length());
 
     auto condExprNode1 = parseCondExprNode(firstSubStr);
+    getNext();  // Skip two tokens
+    getNext();
     auto condExprNode2 = parseCondExprNode(secondSubStr);
 
     return std::make_shared<CondExprNode>(std::make_tuple(opType.value(), condExprNode1, condExprNode2));
