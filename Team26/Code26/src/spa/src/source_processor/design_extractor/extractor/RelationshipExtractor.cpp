@@ -1,9 +1,11 @@
 #include "RelationshipExtractor.h"
 #include <sstream>
 #include <iostream>
+#include <utility>
 
-RelationshipExtractor::RelationshipExtractor(std::shared_ptr<WriteOnlyStorage> storage) : AbstractExtractor(
-        storage) {
+RelationshipExtractor::RelationshipExtractor(std::shared_ptr<RelationshipStore> relationshipStore) : AbstractExtractor
+() {
+    this->relationshipStore = std::move(relationshipStore);
 }
 
 void RelationshipExtractor::extractProcedure(std::shared_ptr<ProcedureNode> node) {
@@ -19,9 +21,10 @@ void RelationshipExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
 
     if (!simpleFollow->empty()) {
         // std::cerr << "PAIR: " << simpleFollow->back() << " and  " << currentStmtNo << std::endl;
-        storage->getFollowsManager()->insertRelationship(simpleFollow->back(), currentStmtNo,
-                                                         storage->getFollowsTManager());
-    }
+        // storage->getFollowsManager()->insertRelationship(simpleFollow->back(), currentStmtNo);
+        // storage->getFollowsManager()->insertRelationship(simpleFollow->back(), currentStmtNo,
+        //                                                      storage->getFollowsTManager());
+        }
     simpleFollow->push_back(currentStmtNo);
 }
 
