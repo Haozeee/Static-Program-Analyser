@@ -3,7 +3,7 @@
 #include <utility>
 
 EntityExtractor::EntityExtractor(std::shared_ptr<EntityStore> entityStore) : AbstractExtractor() {
-    this->entityStore = entityStore;
+    this->entityStore = std::move(entityStore);
 }
 
 void EntityExtractor::extractProcedure(std::shared_ptr<ProcedureNode> node) {

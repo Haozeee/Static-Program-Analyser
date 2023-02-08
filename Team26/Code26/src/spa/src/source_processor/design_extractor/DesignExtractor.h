@@ -19,6 +19,6 @@ class DesignExtractor {
     std::shared_ptr<PatternStore> patternStore;
 
  public:
-    explicit DesignExtractor(std::shared_ptr<WriteOnlyStorage> storage);
-    void extract(std::shared_ptr<ProgramNode> programNode);
+    explicit DesignExtractor(const std::shared_ptr<WriteOnlyStorage>& storage);
+    void extract(const std::shared_ptr<ProgramNode>& programNode);
 };

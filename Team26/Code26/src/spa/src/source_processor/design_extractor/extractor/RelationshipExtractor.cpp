@@ -1,10 +1,11 @@
 #include "RelationshipExtractor.h"
 #include <sstream>
 #include <iostream>
+#include <utility>
 
 RelationshipExtractor::RelationshipExtractor(std::shared_ptr<RelationshipStore> relationshipStore) : AbstractExtractor
 () {
-    this->relationshipStore = relationshipStore;
+    this->relationshipStore = std::move(relationshipStore);
 }
 
 void RelationshipExtractor::extractProcedure(std::shared_ptr<ProcedureNode> node) {

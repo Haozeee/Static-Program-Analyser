@@ -10,6 +10,7 @@ class RelationshipExtractor : public AbstractExtractor {
     std::shared_ptr<std::vector<int>> simpleFollow = std::make_shared<std::vector<int>>();
  public:
     explicit RelationshipExtractor(std::shared_ptr<RelationshipStore> storage);
+
     void extractProcedure(std::shared_ptr<ProcedureNode> node) override;
     void extractStmtList(std::shared_ptr<StmtListNode> node) override;
     void extractStmt(std::shared_ptr<StmtNode> node) override;

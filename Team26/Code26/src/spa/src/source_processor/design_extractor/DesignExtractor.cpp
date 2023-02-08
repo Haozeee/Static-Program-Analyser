@@ -1,6 +1,6 @@
 #include "DesignExtractor.h"
 
-DesignExtractor::DesignExtractor(std::shared_ptr<WriteOnlyStorage> storage) {
+DesignExtractor::DesignExtractor(const std::shared_ptr<WriteOnlyStorage>& storage) {
     entityStore = std::make_shared<EntityStore>(storage);
     relationshipStore = std::make_shared<RelationshipStore>(storage);
     patternStore = std::make_shared<PatternStore>(storage);
@@ -9,7 +9,7 @@ DesignExtractor::DesignExtractor(std::shared_ptr<WriteOnlyStorage> storage) {
     relationshipExtractor = std::make_shared<RelationshipExtractor>(relationshipStore);
 }
 
-void DesignExtractor::extract(std::shared_ptr<ProgramNode> programNode) {
+void DesignExtractor::extract(const std::shared_ptr<ProgramNode>& programNode) {
     entityExtractor->extractProgram(programNode);
     relationshipExtractor->extractProgram(programNode);
 }
