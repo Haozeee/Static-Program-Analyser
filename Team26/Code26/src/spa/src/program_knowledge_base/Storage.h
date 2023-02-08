@@ -2,7 +2,7 @@
 
 #include <memory>
 #include <string>
-#include "StorageSingleton.h"
+#include "StorageUtil.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/FollowsManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/FollowsTManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/ParentManager.h"
@@ -25,10 +25,10 @@ template<template<typename, typename> typename Relationship_Read_Or_Write,
          template<typename> typename Entity_Read_Or_Write>
 class Storage {
  private:
-    StorageSingleton* storage;
+    std::shared_ptr<StorageUtil> storage;
 
  public:
-    explicit Storage(StorageSingleton* storageSingleton) : storage(storageSingleton) {}
+    explicit Storage(std::shared_ptr<StorageUtil> storageUtil) : storage(storageUtil) {}
 
     std::shared_ptr<Relationship_Read_Or_Write<int, int>> getFollowsManager() {
         return storage->getFollowsManager();

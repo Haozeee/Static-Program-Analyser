@@ -1,10 +1,12 @@
 #include <string>
+#include <iostream>
 
+#include "Query.h"
 #include "QueryParser.h"
 
 #include "query_processing_system/exception/QueryException.h"
 #include "query_processing_system/exception/QueryExceptionMessages.h"
-#include "query_processing_system/parser/clause/suchThatClause/SuchThatClauseFactory.h"
+#include "query_processing_system/parser/clause/such_that_clause/SuchThatClauseFactory.h"
 
 QueryParser::QueryParser(std::vector<std::shared_ptr<Token>> tokens, Query* query) :
 query(query), Parser(tokens) {}
@@ -89,6 +91,13 @@ void QueryParser::parseRelRef() {
     Argument rightArgument = parseArgument();
     auto relRefClause = SuchThatClauseFactory::createSuchThatClause(relRefString, leftArgument, rightArgument);
     query->addSuchThatClause(relRefClause);
+
+//    for (const auto& i : query->getSuchThatClauses()) {
+//        std::cout << "LEFT ARG " << i->getLeftArg().getValue() << std::endl;
+//        std::cout << "LEFT ARG DESIGN ENTITY" << toString(i->getLeftArg().getDesignEntity()) << std::endl;
+//        std::cout << "RIGHT ARG " << i->getRightArg().getValue() << std::endl;
+//        std::cout << "RIGHT ARG DESIGN ENTITY" << toString(i->getRightArg().getDesignEntity()) << std::endl;
+//    }
 }
 
 Argument QueryParser::parseArgument() {
@@ -96,13 +105,14 @@ Argument QueryParser::parseArgument() {
         // Token Type Integer means line number
         std::shared_ptr<Token> integerToken = parseNext(TokenType::TOKEN_INTEGER);
         std::string integerString = integerToken->getValue();
-        Argument integerArgument(ArgumentType::NUMBER, integerString);
+        Argument integerArgument(ArgumentType::NUMBER, integerString, DesignEntity::NONE);
         return integerArgument;
     } else if (isTypeOf(TokenType::TOKEN_NAME)) {
         // Token Type Name means Synonym
         std::shared_ptr<Token> nameToken = parseNext(TokenType::TOKEN_NAME);
         std::string nameString = nameToken->getValue();
-        Argument nameArgument(ArgumentType::SYNONYM, nameString);
+        DesignEntity designEntity = query->getSynonymDesignEntity(nameString);
+        Argument nameArgument(ArgumentType::SYNONYM, nameString, designEntity);
         return nameArgument;
     } else {
         throw QueryParserException(QueryParserInvalidRelRefArgument);

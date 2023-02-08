@@ -4,6 +4,7 @@
 #include <vector>
 #include "query_processing_system/parser/Query.h"
 #include "common/Parser.h"
+#include "Argument.h"
 
 
 class QueryParser : public Parser {

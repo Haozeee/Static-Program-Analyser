@@ -4,7 +4,7 @@
 #include <string>
 #include <list>
 #include <memory>
-#include "clauseEvaluator/ClauseResult.h"
+#include "clause_evaluator/ClauseResult.h"
 #include "../parser/SelectClause.h"
 
 /**

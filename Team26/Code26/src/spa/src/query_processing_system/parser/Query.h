@@ -8,7 +8,7 @@
 #include "SelectClause.h"
 #include "Declaration.h"
 #include "Synonym.h"
-#include "clause/suchThatClause/SuchThatClause.h"
+#include "clause/such_that_clause/SuchThatClause.h"
 
 class Query {
  private:
@@ -27,6 +27,8 @@ class Query {
     ~Query();
 
     DesignEntity getSynonymDesignEntity(std::shared_ptr<Synonym> synonym);
+
+    DesignEntity getSynonymDesignEntity(std::string string);
 
     std::shared_ptr<SelectClause> getSelectClause();
 

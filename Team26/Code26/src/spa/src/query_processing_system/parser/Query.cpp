@@ -36,7 +36,11 @@ void Query::addDeclaration(const Synonym& synonym, DesignEntity designEntity) {
 }
 
 DesignEntity Query::getSynonymDesignEntity(std::shared_ptr<Synonym> synonym) {
-    auto res = synonymToDesignEntityMap.find(synonym->getIdent());
+    return getSynonymDesignEntity(synonym->getIdent());
+}
+
+DesignEntity Query::getSynonymDesignEntity(std::string string) {
+    auto res = synonymToDesignEntityMap.find(string);
     if (res == synonymToDesignEntityMap.end()) {
         // TODO(Hao Ze): Custom exception
         throw std::exception();
