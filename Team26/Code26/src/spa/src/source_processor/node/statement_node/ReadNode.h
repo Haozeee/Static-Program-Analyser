@@ -9,5 +9,5 @@ class ReadNode : public StmtNode {
 
     ReadNode(int stmtIndex, std::string varName);
 
-    void evaluate(AbstractSyntaxTreeExtractor& extractor) override;
+    void evaluate(AbstractExtractor& extractor) override;
 };

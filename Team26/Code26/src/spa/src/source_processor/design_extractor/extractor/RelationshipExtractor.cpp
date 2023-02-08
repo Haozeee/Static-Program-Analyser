@@ -1,26 +1,30 @@
 #include "RelationshipExtractor.h"
 #include <sstream>
 #include <iostream>
+#include <utility>
 
-RelationshipExtractor::RelationshipExtractor(std::shared_ptr<WriteOnlyStorage> storage) : AbstractSyntaxTreeExtractor(
-        storage) {
+RelationshipExtractor::RelationshipExtractor(std::shared_ptr<RelationshipStore> relationshipStore) : AbstractExtractor
+() {
+    this->relationshipStore = std::move(relationshipStore);
 }
 
 void RelationshipExtractor::extractProcedure(std::shared_ptr<ProcedureNode> node) {
-    AbstractSyntaxTreeExtractor::extractProcedure(node);
+    AbstractExtractor::extractProcedure(node);
 }
 
 void RelationshipExtractor::extractStmtList(std::shared_ptr<StmtListNode> node) {
-    AbstractSyntaxTreeExtractor::extractStmtList(node);
+    AbstractExtractor::extractStmtList(node);
 }
 
 void RelationshipExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
-    AbstractSyntaxTreeExtractor::extractStmt(node);
+    AbstractExtractor::extractStmt(node);
 
     if (!simpleFollow->empty()) {
         // std::cerr << "PAIR: " << simpleFollow->back() << " and  " << currentStmtNo << std::endl;
-        storage->getFollowsManager()->insertRelationship(simpleFollow->back(), currentStmtNo);
-    }
+        // storage->getFollowsManager()->insertRelationship(simpleFollow->back(), currentStmtNo);
+        // storage->getFollowsManager()->insertRelationship(simpleFollow->back(), currentStmtNo,
+        //                                                      storage->getFollowsTManager());
+        }
     simpleFollow->push_back(currentStmtNo);
 }
 

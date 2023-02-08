@@ -2,15 +2,15 @@
 #include <unordered_set>
 #include <string>
 #include <stdexcept>
-#include "common/tokens/NameToken.h"
-#include "common/tokens/IntegerToken.h"
-#include "common/tokens/SpecialCharToken.h"
-#include "common/tokens/EndOfFileToken.h"
-#include "common/tokens/StringExpressionToken.h"
+#include "common/tokenizer/token/NameToken.h"
+#include "common/tokenizer/token/IntegerToken.h"
+#include "common/tokenizer/token/SpecialCharToken.h"
+#include "common/tokenizer/token/EndOfFileToken.h"
+#include "common/tokenizer/token/StringExpressionToken.h"
 
 std::unordered_set<std::string> specialChars({";", ",", "_", "=", "*", "(", ")"});
 
-QueryTokenizer::QueryTokenizer(const std::string& query) : Tokenizer(query) {}
+QueryTokenizer::QueryTokenizer(const std::string& query) : AbsractTokenizer(query) {}
 
 void QueryTokenizer::readSpecialChar() {
     if (specialChars.find(getCurrentToken()) == specialChars.end()) {

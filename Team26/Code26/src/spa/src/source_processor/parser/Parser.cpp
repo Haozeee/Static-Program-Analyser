@@ -1,4 +1,4 @@
-#include "SourceParser.h"
+#include "Parser.h"
 #include <memory>
 #include <string>
 #include <utility>
@@ -13,10 +13,10 @@
 #define STMT_END ";"
 #define EQUAL_KEYWORD "="
 
-SourceParser::SourceParser(std::vector<std::shared_ptr<Token>> tokens)
-    : Parser(tokens), stmtIndex(INITIAL_STMT_INDEX) {}
+Parser::Parser(std::vector<std::shared_ptr<Token>> tokens)
+    : AbstractParser(tokens), stmtIndex(INITIAL_STMT_INDEX) {}
 
-std::shared_ptr<ProgramNode> SourceParser::parse() {
+std::shared_ptr<ProgramNode> Parser::parse() {
     std::vector<std::shared_ptr<ProcedureNode>> procedureList;
     while (!isTypeOf(TokenType::TOKEN_END_OF_FILE)) {
         procedureList.emplace_back(parseProcedure());
@@ -29,7 +29,7 @@ std::shared_ptr<ProgramNode> SourceParser::parse() {
     return std::make_shared<ProgramNode>(procedureList);
 }
 
-std::shared_ptr<ProcedureNode> SourceParser::parseProcedure() {
+std::shared_ptr<ProcedureNode> Parser::parseProcedure() {
     parseNext(PROCEDURE_KEYWORD);
     std::shared_ptr<Token> nameToken = parseNext(TokenType::TOKEN_NAME);
     parseNext(STMTLIST_START);
@@ -39,7 +39,7 @@ std::shared_ptr<ProcedureNode> SourceParser::parseProcedure() {
     return std::make_shared<ProcedureNode>(nameToken->getValue(), stmtListNode);
 }
 
-std::shared_ptr<StmtListNode> SourceParser::parseStmtList() {
+std::shared_ptr<StmtListNode> Parser::parseStmtList() {
     std::vector<std::shared_ptr<StmtNode>> stmtList;
 
     while (!isValueOf(STMTLIST_END)) {
@@ -72,7 +72,7 @@ std::shared_ptr<StmtListNode> SourceParser::parseStmtList() {
     return std::make_shared<StmtListNode>(stmtList);
 }
 
-std::shared_ptr<CallNode> SourceParser::parseCall() {
+std::shared_ptr<CallNode> Parser::parseCall() {
     std::shared_ptr<Token> nameToken = parseNext(TokenType::TOKEN_NAME);
     parseNext(STMT_END);
     stmtIndex++;
@@ -80,7 +80,7 @@ std::shared_ptr<CallNode> SourceParser::parseCall() {
     return std::make_shared<CallNode>(stmtIndex, nameToken->getValue());
 }
 
-std::shared_ptr<PrintNode> SourceParser::parsePrint() {
+std::shared_ptr<PrintNode> Parser::parsePrint() {
     std::shared_ptr<Token> nameToken = parseNext(TokenType::TOKEN_NAME);
     parseNext(STMT_END);
     stmtIndex++;
@@ -88,7 +88,7 @@ std::shared_ptr<PrintNode> SourceParser::parsePrint() {
     return std::make_shared<PrintNode>(stmtIndex, nameToken->getValue());
 }
 
-std::shared_ptr<ReadNode> SourceParser::parseRead() {
+std::shared_ptr<ReadNode> Parser::parseRead() {
     std::shared_ptr<Token> nameToken = parseNext(TokenType::TOKEN_NAME);
     parseNext(STMT_END);
     stmtIndex++;
@@ -96,7 +96,7 @@ std::shared_ptr<ReadNode> SourceParser::parseRead() {
     return std::make_shared<ReadNode>(stmtIndex, nameToken->getValue());
 }
 
-std::shared_ptr<ExprNode> SourceParser::parseExpr(std::shared_ptr<std::string> expr) {
+std::shared_ptr<ExprNode> Parser::parseExpr(std::shared_ptr<std::string> expr) {
     std::shared_ptr<Token> exprToken;
 
     if (isTypeOf(TokenType::TOKEN_NAME)) {
@@ -117,7 +117,7 @@ std::shared_ptr<ExprNode> SourceParser::parseExpr(std::shared_ptr<std::string> e
     return std::make_shared<ExprNode>(term, exprOptionalParams);
 }
 
-std::shared_ptr<AssignNode> SourceParser::parseAssign(std::shared_ptr<Token> nameToken) {
+std::shared_ptr<AssignNode> Parser::parseAssign(std::shared_ptr<Token> nameToken) {
     parseNext(EQUAL_KEYWORD);
     std::shared_ptr<std::string> expr = std::make_shared<std::string>();
     ExprNode exprNode = *parseExpr(expr);

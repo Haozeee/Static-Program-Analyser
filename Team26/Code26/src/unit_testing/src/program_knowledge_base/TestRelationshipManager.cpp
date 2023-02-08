@@ -1,21 +1,28 @@
 #include "catch.hpp"
 #include "program_knowledge_base/relationship/RelationshipManager.h"
+#include "program_knowledge_base/relationship/WriteOnlyRelationshipManager.h"
+#include "program_knowledge_base/StorageUtil.h"
+#include "program_knowledge_base/ReadOnlyStorage.h"
+#include "program_knowledge_base/WriteOnlyStorage.h"
+
+TEST_CASE("RelationshipManager insertRelationship int,int") {
+    RelationshipManager<int, int> relationshipManager;
+    REQUIRE(relationshipManager.insertRelationship(2, 3));
+    REQUIRE(relationshipManager.insertRelationship(2, 4));
+    REQUIRE(relationshipManager.insertRelationship(3, 4));
+}
 
 TEST_CASE("RelationshipManager insertRelationship int,string") {
     RelationshipManager<int, std::string> relationshipManager;
     REQUIRE(relationshipManager.insertRelationship(2, "x"));
+    REQUIRE(relationshipManager.insertRelationship(2, "y"));
 }
 
 TEST_CASE("RelationshipManager insertRelationship string,string") {
     RelationshipManager<std::string, std::string> relationshipManager;
-    REQUIRE(relationshipManager.insertRelationship("x", "y"));
+    REQUIRE(relationshipManager.insertRelationship("a", "x"));
+    REQUIRE(relationshipManager.insertRelationship("a", "y"));
 }
-
-TEST_CASE("RelationshipManager insertRelationship int,int") {
-    RelationshipManager<int, int> relationshipManager;
-    REQUIRE(relationshipManager.insertRelationship(2, 2));
-}
-
 
 TEST_CASE("RelationshipManager isEmpty int,string") {
     RelationshipManager<int, std::string> relationshipManager;
@@ -57,26 +64,67 @@ TEST_CASE("RelationshipManager contains int,int") {
     REQUIRE(relationshipManager.contains(2, 3));
 }
 
+TEST_CASE("RelationshipManager getAllRelationshipEntries int,int") {
+    RelationshipManager<int, int> relationshipManager;
+    std::unordered_map<int, std::unordered_set<int>> test_map = {{2, {3, 4}}};
+    REQUIRE(relationshipManager.insertRelationship(2, 3));
+    REQUIRE(relationshipManager.insertRelationship(2, 4));
+    REQUIRE(relationshipManager.getAllRelationshipEntries() == test_map);
+}
+
 TEST_CASE("RelationshipManager getAllRelationshipEntries int,string") {
     RelationshipManager<int, std::string> relationshipManager;
-    std::unordered_map<int, std::string> relationships_map = {{1, "x"}, {2, "y"}};
-    relationshipManager.insertRelationship(1, "x");
-    relationshipManager.insertRelationship(2, "y");
-    REQUIRE(relationshipManager.getAllRelationshipEntries() == relationships_map);
+    std::unordered_map<int, std::unordered_set<std::string>> test_map = {{2, {"x", "y"}}};
+    REQUIRE(relationshipManager.insertRelationship(2, "x"));
+    REQUIRE(relationshipManager.insertRelationship(2, "y"));
+    REQUIRE(relationshipManager.getAllRelationshipEntries() == test_map);
 }
 
 TEST_CASE("RelationshipManager getAllRelationshipEntries string,string") {
     RelationshipManager<std::string, std::string> relationshipManager;
-    std::unordered_map<std::string, std::string> relationships_map = {{"Area", "x"}, {"Perimeter", "y"}};
-    relationshipManager.insertRelationship("Area", "x");
-    relationshipManager.insertRelationship("Perimeter", "y");
-    REQUIRE(relationshipManager.getAllRelationshipEntries() == relationships_map);
+    std::unordered_map<std::string, std::unordered_set<std::string>> test_map = {{"a", {"x", "y"}}};
+    REQUIRE(relationshipManager.insertRelationship("a", "x"));
+    REQUIRE(relationshipManager.insertRelationship("a", "y"));
+    REQUIRE(relationshipManager.getAllRelationshipEntries() == test_map);
 }
 
-TEST_CASE("RelationshipManager getAllRelationshipEntries int,int") {
+TEST_CASE("RelationshipManager getAllReversedRelationshipEntries int,int") {
     RelationshipManager<int, int> relationshipManager;
-    std::unordered_map<int, int> relationships_map = {{1, 2}, {2, 3}};
-    relationshipManager.insertRelationship(1, 2);
-    relationshipManager.insertRelationship(2, 3);
-    REQUIRE(relationshipManager.getAllRelationshipEntries() == relationships_map);
+    std::unordered_map<int, std::unordered_set<int>> test_map = {{3, {1,2}}};
+    REQUIRE(relationshipManager.insertRelationship(1, 3));
+    REQUIRE(relationshipManager.insertRelationship(2, 3));
+    REQUIRE(relationshipManager.getAllReversedRelationshipEntries() == test_map);
+}
+
+TEST_CASE("RelationshipManager getAllReversedRelationshipEntries int,string") {
+    RelationshipManager<int, std::string> relationshipManager;
+    std::unordered_map<std::string, std::unordered_set<int>> test_map = {{"a", {1}}, {"b",{1}}};
+    REQUIRE(relationshipManager.insertRelationship(1, "a"));
+    REQUIRE(relationshipManager.insertRelationship(1, "b"));
+    REQUIRE(relationshipManager.getAllReversedRelationshipEntries() == test_map);
+}
+
+TEST_CASE("RelationshipManager getAllReversedRelationshipEntries string,string") {
+    RelationshipManager<std::string, std::string> relationshipManager;
+    std::unordered_map<std::string, std::unordered_set<std::string>> test_map = {{"a", {"x"}}, {"b",{"x"}}};
+    REQUIRE(relationshipManager.insertRelationship("x", "a"));
+    REQUIRE(relationshipManager.insertRelationship("x", "b"));
+    REQUIRE(relationshipManager.getAllReversedRelationshipEntries() == test_map);
+}
+
+TEST_CASE("RelationshipManager _insert int,int,WriteOnlyRelationshipManager") {
+    RelationshipManager<int, int> relationshipManager;
+
+    REQUIRE(relationshipManager.insertRelationship(0, 1,
+                                                   std::shared_ptr<WriteOnlyRelationshipManger<int, int>>()) == false);
+    REQUIRE(relationshipManager.insertRelationship(1, 0,
+                                                   std::shared_ptr<WriteOnlyRelationshipManger<int, int>>()) == false);
+
+}
+
+TEST_CASE("FollowsManager _insert int,int,WriteOnlyRelationshipManager") {
+    std::shared_ptr<StorageUtil> storageUtil = std::make_shared<StorageUtil>();
+    WriteOnlyStorage* writeOnlyStorage = new WriteOnlyStorage(storageUtil);
+    REQUIRE(writeOnlyStorage->getFollowsManager()->insertRelationship(1, 2,
+                                                                      writeOnlyStorage->getFollowsTManager()));
 }

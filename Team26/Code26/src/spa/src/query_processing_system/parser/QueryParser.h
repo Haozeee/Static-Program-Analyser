@@ -3,16 +3,17 @@
 #include <memory>
 #include <vector>
 
+#include "query_processing_system/parser/Query.h"
+#include "common/parser/AbstractParser.h"
 #include "Argument.h"
 #include "Query.h"
-#include "common/Parser.h"
 #include "query_processing_system/exception/QueryException.h"
 #include "query_processing_system/exception/QueryExceptionMessages.h"
 #include "query_processing_system/parser/Query.h"
 #include "query_processing_system/parser/clause/such_that_clause/SuchThatClauseFactory.h"
 
 
-class QueryParser : public Parser {
+class QueryParser : public AbstractParser {
  private:
     /**
      * Query wrapper object.

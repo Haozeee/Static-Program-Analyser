@@ -6,6 +6,7 @@
 #include "evaluator/QueryResult.h"
 #include "parser/DesignEntity.h"
 #include "evaluator/clause_evaluator/ClauseResult.h"
+#include "evaluator/PkbUtil.h"
 #include "../program_knowledge_base/ReadOnlyStorage.h"
 
 class QueryEvaluator {
@@ -23,8 +24,6 @@ class QueryEvaluator {
      * Evalutate the such that clauses in the query.
      */
     void evaluateSuchThatClause();
-
-    std::unordered_set<std::string> getEntitiesFromPkb(DesignEntity entity);
 
  public:
     explicit QueryEvaluator(Query* query, std::shared_ptr<ReadOnlyStorage> storage);

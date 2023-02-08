@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include "ClauseResult.h"
+#include "../PkbUtil.h"
 #include "../../../program_knowledge_base/ReadOnlyStorage.h"
 
 class ClauseEvaluator {

@@ -3,12 +3,12 @@
 #include <vector>
 #include <string>
 #include <memory>
-#include "common/tokens/Token.h"
+#include "common/tokenizer/token/Token.h"
 
 /**
  * The tokenizer class tokenize an input stream into a token list.
  * */
-class Tokenizer {
+class AbsractTokenizer {
  private:
     /**
      * This function loads the next special character from the stream to the currentToken.
@@ -36,7 +36,7 @@ class Tokenizer {
     std::string currentToken;
 
     /**
-     * List of tokens that are tokenized.
+     * List of token that are tokenized.
      * */
     std::vector<std::shared_ptr<Token>> tokens;
 
@@ -79,9 +79,9 @@ class Tokenizer {
     void addToken(std::shared_ptr<Token> token);
 
     /**
-     * Get all tokens in the token list
+     * Get all token in the token list
      *
-     * @return The tokens list.
+     * @return The token list.
      * */
     std::vector<std::shared_ptr<Token>> getTokens();
 
@@ -91,14 +91,14 @@ class Tokenizer {
      *
      * @param stream The input SIMPLE program as a stream to be tokenized.
      * */
-    explicit Tokenizer(std::istream* stream);
+    explicit AbsractTokenizer(std::istream* stream);
 
     /**
      * Constructor for the Query Processing Subsystem initialization.
      *
      * @param stream The query to be tokenized.
      * */
-    explicit Tokenizer(const std::string& query);
+    explicit AbsractTokenizer(const std::string& query);
 
     /**
      * This functions tokenizes the input stream.

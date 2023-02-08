@@ -1,27 +1,27 @@
-#include "Tokenizer.h"
+#include "AbsractTokenizer.h"
 #include <sstream>
 #include <memory>
 
-Tokenizer::Tokenizer(std::istream* stream) : istream(stream) {}
+AbsractTokenizer::AbsractTokenizer(std::istream* stream) : istream(stream) {}
 
-Tokenizer::Tokenizer(const std::string& query) {
+AbsractTokenizer::AbsractTokenizer(const std::string& query) {
     auto* inputStringStream = new std::stringstream(query);
     istream = inputStringStream;
 }
 
-char Tokenizer::nextChar() {
+char AbsractTokenizer::nextChar() {
     return static_cast<char>(istream->get());
 }
 
-char Tokenizer::peekChar() {
+char AbsractTokenizer::peekChar() {
     return static_cast<char>(istream->peek());
 }
 
-std::string Tokenizer::getCurrentToken() {
+std::string AbsractTokenizer::getCurrentToken() {
     return currentToken;
 }
 
-void Tokenizer::readInteger() {
+void AbsractTokenizer::readInteger() {
     char c = peekChar();
     while (isdigit(c)) {
         currentToken += nextChar();
@@ -33,11 +33,11 @@ void Tokenizer::readInteger() {
     }
 }
 
-bool Tokenizer::hasLeadingZero() {
+bool AbsractTokenizer::hasLeadingZero() {
     return currentToken.size() > 1 && currentToken.at(0) == '0';
 }
 
-void Tokenizer::readName() {
+void AbsractTokenizer::readName() {
     char c = peekChar();
     while (isalnum(c)) {
         currentToken += nextChar();
@@ -45,10 +45,10 @@ void Tokenizer::readName() {
     }
 }
 
-void Tokenizer::addToken(std::shared_ptr<Token> token) {
+void AbsractTokenizer::addToken(std::shared_ptr<Token> token) {
     tokens.push_back(token);
 }
 
-std::vector<std::shared_ptr<Token>> Tokenizer::getTokens() {
+std::vector<std::shared_ptr<Token>> AbsractTokenizer::getTokens() {
     return tokens;
 }
