@@ -7,11 +7,17 @@
 #include "../parser/DesignEntity.h"
 #include "../../program_knowledge_base/ReadOnlyStorage.h"
 
-using EntitySet = std::unordered_set<std::string>;
+using stringEntitySet = std::unordered_set<std::string>;
+using intEntitySet = std::unordered_set<int>;
 
 class PkbUtil {
  public:
-    static EntitySet getEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage, DesignEntity entity);
+    static stringEntitySet getEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage, DesignEntity entity);
+
+    /**
+     * Get all entities that are of statement form from the pkb.
+     */
+    static intEntitySet getStatementEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage, DesignEntity entity);
 
     /**
     * Converts a set containing integers to a set of strings.

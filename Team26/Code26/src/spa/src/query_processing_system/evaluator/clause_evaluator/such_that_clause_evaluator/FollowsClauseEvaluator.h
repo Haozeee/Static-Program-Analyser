@@ -10,6 +10,7 @@ class FollowsClauseEvaluator : public SuchThatClauseEvaluator {
 
     void evaluateSynonymNumber(std::shared_ptr<ReadOnlyStorage> storage);
 
+    void evaluateSynonymSynonym(std::shared_ptr<ReadOnlyStorage> storage);
  public:
     FollowsClauseEvaluator(Argument left, Argument right);
 
