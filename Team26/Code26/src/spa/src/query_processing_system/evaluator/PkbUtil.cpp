@@ -34,16 +34,3 @@ EntitySet PkbUtil::intSetToStringSet(std::unordered_set<int> intSet) {
     return result;
 }
 
-EntitySet PkbUtil::setIntersection(const EntitySet &setA, const EntitySet &setB) {
-    // Unable to use std::set_intersection as the two sets are not in sorted order
-    EntitySet intersect;
-    // Iterate over the smaller sized set
-    EntitySet smallerSet = setA.size() > setB.size() ? setB : setA;
-    EntitySet largerSet = setA.size() > setB.size() ? setA : setB;
-    for (auto element : smallerSet) {
-        if (largerSet.count(element)) {
-            intersect.insert({element});
-        }
-    }
-    return intersect;
-}

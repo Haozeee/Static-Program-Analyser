@@ -32,9 +32,14 @@ void FollowsClauseEvaluator::evaluateNumberSynonym(std::shared_ptr<ReadOnlyStora
     auto synonymStatements = PkbUtil::getEntitiesFromPkb(storage, rightArg.getDesignEntity());
     auto relationshipStore = storage->getFollowsManager()->getAllRelationshipEntries();
     auto it = relationshipStore.find(stoi(leftArg.getValue()));
+    for (auto const& [k,v]:relationshipStore) {
+        for (auto i : v) {
+            std::cout << i << "\n";
+        }
+    }
     if (it != relationshipStore.end()) {
-        auto intersect = PkbUtil::setIntersection(synonymStatements,
-                                                  PkbUtil::intSetToStringSet(it->second));
+        EntitySet intersect = {};
+        PkbUtil::setIntersection(synonymStatements,PkbUtil::intSetToStringSet(it->second), intersect);
         clauseResult->addNewResult(rightArg.getValue(), intersect);
     } else {
         clauseResult->addNewResult(rightArg.getValue(), {});
@@ -46,8 +51,8 @@ void FollowsClauseEvaluator::evaluateSynonymNumber(std::shared_ptr<ReadOnlyStora
     auto relationshipStore = storage->getFollowsManager()->getAllReversedRelationshipEntries();
     auto it = relationshipStore.find(stoi(rightArg.getValue()));
     if (it != relationshipStore.end()) {
-        auto intersect = PkbUtil::setIntersection(synonymStatements,
-                                                  PkbUtil::intSetToStringSet(it->second));
+        EntitySet intersect = {};
+        PkbUtil::setIntersection(synonymStatements,PkbUtil::intSetToStringSet(it->second), intersect);
         clauseResult->addNewResult(leftArg.getValue(), intersect);
     } else {
         clauseResult->addNewResult(leftArg.getValue(), {});
