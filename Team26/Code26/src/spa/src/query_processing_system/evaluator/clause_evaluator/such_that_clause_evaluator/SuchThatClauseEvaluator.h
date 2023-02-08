@@ -12,11 +12,11 @@ enum class ClauseArgumentTypes {
 };
 
 class SuchThatClauseEvaluator : public ClauseEvaluator {
- private:
+ protected:
     Argument leftArg;
+
     Argument rightArg;
 
- protected:
     std::shared_ptr<ClauseResult> clauseResult;
 
     ClauseArgumentTypes getClauseArgumentTypes();

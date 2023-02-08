@@ -1,5 +1,4 @@
 #include "QueryResult.h"
-#include <iostream>
 #include <algorithm>
 #include <iterator>
 
@@ -27,6 +26,7 @@ void QueryResult::addClauseResultToQuery(std::shared_ptr<ClauseResult> clauseRes
         if (it != results.end()) {
             it->second = PkbUtil::setIntersection(it->second, v);
         }
+        std::cout << *this << "\n";
     }
 }
 
@@ -34,15 +34,3 @@ bool QueryResult::operator ==(const QueryResult &other) const {
     return results == other.results;
 }
 
-std::ostream& operator <<(std::ostream& os, const QueryResult& queryResult) {
-    os << "Displaying Query Result: \n";
-    for (auto i : queryResult.results) {
-        os << "Identity: " << i.first << "\n";
-        os << "Results: ";
-        for (auto j : i.second) {
-            os << j << " ";
-        }
-        os << "\n";
-    }
-    return os;
-}

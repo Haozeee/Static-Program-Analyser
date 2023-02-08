@@ -3,13 +3,15 @@
 #include "../parser/DesignEntity.h"
 #include "../../program_knowledge_base/ReadOnlyStorage.h"
 
-using ResultSet = std::unordered_set<std::string>;
+using EntitySet = std::unordered_set<std::string>;
 
 class PkbUtil {
 public:
-    static ResultSet getEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage, DesignEntity entity);
+    static EntitySet getEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage, DesignEntity entity);
 
-    static ResultSet setIntersection(ResultSet setA, ResultSet setB);
+
+
+    static EntitySet setIntersection(const EntitySet &setA, const EntitySet &setB);
 
     /**
     * Converts a set containing integers to a set of strings.

@@ -37,6 +37,4 @@ class QueryResult : public Result {
     void addClauseResultToQuery(std::shared_ptr<ClauseResult> clauseResult);
 
     bool operator ==(const QueryResult& other) const;
-
-    friend std::ostream& operator << (std::ostream& os, const QueryResult& queryResult);
 };

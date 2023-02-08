@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <string>
+#include <iostream>
 
 /**
  * Key: Identity of select clauses
@@ -26,4 +27,6 @@ class Result {
     void addNewResult(std::string key, std::unordered_set<std::string> toAdd);
 
     ResultMap getResults();
+
+    friend std::ostream& operator <<(std::ostream& os, const Result& result);
 };
