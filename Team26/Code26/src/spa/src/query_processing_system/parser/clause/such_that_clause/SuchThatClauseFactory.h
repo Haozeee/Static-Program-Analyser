@@ -27,11 +27,6 @@ const char ParentTRelation[] = "Parent*";
 const char UsesRelation[] = "Uses";
 
 class SuchThatClauseFactory {
- private:
-    static bool isModifiesOrUsesRelation(std::string);
-
-    static SuchThatClause* createModifiesOrUsesClause(std::string, Argument leftArg, Argument rightArg);
-
  public:
     /**
      * Factory method to create a new Such That Clause.

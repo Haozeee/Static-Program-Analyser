@@ -15,10 +15,3 @@ std::string Argument::getValue() {
 DesignEntity Argument::getDesignEntity() {
     return designEntity;
 }
-
-bool Argument::isValidArgumentType(ArgumentType arg) {
-    return (arg == ArgumentType::SYNONYM
-            || arg == ArgumentType::WILDCARD
-            || arg == ArgumentType::NUMBER
-            || arg == ArgumentType::CHARACTERSTRING);
-}

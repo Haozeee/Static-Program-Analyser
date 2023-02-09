@@ -7,6 +7,8 @@ const char QueryValidatorUndeclaredSelectClauseSynonym[] =
 
 const char QueryParserInvalidRelationshipInSelectClause[] =
         " is not a valid relationship, please modify your input. Note that PQL is case-sensitive.";
+extern const char QueryParserInvalidModifiesOrUsesRelationshipInSelectClause[] =
+        " relationship has an invalid first argument.";
 const char QueryParserInvalidTokenForRelationshipArgument[] =
         "Invalid argument type in relationship clause. Please modify your input.";
 extern const char QueryValidatorUndeclaredSuchThatClauseArgument[] =
