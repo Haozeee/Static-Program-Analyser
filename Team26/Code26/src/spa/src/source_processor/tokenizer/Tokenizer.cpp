@@ -8,7 +8,7 @@
 #include "common/tokenizer/token/IntegerToken.h"
 #include "common/tokenizer/token/SpecialCharToken.h"
 
-Tokenizer::Tokenizer(std::istream* stream) : AbsractTokenizer(stream) {}
+Tokenizer::Tokenizer(std::istream* stream) : AbstractTokenizer(stream) {}
 
 std::unordered_set<std::string> specialChar({"{", "}", ";", "(", ")", "=", ">", "<", "+", "-", "*", "/", "%", "!"});
 std::unordered_set<std::string> validLogicalOps({"&&", "||", ">=", "<=", "==", "!="});
