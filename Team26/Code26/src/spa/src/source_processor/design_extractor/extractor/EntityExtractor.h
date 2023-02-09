@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 #include "source_processor/design_extractor/extractor/AbstractExtractor.h"
 #include "source_processor/node/statement_node/ReadNode.h"
 #include "source_processor/storage/EntityStore.h"
@@ -22,4 +23,6 @@ class EntityExtractor : public AbstractExtractor {
     void extractWhile() override;
     void extractCondExpr() override;
     void extractExpr() override;
+    void extractName(std::string ident) override;
+    void extractInteger(std::string integer) override;
 };

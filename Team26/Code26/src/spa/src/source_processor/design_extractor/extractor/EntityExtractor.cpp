@@ -1,6 +1,7 @@
 #include "EntityExtractor.h"
 
 #include <utility>
+#include <string>
 
 EntityExtractor::EntityExtractor(std::shared_ptr<EntityStore> entityStore) : AbstractExtractor() {
     this->entityStore = std::move(entityStore);
@@ -45,6 +46,14 @@ void EntityExtractor::extractCondExpr() {
 }
 
 void EntityExtractor::extractExpr() {
+}
+
+void EntityExtractor::extractName(std::string name) {
+    entityStore->insertName(name);
+}
+
+void EntityExtractor::extractInteger(std::string integer) {
+    entityStore->insertConstant(integer);
 }
 
 

@@ -34,8 +34,10 @@ void EntityStore::insertWhileStatement(std::shared_ptr<WhileNode> node) {
 void EntityStore::insertIfStatement(std::shared_ptr<IfNode> node) {
 }
 
-void EntityStore::insertVariable(std::string &name) {
+void EntityStore::insertName(std::string &name) {
+    entityStorage->getVariableManager()->insertEntity(name);
 }
 
 void EntityStore::insertConstant(std::string &integer) {
+    entityStorage->getConstantManager()->insertEntity(stoi(integer));
 }
