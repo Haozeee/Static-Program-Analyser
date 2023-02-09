@@ -1,5 +1,9 @@
-#include "Query.h"
 #include <algorithm>
+#include <iostream>
+
+#include "Query.h"
+#include "query_processing_system/exception/QueryExceptionMessages.h"
+#include "query_processing_system/exception/QueryException.h"
 
 Query::Query() {}
 
@@ -32,6 +36,7 @@ void Query::addSuchThatClause(SuchThatClause* clause) {
 void Query::addDeclaration(const Synonym& synonym, DesignEntity designEntity) {
     auto declaration = std::make_shared<Declaration>(synonym, designEntity);
     declarations.push_back(declaration);
+//    std::cout << synonym.getIdent() << " " << toString(declaration->getDesignEntity()) << std::endl;
     synonymToDesignEntityMap.insert({synonym.getIdent(), declaration->getDesignEntity()});
 }
 
@@ -40,12 +45,12 @@ DesignEntity Query::getSynonymDesignEntity(std::shared_ptr<Synonym> synonym) {
 }
 
 DesignEntity Query::getSynonymDesignEntity(std::string string) {
-    auto res = synonymToDesignEntityMap.find(string);
-    if (res == synonymToDesignEntityMap.end()) {
-        // TODO(Hao Ze): Custom exception
-        throw std::exception();
+    if (synonymToDesignEntityMap.count(string)) {
+        DesignEntity de = synonymToDesignEntityMap[string];
+        return de;
+    } else {
+        throw QueryInvalidRelationshipArguments(QueryValidatorUndeclaredSuchThatClauseArgument + string);
     }
-    return res->second;
 }
 
 bool Query::operator==(const Query &other) const {
