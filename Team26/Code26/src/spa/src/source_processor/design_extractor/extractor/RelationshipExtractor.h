@@ -7,7 +7,8 @@
 class RelationshipExtractor : public AbstractExtractor {
  private:
     std::shared_ptr<RelationshipStore> relationshipStore;
-    std::shared_ptr<std::vector<int>> simpleFollow = std::make_shared<std::vector<int>>();
+    std::vector<std::shared_ptr<std::vector<int>>> followsStack;
+    std::vector<int> parentStack;
  public:
     explicit RelationshipExtractor(std::shared_ptr<RelationshipStore> storage);
 

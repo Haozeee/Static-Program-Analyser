@@ -9,23 +9,28 @@ RelationshipExtractor::RelationshipExtractor(std::shared_ptr<RelationshipStore> 
 }
 
 void RelationshipExtractor::extractProcedure(std::shared_ptr<ProcedureNode> node) {
+    parentStack.clear();
     AbstractExtractor::extractProcedure(node);
 }
 
 void RelationshipExtractor::extractStmtList(std::shared_ptr<StmtListNode> node) {
+    followsStack.push_back(std::make_shared<std::vector<int>>());
     AbstractExtractor::extractStmtList(node);
+    followsStack.pop_back();
 }
 
 void RelationshipExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
     AbstractExtractor::extractStmt(node);
 
-    if (!simpleFollow->empty()) {
-        // std::cerr << "PAIR: " << simpleFollow->back() << " and  " << currentStmtNo << std::endl;
-        // storage->getFollowsManager()->insertRelationship(simpleFollow->back(), currentStmtNo);
-        // storage->getFollowsManager()->insertRelationship(simpleFollow->back(), currentStmtNo,
-        //                                                      storage->getFollowsTManager());
-        }
-    simpleFollow->push_back(currentStmtNo);
+    std::shared_ptr<std::vector<int>> currentFollowsNesting = followsStack.back();
+    if (!currentFollowsNesting->empty()) {
+        relationshipStore->insertFollowsRelationship(currentFollowsNesting->back(), currentStmtNo);
+    }
+    currentFollowsNesting->push_back(currentStmtNo);
+
+    if (!parentStack.empty()) {
+        relationshipStore->insertParentsRelationship(parentStack.back(), currentStmtNo);
+    }
 }
 
 void RelationshipExtractor::extractRead(std::shared_ptr<ReadNode> node) {
