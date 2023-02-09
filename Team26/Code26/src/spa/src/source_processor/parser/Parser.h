@@ -22,7 +22,6 @@
 
 class Parser : public AbstractParser {
  private:
-    typedef AbstractParser Super;
     int stmtIndex;
     std::shared_ptr<ProcedureNode> parseProcedure();
     std::shared_ptr<StmtListNode> parseStmtList();
@@ -32,11 +31,11 @@ class Parser : public AbstractParser {
     std::shared_ptr<WhileNode> parseWhile();
     std::shared_ptr<IfNode> parseIf();
     std::shared_ptr<AssignNode> parseAssign(std::shared_ptr<Token> nameToken);
-    std::shared_ptr<CondExprNode> parseCondExprNode(std::string condExpr);
-    std::shared_ptr<RelExpr> parseRelExpr(std::string relExpr);
-    std::shared_ptr<ExprNode> parseExprNode(std::string expr);
-    std::shared_ptr<TermNode> parseTermNode(std::string term);
-    std::shared_ptr<Factor> parseFactor(std::string factor);
+    std::shared_ptr<CondExprNode> parseCondExprNode(int startIndex, int endIndex);
+    std::shared_ptr<RelExpr> parseRelExpr(int startIndex, int endIndex);
+    std::shared_ptr<ExprNode> parseExprNode(int startIndex, int endIndex);
+    std::shared_ptr<TermNode> parseTermNode(int startIndex, int endIndex);
+    //std::shared_ptr<Factor> parseFactor(std::string factor);
 
  public:
     explicit Parser(std::vector<std::shared_ptr<Token>> tokens);
