@@ -51,7 +51,7 @@ TEST_CASE("Parser parse read") {
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
-    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "x"));
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "xyz"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
@@ -61,6 +61,8 @@ TEST_CASE("Parser parse read") {
     CHECK(programNode->procedureList[0]->procedureName == "proc");
     REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() == 1);
     CHECK(programNode->procedureList[0]->stmtListNode->stmtList[0]->stmtIndex == 1);
-    // TODO(oviya): compare type of derived class
-    //REQUIRE(typeid(programNode->procedureList[0]->stmtListNode->stmtList[0]) == typeid(ReadNode));
+    REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList[0]->stmtType == StmtType::STMT_READ);
+    ReadNode* readNode;
+    REQUIRE_NOTHROW(readNode = dynamic_cast<ReadNode*>(programNode->procedureList[0]->stmtListNode->stmtList[0].get()));
+    CHECK(readNode->varName == "xyz");
 }
