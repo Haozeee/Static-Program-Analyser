@@ -8,7 +8,7 @@
 #include "relationship/ReadOnlyRelationshipManager.h"
 
 class ReadOnlyStorage: public Storage<ReadOnlyRelationshipManager,
-        ReadOnlyEntityManager, ReadyOnlyPatternManager> {
+        ReadOnlyEntityManager, ReadOnlyPatternManager> {
  public:
     explicit ReadOnlyStorage(std::shared_ptr<StorageUtil> storageUtil) : Storage(storageUtil) {}
 };

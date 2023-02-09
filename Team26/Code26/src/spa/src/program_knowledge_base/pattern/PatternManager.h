@@ -6,7 +6,7 @@
 #include "WriteOnlyPatternManager.h"
 
 
-class PatternManager: public ReadyOnlyPatternManager, public WriteOnlyPatternManager {
+class PatternManager: public ReadOnlyPatternManager, public WriteOnlyPatternManager {
  private:
     std::vector<std::string> lhs_vector;
     std::vector<std::string> rhs_vector;
@@ -14,23 +14,23 @@ class PatternManager: public ReadyOnlyPatternManager, public WriteOnlyPatternMan
     std::unordered_map<int, int> reversed_index_stmt_map;
 
  public:
-    bool isEmptyLhsVector() {
+    bool isEmptyLhsVector() override {
         return lhs_vector.empty();
     }
 
-    bool isEmptyRhsVector() {
+    bool isEmptyRhsVector() override{
         return rhs_vector.empty();
     }
 
-    bool isEmptyIndexStmtMap() {
+    bool isEmptyIndexStmtMap() override {
         return index_stmt_map.empty();
     }
 
-    bool isEmptyReversedIndexStmtMap() {
+    bool isEmptyReversedIndexStmtMap() override {
         return reversed_index_stmt_map.empty();
     }
 
-    bool containsLhsVector(const std::string& left) {
+    bool containsLhsVector(const std::string& left) override {
         auto it = std::find(lhs_vector.begin(), lhs_vector.end(), left);
         if (it != lhs_vector.end()) {
             return true;
@@ -38,7 +38,7 @@ class PatternManager: public ReadyOnlyPatternManager, public WriteOnlyPatternMan
         return false;
     }
 
-    bool containsRhsVector(const std::string& right) {
+    bool containsRhsVector(const std::string& right) override {
         auto it = std::find(rhs_vector.begin(), rhs_vector.end(), right);
         if (it != rhs_vector.end()) {
             return true;
@@ -46,7 +46,7 @@ class PatternManager: public ReadyOnlyPatternManager, public WriteOnlyPatternMan
         return false;
     }
 
-    bool containsIndexStmtMap(int index, int stmt_no) {
+    bool containsIndexStmtMap(int index, int stmt_no) override {
         auto key = index_stmt_map.find(index);
         if (key != index_stmt_map.end()) {
             return key->second == stmt_no;
@@ -54,7 +54,7 @@ class PatternManager: public ReadyOnlyPatternManager, public WriteOnlyPatternMan
         return false;
     }
 
-    bool containsReversedIndexStmtMap(int index, int stmt_no) {
+    bool containsReversedIndexStmtMap(int index, int stmt_no) override {
         auto key = reversed_index_stmt_map.find(index);
         if (key != reversed_index_stmt_map.end()) {
             return key->second == stmt_no;
@@ -62,23 +62,23 @@ class PatternManager: public ReadyOnlyPatternManager, public WriteOnlyPatternMan
         return false;
     }
 
-    std::vector<std::string> getAllLhsPatternEntries() {
+    std::vector<std::string> getAllLhsPatternEntries() override{
         return lhs_vector;
     }
 
-    std::vector<std::string> getAllRhsPatternEntries() {
+    std::vector<std::string> getAllRhsPatternEntries() override{
         return rhs_vector;
     }
 
-    std::unordered_map<int, int> getAllPatternEntries() {
+    std::unordered_map<int, int> getAllPatternEntries() override {
         return index_stmt_map;
     }
 
-    std::unordered_map<int, int> getAllReversedPatternEntries() {
+    std::unordered_map<int, int> getAllReversedPatternEntries() override{
         return reversed_index_stmt_map;
     }
 
-    bool insertPattern(int stmt_no, std::string left, std::string right) {
+    bool insertPattern(int stmt_no, std::string left, std::string right) override {
         int index = static_cast<int>(lhs_vector.size());
         lhs_vector.push_back(left);
         rhs_vector.push_back(right);
