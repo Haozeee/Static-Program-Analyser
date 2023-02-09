@@ -18,7 +18,7 @@ class PatternManager: public ReadOnlyPatternManager, public WriteOnlyPatternMana
         return lhs_vector.empty();
     }
 
-    bool isEmptyRhsVector() override{
+    bool isEmptyRhsVector() override {
         return rhs_vector.empty();
     }
 
@@ -62,11 +62,11 @@ class PatternManager: public ReadOnlyPatternManager, public WriteOnlyPatternMana
         return false;
     }
 
-    std::vector<std::string> getAllLhsPatternEntries() override{
+    std::vector<std::string> getAllLhsPatternEntries() override {
         return lhs_vector;
     }
 
-    std::vector<std::string> getAllRhsPatternEntries() override{
+    std::vector<std::string> getAllRhsPatternEntries() override {
         return rhs_vector;
     }
 
@@ -74,7 +74,7 @@ class PatternManager: public ReadOnlyPatternManager, public WriteOnlyPatternMana
         return index_stmt_map;
     }
 
-    std::unordered_map<int, int> getAllReversedPatternEntries() override{
+    std::unordered_map<int, int> getAllReversedPatternEntries() override {
         return reversed_index_stmt_map;
     }
 

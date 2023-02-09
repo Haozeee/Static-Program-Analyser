@@ -1,5 +1,9 @@
 #pragma once
 
+#include <string>
+#include <vector>
+#include <unordered_map>
+
 class ReadOnlyPatternManager {
  public:
     virtual bool isEmptyLhsVector() = 0;
