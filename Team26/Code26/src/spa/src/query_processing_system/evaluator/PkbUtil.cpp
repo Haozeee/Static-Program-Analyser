@@ -1,49 +1,43 @@
 #include "PkbUtil.h"
 
-EntitySet PkbUtil::getEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage, DesignEntity entity) {
+stringEntitySet PkbUtil::getEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage, DesignEntity entity) {
     switch (entity) {
         case DesignEntity::VARIABLE:
             return storage->getVariableManager()->getAllEntitiesEntries();
-        case DesignEntity::ASSIGN:
-            return intSetToStringSet(storage->getAssignManager()->getAllEntitiesEntries());
-        case DesignEntity::STMT:
-            return intSetToStringSet(storage->getStmtManager()->getAllEntitiesEntries());
         case DesignEntity::PROCEDURE:
             return storage->getProcedureManager()->getAllEntitiesEntries();
+        default:
+            return PkbUtil::intSetToStringSet(PkbUtil::getStatementEntitiesFromPkb(storage, entity));
+    }
+}
+
+intEntitySet PkbUtil::getStatementEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage, DesignEntity entity) {
+    switch (entity) {
+        case DesignEntity::ASSIGN:
+            return storage->getAssignManager()->getAllEntitiesEntries();
+        case DesignEntity::STMT:
+            return storage->getStmtManager()->getAllEntitiesEntries();
         case DesignEntity::READ:
-            return intSetToStringSet(storage->getReadManager()->getAllEntitiesEntries());
+            return storage->getReadManager()->getAllEntitiesEntries();
         case DesignEntity::CONSTANT:
-            return intSetToStringSet(storage->getConstantManager()->getAllEntitiesEntries());
+            return storage->getConstantManager()->getAllEntitiesEntries();
         case DesignEntity::PRINT:
-            return intSetToStringSet(storage->getPrintManager()->getAllEntitiesEntries());
+            return storage->getPrintManager()->getAllEntitiesEntries();
         case DesignEntity::IF:
-            return intSetToStringSet(storage->getIfManager()->getAllEntitiesEntries());
+            return storage->getIfManager()->getAllEntitiesEntries();
         case DesignEntity::CALL:
-            return intSetToStringSet(storage->getCallManager()->getAllEntitiesEntries());
+            return storage->getCallManager()->getAllEntitiesEntries();
         case DesignEntity::WHILE:
             return {};
-        case DesignEntity::NONE:
+        default:
             return {};
     }
 }
 
-EntitySet PkbUtil::intSetToStringSet(std::unordered_set<int> intSet) {
-    EntitySet result;
+stringEntitySet PkbUtil::intSetToStringSet(std::unordered_set<int> intSet) {
+    stringEntitySet result;
     std::transform(intSet.begin(), intSet.end(), std::inserter(result, result.begin()),
                    [](int i) {return std::to_string(i);});
     return result;
 }
 
-EntitySet PkbUtil::setIntersection(const EntitySet &setA, const EntitySet &setB) {
-    // Unable to use std::set_intersection as the two sets are not in sorted order
-    EntitySet intersect;
-    // Iterate over the smaller sized set
-    EntitySet smallerSet = setA.size() > setB.size() ? setB : setA;
-    EntitySet largerSet = setA.size() > setB.size() ? setA : setB;
-    for (auto element : smallerSet) {
-        if (largerSet.count(element)) {
-            intersect.insert({element});
-        }
-    }
-    return intersect;
-}

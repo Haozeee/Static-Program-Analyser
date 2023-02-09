@@ -2,14 +2,6 @@
 
 #include <memory>
 #include <string>
-#include "program_knowledge_base/relationship/relationship_child_managers/FollowsManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/FollowsTManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/ParentManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/ParentTManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/UsesPManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/UsesSManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/ModifiesPManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/ModifiesSManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/AssignManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/PrintManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/ReadManager.h"
@@ -19,9 +11,19 @@
 #include "program_knowledge_base/entity/entity_child_managers/ConstantManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/CallManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/ProcedureManager.h"
+#include "program_knowledge_base/pattern/PatternManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/FollowsManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/FollowsTManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/ParentManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/ParentTManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/UsesPManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/UsesSManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/ModifiesPManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/ModifiesSManager.h"
 
 class StorageUtil {
  private:
+    // relationship managers
     std::shared_ptr<FollowsManager> followsManager;
     std::shared_ptr<FollowsTManager> followsTManager;
     std::shared_ptr<ParentManager> parentManager;
@@ -30,6 +32,7 @@ class StorageUtil {
     std::shared_ptr<UsesSManager> usesSManager;
     std::shared_ptr<ModifiesPManager> modifiesPManager;
     std::shared_ptr<ModifiesSManager> modifiesSManager;
+
     // entity managers
     std::shared_ptr<AssignManager> assignManager;
     std::shared_ptr<CallManager> callManager;
@@ -41,6 +44,9 @@ class StorageUtil {
     std::shared_ptr<StmtManager> stmtManager;
     std::shared_ptr<VariableManager> variableManager;
 
+    // pattern managers
+    std::shared_ptr<PatternManager> patternManager;
+
  public:
     StorageUtil() {
         followsManager = std::make_shared<FollowsManager>();
@@ -51,8 +57,6 @@ class StorageUtil {
         usesSManager = std::make_shared<UsesSManager>();
         modifiesPManager = std::make_shared<ModifiesPManager>();
         modifiesSManager = std::make_shared<ModifiesSManager>();
-
-        // entity managers
         assignManager = std::make_shared<AssignManager>();
         callManager = std::make_shared<CallManager>();
         constantManager = std::make_shared<ConstantManager>();
@@ -62,6 +66,7 @@ class StorageUtil {
         readManager = std::make_shared<ReadManager>();
         stmtManager = std::make_shared<StmtManager>();
         variableManager = std::make_shared<VariableManager>();
+        patternManager = std::make_shared<PatternManager>();
     }
 
     std::shared_ptr<FollowsManager> getFollowsManager() {
@@ -130,5 +135,9 @@ class StorageUtil {
 
     std::shared_ptr<VariableManager> getVariableManager() {
         return variableManager;
+    }
+
+    std::shared_ptr<PatternManager> getPatternManager() {
+        return patternManager;
     }
 };
