@@ -31,7 +31,7 @@ void AbstractTokenizer::readInteger() {
     }
 
     if (hasLeadingZero()) {
-        throw TokenizerException(LeadingZeroExceptionMessage);
+        throw TokenizerException(TokenizerLeadingZeroExceptionMessage);
     }
 }
 

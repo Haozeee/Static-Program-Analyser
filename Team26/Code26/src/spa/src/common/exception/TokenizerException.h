@@ -6,7 +6,7 @@
 extern const char TokenizerRuntimeExceptionMessage[];
 
 class TokenizerException : public std::runtime_error {
-public:
+ public:
     TokenizerException();
     explicit TokenizerException(const std::string& errorMessage);
 };
