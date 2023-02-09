@@ -54,10 +54,10 @@ class PatternManager: public ReadOnlyPatternManager, public WriteOnlyPatternMana
         return false;
     }
 
-    bool containsReversedIndexStmtMap(int index, int stmt_no) override {
-        auto key = reversed_index_stmt_map.find(index);
+    bool containsReversedIndexStmtMap(int stmt_no, int index) override {
+        auto key = reversed_index_stmt_map.find(stmt_no);
         if (key != reversed_index_stmt_map.end()) {
-            return key->second == stmt_no;
+            return key->second == index;
         }
         return false;
     }
