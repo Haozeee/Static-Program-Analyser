@@ -1,9 +1,13 @@
 #include "EntityExtractor.h"
 
-EntityExtractor::EntityExtractor(std::shared_ptr<WriteOnlyStorage> storage) : AbstractExtractor(storage) {}
+#include <utility>
+
+EntityExtractor::EntityExtractor(std::shared_ptr<EntityStore> entityStore) : AbstractExtractor() {
+    this->entityStore = std::move(entityStore);
+}
 
 void EntityExtractor::extractProcedure(std::shared_ptr<ProcedureNode> node) {
-    storage->getProcedureManager()->insertEntity(node->procedureName);
+    entityStore->insertProcedure(node);
     AbstractExtractor::extractProcedure(node);
 }
 
@@ -12,22 +16,20 @@ void EntityExtractor::extractStmtList(std::shared_ptr<StmtListNode> node) {
 }
 
 void EntityExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
+    entityStore->insertStatement(node);
     AbstractExtractor::extractStmt(node);
-    storage->getStmtManager()->insertEntity(currentStmtNo);
 }
 
 void EntityExtractor::extractRead(std::shared_ptr<ReadNode> node) {
-    storage->getReadManager()->insertEntity(currentStmtNo);
-    storage->getVariableManager()->insertEntity(node->varName);
+    entityStore->insertReadStatement(node);
 }
 
 void EntityExtractor::extractPrint(std::shared_ptr<PrintNode> node) {
-    storage->getPrintManager()->insertEntity(currentStmtNo);
-    storage->getVariableManager()->insertEntity(node->varName);
+    entityStore->insertPrintStatement(node);
 }
 
 void EntityExtractor::extractCall(std::shared_ptr<CallNode> node) {
-    storage->getCallManager()->insertEntity(currentStmtNo);
+    entityStore->insertCallStatement(node);
 }
 
 void EntityExtractor::extractAssign(std::shared_ptr<AssignNode> node) {
@@ -44,4 +46,6 @@ void EntityExtractor::extractCondExpr() {
 
 void EntityExtractor::extractExpr() {
 }
+
+
 
