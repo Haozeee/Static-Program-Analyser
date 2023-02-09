@@ -24,3 +24,9 @@ class QueryParserException : public std::runtime_error {
     QueryParserException() : std::runtime_error(InvalidArgument) {}
     explicit QueryParserException(const std::string& errorMessage) : std::runtime_error(errorMessage) {}
 };
+
+class QueryInvalidRelationshipArguments : public std::runtime_error {
+ public:
+    QueryInvalidRelationshipArguments() : std::runtime_error(InvalidArgument) {}
+    explicit QueryInvalidRelationshipArguments(const std::string& errorMessage) : std::runtime_error(errorMessage) {}
+};
