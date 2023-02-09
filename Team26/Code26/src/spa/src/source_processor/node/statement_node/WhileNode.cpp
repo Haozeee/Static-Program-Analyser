@@ -2,7 +2,7 @@
 
 WhileNode::WhileNode(int stmtIndex, std::shared_ptr<CondExprNode> condExprNode,
     std::shared_ptr<StmtListNode> stmtListNode)
-    : StmtNode(stmtIndex), condExprNode(condExprNode), stmtListNode(stmtListNode) {}
+    : StmtNode(stmtIndex, StmtType::STMT_WHILE), condExprNode(condExprNode), stmtListNode(stmtListNode) {}
 
 
 void WhileNode::evaluate(AbstractExtractor& extractor) {
