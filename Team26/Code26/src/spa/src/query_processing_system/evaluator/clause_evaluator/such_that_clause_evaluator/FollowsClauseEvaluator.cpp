@@ -13,6 +13,8 @@ std::shared_ptr<ClauseResult> FollowsClauseEvaluator::evaluateClause(std::shared
         evaluateNumberSynonym(storage);
     } else if (arg == ClauseArgumentTypes::SYNONYM_NUMBER) {
         evaluateSynonymNumber(storage);
+    } else if (arg == ClauseArgumentTypes::SYNONYM_SYNONYM) {
+        evaluateSynonymSynonym(storage);
     }
 
     return clauseResult;
@@ -29,27 +31,42 @@ void FollowsClauseEvaluator::evaluateNumberNumber(std::shared_ptr<ReadOnlyStorag
 }
 
 void FollowsClauseEvaluator::evaluateNumberSynonym(std::shared_ptr<ReadOnlyStorage> storage) {
-    auto synonymStatements = PkbUtil::getEntitiesFromPkb(storage, rightArg.getDesignEntity());
+    auto synonymStatements = PkbUtil::getStatementEntitiesFromPkb(storage, rightArg.getDesignEntity());
     auto relationshipStore = storage->getFollowsManager()->getAllRelationshipEntries();
     auto it = relationshipStore.find(stoi(leftArg.getValue()));
     if (it != relationshipStore.end()) {
-        auto intersect = PkbUtil::setIntersection(synonymStatements,
-                                                  PkbUtil::intSetToStringSet(it->second));
-        clauseResult->addNewResult(rightArg.getValue(), intersect);
+        intEntitySet intersect = {};
+        PkbUtil::setIntersection(synonymStatements, it->second, intersect);
+        clauseResult->addNewResult(rightArg.getValue(), PkbUtil::intSetToStringSet(intersect));
     } else {
         clauseResult->addNewResult(rightArg.getValue(), {});
     }
 }
 
 void FollowsClauseEvaluator::evaluateSynonymNumber(std::shared_ptr<ReadOnlyStorage> storage) {
-    auto synonymStatements = PkbUtil::getEntitiesFromPkb(storage, leftArg.getDesignEntity());
+    auto synonymStatements = PkbUtil::getStatementEntitiesFromPkb(storage, leftArg.getDesignEntity());
     auto relationshipStore = storage->getFollowsManager()->getAllReversedRelationshipEntries();
     auto it = relationshipStore.find(stoi(rightArg.getValue()));
     if (it != relationshipStore.end()) {
-        auto intersect = PkbUtil::setIntersection(synonymStatements,
-                                                  PkbUtil::intSetToStringSet(it->second));
-        clauseResult->addNewResult(leftArg.getValue(), intersect);
+        intEntitySet intersect = {};
+        PkbUtil::setIntersection(synonymStatements, it->second, intersect);
+        clauseResult->addNewResult(leftArg.getValue(), PkbUtil::intSetToStringSet(intersect));
     } else {
         clauseResult->addNewResult(leftArg.getValue(), {});
     }
+}
+
+void FollowsClauseEvaluator::evaluateSynonymSynonym(std::shared_ptr<ReadOnlyStorage> storage) {
+    // All statements that follows the left arg design entity
+    auto followsStatement = PkbUtil::unionSearchKeyResults(
+            storage->getFollowsManager()->getAllRelationshipEntries(),
+            PkbUtil::getStatementEntitiesFromPkb(storage, leftArg.getDesignEntity()));
+    // Find intersection with all statements of the right arg design entity
+    intEntitySet intersect = {};
+    PkbUtil::setIntersection(followsStatement,
+                             PkbUtil::getStatementEntitiesFromPkb(storage, rightArg.getDesignEntity()),
+                             intersect);
+    stringEntitySet res = PkbUtil::intSetToStringSet(intersect);
+    clauseResult->addNewResult(leftArg.getValue(), res);
+    clauseResult->addNewResult(rightArg.getValue(), res);
 }
