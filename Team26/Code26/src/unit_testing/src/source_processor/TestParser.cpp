@@ -4,8 +4,9 @@
 TEST_CASE("Parser parse empty") {
     std::vector<std::shared_ptr<Token>> tokens;
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-    auto programNode = Parser(tokens).parse();
+    std::shared_ptr<ProgramNode> programNode;
 
+    REQUIRE_NOTHROW(programNode = Parser(tokens).parse());
     CHECK(programNode->procedureList.size() == 0);
 }
 
@@ -17,7 +18,8 @@ TEST_CASE("Parser parse procedure") {
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-    auto programNode = Parser(tokens).parse();
+    std::shared_ptr<ProgramNode> programNode;
+    REQUIRE_NOTHROW(programNode = Parser(tokens).parse());
 
     CHECK(programNode->procedureList.size() == 1);
     CHECK(programNode->procedureList[0]->procedureName == "proc");
@@ -55,7 +57,8 @@ TEST_CASE("Parser parse read") {
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-    auto programNode = Parser(tokens).parse();
+    std::shared_ptr<ProgramNode> programNode;
+    REQUIRE_NOTHROW(programNode = Parser(tokens).parse());
 
     REQUIRE(programNode->procedureList.size() == 1);
     CHECK(programNode->procedureList[0]->procedureName == "proc");
@@ -79,7 +82,8 @@ TEST_CASE("Parser parse print") {
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-    auto programNode = Parser(tokens).parse();
+    std::shared_ptr<ProgramNode> programNode;
+    REQUIRE_NOTHROW(programNode = Parser(tokens).parse());
 
     REQUIRE(programNode->procedureList.size() == 1);
     CHECK(programNode->procedureList[0]->procedureName == "proc");
@@ -103,7 +107,8 @@ TEST_CASE("Parser parse call") {
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-    auto programNode = Parser(tokens).parse();
+    std::shared_ptr<ProgramNode> programNode;
+    REQUIRE_NOTHROW(programNode = Parser(tokens).parse());
 
     REQUIRE(programNode->procedureList.size() == 1);
     CHECK(programNode->procedureList[0]->procedureName == "proc");
@@ -116,8 +121,8 @@ TEST_CASE("Parser parse call") {
     CHECK(callNode->processName == "xyz");
 }
 
-TEST_CASE("Parser parse assign") {
-    // one read stmt: positive test case
+TEST_CASE("Parser parse assign int") {
+    // one assign stmt with int: positive test case
     std::vector<std::shared_ptr<Token>> tokens;
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
@@ -128,7 +133,8 @@ TEST_CASE("Parser parse assign") {
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-    auto programNode = Parser(tokens).parse();
+    std::shared_ptr<ProgramNode> programNode;
+    REQUIRE_NOTHROW(programNode = Parser(tokens).parse());
 
     REQUIRE(programNode->procedureList.size() == 1);
     CHECK(programNode->procedureList[0]->procedureName == "proc");
@@ -139,4 +145,50 @@ TEST_CASE("Parser parse assign") {
     AssignNode* assignNode;
     REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(programNode->procedureList[0]->stmtListNode->stmtList[0].get()));
     CHECK(assignNode->varName == "x");
+    CHECK_FALSE(assignNode->exprNode->optionalParams.has_value());
+    CHECK_FALSE(assignNode->exprNode->term->optionalParams.has_value());
+    // TODO(oviya): check redundancy of Factor
+    Factor factor = *(assignNode->exprNode->term->factor);
+    REQUIRE(std::holds_alternative<std::string>(factor));
+    REQUIRE_FALSE(std::holds_alternative<int>(factor));
+    std::string* f;
+    REQUIRE_NOTHROW(f = std::get_if<std::string>(&factor));
+    CHECK(*f == "1");
+}
+
+TEST_CASE("Parser parse assign factor") {
+    // one assign stmt with (factor): positive test case
+    std::vector<std::shared_ptr<Token>> tokens;
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "x"));
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "="));
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_INTEGER, "1"));
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
+    std::shared_ptr<ProgramNode> programNode;
+    REQUIRE_NOTHROW(programNode = Parser(tokens).parse());
+
+    REQUIRE(programNode->procedureList.size() == 1);
+    CHECK(programNode->procedureList[0]->procedureName == "proc");
+    REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() == 1);
+    CHECK(programNode->procedureList[0]->stmtListNode->stmtList[0]->stmtIndex == 1);
+    REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList[0]->stmtType == StmtType::STMT_ASSIGN);
+
+    AssignNode* assignNode;
+    REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(programNode->procedureList[0]->stmtListNode->stmtList[0].get()));
+    CHECK(assignNode->varName == "x");
+    CHECK_FALSE(assignNode->exprNode->optionalParams.has_value());
+    CHECK_FALSE(assignNode->exprNode->term->optionalParams.has_value());
+    // TODO(oviya): check redundancy of Factor
+    Factor factor = *(assignNode->exprNode->term->factor);
+    REQUIRE(std::holds_alternative<std::string>(factor));
+    REQUIRE_FALSE(std::holds_alternative<int>(factor));
+    std::string* f;
+    REQUIRE_NOTHROW(f = std::get_if<std::string>(&factor));
+    CHECK(*f == "1");
 }
