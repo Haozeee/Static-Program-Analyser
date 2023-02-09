@@ -408,7 +408,7 @@ std::shared_ptr<Factor> Parser::parseFactor(std::string factor) {
 std::shared_ptr<AssignNode> Parser::parseAssign(std::shared_ptr<Token> nameToken) {
     parseNext(ASSIGN_OPERATOR);
     std::string expr = "";
-    ExprNode exprNode = *parseExprNode(expr);
+    std::shared_ptr<ExprNode> exprNode = parseExprNode(expr);
     parseNext(STMT_END);
     stmtIndex++;
 
