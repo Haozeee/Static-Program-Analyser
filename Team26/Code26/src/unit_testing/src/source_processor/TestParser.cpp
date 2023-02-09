@@ -62,13 +62,14 @@ TEST_CASE("Parser parse read") {
     REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() == 1);
     CHECK(programNode->procedureList[0]->stmtListNode->stmtList[0]->stmtIndex == 1);
     REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList[0]->stmtType == StmtType::STMT_READ);
+
     ReadNode* readNode;
     REQUIRE_NOTHROW(readNode = dynamic_cast<ReadNode*>(programNode->procedureList[0]->stmtListNode->stmtList[0].get()));
     CHECK(readNode->varName == "xyz");
 }
 
 TEST_CASE("Parser parse print") {
-    // one read stmt: positive test case
+    // one print stmt: positive test case
     std::vector<std::shared_ptr<Token>> tokens;
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
@@ -85,13 +86,14 @@ TEST_CASE("Parser parse print") {
     REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() == 1);
     CHECK(programNode->procedureList[0]->stmtListNode->stmtList[0]->stmtIndex == 1);
     REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList[0]->stmtType == StmtType::STMT_PRINT);
+
     PrintNode* printNode;
     REQUIRE_NOTHROW(printNode = dynamic_cast<PrintNode*>(programNode->procedureList[0]->stmtListNode->stmtList[0].get()));
     CHECK(printNode->varName == "xyz");
 }
 
 TEST_CASE("Parser parse call") {
-    // one read stmt: positive test case
+    // one call stmt: positive test case
     std::vector<std::shared_ptr<Token>> tokens;
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
@@ -108,7 +110,33 @@ TEST_CASE("Parser parse call") {
     REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() == 1);
     CHECK(programNode->procedureList[0]->stmtListNode->stmtList[0]->stmtIndex == 1);
     REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList[0]->stmtType == StmtType::STMT_CALL);
+
     CallNode* callNode;
     REQUIRE_NOTHROW(callNode = dynamic_cast<CallNode*>(programNode->procedureList[0]->stmtListNode->stmtList[0].get()));
     CHECK(callNode->processName == "xyz");
+}
+
+TEST_CASE("Parser parse assign") {
+    // one read stmt: positive test case
+    std::vector<std::shared_ptr<Token>> tokens;
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "x"));
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "="));
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_INTEGER, "1"));
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
+    auto programNode = Parser(tokens).parse();
+
+    REQUIRE(programNode->procedureList.size() == 1);
+    CHECK(programNode->procedureList[0]->procedureName == "proc");
+    REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() == 1);
+    CHECK(programNode->procedureList[0]->stmtListNode->stmtList[0]->stmtIndex == 1);
+    REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList[0]->stmtType == StmtType::STMT_ASSIGN);
+
+    AssignNode* assignNode;
+    REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(programNode->procedureList[0]->stmtListNode->stmtList[0].get()));
+    CHECK(assignNode->varName == "x");
 }
