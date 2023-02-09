@@ -19,8 +19,12 @@ char AbstractTokenizer::peekChar() {
     return static_cast<char>(istream->peek());
 }
 
-std::string AbstractTokenizer::getCurrentToken() {
-    return currentToken;
+void AbstractTokenizer::readName() {
+    char c = peekChar();
+    while (isalnum(c)) {
+        currentToken += nextChar();
+        c = peekChar();
+    }
 }
 
 void AbstractTokenizer::readInteger() {
@@ -39,16 +43,12 @@ bool AbstractTokenizer::hasLeadingZero() {
     return currentToken.size() > 1 && currentToken.at(0) == '0';
 }
 
-void AbstractTokenizer::readName() {
-    char c = peekChar();
-    while (isalnum(c)) {
-        currentToken += nextChar();
-        c = peekChar();
-    }
-}
-
 void AbstractTokenizer::addToken(const std::shared_ptr<Token>& token) {
     tokens.push_back(token);
+}
+
+std::string AbstractTokenizer::getCurrentToken() {
+    return currentToken;
 }
 
 std::vector<std::shared_ptr<Token>> AbstractTokenizer::getTokens() {
