@@ -22,6 +22,7 @@ void EntityStore::insertPrintStatement(std::shared_ptr<PrintNode> node) {
 }
 
 void EntityStore::insertAssignStatement(std::shared_ptr<AssignNode> node) {
+    entityStorage->getAssignManager()->insertEntity(node->stmtIndex);
 }
 
 void EntityStore::insertCallStatement(std::shared_ptr<CallNode> node) {

@@ -23,10 +23,12 @@ void EntityExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
 
 void EntityExtractor::extractRead(std::shared_ptr<ReadNode> node) {
     entityStore->insertReadStatement(node);
+    entityStore->insertName(node->varName);
 }
 
 void EntityExtractor::extractPrint(std::shared_ptr<PrintNode> node) {
     entityStore->insertPrintStatement(node);
+    entityStore->insertName(node->varName);
 }
 
 void EntityExtractor::extractCall(std::shared_ptr<CallNode> node) {
@@ -34,6 +36,9 @@ void EntityExtractor::extractCall(std::shared_ptr<CallNode> node) {
 }
 
 void EntityExtractor::extractAssign(std::shared_ptr<AssignNode> node) {
+    entityStore->insertName(node->varName);
+    entityStore->insertAssignStatement(node);
+    // Extract Exception
 }
 
 void EntityExtractor::extractIf() {
