@@ -23,10 +23,6 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
 
     std::shared_ptr<ClauseResult> clauseResult;
 
- public:
-    SuchThatClauseEvaluator<T, U>(Argument left, Argument right)
-            : leftArg(left), rightArg(right), clauseResult(std::make_shared<ClauseResult>()) {}
-
     void evaluateNumberNumber(StoragePointer storage) {
         auto relationshipStore = getRelationshipManager(storage);
         auto iterator = relationshipStore.find(stoi(leftArg.getValue()));
@@ -68,6 +64,10 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         setLeftArgResult(res.first);
         setRightArgResult(res.second);
     }
+
+ public:
+    SuchThatClauseEvaluator<T, U>(Argument left, Argument right)
+            : leftArg(left), rightArg(right), clauseResult(std::make_shared<ClauseResult>()) {}
 
     ClauseArgumentTypes getClauseArgumentTypes() {
         auto l = leftArg.getArgumentType();

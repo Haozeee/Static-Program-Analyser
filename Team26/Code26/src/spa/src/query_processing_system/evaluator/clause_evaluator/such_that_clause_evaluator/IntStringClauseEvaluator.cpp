@@ -14,6 +14,7 @@ std::shared_ptr<ClauseResult> IntStringClauseEvaluator::evaluateClause(StoragePo
         default:
             throw std::exception();
     }
+    return clauseResult;
 }
 
 void IntStringClauseEvaluator::setLeftArgResult(std::unordered_set<int> result) {
