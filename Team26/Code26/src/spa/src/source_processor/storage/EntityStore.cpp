@@ -30,9 +30,11 @@ void EntityStore::insertCallStatement(std::shared_ptr<CallNode> node) {
 }
 
 void EntityStore::insertWhileStatement(std::shared_ptr<WhileNode> node) {
+
 }
 
 void EntityStore::insertIfStatement(std::shared_ptr<IfNode> node) {
+    entityStorage->getIfManager()->insertEntity(node->stmtIndex);
 }
 
 void EntityStore::insertName(std::string &name) {
