@@ -8,7 +8,7 @@
 /**
  * The tokenizer class tokenize an input stream into a token list.
  * */
-class AbsractTokenizer {
+class AbstractTokenizer {
  private:
     /**
      * This function loads the next special character from the stream to the currentToken.
@@ -76,7 +76,7 @@ class AbsractTokenizer {
      *
      * @param token The token to be added.
      * */
-    void addToken(std::shared_ptr<Token> token);
+    void addToken(const std::shared_ptr<Token>& token);
 
     /**
      * Get all token in the token list
@@ -91,14 +91,14 @@ class AbsractTokenizer {
      *
      * @param stream The input SIMPLE program as a stream to be tokenized.
      * */
-    explicit AbsractTokenizer(std::istream* stream);
+    explicit AbstractTokenizer(std::istream* stream);
 
     /**
      * Constructor for the Query Processing Subsystem initialization.
      *
      * @param stream The query to be tokenized.
      * */
-    explicit AbsractTokenizer(const std::string& query);
+    explicit AbstractTokenizer(const std::string& query);
 
     /**
      * This functions tokenizes the input stream.
