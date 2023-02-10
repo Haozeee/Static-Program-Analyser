@@ -3,6 +3,8 @@
 #include <unordered_set>
 #include <sstream>
 #include <iostream>
+#include "source_processor/exception/SourceException.h"
+#include "source_processor/exception/SourceProcessorExceptionMessage.h"
 #include "common/tokenizer/token/EndOfFileToken.h"
 #include "common/tokenizer/token/NameToken.h"
 #include "common/tokenizer/token/IntegerToken.h"
@@ -31,10 +33,10 @@ bool Tokenizer::isValidLogicalOp() {
 void Tokenizer::readSpecialChar() {
     if (isValidSpecialChar()) /* valid special char */ {
         if (isPossibleLogicalOp() && !isValidLogicalOp()) /* invalid logical operation */ {
-            // TODO(zhengteck): throw exception
+            throw SourceTokenizerException(TokenizerInvalidLogicalOpExceptionMessage);
         }
     } else /* invalid special char */ {
-        // TODO(zhengteck): throw exception
+        throw SourceTokenizerException(TokenizerSpecialCharExceptionMessage);
     }
 }
 
