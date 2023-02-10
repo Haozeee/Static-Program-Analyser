@@ -41,16 +41,23 @@ void EntityExtractor::extractAssign(std::shared_ptr<AssignNode> node) {
     // Extract Exception
 }
 
-void EntityExtractor::extractIf() {
+void EntityExtractor::extractIf(std::shared_ptr<IfNode> node) {
+    entityStore->insertIfStatement(node);
+    std::shared_ptr<CondExprNode> condExprNode  = std::make_shared<CondExprNode>(node->condExprNode);
+    std::shared_ptr<StmtListNode> thenNode = std::make_shared<StmtListNode>(node->thenStmtListNode);
+    std::shared_ptr<StmtListNode> elseNode = std::make_shared<StmtListNode>(node->elseStmtListNode);
+    extractCondExpr(condExprNode);
+    extractStmtList(thenNode);
+    extractStmtList(elseNode);
 }
 
-void EntityExtractor::extractWhile() {
+void EntityExtractor::extractWhile(std::shared_ptr<WhileNode> node) {
 }
 
-void EntityExtractor::extractCondExpr() {
+void EntityExtractor::extractCondExpr(std::shared_ptr<CondExprNode> node) {
 }
 
-void EntityExtractor::extractExpr() {
+void EntityExtractor::extractExpr(std::shared_ptr<ExprNode> node) {
 }
 
 void EntityExtractor::extractName(std::string name) {
