@@ -1,14 +1,16 @@
 #pragma once
 #include <memory>
+#include <string>
 #include <vector>
 #include "source_processor/design_extractor/extractor/AbstractExtractor.h"
 #include "source_processor/storage/RelationshipStore.h"
 
 class RelationshipExtractor : public AbstractExtractor {
  private:
+    std::string currProcedureName;
     std::shared_ptr<RelationshipStore> relationshipStore;
     std::vector<std::shared_ptr<std::vector<int>>> followsStack;
-    std::vector<int> parentStack;
+    std::vector<int> parentIndexStack;
  public:
     explicit RelationshipExtractor(std::shared_ptr<RelationshipStore> storage);
 
@@ -19,8 +21,6 @@ class RelationshipExtractor : public AbstractExtractor {
     void extractPrint(std::shared_ptr<PrintNode> node) override;
     void extractAssign(std::shared_ptr<AssignNode> node) override;
     void extractCall(std::shared_ptr<CallNode> node) override;
-    void extractIf() override;
-    void extractWhile() override;
-    void extractCondExpr() override;
-    void extractExpr() override;
+    void extractWhile(std::shared_ptr<WhileNode> node) override;
+    void extractIf(std::shared_ptr<IfNode> node) override;
 };

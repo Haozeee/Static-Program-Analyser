@@ -24,3 +24,10 @@ void AbstractExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
     node->evaluate(*this);
 }
 
+void AbstractExtractor::extractCondExpr(std::shared_ptr<CondExprNode> node) {
+
+}
+
+void AbstractExtractor::extractExpr(std::shared_ptr<ExprNode> node) {
+
+}
