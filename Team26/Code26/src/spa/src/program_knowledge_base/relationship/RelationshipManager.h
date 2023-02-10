@@ -14,15 +14,28 @@ class RelationshipManager: public ReadOnlyRelationshipManager<T, U>,
     std::unordered_map<T, std::unordered_set<U>> relationships_map;
     std::unordered_map<U, std::unordered_set<T>> reversed_relationships_map;
  public:
-    bool isEmpty() {
+    bool isEmptyMap() {
         return relationships_map.empty();
     }
 
-    bool contains(T first_param, U second_param) {
+    bool isEmptyReversedMap() {
+        return reversed_relationships_map.empty();
+    }
+
+    bool containsMap(T first_param, U second_param) {
         auto key = relationships_map.find(first_param);
         if (key != relationships_map.end()) {
             auto res = key->second;
             return res.count(second_param);
+        }
+        return false;
+    }
+
+    bool containsReversedMap(U second_param, T first_param) {
+        auto key = reversed_relationships_map.find(second_param);
+        if (key != reversed_relationships_map.end()) {
+            auto res = key->second;
+            return res.count(first_param);
         }
         return false;
     }
