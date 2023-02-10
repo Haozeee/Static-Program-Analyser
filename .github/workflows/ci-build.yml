@@ -27,10 +27,17 @@ jobs:
             mkdir build
             cd build
             cmake ..
+            cmake --build . --target unit_testing --config Release
             cmake --build . --target autotester --config Release
             cd ../..
+        - name: Run Unit Test
+          shell: powershell
+          timeout-minutes: 1
+          run: |
+            cd .\Team26\Code26\build\src\unit_testing\Release\
+            .\unit_testing.exe
 
-        - name: Runs Autotester
+        - name: Run Autotester
           shell: powershell
           timeout-minutes: 1
           run: |

@@ -10,7 +10,7 @@
 
 std::unordered_set<std::string> specialChars({";", ",", "_", "=", "*", "(", ")"});
 
-QueryTokenizer::QueryTokenizer(const std::string& query) : AbsractTokenizer(query) {}
+QueryTokenizer::QueryTokenizer(const std::string& query) : AbstractTokenizer(query) {}
 
 void QueryTokenizer::readSpecialChar() {
     if (specialChars.find(getCurrentToken()) == specialChars.end()) {

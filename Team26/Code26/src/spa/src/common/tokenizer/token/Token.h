@@ -23,4 +23,7 @@ class Token {
     // TODO(zhengteck): Reconsider getter and setters is required.
     TokenType getType();
     std::string getValue();
+
+    virtual bool operator==(const Token& token) const;
 };
+
