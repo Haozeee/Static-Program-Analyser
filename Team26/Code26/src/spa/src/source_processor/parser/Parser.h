@@ -22,7 +22,7 @@
 
 
 class Parser : public AbstractParser {
- private:
+public:
     int stmtIndex;
     std::shared_ptr<ProcedureNode> parseProcedure();
     std::shared_ptr<StmtListNode> parseStmtList();
@@ -37,7 +37,7 @@ class Parser : public AbstractParser {
     std::shared_ptr<ExprNode> parseExprNode(int startIndex, int endIndex);
     std::shared_ptr<ExprNode> parseTerm(int startIndex, int endIndex);
 
- public:
+// public:
     explicit Parser(std::vector<std::shared_ptr<Token>> tokens);
     std::shared_ptr<ProgramNode> parse();
 };

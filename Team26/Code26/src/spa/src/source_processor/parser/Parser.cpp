@@ -364,8 +364,8 @@ std::shared_ptr<ExprNode> Parser::parseTerm(int startIndex, int endIndex) {
                 std::nullopt);
         }
         else if (getToken()->getValue() == MOD_OPERATOR && numOfBrackets == 0) {
-            auto exprNode1 = std::make_shared<ExprNode>(startIndex, index - 1);
-            auto exprNode2 = std::make_shared<ExprNode>(index + 1, endIndex);
+            auto exprNode1 = parseExprNode(startIndex, index - 1);
+            auto exprNode2 = parseExprNode(index + 1, endIndex);
             return std::make_shared<ExprNode>(std::make_pair(exprNode1, std::make_pair(TermOperatorType::OPERATOR_MOD, exprNode2)),
                 std::nullopt);
         }
