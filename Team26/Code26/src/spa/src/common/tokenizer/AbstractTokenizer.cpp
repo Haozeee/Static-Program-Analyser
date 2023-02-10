@@ -7,8 +7,7 @@
 AbstractTokenizer::AbstractTokenizer(std::istream* stream) : istream(stream) {}
 
 AbstractTokenizer::AbstractTokenizer(const std::string& query) {
-    auto* inputStringStream = new std::stringstream(query);
-    istream = inputStringStream;
+    istream = new std::stringstream(query);
 }
 
 char AbstractTokenizer::nextChar() {
