@@ -1,8 +1,4 @@
 #include "Parser.h"
-#include <memory>
-#include <optional>
-#include <string>
-#include <utility>
 
 #define INITIAL_STMT_INDEX 0
 #define STMTLIST_START "{"
@@ -100,8 +96,14 @@ std::shared_ptr<StmtListNode> Parser::parseStmtList() {
 std::shared_ptr<WhileNode> Parser::parseWhile() {
     parseNext(BRACKETS_START);
     int oldIndex = index;
+    int numOfBrackets = 1;
     while (getToken()->getType() != TokenType::TOKEN_END_OF_FILE
-        && getToken()->getValue() != BRACKETS_END) {
+        && !(getToken()->getValue() == BRACKETS_END && numOfBrackets == 0)) {
+        if (getToken()->getValue() == BRACKETS_START) {
+            numOfBrackets++;
+        } else if (getToken()->getValue() == BRACKETS_END) {
+            numOfBrackets--;
+        }
         getNext();
     }
     int newIndex = index - 1;
@@ -123,8 +125,15 @@ std::shared_ptr<WhileNode> Parser::parseWhile() {
 std::shared_ptr<IfNode> Parser::parseIf() {
     parseNext(BRACKETS_START);
     int oldIndex = index;
+    int numOfBrackets = 1;
     while (getToken()->getType() != TokenType::TOKEN_END_OF_FILE
-        && getToken()->getValue() != BRACKETS_END) {
+        && !(getToken()->getValue() == BRACKETS_END && numOfBrackets == 0)) {
+        if (getToken()->getValue() == BRACKETS_START) {
+            numOfBrackets++;
+        }
+        else if (getToken()->getValue() == BRACKETS_END) {
+            numOfBrackets--;
+        }
         getNext();
     }
     int newIndex = index - 1;

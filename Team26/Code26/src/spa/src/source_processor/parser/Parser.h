@@ -1,7 +1,9 @@
 #pragma once
 
 #include <memory>
+#include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 #include "common/parser/AbstractParser.h"
 #include "common/tokenizer/token/Token.h"
@@ -34,7 +36,6 @@ class Parser : public AbstractParser {
     std::shared_ptr<RelExpr> parseRelExpr(int startIndex, int endIndex);
     std::shared_ptr<ExprNode> parseExprNode(int startIndex, int endIndex);
     std::shared_ptr<ExprNode> parseTerm(int startIndex, int endIndex);
-    std::shared_ptr<Factor> parseFactor(std::string factor);
 
  public:
     explicit Parser(std::vector<std::shared_ptr<Token>> tokens);
