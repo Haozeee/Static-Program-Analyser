@@ -61,3 +61,8 @@ void RelationshipExtractor::extractAssign(std::shared_ptr<AssignNode> node) {
 void RelationshipExtractor::extractCall(std::shared_ptr<CallNode> node) {
 }
 
+void RelationshipExtractor::extractWhile(std::shared_ptr<WhileNode> node) {
+}
+
+void RelationshipExtractor::extractIf(std::shared_ptr<IfNode> node) {
+}

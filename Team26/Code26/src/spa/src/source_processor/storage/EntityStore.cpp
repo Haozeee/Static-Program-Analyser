@@ -30,7 +30,6 @@ void EntityStore::insertCallStatement(std::shared_ptr<CallNode> node) {
 }
 
 void EntityStore::insertWhileStatement(std::shared_ptr<WhileNode> node) {
-
 }
 
 void EntityStore::insertIfStatement(std::shared_ptr<IfNode> node) {
