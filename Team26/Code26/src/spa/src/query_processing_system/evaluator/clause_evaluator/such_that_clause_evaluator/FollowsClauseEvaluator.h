@@ -1,19 +1,12 @@
 #pragma once
-
+#include "IntIntClauseEvaluator.h"
 #include <memory>
-#include "SuchThatClauseEvaluator.h"
 
-class FollowsClauseEvaluator : public SuchThatClauseEvaluator {
- private:
-    void evaluateNumberNumber(std::shared_ptr<ReadOnlyStorage> storage);
-
-    void evaluateNumberSynonym(std::shared_ptr<ReadOnlyStorage> storage);
-
-    void evaluateSynonymNumber(std::shared_ptr<ReadOnlyStorage> storage);
-
-    void evaluateSynonymSynonym(std::shared_ptr<ReadOnlyStorage> storage);
+class FollowsClauseEvaluator : public IntIntClauseEvaluator {
  public:
     FollowsClauseEvaluator(Argument left, Argument right);
 
-    std::shared_ptr<ClauseResult> evaluateClause(std::shared_ptr<ReadOnlyStorage> storage) override;
+    std::unordered_map<int, std::unordered_set<int>> getRelationshipManager(StoragePointer storage) override;
+
+    std::unordered_map<int, std::unordered_set<int>> getOppositeRelationshipManager(StoragePointer storage) override;
 };

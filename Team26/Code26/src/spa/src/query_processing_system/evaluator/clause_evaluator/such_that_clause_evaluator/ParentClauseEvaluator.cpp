@@ -1,8 +1,13 @@
 #include "ParentClauseEvaluator.h"
 
 ParentClauseEvaluator::ParentClauseEvaluator(Argument left, Argument right)
-    : SuchThatClauseEvaluator(left, right) {}
+        : IntIntClauseEvaluator(left, right) {}
 
-std::shared_ptr<ClauseResult> ParentClauseEvaluator::evaluateClause(std::shared_ptr<ReadOnlyStorage> storage) {
-    return {};
+std::unordered_map<int, std::unordered_set<int>> ParentClauseEvaluator::getRelationshipManager(StoragePointer storage) {
+    return storage->getParentManager()->getAllRelationshipEntries();
+}
+
+std::unordered_map<int, std::unordered_set<int>>
+ParentClauseEvaluator::getOppositeRelationshipManager(StoragePointer storage) {
+    return storage->getParentManager()->getAllReversedRelationshipEntries();
 }

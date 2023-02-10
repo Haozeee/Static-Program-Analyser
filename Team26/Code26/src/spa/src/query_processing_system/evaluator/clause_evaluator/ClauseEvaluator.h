@@ -4,6 +4,8 @@
 #include "../PkbUtil.h"
 #include "../../../program_knowledge_base/ReadOnlyStorage.h"
 
+using StoragePointer = std::shared_ptr<ReadOnlyStorage>;
+
 class ClauseEvaluator {
  public:
     virtual ~ClauseEvaluator() = default;
@@ -11,5 +13,5 @@ class ClauseEvaluator {
      * Evaluate the clause.
      * @return True if clause has been evaluated successfully.
      */
-    virtual std::shared_ptr<ClauseResult> evaluateClause(std::shared_ptr<ReadOnlyStorage> storage) = 0;
+    virtual std::shared_ptr<ClauseResult> evaluateClause(StoragePointer storage) = 0;
 };
