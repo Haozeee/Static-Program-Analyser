@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <optional>
 #include <string>
 #include <tuple>
@@ -7,6 +8,8 @@
 #include <variant>
 #include "Node.h"
 #include "ExprNode.h"
+
+#define REL_EXPR_OP_NUM 6
 
 enum class RelExprOperatorType {
     OPERATOR_GT,
@@ -26,14 +29,14 @@ enum class UnaryCondExprOperatorType {
     OPERATOR_NOT
 };
 
-using RelFactor = std::variant<std::string, int, ExprNode*>;
-using RelExpr = std::tuple<RelExprOperatorType, RelFactor, RelFactor>;
+using RelExpr = std::tuple<RelExprOperatorType, std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>>;
 
 class CondExprNode : public Node {
  public:
-     std::variant<RelExpr, std::pair<UnaryCondExprOperatorType, CondExprNode*>,
-         std::tuple<CondExprNode*, BinaryCondExprOperatorType, CondExprNode*>> params;
+     std::variant< std::shared_ptr<RelExpr>, std::pair<UnaryCondExprOperatorType, std::shared_ptr<CondExprNode>>,
+         std::tuple<BinaryCondExprOperatorType, std::shared_ptr<CondExprNode>, std::shared_ptr<CondExprNode>>> params;
 
-    CondExprNode(std::variant<RelExpr, std::pair<UnaryCondExprOperatorType, CondExprNode*>,
-        std::tuple<CondExprNode*, BinaryCondExprOperatorType, CondExprNode*>> params);
+    CondExprNode(std::variant<std::shared_ptr<RelExpr>, std::pair<UnaryCondExprOperatorType,
+        std::shared_ptr<CondExprNode>>, std::tuple<BinaryCondExprOperatorType, std::shared_ptr<CondExprNode>,
+        std::shared_ptr<CondExprNode>>> params);
 };
