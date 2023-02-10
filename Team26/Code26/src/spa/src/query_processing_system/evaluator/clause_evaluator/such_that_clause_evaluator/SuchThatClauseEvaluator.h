@@ -1,5 +1,8 @@
 #pragma once
 #include <memory>
+#include <utility>
+#include <unordered_map>
+#include <unordered_set>
 #include "../ClauseEvaluator.h"
 #include "../../../parser/Argument.h"
 

@@ -2,6 +2,8 @@
 
 #include "SuchThatClauseEvaluator.h"
 #include <memory>
+#include <unordered_map>
+#include <unordered_set>
 
 class FollowsTClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
  public:

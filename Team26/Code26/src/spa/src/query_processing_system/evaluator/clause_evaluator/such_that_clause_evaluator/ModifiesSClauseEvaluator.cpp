@@ -3,7 +3,8 @@
 ModifiesSClauseEvaluator::ModifiesSClauseEvaluator(Argument left, Argument right)
         : IntStringClauseEvaluator(left, right) {}
 
-std::unordered_map<int, std::unordered_set<std::string>> ModifiesSClauseEvaluator::getRelationshipManager(StoragePointer storage) {
+std::unordered_map<int, std::unordered_set<std::string>>
+ModifiesSClauseEvaluator::getRelationshipManager(StoragePointer storage) {
     return storage->getModifiesSManager()->getAllRelationshipEntries();
 }
 

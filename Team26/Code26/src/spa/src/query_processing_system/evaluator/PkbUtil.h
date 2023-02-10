@@ -4,6 +4,7 @@
 #include <unordered_set>
 #include <algorithm>
 #include <string>
+#include <utility>
 #include "../parser/DesignEntity.h"
 #include "../../program_knowledge_base/ReadOnlyStorage.h"
 
@@ -12,12 +13,14 @@ using intEntitySet = std::unordered_set<int>;
 
 class PkbUtil {
  public:
+    static std::unordered_set<std::string> getStringEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage,
+                                                                    DesignEntity entity);
 
-    static std::unordered_set<std::string> getStringEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage, DesignEntity entity);
+    static std::unordered_set<int> getIntEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage,
+                                                         DesignEntity entity);
 
-    static std::unordered_set<int> getIntEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage, DesignEntity entity);
-
-    static std::unordered_set<std::string> getEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage, DesignEntity entity);
+    static std::unordered_set<std::string> getEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage,
+                                                              DesignEntity entity);
 
     /**
     * Converts a set containing integers to a set of strings.
@@ -103,5 +106,5 @@ class PkbUtil {
             }
         }
         return std::make_pair(firstRes, secondRes);
-    };
+    }
 };

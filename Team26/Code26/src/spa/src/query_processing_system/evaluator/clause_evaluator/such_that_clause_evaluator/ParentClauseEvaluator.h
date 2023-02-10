@@ -1,6 +1,8 @@
 #pragma once
 
 #include "IntIntClauseEvaluator.h"
+#include <unordered_map>
+#include <unordered_set>
 
 class ParentClauseEvaluator : public IntIntClauseEvaluator {
  public:

@@ -2,9 +2,11 @@
 
 #include <memory>
 #include "SuchThatClauseEvaluator.h"
+#include <unordered_map>
+#include <unordered_set>
 
 class ModifiesPClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
-public:
+ public:
     ModifiesPClauseEvaluator(Argument left, Argument right);
 
     std::shared_ptr<ClauseResult> evaluateClause(StoragePointer storage) override;

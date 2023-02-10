@@ -1,5 +1,8 @@
 #pragma once
 #include "SuchThatClauseEvaluator.h"
+#include <string>
+#include <unordered_set>
+#include <memory>
 
 class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string> {
  protected:

@@ -3,7 +3,8 @@
 ParentTClauseEvaluator::ParentTClauseEvaluator(Argument left, Argument right)
         : SuchThatClauseEvaluator(left, right) {}
 
-std::unordered_map<int , std::unordered_set<int>> ParentTClauseEvaluator::getRelationshipManager(StoragePointer storage) {
+std::unordered_map<int , std::unordered_set<int>> \
+ParentTClauseEvaluator::getRelationshipManager(StoragePointer storage) {
     return storage->getFollowsManager()->getAllRelationshipEntries();
 }
 

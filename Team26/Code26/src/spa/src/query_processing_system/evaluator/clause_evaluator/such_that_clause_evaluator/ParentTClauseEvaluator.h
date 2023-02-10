@@ -1,7 +1,9 @@
 #pragma once
 
-#include <memory>
 #include "SuchThatClauseEvaluator.h"
+#include <memory>
+#include <unordered_map>
+#include <unordered_set>
 
 class ParentTClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
  public:

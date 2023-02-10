@@ -1,5 +1,7 @@
 #pragma once
 #include "SuchThatClauseEvaluator.h"
+#include <memory>
+#include <unordered_set>
 
 class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
  protected:
