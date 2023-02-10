@@ -42,4 +42,4 @@ jobs:
           timeout-minutes: 1
           run: |
             cd .\Team26\Code26\build\src\autotester\Release\
-            .\autotester.exe ..\..\..\..\..\Tests26\Week5_Demo\Sample_source.txt ..\..\..\..\..\Tests26\Week5_Demo\Sample_queries.txt ..\..\..\..\..\Tests26\Week5_Demo\out.xml
+            .\autotester.exe ..\..\..\..\..\Tests26\Milestone1\Sample_source.txt ..\..\..\..\..\Tests26\Milestone1\Sample_queries.txt ..\..\..\..\..\Tests26\Milestone1\out.xml
