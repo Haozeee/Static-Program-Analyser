@@ -2,10 +2,10 @@
 
 #include <vector>
 #include <memory>
-#include "common/tokenizer/AbsractTokenizer.h"
+#include "common/tokenizer/AbstractTokenizer.h"
 
 
-class Tokenizer : public AbsractTokenizer {
+class Tokenizer : public AbstractTokenizer {
  private:
     bool isValidSpecialChar();
     bool isPossibleLogicalOp();

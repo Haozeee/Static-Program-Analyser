@@ -1,7 +1,9 @@
 #include "AbstractParser.h"
-
 #include <utility>
 #include <string>
+#include "common/exception/ParserException.h"
+#include "common/exception/ExceptionMessage.h"
+
 
 AbstractParser::AbstractParser(std::vector<std::shared_ptr<Token>> tokens) : tokens(std::move(tokens)) {}
 
@@ -31,14 +33,14 @@ bool AbstractParser::isValueOf(const std::string& value) {
 
 std::shared_ptr<Token> AbstractParser::parseNext(TokenType type) {
     if (!isTypeOf(type)) {
-        // TODO(zhengteck): Throw exception
+        throw ParserException(ParserMismatchTokenTypeExceptionMessage);
     }
     return getNext();
 }
 
 std::shared_ptr<Token> AbstractParser::parseNext(const std::string& value) {
     if (!isValueOf(value)) {
-        // TODO(zhengteck): Throw exception
+        throw ParserException(ParserMismatchTokenValueExceptionMessage + value + "].");
     }
     return getNext();
 }
