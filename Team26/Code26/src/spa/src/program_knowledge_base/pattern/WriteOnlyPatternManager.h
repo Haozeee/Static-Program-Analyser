@@ -3,5 +3,5 @@
 
 class WriteOnlyPatternManager {
  public:
-    virtual bool insert(int stmt_no, std::string lhs, std::string rhs) = 0;
+    virtual bool insertPattern(int stmt_no, std::string left, std::string right) = 0;
 };

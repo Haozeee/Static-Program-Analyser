@@ -1,7 +1,7 @@
 #pragma once
-
 #include <stdexcept>
 #include <string>
+#include "common/exception/ParserException.h"
 
 extern const std::string ValidationException;
 extern const std::string InvalidRelationship;
@@ -19,10 +19,10 @@ class QueryInvalidRelationship : public std::runtime_error {
     explicit QueryInvalidRelationship(const std::string& errorMessage) : std::runtime_error(errorMessage) {}
 };
 
-class QueryParserException : public std::runtime_error {
+class QueryParserException : public ParserException {
  public:
-    QueryParserException() : std::runtime_error(InvalidArgument) {}
-    explicit QueryParserException(const std::string& errorMessage) : std::runtime_error(errorMessage) {}
+    QueryParserException() : ParserException(InvalidArgument) {}
+    explicit QueryParserException(const std::string& errorMessage) : ParserException(errorMessage) {}
 };
 
 class QueryInvalidRelationshipArguments : public std::runtime_error {

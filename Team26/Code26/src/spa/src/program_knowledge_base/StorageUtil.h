@@ -11,6 +11,7 @@
 #include "program_knowledge_base/entity/entity_child_managers/ConstantManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/CallManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/ProcedureManager.h"
+#include "program_knowledge_base/entity/entity_child_managers/WhileManager.h"
 #include "program_knowledge_base/pattern/PatternManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/FollowsManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/FollowsTManager.h"
@@ -43,6 +44,7 @@ class StorageUtil {
     std::shared_ptr<ReadManager> readManager;
     std::shared_ptr<StmtManager> stmtManager;
     std::shared_ptr<VariableManager> variableManager;
+    std::shared_ptr<WhileManager> whileManager;
 
     // pattern managers
     std::shared_ptr<PatternManager> patternManager;
@@ -135,6 +137,10 @@ class StorageUtil {
 
     std::shared_ptr<VariableManager> getVariableManager() {
         return variableManager;
+    }
+
+    std::shared_ptr<WhileManager> getWhileManager() {
+        return whileManager;
     }
 
     std::shared_ptr<PatternManager> getPatternManager() {

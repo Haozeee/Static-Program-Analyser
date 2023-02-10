@@ -2,68 +2,95 @@
 #include "program_knowledge_base/relationship/RelationshipManager.h"
 #include "program_knowledge_base/relationship/WriteOnlyRelationshipManager.h"
 #include "program_knowledge_base/StorageUtil.h"
-#include "program_knowledge_base/ReadOnlyStorage.h"
 #include "program_knowledge_base/WriteOnlyStorage.h"
 
-TEST_CASE("RelationshipManager insertRelationship int,int") {
-    RelationshipManager<int, int> relationshipManager;
-    REQUIRE(relationshipManager.insertRelationship(2, 3));
-    REQUIRE(relationshipManager.insertRelationship(2, 4));
-    REQUIRE(relationshipManager.insertRelationship(3, 4));
-}
-
-TEST_CASE("RelationshipManager insertRelationship int,string") {
+// testing isEmpty
+TEST_CASE("RelationshipManager isEmptyMap int,string") {
     RelationshipManager<int, std::string> relationshipManager;
+    REQUIRE(relationshipManager.isEmptyMap());
     REQUIRE(relationshipManager.insertRelationship(2, "x"));
-    REQUIRE(relationshipManager.insertRelationship(2, "y"));
+    REQUIRE_FALSE(relationshipManager.isEmptyMap());
 }
 
-TEST_CASE("RelationshipManager insertRelationship string,string") {
+TEST_CASE("RelationshipManager isEmptyMap string,string") {
     RelationshipManager<std::string, std::string> relationshipManager;
-    REQUIRE(relationshipManager.insertRelationship("a", "x"));
-    REQUIRE(relationshipManager.insertRelationship("a", "y"));
-}
-
-TEST_CASE("RelationshipManager isEmpty int,string") {
-    RelationshipManager<int, std::string> relationshipManager;
-    REQUIRE(relationshipManager.isEmpty());
-    REQUIRE(relationshipManager.insertRelationship(2, "x"));
-    REQUIRE_FALSE(relationshipManager.isEmpty());
-}
-
-TEST_CASE("RelationshipManager isEmpty string,string") {
-    RelationshipManager<std::string, std::string> relationshipManager;
+    REQUIRE(relationshipManager.isEmptyMap());
     REQUIRE(relationshipManager.insertRelationship("x", "y"));
-    REQUIRE_FALSE(relationshipManager.isEmpty());
+    REQUIRE_FALSE(relationshipManager.isEmptyMap());
 }
 
-TEST_CASE("RelationshipManager isEmpty int,int") {
+TEST_CASE("RelationshipManager isEmptyMap int,int") {
     RelationshipManager<int, int> relationshipManager;
-    REQUIRE(relationshipManager.isEmpty());
+    REQUIRE(relationshipManager.isEmptyMap());
     REQUIRE(relationshipManager.insertRelationship(2, 3));
-    REQUIRE_FALSE(relationshipManager.isEmpty());
+    REQUIRE_FALSE(relationshipManager.isEmptyMap());
 }
 
-TEST_CASE("RelationshipManager contains int,string") {
+TEST_CASE("RelationshipManager isEmptyReversedMap int,string") {
     RelationshipManager<int, std::string> relationshipManager;
-    REQUIRE_FALSE(relationshipManager.contains(2, "x"));
+    REQUIRE(relationshipManager.isEmptyReversedMap());
     REQUIRE(relationshipManager.insertRelationship(2, "x"));
-    REQUIRE(relationshipManager.contains(2, "x"));
+    REQUIRE_FALSE(relationshipManager.isEmptyReversedMap());
 }
 
-TEST_CASE("RelationshipManager contains string,string") {
+TEST_CASE("RelationshipManager isEmptyReversedMap string,string") {
     RelationshipManager<std::string, std::string> relationshipManager;
+    REQUIRE(relationshipManager.isEmptyReversedMap());
     REQUIRE(relationshipManager.insertRelationship("x", "y"));
-    REQUIRE_FALSE(relationshipManager.isEmpty());
+    REQUIRE_FALSE(relationshipManager.isEmptyReversedMap());
 }
 
-TEST_CASE("RelationshipManager contains int,int") {
+TEST_CASE("RelationshipManager isEmptyReversedMap int,int") {
     RelationshipManager<int, int> relationshipManager;
-    REQUIRE_FALSE(relationshipManager.contains(2, 3));
+    REQUIRE(relationshipManager.isEmptyReversedMap());
     REQUIRE(relationshipManager.insertRelationship(2, 3));
-    REQUIRE(relationshipManager.contains(2, 3));
+    REQUIRE_FALSE(relationshipManager.isEmptyReversedMap());
 }
 
+// testing contains method
+TEST_CASE("RelationshipManager containsMap int,string") {
+    RelationshipManager<int, std::string> relationshipManager;
+    REQUIRE_FALSE(relationshipManager.containsMap(2, "x"));
+    REQUIRE(relationshipManager.insertRelationship(2, "x"));
+    REQUIRE(relationshipManager.containsMap(2, "x"));
+}
+
+TEST_CASE("RelationshipManager containsMap string,string") {
+    RelationshipManager<std::string, std::string> relationshipManager;
+    REQUIRE_FALSE(relationshipManager.containsMap("x", "y"));
+    REQUIRE(relationshipManager.insertRelationship("x", "y"));
+    REQUIRE_FALSE(relationshipManager.isEmptyMap());
+}
+
+TEST_CASE("RelationshipManager containsMap int,int") {
+    RelationshipManager<int, int> relationshipManager;
+    REQUIRE_FALSE(relationshipManager.containsMap(2, 3));
+    REQUIRE(relationshipManager.insertRelationship(2, 3));
+    REQUIRE(relationshipManager.containsMap(2, 3));
+}
+
+TEST_CASE("RelationshipManager containsReversedMap int,string") {
+    RelationshipManager<int, std::string> relationshipManager;
+    REQUIRE_FALSE(relationshipManager.containsReversedMap("x", 2));
+    REQUIRE(relationshipManager.insertRelationship(2, "x"));
+    REQUIRE(relationshipManager.containsReversedMap("x", 2));
+}
+
+TEST_CASE("RelationshipManager containsReversedMap string,string") {
+    RelationshipManager<std::string, std::string> relationshipManager;
+    REQUIRE_FALSE(relationshipManager.containsReversedMap("y", "x"));
+    REQUIRE(relationshipManager.insertRelationship("x", "y"));
+    REQUIRE(relationshipManager.containsReversedMap("y", "x"));
+}
+
+TEST_CASE("RelationshipManager containsReversedMap int,int") {
+    RelationshipManager<int, int> relationshipManager;
+    REQUIRE_FALSE(relationshipManager.containsMap(3, 2));
+    REQUIRE(relationshipManager.insertRelationship(2, 3));
+    REQUIRE(relationshipManager.containsReversedMap(3, 2));
+}
+
+// testing getAll methods
 TEST_CASE("RelationshipManager getAllRelationshipEntries int,int") {
     RelationshipManager<int, int> relationshipManager;
     std::unordered_map<int, std::unordered_set<int>> test_map = {{2, {3, 4}}};
@@ -112,6 +139,27 @@ TEST_CASE("RelationshipManager getAllReversedRelationshipEntries string,string")
     REQUIRE(relationshipManager.getAllReversedRelationshipEntries() == test_map);
 }
 
+// testing insertRelationship
+TEST_CASE("RelationshipManager insertRelationship int,int") {
+    RelationshipManager<int, int> relationshipManager;
+    REQUIRE(relationshipManager.insertRelationship(2, 3));
+    REQUIRE(relationshipManager.insertRelationship(2, 4));
+    REQUIRE(relationshipManager.insertRelationship(3, 4));
+}
+
+TEST_CASE("RelationshipManager insertRelationship int,string") {
+    RelationshipManager<int, std::string> relationshipManager;
+    REQUIRE(relationshipManager.insertRelationship(2, "x"));
+    REQUIRE(relationshipManager.insertRelationship(2, "y"));
+}
+
+TEST_CASE("RelationshipManager insertRelationship string,string") {
+    RelationshipManager<std::string, std::string> relationshipManager;
+    REQUIRE(relationshipManager.insertRelationship("a", "x"));
+    REQUIRE(relationshipManager.insertRelationship("a", "y"));
+}
+
+// testing overloaded insertRelationship
 TEST_CASE("RelationshipManager _insert int,int,WriteOnlyRelationshipManager") {
     RelationshipManager<int, int> relationshipManager;
 
