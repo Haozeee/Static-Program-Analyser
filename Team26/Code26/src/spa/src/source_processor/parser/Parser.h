@@ -10,7 +10,6 @@
 #include "source_processor/node/StmtListNode.h"
 #include "source_processor/node/CondExprNode.h"
 #include "source_processor/node/ExprNode.h"
-#include "source_processor/node/TermNode.h"
 #include "source_processor/node/statement_node/ReadNode.h"
 #include "source_processor/node/statement_node/PrintNode.h"
 #include "source_processor/node/statement_node/CallNode.h"
@@ -34,8 +33,8 @@ class Parser : public AbstractParser {
     std::shared_ptr<CondExprNode> parseCondExprNode(int startIndex, int endIndex);
     std::shared_ptr<RelExpr> parseRelExpr(int startIndex, int endIndex);
     std::shared_ptr<ExprNode> parseExprNode(int startIndex, int endIndex);
-    std::shared_ptr<TermNode> parseTermNode(int startIndex, int endIndex);
-    //std::shared_ptr<Factor> parseFactor(std::string factor);
+    std::shared_ptr<ExprNode> parseTerm(int startIndex, int endIndex);
+    std::shared_ptr<Factor> parseFactor(std::string factor);
 
  public:
     explicit Parser(std::vector<std::shared_ptr<Token>> tokens);
