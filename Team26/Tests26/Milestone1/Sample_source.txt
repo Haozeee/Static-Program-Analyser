@@ -1,0 +1,21 @@
+procedure printAscending {
+    read num1;
+    read num2;
+    noSwap = 0;
+
+    if (num1 > num2) then {
+      temp = num1;
+      num1 = num2;
+      num2 = temp;
+    } else {
+      noSwap = 1;
+    }
+
+    while (num1 > 5) {
+      read k;
+    }
+
+    print num1;
+    print num2;
+    print noSwap;
+}
