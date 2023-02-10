@@ -7,8 +7,10 @@ std::shared_ptr<ClauseResult> IntStringClauseEvaluator::evaluateClause(StoragePo
     switch (getClauseArgumentTypes()) {
         case ClauseArgumentTypes::NUMBER_SYNONYM:
             evaluateNumberSynonym(storage);
+            break;
         case ClauseArgumentTypes::SYNONYM_SYNONYM:
             evaluateSynonymSynonym(storage);
+            break;
         default:
             throw std::exception();
     }
