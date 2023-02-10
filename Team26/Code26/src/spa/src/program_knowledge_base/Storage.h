@@ -12,6 +12,7 @@
 #include "program_knowledge_base/entity/entity_child_managers/ConstantManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/CallManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/ProcedureManager.h"
+#include "program_knowledge_base/entity/entity_child_managers/WhileManager.h"
 #include "program_knowledge_base/pattern/PatternManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/FollowsManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/FollowsTManager.h"
@@ -98,6 +99,10 @@ class Storage {
 
     std::shared_ptr<Entity_Read_Or_Write<std::string>> getVariableManager() {
         return storage->getVariableManager();
+    }
+
+    std::shared_ptr<Entity_Read_Or_Write<int>> getWhileManager() {
+        return storage->getWhileManager();
     }
 
     std::shared_ptr<Pattern_Read_Or_Write> getPatternManager() {
