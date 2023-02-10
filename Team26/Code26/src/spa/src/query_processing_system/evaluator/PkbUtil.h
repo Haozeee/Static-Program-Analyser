@@ -9,7 +9,6 @@
 #include "../../program_knowledge_base/ReadOnlyStorage.h"
 
 using stringEntitySet = std::unordered_set<std::string>;
-using intEntitySet = std::unordered_set<int>;
 
 class PkbUtil {
  public:
@@ -31,6 +30,7 @@ class PkbUtil {
 
     /**
      * Given two sets containing elements of type T, get the intersection of the two sets.
+     * @parsm res The set to store the intersection in.
      */
     template<typename T>
     static void setIntersection(const std::unordered_set<T> &setA,
@@ -57,9 +57,10 @@ class PkbUtil {
             setA.insert(i);
         }
     }
+
     /**
      * Given a map<T, set<U>> and a set of search keys of type T,
-     * return the map containing only the keys found in the search keys.
+     * return the map containing only the keys found in the search keys along with their corresponding values.
      * @tparam T The type of the keys of the map.
      * @tparam U The type of the set elements of the value.
      * @param map The map to search from.
@@ -83,11 +84,8 @@ class PkbUtil {
      * Find the intersection between a Map of type <T, Set<U>> with a set of type <U>.
      * Given a map with keys k and values v and a set S, this function finds all the common elements
      * of v and S. For these elements find the corresponding k.
-     * @tparam T
-     * @tparam U
-     * @param map
-     * @param set
-     * @return
+     * @tparam T The type of the keys of the map.
+     * @tparam U The type of the set.
      */
     template<typename T, typename U>
     static std::pair<std::unordered_set<T>, std::unordered_set<U>> mapSetIntersection(

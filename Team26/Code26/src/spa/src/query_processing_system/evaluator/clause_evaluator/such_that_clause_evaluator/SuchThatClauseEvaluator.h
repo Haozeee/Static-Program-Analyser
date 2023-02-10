@@ -23,6 +23,9 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
 
     std::shared_ptr<ClauseResult> clauseResult;
 
+    /**
+     * Evaluate a such that clause in the form of clause(int, int)
+     */
     void evaluateNumberNumber(StoragePointer storage) {
         auto relationshipStore = getRelationshipManager(storage);
         auto iterator = relationshipStore.find(stoi(leftArg.getValue()));
@@ -32,6 +35,9 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         }
     }
 
+    /**
+     * Evaluate a such that clause in the form of clause(int, synonym)
+     */
     void evaluateNumberSynonym(StoragePointer storage) {
         std::unordered_set<U> synonymValues = getRightArgEntities(storage);
         auto relationshipStore = getRelationshipManager(storage);
@@ -43,6 +49,9 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         setRightArgResult(res);
     }
 
+    /**
+     * Evaluate a such that clause in the form of clause(synonym, int)
+     */
     void evaluateSynonymNumber(StoragePointer storage) {
         std::unordered_set<T> synonymValues = getLeftArgEntities(storage);
         auto relationshipStore = getOppositeRelationshipManager(storage);
@@ -54,6 +63,9 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         setLeftArgResult(res);
     }
 
+    /**
+     * Evaluate a such that clause in the form of clause(synonym, synonym)
+     */
     void evaluateSynonymSynonym(StoragePointer storage) {
         // Maybe can make use of the opposite relationship map??
         std::unordered_map<T, std::unordered_set<U>> filteredMap = PkbUtil::filterMap(getRelationshipManager(storage),
@@ -89,11 +101,27 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
 
     virtual std::unordered_map<U, std::unordered_set<T>> getOppositeRelationshipManager(StoragePointer storage) = 0;
 
+    /**
+     * Set the results that are to be projected on to the left arguments in the clause result.
+     * Should only be used when the left argument is a synonym.
+     * @param result The result to be projected.
+     */
     virtual void setLeftArgResult(std::unordered_set<T> result) = 0;
 
+    /**
+     * Set the results that are to be projected on to the right arguments in the clause result.
+     * Should only be used when the right argument is a synonym.
+     * @param result The result to be projected.
+     */
     virtual void setRightArgResult(std::unordered_set<U> result) = 0;
 
+    /**
+     * Get all the entities that have the same design entity as that of the left argument.
+     */
     virtual std::unordered_set<T> getLeftArgEntities(StoragePointer storage) = 0;
 
+    /**
+     * Get all the entities that have the same design entity as that of the right argument.
+     */
     virtual std::unordered_set<U> getRightArgEntities(StoragePointer storage) = 0;
 };
