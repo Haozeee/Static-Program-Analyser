@@ -1,3 +1,4 @@
+#include <memory>
 #include "ReadNode.h"
 #include "source_processor/design_extractor/extractor/AbstractExtractor.h"
 
