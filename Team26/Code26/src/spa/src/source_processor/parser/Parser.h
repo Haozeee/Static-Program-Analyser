@@ -22,7 +22,7 @@
 
 
 class Parser : public AbstractParser {
-public:
+ public:
     int stmtIndex;
     std::shared_ptr<ProcedureNode> parseProcedure();
     std::shared_ptr<StmtListNode> parseStmtList();
