@@ -21,7 +21,7 @@ class EntityStore : public IEntityStore {
     void insertCallStatement(std::shared_ptr<CallNode> node) override;
     void insertWhileStatement(std::shared_ptr<WhileNode> node) override;
     void insertIfStatement(std::shared_ptr<IfNode> node) override;
-    void insertVariable(std::string &name) override;
+    void insertName(std::string &name) override;
     void insertConstant(std::string &integer) override;
 };
 
