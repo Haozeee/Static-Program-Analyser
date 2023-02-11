@@ -3,7 +3,8 @@
 #include "PatternClauseEvaluator.h"
 
 PatternClauseEvaluator::PatternClauseEvaluator(DesignEntity designEntity, Argument leftArg, StringExpression rightArg)
-        : designEntity(designEntity), leftArg(std::move(leftArg)), rightArg(std::move(rightArg)), clauseResult(std::make_shared<ClauseResult>()) {}
+        : designEntity(designEntity), leftArg(std::move(leftArg)), rightArg(std::move(rightArg)),
+        clauseResult(std::make_shared<ClauseResult>()) {}
 
 DesignEntity PatternClauseEvaluator::getDesignEntity() {
     return designEntity;
