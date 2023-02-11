@@ -20,16 +20,27 @@ class AbstractExtractor {
  public:
     AbstractExtractor();
 
+    /**
+     * General looping of nodes that contains statement lists.
+     * */
     virtual void extractProgram(std::shared_ptr<ProgramNode> node);
     virtual void extractProcedure(std::shared_ptr<ProcedureNode> node);
     virtual void extractStmtList(std::shared_ptr<StmtListNode> node);
-    virtual void extractStmt(std::shared_ptr<StmtNode> node);
+
+    /**
+     * Extraction of statements. Pure virtaul functions because implementation is required.
+     * */
+    virtual void extractStmt(std::shared_ptr<StmtNode> node) = 0;
     virtual void extractRead(std::shared_ptr<ReadNode> node) = 0;
     virtual void extractPrint(std::shared_ptr<PrintNode> node) = 0;
     virtual void extractAssign(std::shared_ptr<AssignNode> node) = 0;
     virtual void extractCall(std::shared_ptr<CallNode> node) = 0;
     virtual void extractIf(std::shared_ptr<IfNode> node) = 0;
     virtual void extractWhile(std::shared_ptr<WhileNode> node) = 0;
-    virtual void extractCondExpr(std::shared_ptr<CondExprNode> node);
+
+    /**
+     * For expressions and conditional expression for Assign, If and While
+     * */
     virtual void extractExpr(std::shared_ptr<ExprNode> node);
+    virtual void extractCondExpr(std::shared_ptr<CondExprNode> node);
 };
