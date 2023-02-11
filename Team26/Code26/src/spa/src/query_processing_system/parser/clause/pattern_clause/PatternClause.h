@@ -1,6 +1,7 @@
 #pragma once
 
 #include <utility>
+#include <variant>
 
 #include "query_processing_system/parser/clause/Clause.h"
 #include "query_processing_system/parser/Argument.h"
