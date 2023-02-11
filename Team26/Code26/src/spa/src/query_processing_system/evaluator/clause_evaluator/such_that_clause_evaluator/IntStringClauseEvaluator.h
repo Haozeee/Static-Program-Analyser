@@ -7,6 +7,7 @@
 class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string> {
  private:
     std::unordered_set<std::string> evaluateNumberSynonymHelper(StoragePointer storage, int stmtNumber);
+
  protected:
     IntStringClauseEvaluator(Argument left, Argument right);
 
@@ -29,6 +30,7 @@ class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string
     void evaluateSynonymString(StoragePointer storage);
 
     void evaluateNumberString(StoragePointer storage);
+
  public:
     std::shared_ptr<ClauseResult> evaluateClause(StoragePointer storage) override;
 };

@@ -26,6 +26,7 @@ class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
     void evaluateSynonymNumber(StoragePointer storage);
 
     void evaluateSynonymSynonym(StoragePointer storage);
+
  public:
     std::shared_ptr<ClauseResult> evaluateClause(StoragePointer storage) override;
 };

@@ -64,7 +64,8 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
             handleRightWildcard();
         }
     }
-public:
+
+ public:
     SuchThatClauseEvaluator<T, U>(Argument left, Argument right)
             : leftArg(left), rightArg(right), clauseResult(std::make_shared<ClauseResult>()) {}
 
