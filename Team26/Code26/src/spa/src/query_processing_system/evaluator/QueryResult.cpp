@@ -23,7 +23,9 @@ void QueryResult::addClauseResultToQuery(std::shared_ptr<ClauseResult> clauseRes
     for (auto const& [k, v] : clauseResult->getResults()) {
         auto it = results.find(k);
         if (it != results.end()) {
-            it->second = PkbUtil::setIntersection(it->second, v);
+            std::unordered_set<std::string> res;
+            PkbUtil::setIntersection(it->second, v, res);
+            it->second = res;
         }
         std::cout << *this << "\n";
     }

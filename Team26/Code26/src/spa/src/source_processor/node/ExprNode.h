@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <optional>
 #include <string>
 #include <utility>
@@ -19,14 +20,13 @@ enum class ExprOperatorType {
 
 using Factor = std::variant<std::string, int>;
 
-typedef struct Term {
-    Factor factor;
-    std::optional<std::pair<TermOperatorType, struct Term*>> optionalParams;
-} Term;
-
 class ExprNode : public Node {
  public:
-    Term term;
-    std::optional<std::pair<ExprOperatorType, ExprNode*>> optionalParams;
-    explicit ExprNode(Term term, std::optional<std::pair<ExprOperatorType, ExprNode*>> optionalParams);
+    std::pair<std::variant<std::shared_ptr<Factor>, std::shared_ptr<ExprNode>>,
+        std::optional<std::pair<TermOperatorType, std::shared_ptr<ExprNode>>>> term;
+    std::optional<std::pair<ExprOperatorType, std::shared_ptr<ExprNode>>> optionalParams;
+
+    ExprNode(std::pair<std::variant<std::shared_ptr<Factor>, std::shared_ptr<ExprNode>>,
+        std::optional<std::pair<TermOperatorType, std::shared_ptr<ExprNode>>>> term,
+        std::optional<std::pair<ExprOperatorType, std::shared_ptr<ExprNode>>> optionalParams);
 };
