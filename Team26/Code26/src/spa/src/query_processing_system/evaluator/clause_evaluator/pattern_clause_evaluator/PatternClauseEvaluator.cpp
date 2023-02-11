@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "PatternClauseEvaluator.h"
 
 PatternClauseEvaluator::PatternClauseEvaluator(Argument leftArg, std::variant<Wildcard, StringExpression> rightArg)
