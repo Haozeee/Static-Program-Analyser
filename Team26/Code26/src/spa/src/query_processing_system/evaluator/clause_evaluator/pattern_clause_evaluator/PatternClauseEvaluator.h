@@ -5,21 +5,24 @@
 
 #include "query_processing_system/evaluator/clause_evaluator/ClauseEvaluator.h"
 #include "query_processing_system/parser/Argument.h"
-#include "query_processing_system/parser/Wildcard.h"
 #include "query_processing_system/parser/StringExpression.h"
 
 class PatternClauseEvaluator : public ClauseEvaluator {
  protected:
+    DesignEntity designEntity;
+
     Argument leftArg;
 
-    std::variant<Wildcard, StringExpression> rightArg;
+    StringExpression rightArg;
 
     std::shared_ptr<ClauseResult> clauseResult;
 
  public:
-    PatternClauseEvaluator(Argument leftArg, std::variant<Wildcard, StringExpression> rightArg);
+    PatternClauseEvaluator(DesignEntity designEntity, Argument leftArg, StringExpression rightArg);
+
+    DesignEntity getDesignEntity();
 
     Argument getLeftArg();
 
-    std::variant<Wildcard, StringExpression> getRightArg();
+    StringExpression getRightArg();
 };

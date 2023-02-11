@@ -4,5 +4,5 @@
 
 class PatternClauseFactory {
  public:
-    static PatternClause* createPatternClause(Argument, std::variant<Wildcard, StringExpression>);
+    static PatternClause* createPatternClause(Argument, StringExpression);
 };

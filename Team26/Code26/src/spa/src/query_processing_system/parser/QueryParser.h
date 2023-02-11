@@ -9,7 +9,6 @@
 #include "Argument.h"
 #include "Query.h"
 #include "StringExpression.h"
-#include "Wildcard.h"
 #include "query_processing_system/exception/QueryException.h"
 #include "query_processing_system/exception/QueryExceptionMessages.h"
 #include "query_processing_system/parser/clause/such_that_clause/SuchThatClauseFactory.h"
@@ -47,7 +46,7 @@ class QueryParser : public AbstractParser {
     /**
      * Parses Such That Clause if any.
      */
-    bool isSuchThatClause();
+    bool parseIfSuchThatClause();
 
     /**
      * Handles parsing of relRef:
@@ -66,11 +65,11 @@ class QueryParser : public AbstractParser {
     /**
      * Parses Assign Pattern Clause if any.
      */
-    bool isAssignPatternClause();
+    bool parseIfAssignPatternClause();
 
     void parseAssignPatternClause();
 
-    std::variant<Wildcard, StringExpression> parseExpression();
+    StringExpression parseExpression();
 
     std::string parseStringExpression();
     /**

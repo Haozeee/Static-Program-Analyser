@@ -12,6 +12,11 @@
 class StringExpression {
  private:
     /**
+     * Whether the expression is a Wildcard, represented by '_'.
+     */
+    bool isWildcard;
+
+    /**
      * Whether the expression is an exact or partial match.
      */
     bool isExactMatch;
@@ -22,7 +27,11 @@ class StringExpression {
     std::string expression;
 
  public:
+    StringExpression(bool isWildcard);
+
     StringExpression(bool isExactMatch, std::string expression);
+
+    bool getIsWildcard();
 
     bool getIsExactMatch();
 

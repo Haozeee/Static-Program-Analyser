@@ -1,5 +1,5 @@
 #include "AssignPatternClauseEvaluator.h"
 
-AssignPatternClauseEvaluator::AssignPatternClauseEvaluator(Argument leftArg,
-                                std::variant<Wildcard, StringExpression> rightArg)
-    : PatternClauseEvaluator(leftArg, rightArg) {}
+AssignPatternClauseEvaluator::AssignPatternClauseEvaluator(DesignEntity designEntity, Argument leftArg,
+                                StringExpression rightArg)
+    : PatternClauseEvaluator(designEntity, leftArg, rightArg) {}

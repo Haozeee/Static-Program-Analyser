@@ -1,3 +1,3 @@
 #include "PatternClauseFactory.h"
 
-PatternClause* createPatternClause(Argument left, std::variant<Wildcard, StringExpression> right);
+PatternClause* createPatternClause(Argument left, StringExpression right);

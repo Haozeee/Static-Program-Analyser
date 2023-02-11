@@ -71,7 +71,7 @@ std::shared_ptr<Synonym> QueryParser::parseSynonym(std::shared_ptr<Token> token)
     return synonym;
 }
 
-bool QueryParser::isSuchThatClause() {
+bool QueryParser::parseIfSuchThatClause() {
     if (!isValueOf("such")) {
         return false;
     } else {
@@ -128,7 +128,7 @@ Argument QueryParser::parseArgument() {
     }
 }
 
-bool QueryParser::isAssignPatternClause() {
+bool QueryParser::parseIfAssignPatternClause() {
     if (!isValueOf("pattern")) {
         return false;
     } else {
@@ -143,21 +143,23 @@ void QueryParser::parseAssignPatternClause() {
     std::string assignString = assignToken->getValue();
     DesignEntity assignDesignEntity = query->getSynonymDesignEntity(assignString);
     if (assignDesignEntity != DesignEntity::ASSIGN) {
-        throw QueryParserException(assignString + QueryParserInvalidAssignPatternSynonym);
+        throw QueryParserException(assignString + QueryValidatorInvalidAssignPatternSynonym);
     }
     parseNext("(");
     // First argument can be variable synonyms, wildcard or character strings
     Argument leftArgument = parseArgument();
     parseNext(",");
     // Second argument can be wildcard or expression for exact/partial match
-    std::variant<Wildcard, StringExpression> rightArgument = parseExpression();
+    StringExpression rightArgument = parseExpression();
     parseNext(")");
-/*
- * Add create pattern clause here
- */
+
+    /* assign pattern clause is NOT being created */
+//    auto factory = std::make_shared<AssignPatternClauseFactory>();
+//    PatternClause* assignPatternClause = factory->createPatternClause(assignDesignEntity, leftArgument, rightArgument);
+//    query->addPatternClause(assignPatternClause);
 }
 
-std::variant<Wildcard, StringExpression> QueryParser::parseExpression() {
+StringExpression QueryParser::parseExpression() {
     // Expression for exact match (e.g. "x+y")
     bool isExactMatch = true;
     if (isValueOf("_")) {
@@ -172,7 +174,8 @@ std::variant<Wildcard, StringExpression> QueryParser::parseExpression() {
             return StringExpression(isExactMatch, stringExpression);
         } else {
             // Wildcard
-            return Wildcard();
+            std::cout << "IS WILDCARD" << std::endl;
+            return StringExpression(true);
         }
     }  else {
         // Exact match
@@ -205,11 +208,11 @@ void QueryParser::parse() {
     parseSelectClause();
 
     while (hasNext()) {
-        if (isSuchThatClause()) {
+        if (parseIfSuchThatClause()) {
             continue;
         }
 
-        if (isAssignPatternClause()) {
+        if (parseIfAssignPatternClause()) {
             continue;
         }
 

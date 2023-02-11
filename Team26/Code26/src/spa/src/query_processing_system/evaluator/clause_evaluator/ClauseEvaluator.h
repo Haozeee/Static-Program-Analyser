@@ -7,7 +7,7 @@
 using StoragePointer = std::shared_ptr<ReadOnlyStorage>;
 
 class ClauseEvaluator {
- public:
+public:
     virtual ~ClauseEvaluator() = default;
     /**
      * Evaluate the clause.
