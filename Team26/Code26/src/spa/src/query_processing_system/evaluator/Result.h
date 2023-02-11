@@ -26,6 +26,14 @@ class Result {
      */
     void addNewResult(std::string key, std::unordered_set<std::string> toAdd);
 
+    /**
+     * Add a new result to a key by doing a union with any existing values. Existing results are
+     * not overridden.
+     * @param key The key to assign the results to.
+     * @param toUnion The results to union.
+     */
+    void unionResult(std::string key, std::unordered_set<std::string> toUnion);
+
     ResultMap getResults();
 
     friend std::ostream& operator <<(std::ostream& os, const Result& result);

@@ -23,60 +23,6 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
 
     std::shared_ptr<ClauseResult> clauseResult;
 
-    /**
-     * Evaluate a such that clause in the form of clause(int, int)
-     */
-    void evaluateNumberNumber(StoragePointer storage) {
-        auto relationshipStore = getRelationshipManager(storage);
-        auto iterator = relationshipStore.find(stoi(leftArg.getValue()));
-        auto rightValue = stoi(rightArg.getValue());
-        if (iterator == relationshipStore.end() || !iterator->second.count(rightValue)) {
-            clauseResult->setNoResults();
-        }
-    }
-
-    /**
-     * Evaluate a such that clause in the form of clause(int, synonym)
-     */
-    void evaluateNumberSynonym(StoragePointer storage) {
-        std::unordered_set<U> synonymValues = getRightArgEntities(storage);
-        auto relationshipStore = getRelationshipManager(storage);
-        auto it = relationshipStore.find(stoi(leftArg.getValue()));
-        std::unordered_set<U> res = {};
-        if (it != relationshipStore.end()) {
-            PkbUtil::setIntersection(synonymValues, it->second, res);
-        }
-        setRightArgResult(res);
-    }
-
-    /**
-     * Evaluate a such that clause in the form of clause(synonym, int)
-     */
-    void evaluateSynonymNumber(StoragePointer storage) {
-        std::unordered_set<T> synonymValues = getLeftArgEntities(storage);
-        auto relationshipStore = getOppositeRelationshipManager(storage);
-        auto it = relationshipStore.find(stoi(rightArg.getValue()));
-        std::unordered_set<U> res = {};
-        if (it != relationshipStore.end()) {
-            PkbUtil::setIntersection(synonymValues, it->second, res);
-        }
-        setLeftArgResult(res);
-    }
-
-    /**
-     * Evaluate a such that clause in the form of clause(synonym, synonym)
-     */
-    void evaluateSynonymSynonym(StoragePointer storage) {
-        // Maybe can make use of the opposite relationship map??
-        std::unordered_map<T, std::unordered_set<U>> filteredMap = PkbUtil::filterMap(getRelationshipManager(storage),
-                                                                                      getLeftArgEntities(storage));
-        // Find intersection with all items of the right arg design entity
-        std::pair<std::unordered_set<T>, std::unordered_set<U>> res = PkbUtil::mapSetIntersection(
-                filteredMap, getRightArgEntities(storage));
-        setLeftArgResult(res.first);
-        setRightArgResult(res.second);
-    }
-
  public:
     SuchThatClauseEvaluator<T, U>(Argument left, Argument right)
             : leftArg(left), rightArg(right), clauseResult(std::make_shared<ClauseResult>()) {}

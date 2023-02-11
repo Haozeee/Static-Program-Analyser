@@ -1,4 +1,5 @@
 #include "Result.h"
+#include "PkbUtil.h"
 
 void Result::addNewResult(std::string key, std::unordered_set<std::string> toAdd) {
     auto it = results.find(key);
@@ -6,6 +7,15 @@ void Result::addNewResult(std::string key, std::unordered_set<std::string> toAdd
         it->second = toAdd;
     } else {
         results.insert({key, toAdd});
+    }
+}
+
+void Result::unionResult(std::string key, std::unordered_set<std::string> toUnion) {
+    auto it = results.find(key);
+    if (it != results.end()) {
+        PkbUtil::setUnion(it->second, toUnion);
+    } else {
+        results.insert({key, toUnion});
     }
 }
 
