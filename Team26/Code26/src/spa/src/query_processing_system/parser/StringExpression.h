@@ -27,7 +27,7 @@ class StringExpression {
     std::string expression;
 
  public:
-    StringExpression(bool isWildcard);
+    explicit StringExpression(bool isWildcard);
 
     StringExpression(bool isExactMatch, std::string expression);
 

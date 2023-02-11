@@ -55,7 +55,8 @@ void QueryValidator::validateAssignPatternSynonym() {
         Argument argumentToBeValidated = item->getLeftArg();
         DesignEntity designEntityOfArg = argumentToBeValidated.getDesignEntity();
         if (designEntityOfArg != DesignEntity::ASSIGN) {
-            throw QueryValidationException(argumentToBeValidated.getValue() + QueryValidatorInvalidAssignPatternSynonym);
+            throw QueryValidationException(argumentToBeValidated.getValue()
+            + QueryValidatorInvalidAssignPatternSynonym);
         }
     }
 }

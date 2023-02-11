@@ -155,7 +155,8 @@ void QueryParser::parseAssignPatternClause() {
 
     /* assign pattern clause is NOT being created */
 //    auto factory = std::make_shared<AssignPatternClauseFactory>();
-//    PatternClause* assignPatternClause = factory->createPatternClause(assignDesignEntity, leftArgument, rightArgument);
+//    PatternClause* assignPatternClause =
+//    factory->createPatternClause(assignDesignEntity, leftArgument, rightArgument);
 //    query->addPatternClause(assignPatternClause);
 }
 
