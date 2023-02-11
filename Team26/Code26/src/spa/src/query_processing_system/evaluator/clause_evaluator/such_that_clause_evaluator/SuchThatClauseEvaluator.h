@@ -11,6 +11,8 @@ enum class ClauseArgumentTypes {
     SYNONYM_NUMBER,
     NUMBER_SYNONYM,
     SYNONYM_SYNONYM,
+    SYNONYM_STRING,
+    NUMBER_STRING,
     NONE
 };
 

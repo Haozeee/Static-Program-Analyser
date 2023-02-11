@@ -11,6 +11,12 @@ std::shared_ptr<ClauseResult> IntStringClauseEvaluator::evaluateClause(StoragePo
         case ClauseArgumentTypes::SYNONYM_SYNONYM:
             evaluateSynonymSynonym(storage);
             break;
+        case ClauseArgumentTypes::SYNONYM_STRING:
+            evaluateSynonymString(storage);
+            break;
+        case ClauseArgumentTypes::NUMBER_STRING:
+            evaluateNumberString(storage);
+            break;
         default:
             throw std::exception();
     }
@@ -20,36 +26,20 @@ std::shared_ptr<ClauseResult> IntStringClauseEvaluator::evaluateClause(StoragePo
 void IntStringClauseEvaluator::evaluateSynonymString(StoragePointer storage) {
     auto statementsToEvaluate = getLeftArgEntities(storage);
     for (int statement : statementsToEvaluate) {
-        auto res = evaluateNumberStringHelper(storage, statement);
-        if (!res.empty()) {
+        auto res = evaluateNumberSynonymHelper(storage, statement);
+        if (res.count(rightArg.getValue())) {
             setLeftArgResult({statement});
+        } else {
+            setLeftArgResult({});
         }
     }
 }
 
 void IntStringClauseEvaluator::evaluateNumberString(StoragePointer storage) {
-
-}
-
-std::unordered_set<std::string>
-IntStringClauseEvaluator::evaluateNumberStringHelper(StoragePointer storage, int stmtNumber) {
-    auto parentRelation = storage->getParentTManager()->getAllRelationshipEntries();
-    auto iterator = parentRelation.find(stmtNumber);
-    auto relationshipStore = getRelationshipManager(storage);
-    std::unordered_set<std::string> res;
-    if (iterator != parentRelation.end()) {
-        // This statement has children
-        for (auto child : iterator->second) {
-            if (relationshipStore.count(child)) {
-                PkbUtil::setUnion(res, relationshipStore.find(child)->second);
-            }
-        }
-    } else {
-        if (relationshipStore.count(stmtNumber)) {
-            PkbUtil::setUnion(res, relationshipStore.find(stmtNumber)->second);
-        }
+    auto res = evaluateNumberSynonymHelper(storage, stoi(leftArg.getValue()));
+    if (!res.count(rightArg.getValue())) {
+        clauseResult->setNoResults();
     }
-    return res;
 }
 
 void IntStringClauseEvaluator::evaluateNumberSynonym(StoragePointer storage) {
@@ -58,6 +48,9 @@ void IntStringClauseEvaluator::evaluateNumberSynonym(StoragePointer storage) {
 }
 
 void IntStringClauseEvaluator::evaluateSynonymSynonym(StoragePointer storage) {
+    // Set initial empty results
+    setRightArgResult({});
+    setLeftArgResult({});
     auto statementsToEvaluate = getLeftArgEntities(storage);
     for (int statement : statementsToEvaluate) {
         auto res = evaluateNumberSynonymHelper(storage, statement);
