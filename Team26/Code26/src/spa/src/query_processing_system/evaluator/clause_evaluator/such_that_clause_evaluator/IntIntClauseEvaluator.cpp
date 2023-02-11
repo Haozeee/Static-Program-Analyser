@@ -71,7 +71,7 @@ void IntIntClauseEvaluator::evaluateSynonymNumber(StoragePointer storage) {
  */
 void IntIntClauseEvaluator::evaluateSynonymSynonym(StoragePointer storage) {
     // Maybe can make use of the opposite relationship map??
-    auto filteredMap = PkbUtil::filterMap(getRelationshipManager(storage),getLeftArgEntities(storage));
+    auto filteredMap = PkbUtil::filterMap(getRelationshipManager(storage), getLeftArgEntities(storage));
     // Find intersection with all items of the right arg design entity
     auto res = PkbUtil::mapSetIntersection(filteredMap, getRightArgEntities(storage));
     setLeftArgResult(res.first);

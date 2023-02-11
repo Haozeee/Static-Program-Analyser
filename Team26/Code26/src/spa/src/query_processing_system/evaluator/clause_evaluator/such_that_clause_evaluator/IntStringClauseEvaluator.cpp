@@ -61,7 +61,8 @@ void IntStringClauseEvaluator::evaluateSynonymSynonym(StoragePointer storage) {
     }
 }
 
-std::unordered_set<std::string> IntStringClauseEvaluator::evaluateNumberSynonymHelper(StoragePointer storage, int stmtNumber) {
+std::unordered_set<std::string> IntStringClauseEvaluator::evaluateNumberSynonymHelper(StoragePointer storage,
+                                                                                      int stmtNumber) {
     auto parentRelation = storage->getParentTManager()->getAllRelationshipEntries();
     auto iterator = parentRelation.find(stmtNumber);
     auto relationshipStore = getRelationshipManager(storage);
