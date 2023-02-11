@@ -19,7 +19,7 @@ std::shared_ptr<ClauseResult> IntIntClauseEvaluator::evaluateClause(StoragePoint
             std::cout << "Synonym sybn\n";
             evaluateSynonymSynonym(storage);
             break;
-        case ClauseArgumentTypes::NONE:
+        default:
             std::cout << "None\n";
             throw std::exception();
     }
@@ -76,6 +76,14 @@ void IntIntClauseEvaluator::evaluateSynonymSynonym(StoragePointer storage) {
     auto res = PkbUtil::mapSetIntersection(filteredMap, getRightArgEntities(storage));
     setLeftArgResult(res.first);
     setRightArgResult(res.second);
+}
+
+void IntIntClauseEvaluator::handleLeftWildcard() {
+    leftArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::STMT);
+}
+
+void IntIntClauseEvaluator::handleRightWildcard() {
+    rightArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::STMT);
 }
 
 void IntIntClauseEvaluator::setLeftArgResult(std::unordered_set<int> result) {

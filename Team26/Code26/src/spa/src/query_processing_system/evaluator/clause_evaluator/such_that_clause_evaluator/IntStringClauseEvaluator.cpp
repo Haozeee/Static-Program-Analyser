@@ -82,6 +82,13 @@ std::unordered_set<std::string> IntStringClauseEvaluator::evaluateNumberSynonymH
     return res;
 }
 
+void IntStringClauseEvaluator::handleLeftWildcard() {
+    leftArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::STMT);
+}
+
+void IntStringClauseEvaluator::handleRightWildcard() {
+    rightArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::VARIABLE);
+}
 
 void IntStringClauseEvaluator::setLeftArgResult(std::unordered_set<int> result) {
     clauseResult->unionResult(leftArg.getValue(), PkbUtil::intSetToStringSet(result));

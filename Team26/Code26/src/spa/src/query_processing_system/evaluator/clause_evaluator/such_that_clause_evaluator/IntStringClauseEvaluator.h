@@ -18,6 +18,10 @@ class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string
 
     std::unordered_set<std::string> getRightArgEntities(StoragePointer storage) override;
 
+    void handleLeftWildcard() override;
+
+    void handleRightWildcard() override;
+
     void evaluateNumberSynonym(StoragePointer storage);
 
     void evaluateSynonymSynonym(StoragePointer storage);

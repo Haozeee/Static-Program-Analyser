@@ -25,26 +25,6 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
 
     std::shared_ptr<ClauseResult> clauseResult;
 
- public:
-    SuchThatClauseEvaluator<T, U>(Argument left, Argument right)
-            : leftArg(left), rightArg(right), clauseResult(std::make_shared<ClauseResult>()) {}
-
-    ClauseArgumentTypes getClauseArgumentTypes() {
-        auto l = leftArg.getArgumentType();
-        auto r = rightArg.getArgumentType();
-        if (l == ArgumentType::NUMBER && r == ArgumentType::NUMBER) {
-            return ClauseArgumentTypes::NUMBER_NUMBER;
-        } else if (l == ArgumentType::SYNONYM && r == ArgumentType::NUMBER) {
-            return ClauseArgumentTypes::SYNONYM_NUMBER;
-        } else if (l == ArgumentType::NUMBER && r == ArgumentType::SYNONYM) {
-            return ClauseArgumentTypes::NUMBER_SYNONYM;
-        } else if (l == ArgumentType::SYNONYM && r == ArgumentType::SYNONYM) {
-            return ClauseArgumentTypes::SYNONYM_SYNONYM;
-        } else {
-            return ClauseArgumentTypes::NONE;
-        }
-    }
-
     virtual std::unordered_map<T, std::unordered_set<U>> getRelationshipManager(StoragePointer storage) = 0;
 
     virtual std::unordered_map<U, std::unordered_set<T>> getOppositeRelationshipManager(StoragePointer storage) = 0;
@@ -72,4 +52,35 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
      * Get all the entities that have the same design entity as that of the right argument.
      */
     virtual std::unordered_set<U> getRightArgEntities(StoragePointer storage) = 0;
+
+    virtual void handleLeftWildcard() = 0;
+
+    virtual void handleRightWildcard() = 0;
+
+    void handleWildcards() {
+        if (leftArg.getArgumentType() == ArgumentType::WILDCARD) {
+            handleLeftWildcard();
+        } else if (rightArg.getArgumentType() == ArgumentType::WILDCARD) {
+            handleRightWildcard();
+        }
+    }
+public:
+    SuchThatClauseEvaluator<T, U>(Argument left, Argument right)
+            : leftArg(left), rightArg(right), clauseResult(std::make_shared<ClauseResult>()) {}
+
+    ClauseArgumentTypes getClauseArgumentTypes() {
+        auto l = leftArg.getArgumentType();
+        auto r = rightArg.getArgumentType();
+        if (l == ArgumentType::NUMBER && r == ArgumentType::NUMBER) {
+            return ClauseArgumentTypes::NUMBER_NUMBER;
+        } else if (l == ArgumentType::SYNONYM && r == ArgumentType::NUMBER) {
+            return ClauseArgumentTypes::SYNONYM_NUMBER;
+        } else if (l == ArgumentType::NUMBER && r == ArgumentType::SYNONYM) {
+            return ClauseArgumentTypes::NUMBER_SYNONYM;
+        } else if (l == ArgumentType::SYNONYM && r == ArgumentType::SYNONYM) {
+            return ClauseArgumentTypes::SYNONYM_SYNONYM;
+        } else {
+            return ClauseArgumentTypes::NONE;
+        }
+    }
 };
