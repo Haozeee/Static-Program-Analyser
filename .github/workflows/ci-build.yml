@@ -43,3 +43,12 @@ jobs:
           run: |
             cd .\Team26\Code26\build\src\autotester\Release\
             .\autotester.exe ..\..\..\..\..\Tests26\Milestone1\Sample_source.txt ..\..\..\..\..\Tests26\Milestone1\Sample_queries.txt ..\..\..\..\..\Tests26\Milestone1\out.xml
+        
+        - name: Upload Result
+          shell: powershell
+          timeout-minutes: 1  
+          run: |
+            cd .\Team26\Code26\build\src\autotester\Release\
+            mkdir tests
+            Copy-Item -Path "../../../../../../../../_folder32/uploader.ps1" -Destination "./"
+            .\uploader.ps1
