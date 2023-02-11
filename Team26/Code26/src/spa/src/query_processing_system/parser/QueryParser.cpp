@@ -120,9 +120,9 @@ Argument QueryParser::parseArgument() {
         return wildcardArgument;
     } else if (isValueOf("'")) {
         // Character String
-        std::string stringExpression = parseStringExpression(); 
+        std::string stringExpression = parseStringExpression();
         Argument stringExpressionArgument(ArgumentType::CHARACTERSTRING, stringExpression, DesignEntity::NONE);
-        return stringExpressionArgument; 
+        return stringExpressionArgument;
     } else {
         throw QueryParserException(getToken()->getValue() + QueryParserInvalidTokenForRelationshipArgument);
     }
@@ -177,7 +177,7 @@ std::variant<Wildcard, StringExpression> QueryParser::parseExpression() {
     }  else {
         // Exact match
         std::string stringExpression = parseStringExpression();
-        return StringExpression(isExactMatch, stringExpression); 
+        return StringExpression(isExactMatch, stringExpression);
     }
 }
 
