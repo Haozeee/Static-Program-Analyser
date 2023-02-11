@@ -1,11 +1,15 @@
 #pragma once
 
+#include "IntIntClauseEvaluator.h"
 #include <memory>
-#include "SuchThatClauseEvaluator.h"
+#include <unordered_map>
+#include <unordered_set>
 
-class ParentTClauseEvaluator : public SuchThatClauseEvaluator {
+class ParentTClauseEvaluator : public IntIntClauseEvaluator {
  public:
     ParentTClauseEvaluator(Argument left, Argument right);
 
-    std::shared_ptr<ClauseResult> evaluateClause(std::shared_ptr<ReadOnlyStorage> storage) override;
+    std::unordered_map<int , std::unordered_set<int>> getRelationshipManager(StoragePointer storage) override;
+
+    std::unordered_map<int, std::unordered_set<int>> getOppositeRelationshipManager(StoragePointer storage) override;
 };

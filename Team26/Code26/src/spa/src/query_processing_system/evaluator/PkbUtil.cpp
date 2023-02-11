@@ -1,17 +1,35 @@
 #include "PkbUtil.h"
 
-stringEntitySet PkbUtil::getEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage, DesignEntity entity) {
+stringEntitySet PkbUtil::intSetToStringSet(std::unordered_set<int> intSet) {
+    stringEntitySet result;
+    std::transform(intSet.begin(), intSet.end(), std::inserter(result, result.begin()),
+                   [](int i) {return std::to_string(i);});
+    return result;
+}
+
+
+std::unordered_set<std::string> PkbUtil::getEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage,
+                                                            DesignEntity entity) {
+    if (entity == DesignEntity::VARIABLE || entity == DesignEntity::PROCEDURE) {
+        return PkbUtil::getStringEntitiesFromPkb(storage, entity);
+    } else {
+        return PkbUtil::intSetToStringSet(PkbUtil::getIntEntitiesFromPkb(storage, entity));
+    }
+}
+
+std::unordered_set<std::string> PkbUtil::getStringEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage,
+                                                                  DesignEntity entity) {
     switch (entity) {
         case DesignEntity::VARIABLE:
             return storage->getVariableManager()->getAllEntitiesEntries();
         case DesignEntity::PROCEDURE:
             return storage->getProcedureManager()->getAllEntitiesEntries();
         default:
-            return PkbUtil::intSetToStringSet(PkbUtil::getStatementEntitiesFromPkb(storage, entity));
+            return {};
     }
 }
 
-intEntitySet PkbUtil::getStatementEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage, DesignEntity entity) {
+std::unordered_set<int> PkbUtil::getIntEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage, DesignEntity entity) {
     switch (entity) {
         case DesignEntity::ASSIGN:
             return storage->getAssignManager()->getAllEntitiesEntries();
@@ -33,11 +51,3 @@ intEntitySet PkbUtil::getStatementEntitiesFromPkb(std::shared_ptr<ReadOnlyStorag
             return {};
     }
 }
-
-stringEntitySet PkbUtil::intSetToStringSet(std::unordered_set<int> intSet) {
-    stringEntitySet result;
-    std::transform(intSet.begin(), intSet.end(), std::inserter(result, result.begin()),
-                   [](int i) {return std::to_string(i);});
-    return result;
-}
-
