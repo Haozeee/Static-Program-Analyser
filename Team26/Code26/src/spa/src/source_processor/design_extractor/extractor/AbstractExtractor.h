@@ -32,6 +32,4 @@ class AbstractExtractor {
     virtual void extractWhile(std::shared_ptr<WhileNode> node) = 0;
     virtual void extractCondExpr(std::shared_ptr<CondExprNode> node);
     virtual void extractExpr(std::shared_ptr<ExprNode> node);
-    virtual void extractName(std::string ident);
-    virtual void extractInteger(std::string integer);
 };

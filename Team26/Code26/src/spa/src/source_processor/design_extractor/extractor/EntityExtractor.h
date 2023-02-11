@@ -21,8 +21,4 @@ class EntityExtractor : public AbstractExtractor {
     void extractCall(std::shared_ptr<CallNode> node) override;
     void extractIf(std::shared_ptr<IfNode> node) override;
     void extractWhile(std::shared_ptr<WhileNode> node) override;
-    void extractCondExpr(std::shared_ptr<CondExprNode> node) override;
-    void extractExpr(std::shared_ptr<ExprNode> node) override;
-    void extractName(std::string ident) override;
-    void extractInteger(std::string integer) override;
 };

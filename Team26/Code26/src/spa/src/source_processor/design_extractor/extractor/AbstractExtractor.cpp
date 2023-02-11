@@ -1,7 +1,6 @@
 #include "AbstractExtractor.h"
 
-AbstractExtractor::AbstractExtractor() {
-}
+AbstractExtractor::AbstractExtractor() = default;
 
 void AbstractExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
     for (auto& procedure : node->procedureList) {
@@ -28,10 +27,4 @@ void AbstractExtractor::extractCondExpr(std::shared_ptr<CondExprNode> node) {
 }
 
 void AbstractExtractor::extractExpr(std::shared_ptr<ExprNode> node) {
-}
-
-void AbstractExtractor::extractName(std::string ident) {
-}
-
-void AbstractExtractor::extractInteger(std::string integer) {
 }

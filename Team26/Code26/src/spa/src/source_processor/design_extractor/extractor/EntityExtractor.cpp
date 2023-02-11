@@ -23,12 +23,10 @@ void EntityExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
 
 void EntityExtractor::extractRead(std::shared_ptr<ReadNode> node) {
     entityStore->insertReadStatement(node);
-    entityStore->insertName(node->varName);
 }
 
 void EntityExtractor::extractPrint(std::shared_ptr<PrintNode> node) {
     entityStore->insertPrintStatement(node);
-    entityStore->insertName(node->varName);
 }
 
 void EntityExtractor::extractCall(std::shared_ptr<CallNode> node) {
@@ -36,9 +34,8 @@ void EntityExtractor::extractCall(std::shared_ptr<CallNode> node) {
 }
 
 void EntityExtractor::extractAssign(std::shared_ptr<AssignNode> node) {
-    entityStore->insertName(node->varName);
     entityStore->insertAssignStatement(node);
-    // Extract Exception
+    extractExpr(node->exprNode);
 }
 
 void EntityExtractor::extractIf(std::shared_ptr<IfNode> node) {
@@ -49,21 +46,8 @@ void EntityExtractor::extractIf(std::shared_ptr<IfNode> node) {
 }
 
 void EntityExtractor::extractWhile(std::shared_ptr<WhileNode> node) {
+    entityStore->insertWhileStatement(node);
+    extractCondExpr(node->condExprNode);
+    extractStmtList(node->stmtListNode);
 }
-
-void EntityExtractor::extractCondExpr(std::shared_ptr<CondExprNode> node) {
-}
-
-void EntityExtractor::extractExpr(std::shared_ptr<ExprNode> node) {
-}
-
-void EntityExtractor::extractName(std::string name) {
-    entityStore->insertName(name);
-}
-
-void EntityExtractor::extractInteger(std::string integer) {
-    entityStore->insertConstant(integer);
-}
-
-
 
