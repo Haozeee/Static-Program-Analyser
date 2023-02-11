@@ -11,26 +11,24 @@ Query::~Query() {
     for (auto clause : suchThatClauses) {
         delete clause;
     }
+
+    for (auto clause : patternClauses) {
+        delete clause;
+    }
 }
 
+/* Select Clause */
 std::shared_ptr<SelectClause> Query::getSelectClause() {
     return selectClause;
-}
-
-std::vector<std::shared_ptr<Declaration>> Query::getDeclarations() {
-    return declarations;
-}
-
-std::vector<SuchThatClause*> Query::getSuchThatClauses() {
-    return suchThatClauses;
 }
 
 void Query::setSelectClause(std::shared_ptr<SelectClause> selectClause_) {
     selectClause = selectClause_;
 }
 
-void Query::addSuchThatClause(SuchThatClause* clause) {
-    suchThatClauses.push_back(clause);
+/* Declarations */
+std::vector<std::shared_ptr<Declaration>> Query::getDeclarations() {
+    return declarations;
 }
 
 void Query::addDeclaration(const Synonym& synonym, DesignEntity designEntity) {
@@ -40,6 +38,25 @@ void Query::addDeclaration(const Synonym& synonym, DesignEntity designEntity) {
     synonymToDesignEntityMap.insert({synonym.getIdent(), declaration->getDesignEntity()});
 }
 
+/* Such That Clause */
+std::vector<SuchThatClause*> Query::getSuchThatClauses() {
+    return suchThatClauses;
+}
+
+void Query::addSuchThatClause(SuchThatClause* clause) {
+    suchThatClauses.push_back(clause);
+}
+
+/* Assign Pattern Clause */
+std::vector<PatternClause*> Query::getPatternClause() {
+    return patternClauses;
+}
+
+void Query::addPatternClause(PatternClause* clause) {
+    patternClauses.push_back(clause);
+}
+
+/* Synonym Design Entity */
 DesignEntity Query::getSynonymDesignEntity(std::shared_ptr<Synonym> synonym) {
     return getSynonymDesignEntity(synonym->getIdent());
 }

@@ -41,7 +41,13 @@ bool isValidDesignEntity(DesignEntity designEntity) {
     return (designEntity == DesignEntity::STMT
             || designEntity == DesignEntity::VARIABLE
             || designEntity == DesignEntity::PROCEDURE
-            || designEntity == DesignEntity::ASSIGN);
+            || designEntity == DesignEntity::ASSIGN
+            || designEntity == DesignEntity::READ
+            || designEntity == DesignEntity::PRINT
+            || designEntity == DesignEntity::CALL
+            || designEntity == DesignEntity::WHILE
+            || designEntity == DesignEntity::IF
+            || designEntity == DesignEntity::CONSTANT);
 }
 
 std::string toString(DesignEntity designEntity) {

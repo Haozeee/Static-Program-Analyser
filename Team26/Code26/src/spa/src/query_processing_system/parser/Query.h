@@ -9,6 +9,7 @@
 #include "Declaration.h"
 #include "Synonym.h"
 #include "clause/such_that_clause/SuchThatClause.h"
+#include "query_processing_system/parser/clause/pattern_clause/AssignPatternClause.h"
 
 class Query {
  private:
@@ -20,6 +21,8 @@ class Query {
     std::vector<SuchThatClause*> suchThatClauses;
     // Map of synonyms to design entity
     std::unordered_map<std::string, DesignEntity> synonymToDesignEntityMap;
+    // List of pattern clauses in the query
+    std::vector<PatternClause*> patternClauses;
 
  public:
     Query();
@@ -32,14 +35,17 @@ class Query {
 
     std::shared_ptr<SelectClause> getSelectClause();
 
+    void setSelectClause(std::shared_ptr<SelectClause> selectClause);
+
     std::vector<std::shared_ptr<Declaration>> getDeclarations();
 
     std::vector<SuchThatClause*> getSuchThatClauses();
 
-    void setSelectClause(std::shared_ptr<SelectClause> selectClause);
+    std::vector<PatternClause*> getPatternClause();
 
     /**
      * Add a new declaration to the Query object.
+     *
      * @param synonym The synonym of the declaration.
      * @param designEntity The design entity of the synonym.
      */
@@ -47,9 +53,12 @@ class Query {
 
     /**
      * Add a new such that clause to the query.
+     *
      * @param clause The such that clause to be added.
      */
     void addSuchThatClause(SuchThatClause* clause);
+
+    void addPatternClause(PatternClause* clause);
 
     bool operator==(const Query& other) const;
 

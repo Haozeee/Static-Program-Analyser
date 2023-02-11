@@ -7,6 +7,8 @@
 #include "common/parser/AbstractParser.h"
 #include "Argument.h"
 #include "Query.h"
+#include "StringExpression.h"
+#include "Wildcard.h"
 #include "query_processing_system/exception/QueryException.h"
 #include "query_processing_system/exception/QueryExceptionMessages.h"
 #include "query_processing_system/parser/clause/such_that_clause/SuchThatClauseFactory.h"
@@ -44,11 +46,11 @@ class QueryParser : public AbstractParser {
     /**
      * Parses Such That Clause if any.
      */
-    bool parseSuchThatClause();
+    bool isSuchThatClause();
 
     /**
      * Handles parsing of relRef:
-     * Follows | FollowsT | Parent | ParentT | UsesSClause | UsesPClause | ModifiesS | ModifiesP
+     * Follows | FollowsT | Parent | ParentT | UsesS | UsesP | ModifiesS | ModifiesP
      */
     void parseRelRef();
 
@@ -60,7 +62,20 @@ class QueryParser : public AbstractParser {
      */
     Argument parseArgument();
 
-    void parseEndingSemicolon();
+    /**
+     * Parses Assign Pattern Clause if any.
+     */
+    bool isAssignPatternClause();
+
+    void parseAssignPatternClause();
+
+    std::variant<Wildcard, StringExpression> parseExpression();
+
+    std::string parseStringExpression();
+    /**
+     * Parses ending semicolon if any and throws exception.
+     */
+    void parseEndingUnexpectedToken();
 
  public:
     /**

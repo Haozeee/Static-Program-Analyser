@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 #include "DesignEntity.h"
 
@@ -7,12 +8,12 @@
  * Synonyms: Declarations
  * Number: Statement numbers
  * Wildcard: _
- * CharacterString: String within a set of inverted commas
+ * StringExpression: String within a set of inverted commas
  */
 enum class ArgumentType {
     SYNONYM,
-    WILDCARD,
     NUMBER,
+    WILDCARD,
     CHARACTERSTRING
 };
 
