@@ -18,10 +18,17 @@ enum class ExprOperatorType {
     OPERATOR_SUBTRACT
 };
 
+enum class ExprNodeType {
+    EXPR,
+    TERM,
+    FACTOR
+};
+
 using Factor = std::variant<std::string, int>;
 
 class ExprNode : public Node {
  public:
+    ExprNodeType exprNodeType;
     std::pair<std::variant<std::shared_ptr<Factor>, std::shared_ptr<ExprNode>>,
         std::optional<std::pair<TermOperatorType, std::shared_ptr<ExprNode>>>> term;
     std::optional<std::pair<ExprOperatorType, std::shared_ptr<ExprNode>>> optionalParams;
