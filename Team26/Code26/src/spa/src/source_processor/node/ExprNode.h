@@ -37,7 +37,7 @@ class ExprNode : public Node {
 
     ExprNode(int constant);
     ExprNode(std::string varName);
-    ExprNode(std::shared_ptr<BinaryOpNode> binaryOpNode, std::string str);
+    ExprNode(std::shared_ptr<BinaryOpNode> binaryOpNode);
 
     bool isConstant();
     bool isVariable();

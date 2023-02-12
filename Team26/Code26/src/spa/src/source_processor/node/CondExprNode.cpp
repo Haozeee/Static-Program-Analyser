@@ -6,36 +6,50 @@ CondExprNode::CondExprNode(std::shared_ptr<RelExpr> relExpr) {
 	condExprNodeType = CondExprNodeType::RELEXPR;
 
 	RelExpr r = *relExpr;
-	RelExprOperatorType relOpType = std::get<0>(r);
+	RelExprOperatorType opType = std::get<0>(r);
 	ExprNode exprnode1 = *std::get<1>(r);
 	ExprNode exprnode2 = *std::get<2>(r);
+
 	this->str = exprnode1.str;
-	if (relOpType == RelExprOperatorType::EQ) {
+	if (opType == RelExprOperatorType::EQ) {
 		this->str += "==";
-	} else if (relOpType == RelExprOperatorType::NEQ) {
+	} else if (opType == RelExprOperatorType::NEQ) {
 		this->str += "!=";
-	} else if (relOpType == RelExprOperatorType::LT) {
+	} else if (opType == RelExprOperatorType::LT) {
 		this->str += "<";
-	} else if (relOpType == RelExprOperatorType::LTE) {
+	} else if (opType == RelExprOperatorType::LTE) {
 		this->str += "<=";
-	} else if (relOpType == RelExprOperatorType::GT) {
+	} else if (opType == RelExprOperatorType::GT) {
 		this->str += ">";
 	} else {
 		this->str += ">=";
 	}
-	this->str = exprnode2.str;
+	this->str += exprnode2.str;
 }
 
-CondExprNode::CondExprNode(std::tuple<UnaryCondOperatorType, std::shared_ptr<CondExprNode>> unaryCondExpr, std::string str) {
+CondExprNode::CondExprNode(std::tuple<UnaryCondOperatorType, std::shared_ptr<CondExprNode>> unaryCondExpr) {
 	this->unaryCondExpr = unaryCondExpr;
-	this->str = str;
 	condExprNodeType = CondExprNodeType::UNARYCONDEXPR;
+
+	CondExprNode condExprNode = *std::get<1>(unaryCondExpr);
+	this->str = "!(" + condExprNode.str +")";
 }
 
-CondExprNode::CondExprNode(std::tuple<BinaryCondOperatorType, std::shared_ptr<CondExprNode>, std::shared_ptr<CondExprNode>> binaryCondExpr, std::string str) {
+CondExprNode::CondExprNode(std::tuple<BinaryCondOperatorType, std::shared_ptr<CondExprNode>, std::shared_ptr<CondExprNode>> binaryCondExpr) {
 	this->binaryCondExpr = binaryCondExpr;
-	this->str = str;
 	condExprNodeType = CondExprNodeType::BINARYCONDEXPR;
+
+	CondExprNode condExprNode1 = *std::get<1>(binaryCondExpr);
+	CondExprNode condExprNode2 = *std::get<2>(binaryCondExpr);
+	BinaryCondOperatorType opType = std::get<0>(binaryCondExpr);
+
+	this->str = "(" + condExprNode1.str;
+	if (opType ==BinaryCondOperatorType::AND) {
+		this->str += ")&&(";
+	} else {
+		this->str += ")||(";
+	}
+	this->str += condExprNode2.str + ")";
 }
 
 bool CondExprNode::isRelExpr() {

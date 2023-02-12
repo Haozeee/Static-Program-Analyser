@@ -1,13 +1,34 @@
 #include "ExprNode.h"
 
-ExprNode::ExprNode(std::shared_ptr<BinaryOpNode> binaryOpNode, std::string str) {
+ExprNode::ExprNode(std::shared_ptr<BinaryOpNode> binaryOpNode) {
     if (std::get<0>(*binaryOpNode) == OperatorType::ADD || std::get<0>(*binaryOpNode) == OperatorType::SUBTRACT) {
         exprNodeType = ExprNodeType::EXPR;
     } else {
         exprNodeType = ExprNodeType::TERM;
     }
     this->binaryOpNode = binaryOpNode;
-    this->str = str;
+
+    OperatorType opType = std::get<0>(*binaryOpNode);
+    ExprNode exprNode1 = *(std::get<1>(*binaryOpNode));
+    ExprNode exprNode2 = *(std::get<2>(*binaryOpNode));
+    
+    this->str = exprNode1.str;
+    if (opType == OperatorType::MULTIPLY) {
+        this->str += "*";
+    }
+    else if (opType == OperatorType::DIVIDE) {
+        this->str += "/";
+    }
+    else if (opType == OperatorType::MOD) {
+        this->str += "%";
+    }
+    else if (opType == OperatorType::ADD) {
+        this->str += "+";
+    } else {
+        this->str += "-";
+    }
+    this->str += exprNode2.str;
+
 }
 
 ExprNode::ExprNode(int constant) {
