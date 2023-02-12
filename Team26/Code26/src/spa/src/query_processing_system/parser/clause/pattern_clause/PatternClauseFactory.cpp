@@ -4,7 +4,8 @@ PatternClause* PatternClauseFactory::createPatternClause(Argument pattern, Argum
     if (pattern.getDesignEntity() == DesignEntity::ASSIGN) {
         return new AssignPatternClause(pattern, left, right);
     } else {
-        throw std::exception();
+        throw QueryInvalidPatternArgument(pattern.getValue()
+                                          + QueryInvalidCreatePatternArgument);
     }
 }
 

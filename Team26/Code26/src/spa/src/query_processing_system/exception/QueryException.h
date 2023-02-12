@@ -30,3 +30,9 @@ class QueryInvalidRelationshipArguments : public std::runtime_error {
     QueryInvalidRelationshipArguments() : std::runtime_error(InvalidArgument) {}
     explicit QueryInvalidRelationshipArguments(const std::string& errorMessage) : std::runtime_error(errorMessage) {}
 };
+
+class QueryInvalidPatternArgument : public std::runtime_error {
+ public:
+    QueryInvalidPatternArgument() : std::runtime_error(InvalidArgument) {}
+    explicit QueryInvalidPatternArgument(const std::string& errorMessage) : std::runtime_error(errorMessage) {}
+};

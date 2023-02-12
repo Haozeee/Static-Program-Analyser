@@ -6,7 +6,7 @@ const char QueryValidatorUndeclaredSelectClauseSynonym[] =
         "Please select a synonym that was in the declaration. This synonym has yet to be declared: ";
 const char QueryValidatorUndeclaredSuchThatClauseArgument[] =
         "This argument in the relationship clause has yet to be declared: ";
-const char QueryValidatorInvalidAssignPatternSynonym[] =
+const char QueryInvalidCreatePatternArgument[] =
         " needs to be declared as an assign synonym to be used in an assign pattern clause.";
 
 const char QueryParserInvalidRelationshipInSelectClause[] =
