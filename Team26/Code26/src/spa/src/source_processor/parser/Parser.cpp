@@ -281,9 +281,11 @@ std::shared_ptr<ExprNode> Parser::parseExprNode(int startIndex, int endIndex) {
     // Parse single name/integer factor
     if (startIndex == endIndex) {
         if (isTypeOf(TokenType::TOKEN_NAME)) {
-            return std::make_shared<ExprNode>(parseNext(TokenType::TOKEN_NAME)->getValue());
+            return std::make_shared<ExprNode>(parseNext(TokenType::TOKEN_NAME)->getValue(),
+                ExprNodeType::FACTOR_VARIABLE);
         } else if (isTypeOf(TokenType::TOKEN_INTEGER)) {
-            return std::make_shared<ExprNode>(parseNext(TokenType::TOKEN_INTEGER)->getValue());
+            return std::make_shared<ExprNode>(parseNext(TokenType::TOKEN_INTEGER)->getValue()
+                , ExprNodeType::FACTOR_CONSTANT);
         }
 
         // TODO(oviya): throw error
@@ -348,9 +350,11 @@ std::shared_ptr<ExprNode> Parser::parseTerm(int startIndex, int endIndex) {
     // Parse single name/integer factor
     if (startIndex == endIndex) {
         if (getToken()->getType() == TokenType::TOKEN_NAME) {
-            return std::make_shared<ExprNode>(parseNext(TokenType::TOKEN_NAME)->getValue());
+            return std::make_shared<ExprNode>(parseNext(TokenType::TOKEN_NAME)->getValue()
+                , ExprNodeType::FACTOR_VARIABLE);
         } else if (getToken()->getType() == TokenType::TOKEN_INTEGER) {
-            return std::make_shared<ExprNode>(parseNext(TokenType::TOKEN_INTEGER)->getValue());
+            return std::make_shared<ExprNode>(parseNext(TokenType::TOKEN_INTEGER)->getValue()
+                , ExprNodeType::FACTOR_CONSTANT);
         }
 
         // TODO(oviya): throw error

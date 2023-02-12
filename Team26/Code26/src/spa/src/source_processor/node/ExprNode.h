@@ -35,9 +35,8 @@ class ExprNode : public Node {
     std::string str;
     ExprNodeType exprNodeType;
 
-    explicit ExprNode(int constant);
-    explicit ExprNode(std::string varName);
-    explicit ExprNode(std::shared_ptr<BinaryOpNode> binaryOpNode, std::string str);
+    ExprNode(std::string factor, ExprNodeType exprNodeType);
+    ExprNode(std::shared_ptr<BinaryOpNode> binaryOpNode, std::string str);
 
     bool isConstant();
     bool isVariable();
