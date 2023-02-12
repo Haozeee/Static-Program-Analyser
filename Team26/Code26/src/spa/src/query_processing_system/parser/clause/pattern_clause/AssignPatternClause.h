@@ -7,7 +7,7 @@
 
 class AssignPatternClause : public PatternClause {
  public:
-    AssignPatternClause(DesignEntity designEntity, Argument leftArg, StringExpression rightArg);
+    AssignPatternClause(Argument patternArg, Argument leftArg, StringExpression rightArg);
 
     ClauseEvaluator* getClauseEvaluator() override;
 };

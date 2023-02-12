@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "QueryParser.h"
-#include "query_processing_system/parser/clause/pattern_clause/AssignPatternClauseFactory.h"
+#include "query_processing_system/parser/clause/pattern_clause/PatternClauseFactory.h"
 
 QueryParser::QueryParser(std::vector<std::shared_ptr<Token>> tokens, Query* query) :
 query(query), AbstractParser(tokens) {}
@@ -140,10 +140,9 @@ bool QueryParser::parseIfAssignPatternClause() {
 
 void QueryParser::parseAssignPatternClause() {
     std::shared_ptr<Token> assignToken = parseNext(TokenType::TOKEN_NAME);
-    std::string assignString = assignToken->getValue();
-    DesignEntity assignDesignEntity = query->getSynonymDesignEntity(assignString);
-    if (assignDesignEntity != DesignEntity::ASSIGN) {
-        throw QueryParserException(assignString + QueryValidatorInvalidAssignPatternSynonym);
+    auto patternArg = parseArgument();
+    if (patternArg.getDesignEntity() != DesignEntity::ASSIGN) {
+        throw QueryParserException(patternArg.getValue() + QueryValidatorInvalidAssignPatternSynonym);
     }
     parseNext("(");
     // First argument can be variable synonyms, wildcard or character strings
@@ -153,11 +152,9 @@ void QueryParser::parseAssignPatternClause() {
     StringExpression rightArgument = parseExpression();
     parseNext(")");
 
-    /* assign pattern clause is NOT being created */
-//    auto factory = std::make_shared<AssignPatternClauseFactory>();
-//    PatternClause* assignPatternClause =
-//    factory->createPatternClause(assignDesignEntity, leftArgument, rightArgument);
-//    query->addPatternClause(assignPatternClause);
+    PatternClause* assignPatternClause =
+            PatternClauseFactory::createPatternClause(patternArg, leftArgument, rightArgument);
+    query->addPatternClause(assignPatternClause);
 }
 
 StringExpression QueryParser::parseExpression() {

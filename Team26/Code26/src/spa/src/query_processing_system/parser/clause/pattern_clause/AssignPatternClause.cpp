@@ -1,9 +1,9 @@
 #include "AssignPatternClause.h"
 #include "query_processing_system/evaluator/clause_evaluator/pattern_clause_evaluator/AssignPatternClauseEvaluator.h"
 
-AssignPatternClause::AssignPatternClause(DesignEntity designEntity, Argument left, StringExpression right)
-    : PatternClause(designEntity, left, right) {}
+AssignPatternClause::AssignPatternClause(Argument pattern, Argument left, StringExpression right)
+    : PatternClause(pattern, left, right) {}
 
 ClauseEvaluator* AssignPatternClause::getClauseEvaluator() {
-    return new AssignPatternClauseEvaluator(getDesignEntity(), getLeftArg(), getRightArg());
+    return new AssignPatternClauseEvaluator(getPatternArg(), getLeftArg(), getRightArg());
 }

@@ -9,7 +9,7 @@
 
 class PatternClauseEvaluator : public ClauseEvaluator {
  protected:
-    DesignEntity designEntity;
+    Argument patternArg;
 
     Argument leftArg;
 
@@ -18,9 +18,7 @@ class PatternClauseEvaluator : public ClauseEvaluator {
     std::shared_ptr<ClauseResult> clauseResult;
 
  public:
-    PatternClauseEvaluator(DesignEntity designEntity, Argument leftArg, StringExpression rightArg);
-
-    DesignEntity getDesignEntity();
+    PatternClauseEvaluator(Argument patternArg, Argument leftArg, StringExpression rightArg);
 
     Argument getLeftArg();
 
