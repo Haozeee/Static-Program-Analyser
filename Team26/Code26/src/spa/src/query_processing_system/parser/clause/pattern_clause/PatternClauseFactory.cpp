@@ -1,3 +1,10 @@
 #include "PatternClauseFactory.h"
 
-PatternClause* createPatternClause(Argument left, StringExpression right);
+PatternClause* PatternClauseFactory::createPatternClause(Argument pattern, Argument left, StringExpression right) {
+    if (pattern.getDesignEntity() == DesignEntity::ASSIGN) {
+        return new AssignPatternClause(pattern, left, right);
+    } else {
+        throw std::exception();
+    }
+}
+

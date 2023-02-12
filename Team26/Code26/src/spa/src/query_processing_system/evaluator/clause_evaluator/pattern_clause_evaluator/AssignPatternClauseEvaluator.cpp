@@ -1,5 +1,9 @@
 #include "AssignPatternClauseEvaluator.h"
 
-AssignPatternClauseEvaluator::AssignPatternClauseEvaluator(DesignEntity designEntity, Argument leftArg,
+AssignPatternClauseEvaluator::AssignPatternClauseEvaluator(Argument patternArg, Argument leftArg,
                                 StringExpression rightArg)
-    : PatternClauseEvaluator(designEntity, leftArg, rightArg) {}
+    : PatternClauseEvaluator(patternArg, leftArg, rightArg) {}
+
+std::shared_ptr<ClauseResult> AssignPatternClauseEvaluator::evaluateClause(std::shared_ptr<ReadOnlyStorage> storage) {
+    return clauseResult;
+}

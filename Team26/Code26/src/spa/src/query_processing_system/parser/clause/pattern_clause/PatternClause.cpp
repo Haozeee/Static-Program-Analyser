@@ -1,11 +1,14 @@
 #include "PatternClause.h"
 
-PatternClause::PatternClause(DesignEntity designEntity, Argument left, StringExpression right)
-        : designEntity(designEntity), leftArg(std::move(left)), rightArg(std::move(right)) {}
+#include <utility>
 
-DesignEntity PatternClause::getDesignEntity() {
-    return designEntity;
+PatternClause::PatternClause(Argument patternArg, Argument left, StringExpression right)
+        : patternArg(std::move(patternArg)), leftArg(std::move(left)), rightArg(std::move(right)) {}
+
+Argument PatternClause::getPatternArg() {
+    return patternArg;
 }
+
 Argument PatternClause::getLeftArg() {
     return leftArg;
 }

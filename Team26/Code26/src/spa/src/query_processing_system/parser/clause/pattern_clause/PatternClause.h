@@ -9,18 +9,24 @@
 
 class PatternClause : public Clause {
  private:
-    DesignEntity designEntity;
+    /**
+     * Given a clause "pattern a(v, "x+y")",
+     * patternArg = a
+     * leftArg = v
+     * rightArg = "x+y"
+     */
+    Argument patternArg;
 
     Argument leftArg;
 
     StringExpression rightArg;
 
  public:
-    PatternClause(DesignEntity designEntity, Argument leftArg, StringExpression rightArg);
+    PatternClause(Argument patternArg, Argument leftArg, StringExpression rightArg);
 
     virtual ~PatternClause() = default;
 
-    DesignEntity getDesignEntity();
+    Argument getPatternArg();
 
     Argument getLeftArg();
 
