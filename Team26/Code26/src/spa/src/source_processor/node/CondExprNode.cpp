@@ -47,3 +47,12 @@ std::optional<std::vector<std::shared_ptr<CondExprNode>>> CondExprNode::returnNo
     nodes.emplace_back(std::get<2>(binaryCondExpr.value()));
     return nodes;
 }
+
+std::optional<std::pair<std::shared_ptr<ExprNode>,std::shared_ptr<ExprNode>>> CondExprNode::returnRelExprNodes() {
+    if (condExprNodeType != CondExprNodeType::RELEXPR) {
+        return std::nullopt;
+    }
+
+    RelExpr r = *relExpr.value();
+    return std::make_pair(std::get<1>(r), std::get<2>(r));
+}

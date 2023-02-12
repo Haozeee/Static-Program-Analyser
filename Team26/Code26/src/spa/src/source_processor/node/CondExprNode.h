@@ -57,4 +57,5 @@ class CondExprNode : public Node {
     bool isUnaryCondExpr();
     bool isBinaryCondExpr();
     std::optional<std::vector<std::shared_ptr<CondExprNode>>> returnNodes();
+    std::optional<std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>>> returnRelExprNodes();
 };
