@@ -3,6 +3,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <tuple>
 #include <utility>
 #include <variant>
 #include "Node.h"
@@ -35,9 +36,9 @@ class ExprNode : public Node {
     ExprNodeType exprNodeType;
 
 
-    ExprNode(int constant);
-    ExprNode(std::string varName);
-    ExprNode(std::shared_ptr<BinaryOpNode> binaryOpNode, std::string str);
+    explicit ExprNode(int constant);
+    explicit ExprNode(std::string varName);
+    explicit ExprNode(std::shared_ptr<BinaryOpNode> binaryOpNode, std::string str);
 
     bool isConstant();
     bool isVariable();

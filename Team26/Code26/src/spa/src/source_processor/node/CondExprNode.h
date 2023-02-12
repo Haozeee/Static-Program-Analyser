@@ -6,37 +6,55 @@
 #include <tuple>
 #include <utility>
 #include <variant>
+#include <vector>
 #include "Node.h"
 #include "ExprNode.h"
 
 #define REL_EXPR_OP_NUM 6
 
+enum class CondExprNodeType {
+    RELEXPR,
+    BINARYCONDEXPR,
+    UNARYCONDEXPR
+};
+
 enum class RelExprOperatorType {
-    OPERATOR_GT,
-    OPERATOR_GTE,
-    OPERATOR_LT,
-    OPERATOR_LTE,
-    OPERATOR_EQ,
-    OPERATOR_NEQ
+    GT,
+    GTE,
+    LT,
+    LTE,
+    EQ,
+    NEQ
 };
 
-enum class BinaryCondExprOperatorType {
-    OPERATOR_AND,
-    OPERATOR_OR
+enum class BinaryCondOperatorType {
+    AND,
+    OR
 };
 
-enum class UnaryCondExprOperatorType {
-    OPERATOR_NOT
+enum class UnaryCondOperatorType {
+    NOT
 };
 
 using RelExpr = std::tuple<RelExprOperatorType, std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>>;
 
 class CondExprNode : public Node {
  public:
-     std::variant< std::shared_ptr<RelExpr>, std::pair<UnaryCondExprOperatorType, std::shared_ptr<CondExprNode>>,
-         std::tuple<BinaryCondExprOperatorType, std::shared_ptr<CondExprNode>, std::shared_ptr<CondExprNode>>> params;
+    std::optional<std::shared_ptr<RelExpr>> relExpr;
+    std::optional<std::tuple<UnaryCondOperatorType, std::shared_ptr<CondExprNode>>> unaryCondExpr;
+    std::optional<std::tuple<BinaryCondOperatorType, std::shared_ptr<CondExprNode>,
+        std::shared_ptr<CondExprNode>>> binaryCondExpr;
+    std::string str;
+    CondExprNodeType condExprNodeType;
 
-    CondExprNode(std::variant<std::shared_ptr<RelExpr>, std::pair<UnaryCondExprOperatorType,
-        std::shared_ptr<CondExprNode>>, std::tuple<BinaryCondExprOperatorType, std::shared_ptr<CondExprNode>,
-        std::shared_ptr<CondExprNode>>> params);
+    explicit CondExprNode(std::shared_ptr<RelExpr> relExpr, std::string str);
+    explicit CondExprNode(std::tuple<UnaryCondOperatorType, std::shared_ptr<CondExprNode>> unaryCondExpr,
+        std::string str);
+    explicit CondExprNode(std::tuple<BinaryCondOperatorType, std::shared_ptr<CondExprNode>,
+        std::shared_ptr<CondExprNode>> binaryCondExpr, std::string str);
+
+    bool isRelExpr();
+    bool isUnaryCondExpr();
+    bool isBinaryCondExpr();
+    std::optional<std::vector<std::shared_ptr<CondExprNode>>> returnNodes();
 };
