@@ -24,4 +24,5 @@ class RelationshipExtractor : public BaseExtractor, IRelationshipExtractor {
     void extractCall(std::shared_ptr<CallNode> node) override;
     void extractWhile(std::shared_ptr<WhileNode> node) override;
     void extractIf(std::shared_ptr<IfNode> node) override;
+    void extractCondExpr(std::shared_ptr<CondExprNode> node) override;
 };

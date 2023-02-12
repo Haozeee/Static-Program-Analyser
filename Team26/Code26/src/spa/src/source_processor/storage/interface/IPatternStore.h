@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 #include "source_processor/node/statement_node/AssignNode.h"
 
 class IPatternStore {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <memory>
 #include <string>
+#include <memory>
 #include "source_processor/storage/interface/IPatternStore.h"
 #include "program_knowledge_base/WriteOnlyStorage.h"
 

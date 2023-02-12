@@ -63,7 +63,28 @@ void RelationshipExtractor::extractCall(std::shared_ptr<CallNode> node) {
 }
 
 void RelationshipExtractor::extractWhile(std::shared_ptr<WhileNode> node) {
+    extractCondExpr(node->condExprNode);
+    parentIndexStack.emplace_back(currentStmtNo);
+    extractStmtList(node->stmtListNode);
+    parentIndexStack.pop_back();
 }
 
 void RelationshipExtractor::extractIf(std::shared_ptr<IfNode> node) {
+    extractCondExpr(node->condExprNode);
+    parentIndexStack.emplace_back(currentStmtNo);
+    extractStmtList(node->thenStmtListNode);
+    extractStmtList(node->elseStmtListNode);
+    parentIndexStack.pop_back();
+}
+
+void RelationshipExtractor::extractCondExpr(std::shared_ptr<CondExprNode> node) {
+    clearExprStack();
+    BaseExtractor::extractCondExpr(node);
+    for (auto &variable : exprVariableList) {
+        relationshipStore->insertUsesSRelationship(currentStmtNo, variable);
+        for (int& parentIndex : parentIndexStack) {
+            relationshipStore->insertModifiesSRelationship(parentIndex, variable);
+        }
+        relationshipStore->insertUsesPRelationship(currProcedureName, variable);
+    }
 }
