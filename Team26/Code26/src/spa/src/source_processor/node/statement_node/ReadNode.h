@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "StmtNode.h"
+#include "source_processor/node/statement_node/StmtNode.h"
 
 class ReadNode : public StmtNode {
  public:
@@ -9,5 +9,5 @@ class ReadNode : public StmtNode {
 
     ReadNode(int stmtIndex, std::string varName);
 
-    void evaluate(AbstractExtractor& extractor) override;
+    void evaluate(IStmtExtractor& extractor) override;
 };

@@ -22,8 +22,9 @@ void SourceManager::process(std::string filename, std::shared_ptr<StorageUtil> s
     auto programNode = sourceParser.parse();
 
     std::shared_ptr<WriteOnlyStorage> writeStorage  = std::make_shared<WriteOnlyStorage>(storageUtil);
+    std::shared_ptr<Store> store = std::make_shared<Store>(writeStorage);
 
-    DesignExtractor designExtractor = DesignExtractor(writeStorage);
+    DesignExtractor designExtractor = DesignExtractor(store);
     designExtractor.extract(programNode);
 
     input.close();

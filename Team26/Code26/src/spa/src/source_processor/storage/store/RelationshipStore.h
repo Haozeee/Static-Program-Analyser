@@ -1,8 +1,8 @@
 #pragma once
 
-#include "IRelationshipStore.h"
 #include <memory>
 #include <string>
+#include "source_processor/storage/interface/IRelationshipStore.h"
 #include "program_knowledge_base/WriteOnlyStorage.h"
 
 class RelationshipStore : public IRelationshipStore {

@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 #include <string>
-#include "IEntityStore.h"
+#include "source_processor/storage/interface/IEntityStore.h"
 #include "program_knowledge_base/WriteOnlyStorage.h"
 
 class EntityStore : public IEntityStore {
@@ -22,6 +22,6 @@ class EntityStore : public IEntityStore {
     void insertWhileStatement(std::shared_ptr<WhileNode> node) override;
     void insertIfStatement(std::shared_ptr<IfNode> node) override;
     void insertName(std::string &name) override;
-    void insertConstant(std::string &integer) override;
+    void insertConstant(int &integer) override;
 };
 

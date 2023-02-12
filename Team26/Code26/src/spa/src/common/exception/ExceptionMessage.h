@@ -7,4 +7,3 @@ extern const char ParserMismatchTokenValueExceptionMessage[];
 
 class ExceptionMessage {
 };
-
