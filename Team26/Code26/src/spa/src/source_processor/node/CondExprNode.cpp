@@ -1,56 +1,24 @@
 #include "CondExprNode.h"
 
 
-CondExprNode::CondExprNode(std::shared_ptr<RelExpr> relExpr) {
+CondExprNode::CondExprNode(std::shared_ptr<RelExpr> relExpr, std::string str) {
     this->relExpr = relExpr;
     condExprNodeType = CondExprNodeType::RELEXPR;
-
-    RelExpr r = *relExpr;
-    RelExprOperatorType opType = std::get<0>(r);
-    ExprNode exprnode1 = *std::get<1>(r);
-    ExprNode exprnode2 = *std::get<2>(r);
-
-    this->str = exprnode1.str;
-    if (opType == RelExprOperatorType::EQ) {
-        this->str += "==";
-    } else if (opType == RelExprOperatorType::NEQ) {
-        this->str += "!=";
-    } else if (opType == RelExprOperatorType::LT) {
-        this->str += "<";
-    } else if (opType == RelExprOperatorType::LTE) {
-        this->str += "<=";
-    } else if (opType == RelExprOperatorType::GT) {
-        this->str += ">";
-    } else {
-        this->str += ">=";
-    }
-    this->str += exprnode2.str;
+    this->str = str;
 }
 
-CondExprNode::CondExprNode(std::tuple<UnaryCondOperatorType, std::shared_ptr<CondExprNode>> unaryCondExpr) {
+CondExprNode::CondExprNode(std::tuple<UnaryCondOperatorType, std::shared_ptr<CondExprNode>> unaryCondExpr
+    , std::string str) {
     this->unaryCondExpr = unaryCondExpr;
     condExprNodeType = CondExprNodeType::UNARYCONDEXPR;
-
-    CondExprNode condExprNode = *std::get<1>(unaryCondExpr);
-    this->str = "!(" + condExprNode.str +")";
+    this->str = str;
 }
 
 CondExprNode::CondExprNode(std::tuple<BinaryCondOperatorType, std::shared_ptr<CondExprNode>,
-    std::shared_ptr<CondExprNode>> binaryCondExpr) {
+    std::shared_ptr<CondExprNode>> binaryCondExpr, std::string str) {
     this->binaryCondExpr = binaryCondExpr;
     condExprNodeType = CondExprNodeType::BINARYCONDEXPR;
-
-    CondExprNode condExprNode1 = *std::get<1>(binaryCondExpr);
-    CondExprNode condExprNode2 = *std::get<2>(binaryCondExpr);
-    BinaryCondOperatorType opType = std::get<0>(binaryCondExpr);
-
-    this->str = "(" + condExprNode1.str;
-    if (opType ==BinaryCondOperatorType::AND) {
-        this->str += ")&&(";
-    } else {
-        this->str += ")||(";
-    }
-    this->str += condExprNode2.str + ")";
+    this->str = str;
 }
 
 bool CondExprNode::isRelExpr() {

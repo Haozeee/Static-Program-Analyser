@@ -47,10 +47,11 @@ class CondExprNode : public Node {
     std::string str;
     CondExprNodeType condExprNodeType;
 
-    explicit CondExprNode(std::shared_ptr<RelExpr> relExpr);
-    explicit CondExprNode(std::tuple<UnaryCondOperatorType, std::shared_ptr<CondExprNode>> unaryCondExpr);
+    explicit CondExprNode(std::shared_ptr<RelExpr> relExpr, std::string str);
+    explicit CondExprNode(std::tuple<UnaryCondOperatorType, std::shared_ptr<CondExprNode>> unaryCondExpr,
+        std::string str);
     explicit CondExprNode(std::tuple<BinaryCondOperatorType, std::shared_ptr<CondExprNode>,
-        std::shared_ptr<CondExprNode>> binaryCondExpr);
+        std::shared_ptr<CondExprNode>> binaryCondExpr, std::string str);
 
     bool isRelExpr();
     bool isUnaryCondExpr();
