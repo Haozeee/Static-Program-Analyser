@@ -4,7 +4,7 @@
 CondExprNode::CondExprNode(std::shared_ptr<RelExpr> relExpr) {
     this->relExpr = relExpr;
     condExprNodeType = CondExprNodeType::RELEXPR;
-    
+
     RelExpr r = *relExpr;
     RelExprOperatorType opType = std::get<0>(r);
     ExprNode exprnode1 = *std::get<1>(r);
@@ -35,7 +35,8 @@ CondExprNode::CondExprNode(std::tuple<UnaryCondOperatorType, std::shared_ptr<Con
     this->str = "!(" + condExprNode.str +")";
 }
 
-CondExprNode::CondExprNode(std::tuple<BinaryCondOperatorType, std::shared_ptr<CondExprNode>, std::shared_ptr<CondExprNode>> binaryCondExpr) {
+CondExprNode::CondExprNode(std::tuple<BinaryCondOperatorType, std::shared_ptr<CondExprNode>,
+    std::shared_ptr<CondExprNode>> binaryCondExpr) {
     this->binaryCondExpr = binaryCondExpr;
     condExprNodeType = CondExprNodeType::BINARYCONDEXPR;
 
