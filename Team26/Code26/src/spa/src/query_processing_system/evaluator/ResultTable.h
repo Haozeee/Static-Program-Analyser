@@ -19,8 +19,12 @@ class ResultTable {
      */
     bool noResults = false;
 
-    static std::shared_ptr<ResultTable> joinOnColumn(std::shared_ptr<ResultTable> table1, std::shared_ptr<ResultTable> table2, int column1, int column2);
+    static std::shared_ptr<ResultTable> joinOnColumn(std::shared_ptr<ResultTable> table1,
+                                                     std::shared_ptr<ResultTable> table2, int column1, int column2);
 
+    /**
+     * Union 2 vectors.
+     */
     static TableRow getVectorUnion(TableRow vector1, TableRow vector2);
 
  public:
@@ -33,13 +37,13 @@ class ResultTable {
      * Create a table with one column.
      * @param columnName
      */
-    ResultTable(std::string columnName);
+    explicit ResultTable(std::string columnName);
 
     /**
      * Create a table with multiple column.
      * @param columnNames
      */
-    ResultTable(TableRow columnNames);
+    explicit ResultTable(TableRow columnNames);
 
     static std::shared_ptr<ResultTable>
     createSingleColumnTable(std::string column1, std::unordered_set<std::string> values);
@@ -56,12 +60,13 @@ class ResultTable {
     /**
      * Join on table1.commonColumn = table2.commonColumn
      */
-    static std::shared_ptr<ResultTable> joinOnColumn(std::shared_ptr<ResultTable> table1, std::shared_ptr<ResultTable> table2, std::string commonColumn);
+    static std::shared_ptr<ResultTable> joinOnColumn(std::shared_ptr<ResultTable> table1,
+                                                     std::shared_ptr<ResultTable> table2, std::string commonColumn);
 
     /**
      * Given a set of columnNames, check if this table has any column
      * in the given set.
-     * @return The similar column name.
+     * @return The similar column name. If no matching column name, return "".
      */
     std::string hasMatchingColumns(std::unordered_set<std::string> columnNames);
 

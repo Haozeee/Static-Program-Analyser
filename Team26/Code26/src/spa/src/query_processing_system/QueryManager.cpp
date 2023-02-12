@@ -27,9 +27,8 @@ void QueryManager::process(const std::string& query, std::list<std::string> &res
     // Parse tokens with Parser
     QueryParser parser = QueryParser(tokens, queryObject);
     parser.parse();
-
     // Validate Query
-    std::cout << *queryObject << "\n";
+    // std::cout << *queryObject << "\n";
 
     // Create pkb read instance
     auto storage = std::make_shared<ReadOnlyStorage>(storageUtil);

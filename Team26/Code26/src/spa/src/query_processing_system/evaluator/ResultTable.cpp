@@ -36,17 +36,19 @@ ResultTable::createDoubleColumnTable(std::string column1, std::unordered_set<std
     return res;
 }
 
-std::shared_ptr<ResultTable> ResultTable::joinOnColumn(std::shared_ptr<ResultTable> table1, std::shared_ptr<ResultTable> table2, std::string commonColumn) {
+std::shared_ptr<ResultTable> ResultTable::joinOnColumn(std::shared_ptr<ResultTable> table1,
+                                                       std::shared_ptr<ResultTable> table2, std::string commonColumn) {
     auto col1 = table1->getColumnNumber(commonColumn);
     auto col2 = table2->getColumnNumber(commonColumn);
-    if (col1 != -1 and col2 != -1) {
+    if (col1 != -1 && col2 != -1) {
         return joinOnColumn(table1, table2, col1, col2);
     } else {
         throw std::exception();
     }
 }
 
-std::shared_ptr<ResultTable> ResultTable::joinOnColumn(std::shared_ptr<ResultTable> table1, std::shared_ptr<ResultTable> table2, int column1, int column2) {
+std::shared_ptr<ResultTable> ResultTable::joinOnColumn(std::shared_ptr<ResultTable> table1,
+                                                       std::shared_ptr<ResultTable> table2, int column1, int column2) {
     std::unordered_multimap<std::string, int> hashmap;
     for (int i = 0; i < table2->getNumberOfRows(); i++) {
         hashmap.insert({table2->getValueAt(i, column2), i});
@@ -65,7 +67,6 @@ std::shared_ptr<ResultTable> ResultTable::joinOnColumn(std::shared_ptr<ResultTab
                     row.push_back(table2Row.at(j));
                 }
             }
-            std::cout << row.size() << " size\n";
             res->insertRow(row);
         }
     }
@@ -130,8 +131,8 @@ int ResultTable::getNumberOfRows() const {
 
 TableRow ResultTable::getVectorUnion(TableRow vector1, TableRow vector2) {
     for (auto item : vector2) {
-        if (std::find(vector1.begin(), vector1.end(), item) != vector1.end()) {
-            vector2.push_back(item);
+        if (std::find(vector1.begin(), vector1.end(), item) == vector1.end()) {
+            vector1.push_back(item);
         }
     }
     return vector1;
