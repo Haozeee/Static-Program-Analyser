@@ -3,7 +3,7 @@
 IntIntClauseEvaluator::IntIntClauseEvaluator(Argument left, Argument right)
     : SuchThatClauseEvaluator<int, int>(left, right) {}
 
-std::shared_ptr<ClauseResult> IntIntClauseEvaluator::evaluateClause(StoragePointer storage) {
+std::shared_ptr<ResultTable> IntIntClauseEvaluator::evaluateClause(StoragePointer storage) {
     ClauseArgumentTypes argumentType = getClauseArgumentTypes();
     if (argumentType == ClauseArgumentTypes::NUMBER_NUMBER) {
         evaluateNumberNumber(storage);
@@ -25,7 +25,7 @@ std::shared_ptr<ClauseResult> IntIntClauseEvaluator::evaluateClause(StoragePoint
     } else {
         throw std::exception();
     }
-    return clauseResult;
+    return clauseResultTable;
 }
 
 /**
@@ -36,7 +36,7 @@ void IntIntClauseEvaluator::evaluateNumberNumber(StoragePointer storage) {
     auto iterator = relationshipStore.find(stoi(leftArg.getValue()));
     auto rightValue = stoi(rightArg.getValue());
     if (iterator == relationshipStore.end() || !iterator->second.count(rightValue)) {
-        clauseResult->setNoResults();
+        clauseResultTable->setNoResults();
     }
 }
 
@@ -76,8 +76,7 @@ void IntIntClauseEvaluator::evaluateSynonymSynonym(StoragePointer storage) {
     auto filteredMap = PkbUtil::filterMap(getRelationshipManager(storage), getLeftArgEntities(storage));
     // Find intersection with all items of the right arg design entity
     auto res = PkbUtil::mapSetIntersection(filteredMap, getRightArgEntities(storage));
-    setLeftArgResult(res.first);
-    setRightArgResult(res.second);
+    setLeftAndRightArgResult(res.first, res.second);
 }
 
 void IntIntClauseEvaluator::evaluateNumberWithWildcard(StoragePointer storage) {
@@ -87,8 +86,8 @@ void IntIntClauseEvaluator::evaluateNumberWithWildcard(StoragePointer storage) {
     } else {
         evaluateSynonymNumber(storage);
     }
-    if (clauseResult->keysHasNoValues()) {
-        clauseResult->setNoResults();
+    if (clauseResultTable->getNumberOfRows()) {
+        clauseResultTable->setNoResults();
     }
 }
 
@@ -101,11 +100,21 @@ void IntIntClauseEvaluator::handleRightWildcard() {
 }
 
 void IntIntClauseEvaluator::setLeftArgResult(std::unordered_set<int> result) {
-    clauseResult->addNewResult(leftArg.getValue(), PkbUtil::intSetToStringSet(result));
+    clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(),
+                                                             PkbUtil::intSetToStringSet(result));
 }
 
 void IntIntClauseEvaluator::setRightArgResult(std::unordered_set<int> result) {
-    clauseResult->addNewResult(rightArg.getValue(), PkbUtil::intSetToStringSet(result));
+    clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(),
+                                                             PkbUtil::intSetToStringSet(result));
+}
+
+void IntIntClauseEvaluator::setLeftAndRightArgResult(std::unordered_set<int> resultLeft,
+                                                     std::unordered_set<int> resultRight) {
+    clauseResultTable = ResultTable::createDoubleColumnTable(leftArg.getValue(),
+                                                             PkbUtil::intSetToStringSet(resultLeft),
+                                                             rightArg.getValue(),
+                                                             PkbUtil::intSetToStringSet(resultRight));
 }
 
 std::unordered_set<int> IntIntClauseEvaluator::getLeftArgEntities(StoragePointer storage) {

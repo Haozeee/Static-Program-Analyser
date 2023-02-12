@@ -14,13 +14,13 @@ QueryDb QueryEvaluator::evaluateQuery() {
     evaluateSuchThatClause();
 
     // Return QueryResult
-    return queryResult;
+    return queryResults;
 }
 
 void QueryEvaluator::evaluateSuchThatClause() {
     for (SuchThatClause* clause : query->getSuchThatClauses()) {
-        auto clauseResult = clause->getClauseEvaluator()->evaluateClause(storage);
-        queryResult.addClauseResultToQuery(clauseResult);
+        auto clauseResultTable = clause->getClauseEvaluator()->evaluateClause(storage);
+        queryResults.addResult(clauseResultTable);
     }
 }
 
@@ -32,10 +32,8 @@ void QueryEvaluator::evaluateSelectClause() {
         // Get respective entities from pkb
         auto entities = PkbUtil::getEntitiesFromPkb(storage, query->getSynonymDesignEntity(syn));
         // Add entities to query result
-        auto resultTable = std::make_shared<ResultTable>(syn->getIdent());
-        for (auto i : entities) {
-            resultTable->insertRow({i});
-        }
+        auto resultTable = ResultTable::createSingleColumnTable(syn->getIdent(), entities);
         queryResults.addResult(resultTable);
+        queryResults.setSelectedColumn(syn->getIdent());
     }
 }

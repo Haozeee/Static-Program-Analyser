@@ -11,7 +11,9 @@
 class QueryEvaluator {
  private:
     Query* query;
+
     QueryDb queryResults;
+
     std::shared_ptr<ReadOnlyStorage> storage;
 
     /**

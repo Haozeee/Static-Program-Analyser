@@ -1,2 +1,2 @@
 #include "ClauseEvaluator.h"
-#include "../../evaluator/clause_evaluator/ClauseResult.h"
+#include "../../evaluator/ResultTable.h"

@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <memory>
 #include <unordered_set>
 #include <unordered_map>
 
@@ -11,33 +12,23 @@ class ResultTable {
     std::unordered_map<int, std::string> columnNameMap;
 
     std::vector<TableRow> relations;
-    /**
-     * Join table1 and table2 on table1.column1 = table2.column2
-     * @param table1
-     * @param table2
-     * @param column1
-     * @param column2
-     */
-    static ResultTable joinOnColumn(ResultTable &table1, const ResultTable &table2, int column1, int column2);
 
     /**
-     * To be used only when all columns in table2 are columns in table1.
+     * If true, when this table is joined with any other table,
+     * an empty table is returned.
      */
-    static ResultTable joinAllColumn(ResultTable &table1, const ResultTable &table2);
+    bool noResults = false;
 
-    /**
-     * Join two tables that have no common columns. Does a cartesian product between the two table.
-     */
-    static ResultTable joinNoColumn(ResultTable &table1, const ResultTable &table2);
-
-    void joinNoColumn(const ResultTable &table);
-
-    static TableRow getVectorIntersection(TableRow vector1, TableRow vector2);
+    static std::shared_ptr<ResultTable> joinOnColumn(std::shared_ptr<ResultTable> table1, std::shared_ptr<ResultTable> table2, int column1, int column2);
 
     static TableRow getVectorUnion(TableRow vector1, TableRow vector2);
 
-
  public:
+    /**
+     * Creates an empty table.
+     */
+    ResultTable();
+
     /**
      * Create a table with one column.
      * @param columnName
@@ -50,17 +41,52 @@ class ResultTable {
      */
     ResultTable(TableRow columnNames);
 
-    void join(const ResultTable &table);
+    static std::shared_ptr<ResultTable>
+    createSingleColumnTable(std::string column1, std::unordered_set<std::string> values);
+
+    /**
+     * Creates a table with two columns by doing a cartesian product of the two unordered sets.
+     * @param column1 The name of the first column.
+     * @param column2 the name of the second column.
+     */
+    static std::shared_ptr<ResultTable>
+    createDoubleColumnTable(std::string column1, std::unordered_set<std::string> values1,
+                            std::string column2, std::unordered_set<std::string> values2);
+
+    /**
+     * Join on table1.commonColumn = table2.commonColumn
+     */
+    static std::shared_ptr<ResultTable> joinOnColumn(std::shared_ptr<ResultTable> table1, std::shared_ptr<ResultTable> table2, std::string commonColumn);
+
+    /**
+     * Given a set of columnNames, check if this table has any column
+     * in the given set.
+     * @return The similar column name.
+     */
+    std::string hasMatchingColumns(std::unordered_set<std::string> columnNames);
 
     void insertRow(TableRow row);
-
-    TableRow getHeaders() const;
 
     TableRow getRow(int rowNumber) const;
 
     std::string getValueAt(int rowNumber, int columnName) const;
 
+    /**
+     * Returns the column number of the column with name colName.
+     * @return The column number, -1 if the column does not exist.
+     */
+    int getColumnNumber(std::string colName) const;
+
+    /**
+     * Given a column name, get all the values of this columne.
+     */
+    std::unordered_set<std::string> getColumnValues(std::string colName);
+
     int getNumberOfRows() const;
 
     TableRow getColumnsNames() const;
+
+    bool hasNoResults();
+
+    void setNoResults();
 };

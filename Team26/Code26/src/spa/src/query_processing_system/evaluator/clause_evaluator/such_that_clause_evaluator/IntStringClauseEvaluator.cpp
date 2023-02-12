@@ -3,7 +3,7 @@
 IntStringClauseEvaluator::IntStringClauseEvaluator(Argument left, Argument right)
     : SuchThatClauseEvaluator<int, std::string>(left, right) {}
 
-std::shared_ptr<ClauseResult> IntStringClauseEvaluator::evaluateClause(StoragePointer storage) {
+std::shared_ptr<ResultTable> IntStringClauseEvaluator::evaluateClause(StoragePointer storage) {
     ClauseArgumentTypes argumentType = getClauseArgumentTypes();
     if (argumentType == ClauseArgumentTypes::NUMBER_STRING) {
         evaluateNumberString(storage);
@@ -26,7 +26,7 @@ std::shared_ptr<ClauseResult> IntStringClauseEvaluator::evaluateClause(StoragePo
     } else {
         throw std::exception();
     }
-    return clauseResult;
+    return clauseResultTable;
 }
 
 void IntStringClauseEvaluator::evaluateSynonymString(StoragePointer storage) {
@@ -44,7 +44,7 @@ void IntStringClauseEvaluator::evaluateSynonymString(StoragePointer storage) {
 void IntStringClauseEvaluator::evaluateNumberString(StoragePointer storage) {
     auto res = evaluateNumberSynonymHelper(storage, stoi(leftArg.getValue()));
     if (!res.count(rightArg.getValue())) {
-        clauseResult->setNoResults();
+        clauseResultTable->setNoResults();
     }
 }
 
@@ -55,16 +55,17 @@ void IntStringClauseEvaluator::evaluateNumberSynonym(StoragePointer storage) {
 
 void IntStringClauseEvaluator::evaluateSynonymSynonym(StoragePointer storage) {
     // Set initial empty results
-    setRightArgResult({});
-    setLeftArgResult({});
+    std::unordered_set<int> leftResults;
+    std::unordered_set<std::string> rightResults;
     auto statementsToEvaluate = getLeftArgEntities(storage);
     for (int statement : statementsToEvaluate) {
         auto res = evaluateNumberSynonymHelper(storage, statement);
         if (!res.empty()) {
-            setRightArgResult(res);
-            setLeftArgResult({statement});
+            leftResults.insert(statement);
+            rightResults.insert(res.begin(), res.end());
         }
     }
+    setLeftAndRightArgResult(leftResults, rightResults);
 }
 
 std::unordered_set<std::string> IntStringClauseEvaluator::evaluateNumberSynonymHelper(StoragePointer storage,
@@ -92,7 +93,7 @@ void IntStringClauseEvaluator::evaluateNumberWildcard(StoragePointer storage) {
     auto relationStore = getRelationshipManager(storage);
     auto iterator = relationStore.find(stoi(leftArg.getValue()));
     if (iterator == relationStore.end() || iterator->second.empty()) {
-        clauseResult->setNoResults();
+        clauseResultTable->setNoResults();
     }
 }
 
@@ -100,7 +101,7 @@ void IntStringClauseEvaluator::evaluateWildcardString(StoragePointer storage) {
     auto relationStore = getOppositeRelationshipManager(storage);
     auto iterator = relationStore.find(rightArg.getValue());
     if (iterator == relationStore.end() || iterator->second.empty()) {
-        clauseResult->setNoResults();
+        clauseResultTable->setNoResults();
     }
 }
 
@@ -113,11 +114,19 @@ void IntStringClauseEvaluator::handleRightWildcard() {
 }
 
 void IntStringClauseEvaluator::setLeftArgResult(std::unordered_set<int> result) {
-    clauseResult->unionResult(leftArg.getValue(), PkbUtil::intSetToStringSet(result));
+    clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(),
+                                                             PkbUtil::intSetToStringSet(result));
 }
 
 void IntStringClauseEvaluator::setRightArgResult(std::unordered_set<std::string> result) {
-    clauseResult->unionResult(rightArg.getValue(), result);
+    clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), result);
+}
+
+void IntStringClauseEvaluator::setLeftAndRightArgResult(std::unordered_set<int> resultLeft,
+                                                        std::unordered_set<std::string> resultRight) {
+    clauseResultTable = ResultTable::createDoubleColumnTable(leftArg.getValue(),
+                                                             PkbUtil::intSetToStringSet(resultLeft),
+                                                             rightArg.getValue(), resultRight);
 }
 
 std::unordered_set<int> IntStringClauseEvaluator::getLeftArgEntities(StoragePointer storage) {

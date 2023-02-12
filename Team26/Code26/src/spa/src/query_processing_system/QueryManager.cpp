@@ -6,7 +6,7 @@
 #include "QueryEvaluator.h"
 #include "parser/QueryParser.h"
 #include "parser/Query.h"
-#include "evaluator/ResultTable.h"
+#include "evaluator/QueryDb.h"
 
 void QueryManager::process(const std::string& query, std::list<std::string> &results,
                            std::shared_ptr<StorageUtil> storageUtil) {
@@ -29,18 +29,24 @@ void QueryManager::process(const std::string& query, std::list<std::string> &res
     parser.parse();
 
     // Validate Query
-    // std::cout << *queryObject << "\n";
+    std::cout << *queryObject << "\n";
 
     // Create pkb read instance
     auto storage = std::make_shared<ReadOnlyStorage>(storageUtil);
 
     // Evaluate query
     QueryEvaluator evaluator = QueryEvaluator(queryObject, storage);
-    ResultTable queryResult = evaluator.evaluateQuery();
-    // std::cout << queryResult << "\n";
-    // Add to qps result
-    // queryResult.copyToQpsResult(queryResults);
+    QueryDb queryDb = evaluator.evaluateQuery();
+    auto queryResults = queryDb.getInterestedResults();
 
+    // Add to qps result
+    for (auto const& item : queryResults) {
+        for (auto str : item.second) {
+            results.push_back(str);
+        }
+    }
     // Memory management
     delete queryObject;
 }
+
+
