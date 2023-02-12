@@ -7,33 +7,39 @@
 #include <variant>
 #include "Node.h"
 
-enum class TermOperatorType {
-    OPERATOR_MULTIPLY,
-    OPERATOR_DIVIDE,
-    OPERATOR_MOD
-};
-
-enum class ExprOperatorType {
-    OPERATOR_ADD,
-    OPERATOR_SUBTRACT
-};
-
 enum class ExprNodeType {
     EXPR,
     TERM,
-    FACTOR
+    FACTOR_CONSTANT,
+    FACTOR_VARIABLE
 };
 
-using Factor = std::variant<std::string, int>;
+enum class OperatorType {
+    MULTIPLY,
+    DIVIDE,
+    MOD,
+    ADD,
+    SUBTRACT
+};
+
+class ExprNode;
 
 class ExprNode : public Node {
  public:
-    ExprNodeType exprNodeType;
-    std::pair<std::variant<std::shared_ptr<Factor>, std::shared_ptr<ExprNode>>,
-        std::optional<std::pair<TermOperatorType, std::shared_ptr<ExprNode>>>> term;
-    std::optional<std::pair<ExprOperatorType, std::shared_ptr<ExprNode>>> optionalParams;
+    using BinaryOpNode = std::tuple<OperatorType, std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>>;
 
-    ExprNode(std::pair<std::variant<std::shared_ptr<Factor>, std::shared_ptr<ExprNode>>,
-        std::optional<std::pair<TermOperatorType, std::shared_ptr<ExprNode>>>> term,
-        std::optional<std::pair<ExprOperatorType, std::shared_ptr<ExprNode>>> optionalParams);
+    std::optional<int> constant;
+    std::optional<std::string> varName;
+    std::optional<std::shared_ptr<BinaryOpNode>> binaryOpNode;
+    std::string str;
+    ExprNodeType exprNodeType;
+
+
+    ExprNode(int constant);
+    ExprNode(std::string varName);
+    ExprNode(std::shared_ptr<BinaryOpNode> binaryOpNode, std::string str);
+
+    bool isConstant();
+    bool isVariable();
+    std::optional<std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>>> returnNodes();
 };
