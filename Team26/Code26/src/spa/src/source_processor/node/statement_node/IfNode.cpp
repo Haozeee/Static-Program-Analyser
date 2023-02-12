@@ -5,5 +5,5 @@ IfNode::IfNode(int stmtIndex, std::shared_ptr<CondExprNode> condExprNode,
     : StmtNode(stmtIndex, StmtType::STMT_IF), condExprNode(condExprNode), thenStmtListNode(thenStmtListNode),
     elseStmtListNode(elseStmtListNode) {}
 
-void IfNode::evaluate(AbstractExtractor& extractor) {
+void IfNode::evaluate(IStmtExtractor& extractor) {
 }

@@ -2,7 +2,8 @@
 
 #include "source_processor/node/Node.h"
 
-class AbstractExtractor;
+class IStmtExtractor;
+class IPatternExtractor;
 
 enum class StmtType {
     STMT_ASSIGN,
@@ -18,6 +19,8 @@ class StmtNode : public Node {
     int stmtIndex;
     StmtType stmtType;
 
-    virtual void evaluate(AbstractExtractor& extractor) = 0;
+    virtual void evaluate(IStmtExtractor& extractor) = 0;
+    virtual void evaluatePattern(IPatternExtractor& extractor);
+
     explicit StmtNode(int stmtIndex, StmtType stmtType);
 };
