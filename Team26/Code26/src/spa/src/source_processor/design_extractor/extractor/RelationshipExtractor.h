@@ -4,8 +4,9 @@
 #include <vector>
 #include "source_processor/design_extractor/extractor/AbstractExtractor.h"
 #include "source_processor/storage/RelationshipStore.h"
+#include "source_processor/design_extractor/interface/IRelationshipExtractor.h"
 
-class RelationshipExtractor : public AbstractExtractor {
+class RelationshipExtractor : public AbstractExtractor, IRelationshipExtractor {
  private:
     std::string currProcedureName;
     std::shared_ptr<RelationshipStore> relationshipStore;

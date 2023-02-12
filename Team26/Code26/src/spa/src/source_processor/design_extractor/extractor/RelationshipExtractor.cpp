@@ -22,6 +22,7 @@ void RelationshipExtractor::extractStmtList(std::shared_ptr<StmtListNode> node) 
 
 void RelationshipExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
     AbstractExtractor::extractStmt(node);
+    node->evaluate(*this);
 
     std::shared_ptr<std::vector<int>> currentFollowsNesting = followsStack.back();
     if (!currentFollowsNesting->empty()) {

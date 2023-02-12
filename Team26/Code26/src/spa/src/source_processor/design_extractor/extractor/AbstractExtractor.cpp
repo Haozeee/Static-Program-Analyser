@@ -20,7 +20,6 @@ void AbstractExtractor::extractStmtList(std::shared_ptr<StmtListNode> node) {
 
 void AbstractExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
     currentStmtNo = node->stmtIndex;
-    node->evaluate(*this);
 }
 
 void AbstractExtractor::extractCondExpr(std::shared_ptr<CondExprNode> node) {

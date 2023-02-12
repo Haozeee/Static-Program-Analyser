@@ -17,8 +17,9 @@ void EntityExtractor::extractStmtList(std::shared_ptr<StmtListNode> node) {
 }
 
 void EntityExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
-    entityStore->insertStatement(node);
-    AbstractExtractor::extractStmt(node);
+    entityStore->insertStatement(node);  // Store Statement Index
+    AbstractExtractor::extractStmt(node);  // Update Extractor Current Index
+    node->evaluate(*this);
 }
 
 void EntityExtractor::extractRead(std::shared_ptr<ReadNode> node) {
