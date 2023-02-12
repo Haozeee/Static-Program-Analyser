@@ -13,6 +13,12 @@ enum class ClauseArgumentTypes {
     SYNONYM_SYNONYM,
     SYNONYM_STRING,
     NUMBER_STRING,
+    WILDCARD_NUMBER,
+    NUMBER_WILDCARD,
+    SYNONYM_WILDCARD,
+    WILDCARD_SYNONYM,
+    WILDCARD_WILDCARD,
+    WILDCARD_STRING,
     NONE
 };
 
@@ -80,6 +86,10 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
             return ClauseArgumentTypes::NUMBER_SYNONYM;
         } else if (l == ArgumentType::SYNONYM && r == ArgumentType::SYNONYM) {
             return ClauseArgumentTypes::SYNONYM_SYNONYM;
+        } else if (l == ArgumentType::NUMBER && r == ArgumentType::CHARACTERSTRING) {
+            return ClauseArgumentTypes::NUMBER_STRING;
+        } else if (l == ArgumentType::SYNONYM && r == ArgumentType::CHARACTERSTRING) {
+            return ClauseArgumentTypes::SYNONYM_STRING;
         } else {
             return ClauseArgumentTypes::NONE;
         }

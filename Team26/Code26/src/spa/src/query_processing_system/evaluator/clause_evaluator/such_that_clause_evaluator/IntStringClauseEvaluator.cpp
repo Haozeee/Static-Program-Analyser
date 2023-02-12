@@ -4,21 +4,27 @@ IntStringClauseEvaluator::IntStringClauseEvaluator(Argument left, Argument right
     : SuchThatClauseEvaluator<int, std::string>(left, right) {}
 
 std::shared_ptr<ClauseResult> IntStringClauseEvaluator::evaluateClause(StoragePointer storage) {
-    switch (getClauseArgumentTypes()) {
-        case ClauseArgumentTypes::NUMBER_SYNONYM:
-            evaluateNumberSynonym(storage);
-            break;
-        case ClauseArgumentTypes::SYNONYM_SYNONYM:
-            evaluateSynonymSynonym(storage);
-            break;
-        case ClauseArgumentTypes::SYNONYM_STRING:
-            evaluateSynonymString(storage);
-            break;
-        case ClauseArgumentTypes::NUMBER_STRING:
-            evaluateNumberString(storage);
-            break;
-        default:
-            throw std::exception();
+    ClauseArgumentTypes argumentType = getClauseArgumentTypes();
+    if (argumentType == ClauseArgumentTypes::NUMBER_STRING) {
+        evaluateNumberString(storage);
+    } else if (argumentType == ClauseArgumentTypes::NUMBER_SYNONYM) {
+        evaluateNumberSynonym(storage);
+    } else if (argumentType == ClauseArgumentTypes::SYNONYM_SYNONYM) {
+        evaluateSynonymSynonym(storage);
+    } else if (argumentType == ClauseArgumentTypes::SYNONYM_STRING) {
+        evaluateSynonymString(storage);
+    } else if (argumentType == ClauseArgumentTypes::SYNONYM_WILDCARD ||
+               argumentType == ClauseArgumentTypes::WILDCARD_SYNONYM) {
+        handleWildcards();
+        evaluateSynonymSynonym(storage);
+    } else if (argumentType == ClauseArgumentTypes::NUMBER_WILDCARD) {
+        evaluateNumberWildcard(storage);
+    } else if (argumentType == ClauseArgumentTypes::WILDCARD_STRING) {
+        evaluateWildcardString(storage);
+    } else if (argumentType == ClauseArgumentTypes::WILDCARD_WILDCARD) {
+        // No evaluation needed
+    } else {
+        throw std::exception();
     }
     return clauseResult;
 }
@@ -80,6 +86,22 @@ std::unordered_set<std::string> IntStringClauseEvaluator::evaluateNumberSynonymH
         }
     }
     return res;
+}
+
+void IntStringClauseEvaluator::evaluateNumberWildcard(StoragePointer storage) {
+    auto relationStore = getRelationshipManager(storage);
+    auto iterator = relationStore.find(stoi(leftArg.getValue()));
+    if (iterator == relationStore.end() || iterator->second.empty()) {
+        clauseResult->setNoResults();
+    }
+}
+
+void IntStringClauseEvaluator::evaluateWildcardString(StoragePointer storage) {
+    auto relationStore = getOppositeRelationshipManager(storage);
+    auto iterator = relationStore.find(rightArg.getValue());
+    if (iterator == relationStore.end() || iterator->second.empty()) {
+        clauseResult->setNoResults();
+    }
 }
 
 void IntStringClauseEvaluator::handleLeftWildcard() {

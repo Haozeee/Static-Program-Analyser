@@ -15,4 +15,10 @@ class ClauseResult : public Result {
     void setNoResults();
 
     bool hasNoResults();
+
+    /**
+     * Checks if all keys in the results are mapped to empty values.
+     * @return Returns true if there are keys in the results but no values.
+     */
+    bool keysHasNoValues();
 };

@@ -5,23 +5,25 @@ IntIntClauseEvaluator::IntIntClauseEvaluator(Argument left, Argument right)
 
 std::shared_ptr<ClauseResult> IntIntClauseEvaluator::evaluateClause(StoragePointer storage) {
     ClauseArgumentTypes argumentType = getClauseArgumentTypes();
-    switch (argumentType) {
-        case ClauseArgumentTypes::NUMBER_NUMBER:
-            evaluateNumberNumber(storage);
-            break;
-        case ClauseArgumentTypes::SYNONYM_NUMBER:
-            evaluateSynonymNumber(storage);
-            break;
-        case ClauseArgumentTypes::NUMBER_SYNONYM:
-            evaluateNumberSynonym(storage);
-            break;
-        case ClauseArgumentTypes::SYNONYM_SYNONYM:
-            std::cout << "Synonym sybn\n";
-            evaluateSynonymSynonym(storage);
-            break;
-        default:
-            std::cout << "None\n";
-            throw std::exception();
+    if (argumentType == ClauseArgumentTypes::NUMBER_NUMBER) {
+        evaluateNumberNumber(storage);
+    } else if (argumentType == ClauseArgumentTypes::SYNONYM_NUMBER) {
+        evaluateSynonymNumber(storage);
+    } else if (argumentType == ClauseArgumentTypes::NUMBER_SYNONYM) {
+        evaluateNumberSynonym(storage);
+    } else if (argumentType == ClauseArgumentTypes::SYNONYM_SYNONYM) {
+        evaluateSynonymSynonym(storage);
+    } else if (argumentType == ClauseArgumentTypes::SYNONYM_WILDCARD ||
+                argumentType == ClauseArgumentTypes::WILDCARD_SYNONYM) {
+        handleWildcards();
+        evaluateSynonymSynonym(storage);
+    } else if (argumentType == ClauseArgumentTypes::NUMBER_WILDCARD ||
+                argumentType == ClauseArgumentTypes::WILDCARD_NUMBER) {
+        evaluateNumberWithWildcard(storage);
+    } else if (argumentType == ClauseArgumentTypes::WILDCARD_WILDCARD) {
+        // No evaluation needed
+    } else {
+        throw std::exception();
     }
     return clauseResult;
 }
@@ -76,6 +78,18 @@ void IntIntClauseEvaluator::evaluateSynonymSynonym(StoragePointer storage) {
     auto res = PkbUtil::mapSetIntersection(filteredMap, getRightArgEntities(storage));
     setLeftArgResult(res.first);
     setRightArgResult(res.second);
+}
+
+void IntIntClauseEvaluator::evaluateNumberWithWildcard(StoragePointer storage) {
+    handleWildcards();
+    if (leftArg.getArgumentType() == ArgumentType::NUMBER) {
+        evaluateNumberSynonym(storage);
+    } else {
+        evaluateSynonymNumber(storage);
+    }
+    if (clauseResult->keysHasNoValues()) {
+        clauseResult->setNoResults();
+    }
 }
 
 void IntIntClauseEvaluator::handleLeftWildcard() {
