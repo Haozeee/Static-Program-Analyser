@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "QueryParser.h"
+#include "query_processing_system/parser/clause/pattern_clause/AssignPatternClauseFactory.h"
 
 QueryParser::QueryParser(std::vector<std::shared_ptr<Token>> tokens, Query* query) :
 query(query), AbstractParser(tokens) {}
@@ -12,6 +13,7 @@ void QueryParser::parseAllDeclarations() {
             break;
         }
     }
+    parseNext("Select");
 }
 
 // Structure: design-entity (',', synonym)*';'
@@ -24,8 +26,8 @@ bool QueryParser::parseDeclaration() {
     std::string designEntityString = designEntityToken->getValue();
     DesignEntity designEntity;
     designEntity = getDesignEntityFromStr(designEntityString);
-    getNext();  // Consumes first Design Entity token and moves to second token.
     if (!isValidDesignEntity(designEntity)) return false;
+    getNext();  // Consumes first Design Entity token and moves to second token.
 
     // Handle second token which is a Synonym.
     std::shared_ptr<Token> synonymToken;
@@ -44,8 +46,6 @@ bool QueryParser::parseDeclaration() {
     }
 
     parseNext(";");
-
-//    std::cout << getToken()->getValue() << std::endl; // Select is here
 
     // Put Synonyms and their corresponding Design Entities into the Query wrapper object as one Declaration.
     for (const Synonym& syn : synonyms) {
@@ -71,11 +71,15 @@ std::shared_ptr<Synonym> QueryParser::parseSynonym(std::shared_ptr<Token> token)
     return synonym;
 }
 
-bool QueryParser::parseSuchThatClause() {
-    parseNext("such");
-    parseNext("that");
-    parseRelRef();
-    return true;
+bool QueryParser::parseIfSuchThatClause() {
+    if (!isValueOf("such")) {
+        return false;
+    } else {
+        parseNext("such");
+        parseNext("that");
+        parseRelRef();
+        return true;
+    }
 }
 
 void QueryParser::parseRelRef() {
@@ -108,12 +112,88 @@ Argument QueryParser::parseArgument() {
         DesignEntity designEntity = query->getSynonymDesignEntity(nameString);
         Argument nameArgument(ArgumentType::SYNONYM, nameString, designEntity);
         return nameArgument;
+    } else if (isValueOf("_")) {
+        // Wildcard
+        std::shared_ptr<Token> wildcardToken = parseNext("_");
+        std::string wildcardString = wildcardToken->getValue();
+        Argument wildcardArgument(ArgumentType::WILDCARD, wildcardString, DesignEntity::NONE);
+        return wildcardArgument;
+    } else if (isValueOf("'")) {
+        // Character String
+        std::string stringExpression = parseStringExpression();
+        Argument stringExpressionArgument(ArgumentType::CHARACTERSTRING, stringExpression, DesignEntity::NONE);
+        return stringExpressionArgument;
     } else {
-        throw QueryParserException(QueryParserInvalidTokenForRelationshipArgument);
+        throw QueryParserException(getToken()->getValue() + QueryParserInvalidTokenForRelationshipArgument);
     }
 }
 
-void QueryParser::parseEndingSemicolon() {
+bool QueryParser::parseIfAssignPatternClause() {
+    if (!isValueOf("pattern")) {
+        return false;
+    } else {
+        parseNext("pattern");
+        parseAssignPatternClause();
+        return true;
+    }
+}
+
+void QueryParser::parseAssignPatternClause() {
+    std::shared_ptr<Token> assignToken = parseNext(TokenType::TOKEN_NAME);
+    std::string assignString = assignToken->getValue();
+    DesignEntity assignDesignEntity = query->getSynonymDesignEntity(assignString);
+    if (assignDesignEntity != DesignEntity::ASSIGN) {
+        throw QueryParserException(assignString + QueryValidatorInvalidAssignPatternSynonym);
+    }
+    parseNext("(");
+    // First argument can be variable synonyms, wildcard or character strings
+    Argument leftArgument = parseArgument();
+    parseNext(",");
+    // Second argument can be wildcard or expression for exact/partial match
+    StringExpression rightArgument = parseExpression();
+    parseNext(")");
+
+    /* assign pattern clause is NOT being created */
+//    auto factory = std::make_shared<AssignPatternClauseFactory>();
+//    PatternClause* assignPatternClause =
+//    factory->createPatternClause(assignDesignEntity, leftArgument, rightArgument);
+//    query->addPatternClause(assignPatternClause);
+}
+
+StringExpression QueryParser::parseExpression() {
+    // Expression for exact match (e.g. "x+y")
+    bool isExactMatch = true;
+    if (isValueOf("_")) {
+        // Have wildcard means partial match
+        // Expression for partial match (e.g. _"x+y"_)
+        isExactMatch = false;
+        parseNext("_");
+        if (isValueOf("'")) {
+            // String Expression
+            std::string stringExpression = parseStringExpression();
+            parseNext("_");
+            return StringExpression(isExactMatch, stringExpression);
+        } else {
+            // Wildcard
+            std::cout << "IS WILDCARD" << std::endl;
+            return StringExpression(true);
+        }
+    }  else {
+        // Exact match
+        std::string stringExpression = parseStringExpression();
+        return StringExpression(isExactMatch, stringExpression);
+    }
+}
+
+std::string QueryParser::parseStringExpression() {
+    parseNext("'");
+    std::shared_ptr<Token> stringExpressionToken = parseNext(TokenType::TOKEN_STRING_EXPRESSION);
+    std::string stringExpression = stringExpressionToken->getValue();
+    parseNext("'");
+    return stringExpression;
+}
+
+void QueryParser::parseEndingUnexpectedToken() {
     if (isValueOf(";")) {
         throw QueryParserException(QueryParserInvalidEndingSemicolon);
     } else {
@@ -128,7 +208,15 @@ void QueryParser::parse() {
     // Next, handle the Select Clause.
     parseSelectClause();
 
-    if (hasNext()) parseSuchThatClause();
+    while (hasNext()) {
+        if (parseIfSuchThatClause()) {
+            continue;
+        }
 
-    if (hasNext()) parseEndingSemicolon();
+        if (parseIfAssignPatternClause()) {
+            continue;
+        }
+
+        parseEndingUnexpectedToken();
+    }
 }
