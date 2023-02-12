@@ -139,11 +139,7 @@ bool QueryParser::parseIfAssignPatternClause() {
 }
 
 void QueryParser::parseAssignPatternClause() {
-    std::shared_ptr<Token> assignToken = parseNext(TokenType::TOKEN_NAME);
     auto patternArg = parseArgument();
-    if (patternArg.getDesignEntity() != DesignEntity::ASSIGN) {
-        throw QueryParserException(patternArg.getValue() + QueryValidatorInvalidAssignPatternSynonym);
-    }
     parseNext("(");
     // First argument can be variable synonyms, wildcard or character strings
     Argument leftArgument = parseArgument();
@@ -172,7 +168,6 @@ StringExpression QueryParser::parseExpression() {
             return StringExpression(isExactMatch, stringExpression);
         } else {
             // Wildcard
-            std::cout << "IS WILDCARD" << std::endl;
             return StringExpression(true);
         }
     }  else {

@@ -49,22 +49,8 @@ bool QueryValidator::containsSelectClauseSynonymInDeclaration(
                        });
 }
 
-void QueryValidator::validateAssignPatternSynonym() {
-    std::vector<PatternClause*> patternClause = query->getPatternClause();
-    for (PatternClause* item : patternClause) {
-        Argument argumentToBeValidated = item->getLeftArg();
-        DesignEntity designEntityOfArg = argumentToBeValidated.getDesignEntity();
-        if (designEntityOfArg != DesignEntity::ASSIGN) {
-            throw QueryValidationException(argumentToBeValidated.getValue()
-            + QueryValidatorInvalidAssignPatternSynonym);
-        }
-    }
-}
-
 void QueryValidator::validateQuery() {
     validateNoDuplicateSynonymsInDeclaration();
 
     validateSynonymInSelectClauseWasDeclared();
-
-    validateAssignPatternSynonym();
 }

@@ -2,6 +2,8 @@
 
 #include "PatternClause.h"
 #include "AssignPatternClause.h"
+#include "query_processing_system/exception/QueryException.h"
+#include "query_processing_system/exception/QueryExceptionMessages.h"
 
 class PatternClauseFactory {
  public:
