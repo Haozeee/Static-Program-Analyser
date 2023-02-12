@@ -6,6 +6,7 @@
 #include "QueryEvaluator.h"
 #include "parser/QueryParser.h"
 #include "parser/Query.h"
+#include "evaluator/ResultTable.h"
 
 void QueryManager::process(const std::string& query, std::list<std::string> &results,
                            std::shared_ptr<StorageUtil> storageUtil) {
@@ -35,10 +36,10 @@ void QueryManager::process(const std::string& query, std::list<std::string> &res
 
     // Evaluate query
     QueryEvaluator evaluator = QueryEvaluator(queryObject, storage);
-    QueryResult queryResult = evaluator.evaluateQuery();
+    ResultTable queryResult = evaluator.evaluateQuery();
     // std::cout << queryResult << "\n";
     // Add to qps result
-    queryResult.copyToQpsResult(results);
+    // queryResult.copyToQpsResult(queryResults);
 
     // Memory management
     delete queryObject;

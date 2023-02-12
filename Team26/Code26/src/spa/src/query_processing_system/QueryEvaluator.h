@@ -3,16 +3,15 @@
 #include <unordered_set>
 #include <string>
 #include "parser/Query.h"
-#include "evaluator/QueryResult.h"
+#include "evaluator/QueryDb.h"
 #include "parser/DesignEntity.h"
-#include "evaluator/clause_evaluator/ClauseResult.h"
 #include "evaluator/PkbUtil.h"
 #include "../program_knowledge_base/ReadOnlyStorage.h"
 
 class QueryEvaluator {
  private:
     Query* query;
-    QueryResult queryResult;
+    QueryDb queryResults;
     std::shared_ptr<ReadOnlyStorage> storage;
 
     /**
@@ -28,5 +27,5 @@ class QueryEvaluator {
  public:
     explicit QueryEvaluator(Query* query, std::shared_ptr<ReadOnlyStorage> storage);
 
-    QueryResult evaluateQuery();
+    QueryDb evaluateQuery();
 };
