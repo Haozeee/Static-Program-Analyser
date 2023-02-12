@@ -83,7 +83,7 @@ void RelationshipExtractor::extractCondExpr(std::shared_ptr<CondExprNode> node) 
     for (auto &variable : exprVariableList) {
         relationshipStore->insertUsesSRelationship(currentStmtNo, variable);
         for (int& parentIndex : parentIndexStack) {
-            relationshipStore->insertModifiesSRelationship(parentIndex, variable);
+            relationshipStore->insertUsesSRelationship(parentIndex, variable);
         }
         relationshipStore->insertUsesPRelationship(currProcedureName, variable);
     }
