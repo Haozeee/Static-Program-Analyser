@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 #include <string>
-#include "IEntityStore.h"
+#include "source_processor/storage/interface/IEntityStore.h"
 #include "program_knowledge_base/WriteOnlyStorage.h"
 
 class EntityStore : public IEntityStore {

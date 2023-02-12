@@ -4,7 +4,7 @@
 #include <string>
 #include "source_processor/design_extractor/extractor/BaseExtractor.h"
 #include "source_processor/node/statement_node/ReadNode.h"
-#include "source_processor/storage/EntityStore.h"
+#include "source_processor/storage/store/EntityStore.h"
 #include "source_processor/design_extractor/interface/IEntityExtractor.h"
 
 class EntityExtractor : public BaseExtractor, IEntityExtractor {

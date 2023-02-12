@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include "source_processor/design_extractor/extractor/BaseExtractor.h"
-#include "source_processor/storage/RelationshipStore.h"
+#include "source_processor/storage/store/RelationshipStore.h"
 #include "source_processor/design_extractor/interface/IRelationshipExtractor.h"
 
 class RelationshipExtractor : public BaseExtractor, IRelationshipExtractor {

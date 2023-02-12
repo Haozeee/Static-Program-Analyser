@@ -5,8 +5,6 @@
 #include "source_processor/node/ProgramNode.h"
 #include "source_processor/node/ProcedureNode.h"
 #include "source_processor/node/StmtListNode.h"
-
-#include "program_knowledge_base/WriteOnlyStorage.h"
 #include "source_processor/node/CondExprNode.h"
 
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "IPatternStore.h"
 #include <memory>
 #include <string>
+#include "source_processor/storage/interface/IPatternStore.h"
 #include "program_knowledge_base/WriteOnlyStorage.h"
 
 class PatternStore : public IPatternStore {
