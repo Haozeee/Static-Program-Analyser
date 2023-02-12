@@ -42,13 +42,15 @@ class CondExprNode : public Node {
  public:
     std::optional<std::shared_ptr<RelExpr>> relExpr;
     std::optional<std::tuple<UnaryCondOperatorType, std::shared_ptr<CondExprNode>>> unaryCondExpr;
-    std::optional<std::tuple<BinaryCondOperatorType, std::shared_ptr<CondExprNode>, std::shared_ptr<CondExprNode>>> binaryCondExpr;
+    std::optional<std::tuple<BinaryCondOperatorType, std::shared_ptr<CondExprNode>,
+        std::shared_ptr<CondExprNode>>> binaryCondExpr;
     std::string str;
     CondExprNodeType condExprNodeType;
 
-    CondExprNode(std::shared_ptr<RelExpr> relExpr);
-    CondExprNode(std::tuple<UnaryCondOperatorType, std::shared_ptr<CondExprNode>> unaryCondExpr);
-    CondExprNode(std::tuple<BinaryCondOperatorType, std::shared_ptr<CondExprNode>, std::shared_ptr<CondExprNode>> binaryCondExpr);
+    explicit CondExprNode(std::shared_ptr<RelExpr> relExpr);
+    explicit CondExprNode(std::tuple<UnaryCondOperatorType, std::shared_ptr<CondExprNode>> unaryCondExpr);
+    explicit CondExprNode(std::tuple<BinaryCondOperatorType, std::shared_ptr<CondExprNode>,
+        std::shared_ptr<CondExprNode>> binaryCondExpr);
 
     bool isRelExpr();
     bool isUnaryCondExpr();

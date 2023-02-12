@@ -11,24 +11,20 @@ ExprNode::ExprNode(std::shared_ptr<BinaryOpNode> binaryOpNode) {
     OperatorType opType = std::get<0>(*binaryOpNode);
     ExprNode exprNode1 = *(std::get<1>(*binaryOpNode));
     ExprNode exprNode2 = *(std::get<2>(*binaryOpNode));
-    
+
     this->str = exprNode1.str;
     if (opType == OperatorType::MULTIPLY) {
         this->str += "*";
-    }
-    else if (opType == OperatorType::DIVIDE) {
+    } else if (opType == OperatorType::DIVIDE) {
         this->str += "/";
-    }
-    else if (opType == OperatorType::MOD) {
+    } else if (opType == OperatorType::MOD) {
         this->str += "%";
-    }
-    else if (opType == OperatorType::ADD) {
+    } else if (opType == OperatorType::ADD) {
         this->str += "+";
     } else {
         this->str += "-";
     }
     this->str += exprNode2.str;
-
 }
 
 ExprNode::ExprNode(int constant) {
