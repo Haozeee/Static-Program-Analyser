@@ -2,12 +2,12 @@
 
 #include <memory>
 #include <string>
-#include "source_processor/design_extractor/extractor/AbstractExtractor.h"
+#include "source_processor/design_extractor/extractor/BaseExtractor.h"
 #include "source_processor/node/statement_node/ReadNode.h"
 #include "source_processor/storage/EntityStore.h"
 #include "source_processor/design_extractor/interface/IEntityExtractor.h"
 
-class EntityExtractor : public AbstractExtractor, IEntityExtractor {
+class EntityExtractor : public BaseExtractor, IEntityExtractor {
  private:
     std::shared_ptr<EntityStore> entityStore;
  public:

@@ -3,22 +3,22 @@
 #include <utility>
 #include <string>
 
-EntityExtractor::EntityExtractor(std::shared_ptr<EntityStore> entityStore) : AbstractExtractor() {
+EntityExtractor::EntityExtractor(std::shared_ptr<EntityStore> entityStore) : BaseExtractor() {
     this->entityStore = std::move(entityStore);
 }
 
 void EntityExtractor::extractProcedure(std::shared_ptr<ProcedureNode> node) {
     entityStore->insertProcedure(node);
-    AbstractExtractor::extractProcedure(node);
+    BaseExtractor::extractProcedure(node);
 }
 
 void EntityExtractor::extractStmtList(std::shared_ptr<StmtListNode> node) {
-    AbstractExtractor::extractStmtList(node);
+    BaseExtractor::extractStmtList(node);
 }
 
 void EntityExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
     entityStore->insertStatement(node);  // Store Statement Index
-    AbstractExtractor::extractStmt(node);  // Update Extractor Current Index
+    BaseExtractor::extractStmt(node);  // Update Extractor Current Index
     node->evaluate(*this);
 }
 

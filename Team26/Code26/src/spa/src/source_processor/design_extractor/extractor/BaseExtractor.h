@@ -10,11 +10,11 @@
 #include "source_processor/node/CondExprNode.h"
 
 
-class AbstractExtractor {
+class BaseExtractor {
  protected:
     int currentStmtNo = -1;
  public:
-    AbstractExtractor();
+    BaseExtractor();
 
     /**
      * General looping of nodes that contains statement lists.

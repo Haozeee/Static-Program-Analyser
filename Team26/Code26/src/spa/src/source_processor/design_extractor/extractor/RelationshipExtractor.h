@@ -2,11 +2,11 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include "source_processor/design_extractor/extractor/AbstractExtractor.h"
+#include "source_processor/design_extractor/extractor/BaseExtractor.h"
 #include "source_processor/storage/RelationshipStore.h"
 #include "source_processor/design_extractor/interface/IRelationshipExtractor.h"
 
-class RelationshipExtractor : public AbstractExtractor, IRelationshipExtractor {
+class RelationshipExtractor : public BaseExtractor, IRelationshipExtractor {
  private:
     std::string currProcedureName;
     std::shared_ptr<RelationshipStore> relationshipStore;
