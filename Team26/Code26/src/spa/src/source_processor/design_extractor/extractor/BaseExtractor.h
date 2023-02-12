@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 #include "source_processor/node/ProgramNode.h"
 #include "source_processor/node/ProcedureNode.h"
 #include "source_processor/node/StmtListNode.h"
@@ -11,11 +12,15 @@
 class BaseExtractor {
  protected:
     int currentStmtNo = -1;
+    std::vector<int> exprIntegerList;
+    std::vector<std::string> exprVariableList;
+
+    void clearExprStack();
  public:
     BaseExtractor();
 
     /**
-     * General looping of nodes that contains statement lists.
+     * General looping of nodes that contains statements.
      * */
     virtual void extractProgram(std::shared_ptr<ProgramNode> node);
     virtual void extractProcedure(std::shared_ptr<ProcedureNode> node);

@@ -66,6 +66,6 @@ void EntityStore::insertName(std::string &name) {
     entityStorage->getVariableManager()->insertEntity(name);
 }
 
-void EntityStore::insertConstant(std::string &integer) {
-    entityStorage->getConstantManager()->insertEntity(stoi(integer));
+void EntityStore::insertConstant(int &integer) {
+    entityStorage->getConstantManager()->insertEntity(integer);
 }

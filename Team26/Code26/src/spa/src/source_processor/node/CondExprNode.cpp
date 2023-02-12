@@ -48,7 +48,7 @@ std::optional<std::vector<std::shared_ptr<CondExprNode>>> CondExprNode::returnNo
     return nodes;
 }
 
-std::optional<std::pair<std::shared_ptr<ExprNode>,std::shared_ptr<ExprNode>>> CondExprNode::returnRelExprNodes() {
+std::optional<std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>>> CondExprNode::returnRelExprNodes() {
     if (condExprNodeType != CondExprNodeType::RELEXPR) {
         return std::nullopt;
     }
