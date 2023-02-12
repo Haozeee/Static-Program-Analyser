@@ -1,7 +1,8 @@
 #include "PatternStore.h"
 
-void PatternStore::insertExpressionPattern(std::string &expr) {
+PatternStore::PatternStore(std::shared_ptr<WriteOnlyStorage> storage) : patternStorage(storage) {
 }
 
-PatternStore::PatternStore(std::shared_ptr<WriteOnlyStorage> storage) : patternStorage(storage) {
+void PatternStore::insertExpressionPattern(std::shared_ptr<AssignNode> node) {
+    patternStorage->getPatternManager()->insertPattern(node->stmtIndex,node->varName, node->exprNode->str);
 }

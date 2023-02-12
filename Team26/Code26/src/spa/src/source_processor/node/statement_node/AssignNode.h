@@ -14,4 +14,5 @@ class AssignNode : public StmtNode {
     AssignNode(int stmtIndex, std::string varName, std::shared_ptr<ExprNode> exprNode);
 
     void evaluate(IStmtExtractor& extractor) override;
+    void evaluatePattern(IPatternExtractor& extractor) override;
 };

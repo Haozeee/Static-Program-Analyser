@@ -11,5 +11,5 @@ class PatternStore : public IPatternStore {
  public:
     explicit PatternStore(std::shared_ptr<WriteOnlyStorage> storage);
 
-    void insertExpressionPattern(std::string &expr) override;
+    void insertExpressionPattern(std::shared_ptr<AssignNode> node) override;
 };
