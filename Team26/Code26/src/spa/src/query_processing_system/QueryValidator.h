@@ -41,7 +41,6 @@ class QueryValidator {
     bool containsSelectClauseSynonymInDeclaration(const std::unordered_set<std::string>& declarationSynonyms,
                                       const std::unordered_set<std::string>& selectClauseSynonyms);
 
-
  public:
     explicit QueryValidator(Query* query);
 

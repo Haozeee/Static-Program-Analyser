@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include "StmtNode.h"
+#include "source_processor/node/statement_node/StmtNode.h"
 #include "source_processor/node/ExprNode.h"
 
 class AssignNode : public StmtNode {
@@ -12,5 +13,6 @@ class AssignNode : public StmtNode {
 
     AssignNode(int stmtIndex, std::string varName, std::shared_ptr<ExprNode> exprNode);
 
-    void evaluate(AbstractExtractor& extractor) override;
+    void evaluate(IStmtExtractor& extractor) override;
+    void evaluatePattern(IPatternExtractor& extractor) override;
 };

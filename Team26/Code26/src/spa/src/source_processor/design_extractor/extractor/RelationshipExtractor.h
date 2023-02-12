@@ -2,10 +2,11 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include "source_processor/design_extractor/extractor/AbstractExtractor.h"
-#include "source_processor/storage/RelationshipStore.h"
+#include "source_processor/design_extractor/extractor/BaseExtractor.h"
+#include "source_processor/storage/store/RelationshipStore.h"
+#include "source_processor/design_extractor/interface/IRelationshipExtractor.h"
 
-class RelationshipExtractor : public AbstractExtractor {
+class RelationshipExtractor : public BaseExtractor, IRelationshipExtractor {
  private:
     std::string currProcedureName;
     std::shared_ptr<RelationshipStore> relationshipStore;
@@ -23,4 +24,5 @@ class RelationshipExtractor : public AbstractExtractor {
     void extractCall(std::shared_ptr<CallNode> node) override;
     void extractWhile(std::shared_ptr<WhileNode> node) override;
     void extractIf(std::shared_ptr<IfNode> node) override;
+    void extractCondExpr(std::shared_ptr<CondExprNode> node) override;
 };

@@ -5,6 +5,7 @@
 extern const char QueryValidatorDuplicatedSynonymInDeclaration[];
 extern const char QueryValidatorUndeclaredSelectClauseSynonym[];
 extern const char QueryValidatorUndeclaredSuchThatClauseArgument[];
+extern const char QueryInvalidCreatePatternArgument[];
 
 extern const char QueryParserInvalidRelationshipInSelectClause[];
 extern const char QueryParserInvalidModifiesOrUsesRelationshipInSelectClause[];

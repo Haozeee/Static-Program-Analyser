@@ -1,8 +1,8 @@
 #pragma once
 
-#include "IPatternStore.h"
-#include <memory>
 #include <string>
+#include <memory>
+#include "source_processor/storage/interface/IPatternStore.h"
 #include "program_knowledge_base/WriteOnlyStorage.h"
 
 class PatternStore : public IPatternStore {
@@ -11,5 +11,5 @@ class PatternStore : public IPatternStore {
  public:
     explicit PatternStore(std::shared_ptr<WriteOnlyStorage> storage);
 
-    void insertExpressionPattern(std::string &expr) override;
+    void insertExpressionPattern(std::shared_ptr<AssignNode> node) override;
 };
