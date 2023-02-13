@@ -2,33 +2,39 @@
 
 #include <utility>
 
-RelationshipStore::RelationshipStore(std::shared_ptr<WriteOnlyStorage> storage) :
-    relationshipStorage(std::move(storage)) {}
-
-
-void RelationshipStore::insertFollowsRelationship(int &first_param, int &second_param) {
-     relationshipStorage->getFollowsManager()->insertRelationship(first_param, second_param,
-                                                                  relationshipStorage->getFollowsTManager());
+RelationshipStore::RelationshipStore(std::shared_ptr<WriteOnlyStorage> storage) {
+    followsManager = storage->getFollowsManager();
+    followsTManager = storage->getFollowsTManager();
+    parentManager = storage->getParentManager();
+    parentTManager = storage->getParentTManager();
+    usesSManager = storage->getUsesSManager();
+    modifiesSManager = storage->getModifiesSManager();
+    usesPManager = storage->getUsesPManager();
+    modifiesPManager = storage->getModifiesPManager();
 }
 
-void RelationshipStore::insertParentsRelationship(int &first_param, int &second_param) {
-    relationshipStorage->getParentManager()->insertRelationship(first_param, second_param,
-                                                                relationshipStorage->getParentTManager());
+
+void RelationshipStore::insertFollowsRelationship(int &previousStmtNo, int &currentStmtNo) {
+    followsManager->insertRelationship(previousStmtNo, currentStmtNo, followsTManager);
 }
 
-void RelationshipStore::insertUsesSRelationship(int &first_param, std::string &second_param) {
-    relationshipStorage->getUsesSManager()->insertRelationship(first_param, second_param);
+void RelationshipStore::insertParentsRelationship(int &parentStmtNo, int &childStmtNo) {
+    parentManager->insertRelationship(parentStmtNo, childStmtNo, parentTManager);
 }
 
-void RelationshipStore::insertModifiesSRelationship(int &first_param, std::string &second_param) {
-    relationshipStorage->getModifiesSManager()->insertRelationship(first_param, second_param);
+void RelationshipStore::insertUsesSRelationship(int &stmtNo, std::string &variableName) {
+    usesSManager->insertRelationship(stmtNo, variableName);
 }
 
-void RelationshipStore::insertUsesPRelationship(std::string &first_param, std::string &second_param) {
-    relationshipStorage->getUsesPManager()->insertRelationship(first_param, second_param);
+void RelationshipStore::insertModifiesSRelationship(int &stmtNo, std::string &variableName) {
+    modifiesSManager->insertRelationship(stmtNo, variableName);
 }
 
-void RelationshipStore::insertModifiesPRelationship(std::string &first_param, std::string &second_param) {
-    relationshipStorage->getModifiesPManager()->insertRelationship(first_param, second_param);
+void RelationshipStore::insertUsesPRelationship(std::string &procedureName, std::string &variableName) {
+    usesPManager->insertRelationship(procedureName, variableName);
+}
+
+void RelationshipStore::insertModifiesPRelationship(std::string &procedureName, std::string &variableName) {
+    modifiesPManager->insertRelationship(procedureName, variableName);
 }
 
