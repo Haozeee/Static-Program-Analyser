@@ -85,7 +85,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     virtual void evaluateSynonymSynonym(StoragePointer storage) = 0;
 
     void evaluateWildcardSynonym(StoragePointer storage) {
-        handleRightWildcard();
+        handleLeftWildcard();
         evaluateSynonymSynonym(storage);
         // Remove wildcard placeholder
         clauseResultTable = ResultTable::createSingleColumnTable(
@@ -93,7 +93,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
     void evaluateSynonymWildcard(StoragePointer storage) {
-        handleLeftWildcard();
+        handleRightWildcard();
         evaluateSynonymSynonym(storage);
         // Remove wildcard placeholder
         clauseResultTable = ResultTable::createSingleColumnTable(
@@ -119,6 +119,18 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
             return ClauseArgumentTypes::NUMBER_STRING;
         } else if (l == ArgumentType::SYNONYM && r == ArgumentType::CHARACTERSTRING) {
             return ClauseArgumentTypes::SYNONYM_STRING;
+        } else if (l == ArgumentType::SYNONYM && r == ArgumentType::WILDCARD){
+            return ClauseArgumentTypes::SYNONYM_WILDCARD;
+        } else if (l == ArgumentType::WILDCARD && r == ArgumentType::SYNONYM) {
+            return ClauseArgumentTypes::WILDCARD_SYNONYM;
+        } else if (l == ArgumentType::WILDCARD && r == ArgumentType::CHARACTERSTRING) {
+            return ClauseArgumentTypes::WILDCARD_STRING;
+        } else if (l == ArgumentType::WILDCARD && r == ArgumentType::NUMBER) {
+            return ClauseArgumentTypes::WILDCARD_NUMBER;
+        } else if (l == ArgumentType::NUMBER && r == ArgumentType::WILDCARD) {
+            return ClauseArgumentTypes::NUMBER_WILDCARD;
+        } else if (l == ArgumentType::WILDCARD && r == ArgumentType::WILDCARD) {
+            return ClauseArgumentTypes::WILDCARD_WILDCARD;
         } else {
             return ClauseArgumentTypes::NONE;
         }
