@@ -9,5 +9,5 @@ class AssignPatternClauseEvaluator : public PatternClauseEvaluator {
  public:
     AssignPatternClauseEvaluator(Argument patternArg, Argument leftArg, StringExpression rightArg);
 
-    std::shared_ptr<ClauseResult> evaluateClause(std::shared_ptr<ReadOnlyStorage> storage) override;
+    std::shared_ptr<ResultTable> evaluateClause(std::shared_ptr<ReadOnlyStorage> storage) override;
 };

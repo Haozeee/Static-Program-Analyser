@@ -1,15 +1,13 @@
 #include "DesignExtractor.h"
 
-DesignExtractor::DesignExtractor(const std::shared_ptr<WriteOnlyStorage>& storage) {
-    entityStore = std::make_shared<EntityStore>(storage);
-    relationshipStore = std::make_shared<RelationshipStore>(storage);
-    patternStore = std::make_shared<PatternStore>(storage);
-
-    entityExtractor = std::make_shared<EntityExtractor>(entityStore);
-    relationshipExtractor = std::make_shared<RelationshipExtractor>(relationshipStore);
+DesignExtractor::DesignExtractor(const std::shared_ptr<IStore>& store) {
+    entityExtractor = std::make_unique<EntityExtractor>(store->getEntityStore());
+    relationshipExtractor = std::make_unique<RelationshipExtractor>(store->getRelationshipStore());
+    patternExtractor = std::make_unique<PatternExtractor>(store->getPatternStore());
 }
 
 void DesignExtractor::extract(const std::shared_ptr<ProgramNode>& programNode) {
     entityExtractor->extractProgram(programNode);
     relationshipExtractor->extractProgram(programNode);
+    patternExtractor->extractProgram(programNode);
 }

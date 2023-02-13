@@ -4,6 +4,6 @@ AssignPatternClauseEvaluator::AssignPatternClauseEvaluator(Argument patternArg, 
                                 StringExpression rightArg)
     : PatternClauseEvaluator(patternArg, leftArg, rightArg) {}
 
-std::shared_ptr<ClauseResult> AssignPatternClauseEvaluator::evaluateClause(std::shared_ptr<ReadOnlyStorage> storage) {
-    return clauseResult;
+std::shared_ptr<ResultTable> AssignPatternClauseEvaluator::evaluateClause(std::shared_ptr<ReadOnlyStorage> storage) {
+    return clauseResultTable;
 }

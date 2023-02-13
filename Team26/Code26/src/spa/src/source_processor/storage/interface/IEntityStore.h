@@ -21,5 +21,5 @@ class IEntityStore {
     virtual void insertWhileStatement(std::shared_ptr<WhileNode> node) = 0;
     virtual void insertIfStatement(std::shared_ptr<IfNode> node) = 0;
     virtual void insertName(std::string &name) = 0;
-    virtual void insertConstant(std::string &integer) = 0;
+    virtual void insertConstant(int &integer) = 0;
 };

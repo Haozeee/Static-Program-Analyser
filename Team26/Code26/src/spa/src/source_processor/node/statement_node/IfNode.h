@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include "StmtNode.h"
+#include "source_processor/node/statement_node/StmtNode.h"
 #include "source_processor/node/CondExprNode.h"
 #include "source_processor/node/StmtListNode.h"
 
@@ -14,5 +14,5 @@ class IfNode : public StmtNode {
     IfNode(int stmtIndex, std::shared_ptr<CondExprNode> condExprNode, std::shared_ptr<StmtListNode> thenStmtListNode,
         std::shared_ptr<StmtListNode> elseStmtListNode);
 
-    void evaluate(AbstractExtractor& extractor) override;
+    void evaluate(IStmtExtractor& extractor) override;
 };

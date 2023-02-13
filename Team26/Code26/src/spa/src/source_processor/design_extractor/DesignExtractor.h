@@ -5,20 +5,17 @@
 #include "program_knowledge_base/WriteOnlyStorage.h"
 #include "source_processor/design_extractor/extractor/EntityExtractor.h"
 #include "source_processor/design_extractor/extractor/RelationshipExtractor.h"
-#include "source_processor/storage/EntityStore.h"
-#include "source_processor/storage/RelationshipStore.h"
-#include "source_processor/storage/PatternStore.h"
+#include "source_processor/storage/Store.h"
+#include "source_processor/design_extractor/extractor/PatternExtractor.h"
 
 class DesignExtractor {
  private:
-    std::shared_ptr<EntityExtractor> entityExtractor;
-    std::shared_ptr<RelationshipExtractor> relationshipExtractor;
-
-    std::shared_ptr<EntityStore> entityStore;
-    std::shared_ptr<RelationshipStore> relationshipStore;
-    std::shared_ptr<PatternStore> patternStore;
+    std::shared_ptr<IStore> store;
+    std::unique_ptr<EntityExtractor> entityExtractor;
+    std::unique_ptr<RelationshipExtractor> relationshipExtractor;
+    std::unique_ptr<PatternExtractor> patternExtractor;
 
  public:
-    explicit DesignExtractor(const std::shared_ptr<WriteOnlyStorage>& storage);
+    explicit DesignExtractor(const std::shared_ptr<IStore>& store);
     void extract(const std::shared_ptr<ProgramNode>& programNode);
 };

@@ -10,7 +10,7 @@ class UsesPClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
  public:
     UsesPClauseEvaluator(Argument left, Argument right);
 
-    std::shared_ptr<ClauseResult> evaluateClause(StoragePointer storage) override;
+    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage) override;
 
     std::unordered_map<int , std::unordered_set<int>> getRelationshipManager(StoragePointer storage) override;
 
@@ -19,6 +19,8 @@ class UsesPClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
     void setLeftArgResult(std::unordered_set<int> result) override;
 
     void setRightArgResult(std::unordered_set<int> result) override;
+
+    void setLeftAndRightArgResult(std::unordered_set<int> resultLeft, std::unordered_set<int> resultRight) override;
 
     std::unordered_set<int> getLeftArgEntities(StoragePointer storage) override;
 
