@@ -2,15 +2,25 @@
 
 #include <utility>
 
-EntityStore::EntityStore(std::shared_ptr<WriteOnlyStorage> storage) : entityStorage(std::move(storage)) {}
+EntityStore::EntityStore(std::shared_ptr<WriteOnlyStorage> storage) {
+    procedureManager = storage->getProcedureManager();
+    statementManager = storage->getStmtManager();
+    readManager = storage->getReadManager();
+    printManager = storage->getPrintManager();
+    assignManager = storage->getAssignManager();
+    callManager = storage->getCallManager();
+    whileManager = storage->getWhileManager();
+    ifManager = storage->getIfManager();
+    variableManager = storage->getVariableManager();
+    constantManager = storage->getConstantManager();
+}
 
 void EntityStore::insertProcedure(std::shared_ptr<ProcedureNode> node) {
-    // TODO(zhengteck): Implementation fo checking dup procedure name or check with PKB team
-    entityStorage->getProcedureManager()->insertEntity(node->procedureName);
+    procedureManager->insertEntity(node->procedureName);
 }
 
 void EntityStore::insertStatement(std::shared_ptr<StmtNode> node) {
-    entityStorage->getStmtManager()->insertEntity(node->stmtIndex);
+    statementManager->insertEntity(node->stmtIndex);
 }
 
 void EntityStore::insertReadStatement(std::shared_ptr<ReadNode> node) {
@@ -19,7 +29,7 @@ void EntityStore::insertReadStatement(std::shared_ptr<ReadNode> node) {
      *  1. Statement Index
      *  2. Variable Name
      * */
-    entityStorage->getReadManager()->insertEntity(node->stmtIndex);
+    readManager->insertEntity(node->stmtIndex);
     insertName(node->varName);
 }
 
@@ -29,7 +39,7 @@ void EntityStore::insertPrintStatement(std::shared_ptr<PrintNode> node) {
      *  1. Statement Index
      *  2. Variable Name
      * */
-    entityStorage->getPrintManager()->insertEntity(node->stmtIndex);
+    printManager->insertEntity(node->stmtIndex);
     insertName(node->varName);
 }
 
@@ -39,13 +49,13 @@ void EntityStore::insertAssignStatement(std::shared_ptr<AssignNode> node) {
      *  1. Statement Index
      *  2. Variable Name
      * */
-    entityStorage->getAssignManager()->insertEntity(node->stmtIndex);
+    assignManager->insertEntity(node->stmtIndex);
     insertName(node->varName);
 }
 
 void EntityStore::insertCallStatement(std::shared_ptr<CallNode> node) {
     // TBD
-    entityStorage->getCallManager()->insertEntity(node->stmtIndex);
+    callManager->insertEntity(node->stmtIndex);
 }
 
 void EntityStore::insertWhileStatement(std::shared_ptr<WhileNode> node) {
@@ -53,7 +63,7 @@ void EntityStore::insertWhileStatement(std::shared_ptr<WhileNode> node) {
      *  While Statement
      *  1. Statement Index
      * */
-    entityStorage->getWhileManager()->insertEntity(node->stmtIndex);
+    whileManager->insertEntity(node->stmtIndex);
 }
 
 void EntityStore::insertIfStatement(std::shared_ptr<IfNode> node) {
@@ -61,13 +71,13 @@ void EntityStore::insertIfStatement(std::shared_ptr<IfNode> node) {
      *  If Statement
      *  1. Statement Index
      * */
-    entityStorage->getIfManager()->insertEntity(node->stmtIndex);
+    ifManager->insertEntity(node->stmtIndex);
 }
 
 void EntityStore::insertName(std::string &name) {
-    entityStorage->getVariableManager()->insertEntity(name);
+    variableManager->insertEntity(name);
 }
 
 void EntityStore::insertConstant(int &integer) {
-    entityStorage->getConstantManager()->insertEntity(integer);
+    constantManager->insertEntity(integer);
 }
