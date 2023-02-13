@@ -1,9 +1,7 @@
 #include "RelationshipExtractor.h"
-#include <sstream>
-#include <iostream>
 #include <utility>
 
-RelationshipExtractor::RelationshipExtractor(std::shared_ptr<RelationshipStore> relationshipStore) : BaseExtractor
+RelationshipExtractor::RelationshipExtractor(std::shared_ptr<IRelationshipStore> relationshipStore) : BaseExtractor
 () {
     this->relationshipStore = std::move(relationshipStore);
 }

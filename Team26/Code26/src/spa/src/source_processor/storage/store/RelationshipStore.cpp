@@ -1,7 +1,9 @@
 #include "RelationshipStore.h"
 
-RelationshipStore::RelationshipStore(std::shared_ptr<WriteOnlyStorage> storage) : relationshipStorage(storage) {
-}
+#include <utility>
+
+RelationshipStore::RelationshipStore(std::shared_ptr<WriteOnlyStorage> storage) :
+    relationshipStorage(std::move(storage)) {}
 
 
 void RelationshipStore::insertFollowsRelationship(int &first_param, int &second_param) {

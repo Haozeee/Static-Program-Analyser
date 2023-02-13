@@ -2,7 +2,7 @@
 
 #include <utility>
 
-PatternExtractor::PatternExtractor(std::shared_ptr<PatternStore> storage) : BaseExtractor() {
+PatternExtractor::PatternExtractor(std::shared_ptr<IPatternStore> storage) : BaseExtractor() {
     this->patternStore = std::move(storage);
 }
 

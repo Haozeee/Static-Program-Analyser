@@ -2,19 +2,21 @@
 
 #include <vector>
 #include <memory>
-#include "source_processor/storage/store/EntityStore.h"
-#include "source_processor/storage/store/RelationshipStore.h"
-#include "source_processor/storage/store/PatternStore.h"
+#include "source_processor/storage/interface/IEntityStore.h"
+#include "source_processor/storage/interface/IPatternStore.h"
+#include "source_processor/storage/interface/IStore.h"
+#include "program_knowledge_base/WriteOnlyStorage.h"
 
-class Store {
+class Store : public IStore {
  private:
-    std::shared_ptr<EntityStore> entityStore;
-    std::shared_ptr<RelationshipStore> relationshipStore;
-    std::shared_ptr<PatternStore> patternStore;
+    std::shared_ptr<IEntityStore> entityStore;
+    std::shared_ptr<IRelationshipStore> relationshipStore;
+    std::shared_ptr<IPatternStore> patternStore;
+
  public:
     explicit Store(const std::shared_ptr<WriteOnlyStorage>& storage);
 
-    std::shared_ptr<EntityStore> getEntityStore();
-    std::shared_ptr<PatternStore> getPatternStore();
-    std::shared_ptr<RelationshipStore> getRelationshipStore();
+    std::shared_ptr<IEntityStore> getEntityStore() override;
+    std::shared_ptr<IPatternStore> getPatternStore() override;
+    std::shared_ptr<IRelationshipStore> getRelationshipStore() override;
 };
