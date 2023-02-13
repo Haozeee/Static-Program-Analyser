@@ -21,13 +21,13 @@ class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
 
     void handleRightWildcard() override;
 
+    void evaluateSynonymSynonym(StoragePointer storage) override;
+
     void evaluateNumberNumber(StoragePointer storage);
 
     void evaluateNumberSynonym(StoragePointer storage);
 
     void evaluateSynonymNumber(StoragePointer storage);
-
-    void evaluateSynonymSynonym(StoragePointer storage);
 
     void evaluateNumberWithWildcard(StoragePointer storage);
 
