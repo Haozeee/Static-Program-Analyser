@@ -12,7 +12,7 @@ const char QueryInvalidCreatePatternArgument[] =
 const char QueryParserInvalidRelationshipInSelectClause[] =
         " is not a valid relationship, please modify your input. Note that PQL is case-sensitive.";
 const char QueryParserInvalidModifiesOrUsesRelationshipInSelectClause[] =
-        " relationship has an invalid first argument.";
+        " relationship was not created as the first argument cannot be identified. Note that wildcards are invalid.";
 const char QueryParserInvalidTokenForRelationshipArgument[] =
         " is an invalid argument type in the relationship clause. Please modify your input.";
 const char QueryParserInvalidEndingSemicolon[] =
