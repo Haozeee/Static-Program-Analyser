@@ -2,9 +2,10 @@
 
 #include <utility>
 
-PatternStore::PatternStore(std::shared_ptr<WriteOnlyStorage> storage) : patternStorage(std::move(storage)) {
+PatternStore::PatternStore(std::shared_ptr<WriteOnlyStorage> storage) {
+    patternManager = storage->getPatternManager();
 }
 
 void PatternStore::insertExpressionPattern(std::shared_ptr<AssignNode> node) {
-    patternStorage->getPatternManager()->insertPattern(node->stmtIndex, node->varName, node->exprNode->str);
+    patternManager->insertPattern(node->stmtIndex, node->varName, node->exprNode->str);
 }
