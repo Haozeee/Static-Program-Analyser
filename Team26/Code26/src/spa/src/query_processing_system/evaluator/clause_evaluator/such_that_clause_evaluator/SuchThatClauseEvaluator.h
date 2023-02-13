@@ -29,25 +29,32 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
 
     Argument rightArg;
 
-    std::shared_ptr<ClauseResult> clauseResult;
+    std::shared_ptr<ResultTable> clauseResultTable;
 
     virtual std::unordered_map<T, std::unordered_set<U>> getRelationshipManager(StoragePointer storage) = 0;
 
     virtual std::unordered_map<U, std::unordered_set<T>> getOppositeRelationshipManager(StoragePointer storage) = 0;
 
     /**
-     * Set the results that are to be projected on to the left arguments in the clause result.
+     * Set the queryResults that are to be projected on to the left arguments in the clause result.
      * Should only be used when the left argument is a synonym.
      * @param result The result to be projected.
      */
     virtual void setLeftArgResult(std::unordered_set<T> result) = 0;
 
     /**
-     * Set the results that are to be projected on to the right arguments in the clause result.
+     * Set the queryResults that are to be projected on to the right arguments in the clause result.
      * Should only be used when the right argument is a synonym.
      * @param result The result to be projected.
      */
     virtual void setRightArgResult(std::unordered_set<U> result) = 0;
+
+    /**
+     * Set the queryResults that are to be projected on to the right arguments in the clause result.
+     * Should only be used when the right argument is a synonym.
+     * @param result The result to be projected.
+     */
+    virtual void setLeftAndRightArgResult(std::unordered_set<T> resultLeft, std::unordered_set<U> resultRight) = 0;
 
     /**
      * Get all the entities that have the same design entity as that of the left argument.
@@ -73,7 +80,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
 
  public:
     SuchThatClauseEvaluator<T, U>(Argument left, Argument right)
-            : leftArg(left), rightArg(right), clauseResult(std::make_shared<ClauseResult>()) {}
+            : leftArg(left), rightArg(right), clauseResultTable(std::make_shared<ResultTable>()) {}
 
     ClauseArgumentTypes getClauseArgumentTypes() {
         auto l = leftArg.getArgumentType();

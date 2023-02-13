@@ -1,6 +1,8 @@
 #include "EntityStore.h"
 
-EntityStore::EntityStore(std::shared_ptr<WriteOnlyStorage> storage) : entityStorage(storage) {}
+#include <utility>
+
+EntityStore::EntityStore(std::shared_ptr<WriteOnlyStorage> storage) : entityStorage(std::move(storage)) {}
 
 void EntityStore::insertProcedure(std::shared_ptr<ProcedureNode> node) {
     // TODO(zhengteck): Implementation fo checking dup procedure name or check with PKB team

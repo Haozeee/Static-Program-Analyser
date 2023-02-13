@@ -1,11 +1,12 @@
 #include "QueryEvaluator.h"
 #include <algorithm>
 #include <iterator>
+#include "evaluator/ResultTable.h"
 
 QueryEvaluator::QueryEvaluator(Query* query, std::shared_ptr<ReadOnlyStorage> storage)
-    : query(query), storage(storage) {}
+    : query(query), storage(storage), queryResults(QueryDb()) {}
 
-QueryResult QueryEvaluator::evaluateQuery() {
+QueryDb QueryEvaluator::evaluateQuery() {
     // Evaluate select clauses
     evaluateSelectClause();
 
@@ -13,13 +14,13 @@ QueryResult QueryEvaluator::evaluateQuery() {
     evaluateSuchThatClause();
 
     // Return QueryResult
-    return queryResult;
+    return queryResults;
 }
 
 void QueryEvaluator::evaluateSuchThatClause() {
     for (SuchThatClause* clause : query->getSuchThatClauses()) {
-        auto clauseResult = clause->getClauseEvaluator()->evaluateClause(storage);
-        queryResult.addClauseResultToQuery(clauseResult);
+        auto clauseResultTable = clause->getClauseEvaluator()->evaluateClause(storage);
+        queryResults.addResult(clauseResultTable);
     }
 }
 
@@ -28,11 +29,11 @@ void QueryEvaluator::evaluateSelectClause() {
     // Loop through select clauses
     for (SelectClauseItem item : *selectClauses) {
         std::shared_ptr<Synonym> syn = std::get<std::shared_ptr<Synonym>>(item);
-        // Add identity to results
-        queryResult.addNewIdentity(syn->ident);
         // Get respective entities from pkb
         auto entities = PkbUtil::getEntitiesFromPkb(storage, query->getSynonymDesignEntity(syn));
         // Add entities to query result
-        queryResult.addNewResult(syn->ident, entities);
+        auto resultTable = ResultTable::createSingleColumnTable(syn->getIdent(), entities);
+        queryResults.addResult(resultTable);
+        queryResults.setSelectedColumn(syn->getIdent());
     }
 }

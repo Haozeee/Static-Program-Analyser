@@ -3,7 +3,7 @@
 #include <utility>
 #include <string>
 
-EntityExtractor::EntityExtractor(std::shared_ptr<EntityStore> entityStore) : BaseExtractor() {
+EntityExtractor::EntityExtractor(std::shared_ptr<IEntityStore> entityStore) : BaseExtractor() {
     this->entityStore = std::move(entityStore);
 }
 

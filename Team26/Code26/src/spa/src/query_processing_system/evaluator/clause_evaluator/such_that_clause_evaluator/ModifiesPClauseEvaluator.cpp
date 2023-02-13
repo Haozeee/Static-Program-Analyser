@@ -14,11 +14,21 @@ ModifiesPClauseEvaluator::getOppositeRelationshipManager(StoragePointer storage)
 }
 
 void ModifiesPClauseEvaluator::setLeftArgResult(std::unordered_set<int> result) {
-    clauseResult->addNewResult(leftArg.getValue(), PkbUtil::intSetToStringSet(result));
+    clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(),
+                                                             PkbUtil::intSetToStringSet(result));
 }
 
 void ModifiesPClauseEvaluator::setRightArgResult(std::unordered_set<int> result) {
-    clauseResult->addNewResult(rightArg.getValue(), PkbUtil::intSetToStringSet(result));
+    clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(),
+                                                             PkbUtil::intSetToStringSet(result));
+}
+
+void ModifiesPClauseEvaluator::setLeftAndRightArgResult(std::unordered_set<int> resultLeft,
+                                                     std::unordered_set<int> resultRight) {
+    clauseResultTable = ResultTable::createDoubleColumnTable(leftArg.getValue(),
+                                                             PkbUtil::intSetToStringSet(resultLeft),
+                                                             rightArg.getValue(),
+                                                             PkbUtil::intSetToStringSet(resultRight));
 }
 
 
@@ -30,6 +40,6 @@ std::unordered_set<int> ModifiesPClauseEvaluator::getRightArgEntities(StoragePoi
     return PkbUtil::getIntEntitiesFromPkb(storage, rightArg.getDesignEntity());
 }
 
-std::shared_ptr<ClauseResult> ModifiesPClauseEvaluator::evaluateClause(StoragePointer storage) {
-    return clauseResult;
+std::shared_ptr<ResultTable> ModifiesPClauseEvaluator::evaluateClause(StoragePointer storage) {
+    return clauseResultTable;
 }

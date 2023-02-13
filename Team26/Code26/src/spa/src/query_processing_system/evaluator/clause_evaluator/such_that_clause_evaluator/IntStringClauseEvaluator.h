@@ -15,6 +15,9 @@ class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string
 
     void setRightArgResult(std::unordered_set<std::string> result) override;
 
+    void setLeftAndRightArgResult(std::unordered_set<int> resultLeft,
+                                  std::unordered_set<std::string> resultRight) override;
+
     std::unordered_set<int> getLeftArgEntities(StoragePointer storage) override;
 
     std::unordered_set<std::string> getRightArgEntities(StoragePointer storage) override;
@@ -36,5 +39,5 @@ class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string
     void evaluateNumberWildcard(StoragePointer storage);
 
  public:
-    std::shared_ptr<ClauseResult> evaluateClause(StoragePointer storage) override;
+    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage) override;
 };
