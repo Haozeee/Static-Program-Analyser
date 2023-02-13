@@ -30,15 +30,15 @@ std::shared_ptr<ResultTable> IntStringClauseEvaluator::evaluateClause(StoragePoi
 }
 
 void IntStringClauseEvaluator::evaluateSynonymString(StoragePointer storage) {
+    std::unordered_set<int> leftResults;
     auto statementsToEvaluate = getLeftArgEntities(storage);
     for (int statement : statementsToEvaluate) {
         auto res = evaluateNumberSynonymHelper(storage, statement);
         if (res.count(rightArg.getValue())) {
-            setLeftArgResult({statement});
-        } else {
-            setLeftArgResult({});
+            leftResults.insert(statement);
         }
     }
+    setLeftArgResult(leftResults);
 }
 
 void IntStringClauseEvaluator::evaluateNumberString(StoragePointer storage) {

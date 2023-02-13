@@ -19,8 +19,10 @@ QueryDb QueryEvaluator::evaluateQuery() {
 
 void QueryEvaluator::evaluateSuchThatClause() {
     for (SuchThatClause* clause : query->getSuchThatClauses()) {
-        auto clauseResultTable = clause->getClauseEvaluator()->evaluateClause(storage);
+        auto clauseEvaluator = clause->getClauseEvaluator();
+        auto clauseResultTable = clauseEvaluator->evaluateClause(storage);
         queryResults.addResult(clauseResultTable);
+        delete clauseEvaluator;
     }
 }
 

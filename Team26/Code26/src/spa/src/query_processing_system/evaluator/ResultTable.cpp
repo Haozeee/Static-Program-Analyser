@@ -120,10 +120,10 @@ std::unordered_set<std::string> ResultTable::getColumnValues(std::string colName
     return res;
 }
 
-std::vector<std::string> ResultTable::hasMatchingColumns(std::unordered_set<std::string> columnNames) {
+std::vector<std::string> ResultTable::hasMatchingColumns(std::unordered_set<std::string> columnNamesToMatch) {
     std::vector<std::string> res;
     for (auto const& [k, v] : columnNameMap) {
-        if (columnNames.count(v)) {
+        if (columnNamesToMatch.count(v)) {
             res.push_back(v);
         }
     }
