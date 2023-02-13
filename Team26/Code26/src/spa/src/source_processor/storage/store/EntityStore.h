@@ -8,7 +8,17 @@
 
 class EntityStore : public IEntityStore {
  private:
-    std::shared_ptr<WriteOnlyStorage> entityStorage;
+    std::shared_ptr<WriteOnlyEntityManager<std::string>> procedureManager;
+    std::shared_ptr<WriteOnlyEntityManager<int>> statementManager;
+    std::shared_ptr<WriteOnlyEntityManager<int>> readManager;
+    std::shared_ptr<WriteOnlyEntityManager<int>> printManager;
+    std::shared_ptr<WriteOnlyEntityManager<int>> assignManager;
+    std::shared_ptr<WriteOnlyEntityManager<int>> callManager;
+    std::shared_ptr<WriteOnlyEntityManager<int>> whileManager;
+    std::shared_ptr<WriteOnlyEntityManager<int>> ifManager;
+    std::shared_ptr<WriteOnlyEntityManager<std::string>> variableManager;
+    std::shared_ptr<WriteOnlyEntityManager<int>> constantManager;
+
 
  public:
     explicit EntityStore(std::shared_ptr<WriteOnlyStorage> storage);
