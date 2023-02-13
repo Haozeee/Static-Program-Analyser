@@ -78,6 +78,28 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         }
     }
 
+    /**
+     * This is a valid evaluation parameter for all such that clauses,
+     * hence it exists in the parent class.
+     */
+    virtual void evaluateSynonymSynonym(StoragePointer storage) = 0;
+
+    void evaluateWildcardSynonym(StoragePointer storage) {
+        handleLeftWildcard();
+        evaluateSynonymSynonym(storage);
+        // Remove wildcard placeholder
+        clauseResultTable = ResultTable::createSingleColumnTable(
+                rightArg.getValue(), clauseResultTable->getColumnValues(rightArg.getValue()));
+    }
+
+    void evaluateSynonymWildcard(StoragePointer storage) {
+        handleRightWildcard();
+        evaluateSynonymSynonym(storage);
+        // Remove wildcard placeholder
+        clauseResultTable = ResultTable::createSingleColumnTable(
+                leftArg.getValue(), clauseResultTable->getColumnValues(leftArg.getValue()));
+    }
+
  public:
     SuchThatClauseEvaluator<T, U>(Argument left, Argument right)
             : leftArg(left), rightArg(right), clauseResultTable(std::make_shared<ResultTable>()) {}
@@ -97,6 +119,18 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
             return ClauseArgumentTypes::NUMBER_STRING;
         } else if (l == ArgumentType::SYNONYM && r == ArgumentType::CHARACTERSTRING) {
             return ClauseArgumentTypes::SYNONYM_STRING;
+        } else if (l == ArgumentType::SYNONYM && r == ArgumentType::WILDCARD) {
+            return ClauseArgumentTypes::SYNONYM_WILDCARD;
+        } else if (l == ArgumentType::WILDCARD && r == ArgumentType::SYNONYM) {
+            return ClauseArgumentTypes::WILDCARD_SYNONYM;
+        } else if (l == ArgumentType::WILDCARD && r == ArgumentType::CHARACTERSTRING) {
+            return ClauseArgumentTypes::WILDCARD_STRING;
+        } else if (l == ArgumentType::WILDCARD && r == ArgumentType::NUMBER) {
+            return ClauseArgumentTypes::WILDCARD_NUMBER;
+        } else if (l == ArgumentType::NUMBER && r == ArgumentType::WILDCARD) {
+            return ClauseArgumentTypes::NUMBER_WILDCARD;
+        } else if (l == ArgumentType::WILDCARD && r == ArgumentType::WILDCARD) {
+            return ClauseArgumentTypes::WILDCARD_WILDCARD;
         } else {
             return ClauseArgumentTypes::NONE;
         }

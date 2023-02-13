@@ -13,6 +13,10 @@ void QueryDb::setSelectedColumn(std::string col) {
 }
 
 std::unordered_map<std::string, std::unordered_set<std::string>> QueryDb::getInterestedResults() {
+    std::unordered_map<std::string, std::unordered_set<std::string>> res;
+    if (resultTablesHasFalse()) {
+        return res;
+    }
     auto interestedResults = std::make_shared<ResultTable>();
     // Get base results
     for (int i = 0 ; i < results.size(); i++) {
@@ -24,6 +28,7 @@ std::unordered_map<std::string, std::unordered_set<std::string>> QueryDb::getInt
         }
     }
 
+    // Keep joining the interested tables until there are no more interested tables to join
     while (!results.empty()) {
         bool hasJoin = false;
         for (int i = 0 ; i < results.size(); i++) {
@@ -36,12 +41,20 @@ std::unordered_map<std::string, std::unordered_set<std::string>> QueryDb::getInt
                 interestedColumns.insert(cols.begin(), cols.end());
             }
         }
-        std::cout << "1\n";
         if (!hasJoin) {
             break;
         }
     }
-    std::unordered_map<std::string, std::unordered_set<std::string>> res;
+    // Store the result into an unordered map
     res.insert({selectedSynonyms, interestedResults->getColumnValues(selectedSynonyms)});
     return res;
+}
+
+bool QueryDb::resultTablesHasFalse() {
+    for (auto i : results) {
+        if (i->hasNoResults()) {
+            return true;
+        }
+    }
+    return false;
 }
