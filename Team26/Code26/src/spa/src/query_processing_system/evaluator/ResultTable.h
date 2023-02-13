@@ -7,6 +7,17 @@
 
 using TableRow = std::vector<std::string>;
 
+struct VectorHash {
+    size_t operator()(const std::vector<std::string>& v) const {
+        std::hash<std::string> hasher;
+        size_t seed = v.size();
+        for (auto i : v) {
+            seed ^= hasher(i) + 0x9e3779b9 + (seed<<6) + (seed>>2);
+        }
+        return seed;
+    }
+};
+
 class ResultTable {
  private:
     std::unordered_map<int, std::string> columnNameMap;
@@ -19,9 +30,10 @@ class ResultTable {
      */
     bool noResults = false;
 
-    static std::shared_ptr<ResultTable> joinOnColumn(std::shared_ptr<ResultTable> table1,
-                                                     std::shared_ptr<ResultTable> table2, int column1, int column2);
-
+    static std::shared_ptr<ResultTable> joinOnColumns(std::shared_ptr<ResultTable> table1,
+                                               std::shared_ptr<ResultTable> table2,
+                                               std::vector<int> column1,
+                                               std::vector<int> column2);
     /**
      * Union 2 vectors.
      */
@@ -60,28 +72,32 @@ class ResultTable {
     /**
      * Join on table1.commonColumn = table2.commonColumn
      */
-    static std::shared_ptr<ResultTable> joinOnColumn(std::shared_ptr<ResultTable> table1,
-                                                     std::shared_ptr<ResultTable> table2, std::string commonColumn);
+    static std::shared_ptr<ResultTable> joinOnColumns(std::shared_ptr<ResultTable> table1,
+                                                      std::shared_ptr<ResultTable> table2,
+                                                      std::vector<std::string> commonColumns);
 
     /**
      * Given a set of columnNames, check if this table has any column
      * in the given set.
      * @return The similar column name. If no matching column name, return "".
      */
-    std::string hasMatchingColumns(std::unordered_set<std::string> columnNames);
+    std::vector<std::string> hasMatchingColumns(std::unordered_set<std::string> columnNames);
 
     void insertRow(TableRow row);
 
     TableRow getRow(int rowNumber) const;
 
-    std::string getValueAt(int rowNumber, int columnName) const;
+    std::string getValueAt(int rowNumber, int columnNumber) const;
+
+    std::vector<std::string> getValuesAt(int rowNumber, std::vector<int> columnNumbers) const;
 
     /**
-     * Returns the column number of the column with name colName.
+     * Returns the column numbers of the column with name colName.
      * @return The column number, -1 if the column does not exist.
      */
-    int getColumnNumber(std::string colName) const;
+    std::vector<int> getColumnNumbers(std::vector<std::string> colName) const;
 
+    int getColumnNumber(std::string colName) const;
     /**
      * Given a column name, get all the values of this columne.
      */

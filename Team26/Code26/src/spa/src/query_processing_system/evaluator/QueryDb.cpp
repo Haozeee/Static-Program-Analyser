@@ -29,7 +29,7 @@ std::unordered_map<std::string, std::unordered_set<std::string>> QueryDb::getInt
         for (int i = 0 ; i < results.size(); i++) {
             auto match = results.at(i)->hasMatchingColumns(interestedColumns);
             if (!match.empty()) {
-                interestedResults = ResultTable::joinOnColumn(interestedResults, results.at(i), match);
+                interestedResults = ResultTable::joinOnColumns(interestedResults, results.at(i), match);
                 hasJoin = true;
                 results.erase(results.begin() + i);
                 auto cols = interestedResults->getColumnsNames();

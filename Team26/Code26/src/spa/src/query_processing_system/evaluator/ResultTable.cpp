@@ -36,34 +36,37 @@ ResultTable::createDoubleColumnTable(std::string column1, std::unordered_set<std
     return res;
 }
 
-std::shared_ptr<ResultTable> ResultTable::joinOnColumn(std::shared_ptr<ResultTable> table1,
-                                                       std::shared_ptr<ResultTable> table2, std::string commonColumn) {
-    auto col1 = table1->getColumnNumber(commonColumn);
-    auto col2 = table2->getColumnNumber(commonColumn);
-    if (col1 != -1 && col2 != -1) {
-        return joinOnColumn(table1, table2, col1, col2);
+std::shared_ptr<ResultTable> ResultTable::joinOnColumns(std::shared_ptr<ResultTable> table1,
+                                                       std::shared_ptr<ResultTable> table2,
+                                                       std::vector<std::string> commonColumns) {
+    auto col1 = table1->getColumnNumbers(commonColumns);
+    auto col2 = table2->getColumnNumbers(commonColumns);
+    if (col1.size() > 0 && col2.size() > 0) {
+        return joinOnColumns(table1, table2, col1, col2);
     } else {
         throw std::exception();
     }
 }
 
-std::shared_ptr<ResultTable> ResultTable::joinOnColumn(std::shared_ptr<ResultTable> table1,
-                                                       std::shared_ptr<ResultTable> table2, int column1, int column2) {
-    std::unordered_multimap<std::string, int> hashmap;
+std::shared_ptr<ResultTable> ResultTable::joinOnColumns(std::shared_ptr<ResultTable> table1,
+                                                       std::shared_ptr<ResultTable> table2,
+                                                       std::vector<int> column1,
+                                                       std::vector<int> column2) {
+    std::unordered_multimap<std::vector<std::string >, int, VectorHash> hashmap;
     for (int i = 0; i < table2->getNumberOfRows(); i++) {
-        hashmap.insert({table2->getValueAt(i, column2), i});
+        hashmap.insert({table2->getValuesAt(i, column2), i});
     }
     auto newTableColumns = ResultTable::getVectorUnion(table1->getColumnsNames(), table2->getColumnsNames());
     auto res = std::make_shared<ResultTable>(newTableColumns);
     for (int i = 0; i < table1->getNumberOfRows(); i++) {
-        auto range = hashmap.equal_range(table1->getValueAt(i, column1));
+        auto range = hashmap.equal_range(table1->getValuesAt(i, column1));
         for (auto it = range.first; it != range.second; it++) {
             TableRow row;
             auto table1Row = table1->getRow(i);
             auto table2Row = table2->getRow(it->second);
             row.insert(row.end(), table1Row.begin(), table1Row.end());
             for (int j = 0; j < table2Row.size(); j++) {
-                if (j != column2) {
+                if (std::find(column2.begin(), column2.end(), j) == column2.end()) {
                     row.push_back(table2Row.at(j));
                 }
             }
@@ -75,11 +78,20 @@ std::shared_ptr<ResultTable> ResultTable::joinOnColumn(std::shared_ptr<ResultTab
 
 int ResultTable::getColumnNumber(std::string colName) const {
     for (auto const& [k, v] : columnNameMap) {
-        if (v == colName) {
+        if (colName == v) {
             return k;
         }
     }
     return -1;
+}
+std::vector<int> ResultTable::getColumnNumbers(std::vector<std::string> colName) const {
+    std::vector<int> res;
+    for (auto const& [k, v] : columnNameMap) {
+        if (std::find(colName.begin(), colName.end(), v) != colName.end()) {
+            res.push_back(k);
+        }
+    }
+    return res;
 }
 
 void ResultTable::insertRow(TableRow row) {
@@ -108,13 +120,14 @@ std::unordered_set<std::string> ResultTable::getColumnValues(std::string colName
     return res;
 }
 
-std::string ResultTable::hasMatchingColumns(std::unordered_set<std::string> columnNames) {
+std::vector<std::string> ResultTable::hasMatchingColumns(std::unordered_set<std::string> columnNames) {
+    std::vector<std::string> res;
     for (auto const& [k, v] : columnNameMap) {
         if (columnNames.count(v)) {
-            return v;
+            res.push_back(v);
         }
     }
-    return "";
+    return res;
 }
 
 TableRow ResultTable::getRow(int rowNumber) const {
@@ -123,6 +136,15 @@ TableRow ResultTable::getRow(int rowNumber) const {
 
 std::string ResultTable::getValueAt(int rowNumber, int columnNumber) const {
     return relations.at(rowNumber).at(columnNumber);
+}
+
+std::vector<std::string> ResultTable::getValuesAt(int rowNumber, std::vector<int> columnNumbers) const {
+    auto row = relations.at(rowNumber);
+    std::vector<std::string> res;
+    for (auto col : columnNumbers) {
+        res.push_back(row.at(col));
+    }
+    return res;
 }
 
 int ResultTable::getNumberOfRows() const {
