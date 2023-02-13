@@ -1,4 +1,8 @@
 #pragma once
+
+#include <utility>
+#include <unordered_set>
+
 #include "../Clause.h"
 #include "../../Argument.h"
 

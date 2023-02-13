@@ -75,7 +75,7 @@ void QueryValidator::validateSuchThatClause() {
 //        for (const auto& value : validSecondArgType) {
 //            std::cout << "validSecondArgType = " << value << std::endl;
 //        }
-//        std::cout << "validSecondArgType = " << parsedSecondArg.getArgumentTypeIndex(parsedSecondArgType) << std::endl;
+//  std::cout << "validSecondArgType = " << parsedSecondArg.getArgumentTypeIndex(parsedSecondArgType) << std::endl;
         if (validSecondArgType.find(parsedSecondArgTypeIndex) == validSecondArgType.end()) {
             throw QueryValidationException(parsedSecondArg.getValue()
                                            + QueryValidatorInvalidSecondArgumentTypeInRelation);

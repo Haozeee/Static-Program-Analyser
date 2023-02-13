@@ -2,6 +2,8 @@
 
 #include <map>
 #include <string>
+#include <unordered_set>
+
 #include "DesignEntity.h"
 
 /**
