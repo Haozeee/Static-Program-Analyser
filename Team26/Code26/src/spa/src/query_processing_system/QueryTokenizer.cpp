@@ -22,6 +22,7 @@ void QueryTokenizer::readSpecialChar() {
 
 void QueryTokenizer::readStringExpression() {
     tokens.push_back(std::make_shared<SpecialCharToken>("'"));
+    currentToken = "";
 
     char c = peekChar();
     while (c != EOF && c != '"') {

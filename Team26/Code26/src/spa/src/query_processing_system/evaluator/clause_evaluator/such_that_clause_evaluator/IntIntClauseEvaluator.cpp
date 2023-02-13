@@ -13,10 +13,10 @@ std::shared_ptr<ResultTable> IntIntClauseEvaluator::evaluateClause(StoragePointe
         evaluateNumberSynonym(storage);
     } else if (argumentType == ClauseArgumentTypes::SYNONYM_SYNONYM) {
         evaluateSynonymSynonym(storage);
-    } else if (argumentType == ClauseArgumentTypes::SYNONYM_WILDCARD ||
-                argumentType == ClauseArgumentTypes::WILDCARD_SYNONYM) {
-        handleWildcards();
-        evaluateSynonymSynonym(storage);
+    } else if (argumentType == ClauseArgumentTypes::SYNONYM_WILDCARD) {
+        evaluateSynonymWildcard(storage);
+    } else if (argumentType == ClauseArgumentTypes::WILDCARD_SYNONYM) {
+        evaluateWildcardSynonym(storage);
     } else if (argumentType == ClauseArgumentTypes::NUMBER_WILDCARD ||
                 argumentType == ClauseArgumentTypes::WILDCARD_NUMBER) {
         evaluateNumberWithWildcard(storage);
@@ -29,8 +29,8 @@ std::shared_ptr<ResultTable> IntIntClauseEvaluator::evaluateClause(StoragePointe
 }
 
 /**
-     * Evaluate a such that clause in the form of clause(int, int)
-     */
+ * Evaluate a such that clause in the form of clause(int, int)
+ */
 void IntIntClauseEvaluator::evaluateNumberNumber(StoragePointer storage) {
     auto relationshipStore = getRelationshipManager(storage);
     auto iterator = relationshipStore.find(stoi(leftArg.getValue()));
