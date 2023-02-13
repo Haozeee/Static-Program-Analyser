@@ -119,7 +119,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
             return ClauseArgumentTypes::NUMBER_STRING;
         } else if (l == ArgumentType::SYNONYM && r == ArgumentType::CHARACTERSTRING) {
             return ClauseArgumentTypes::SYNONYM_STRING;
-        } else if (l == ArgumentType::SYNONYM && r == ArgumentType::WILDCARD){
+        } else if (l == ArgumentType::SYNONYM && r == ArgumentType::WILDCARD) {
             return ClauseArgumentTypes::SYNONYM_WILDCARD;
         } else if (l == ArgumentType::WILDCARD && r == ArgumentType::SYNONYM) {
             return ClauseArgumentTypes::WILDCARD_SYNONYM;
@@ -129,7 +129,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
             return ClauseArgumentTypes::WILDCARD_NUMBER;
         } else if (l == ArgumentType::NUMBER && r == ArgumentType::WILDCARD) {
             return ClauseArgumentTypes::NUMBER_WILDCARD;
-        } else if (l == ArgumentType::WILDCARD && r == ArgumentType::WILDCARD) {
+        } else if (l == ArgumentType::WILDCARD && r == ArgumentType::WILDCARD) {w
             return ClauseArgumentTypes::WILDCARD_WILDCARD;
         } else {
             return ClauseArgumentTypes::NONE;
