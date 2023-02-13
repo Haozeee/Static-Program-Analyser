@@ -129,7 +129,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
             return ClauseArgumentTypes::WILDCARD_NUMBER;
         } else if (l == ArgumentType::NUMBER && r == ArgumentType::WILDCARD) {
             return ClauseArgumentTypes::NUMBER_WILDCARD;
-        } else if (l == ArgumentType::WILDCARD && r == ArgumentType::WILDCARD) {w
+        } else if (l == ArgumentType::WILDCARD && r == ArgumentType::WILDCARD) {
             return ClauseArgumentTypes::WILDCARD_WILDCARD;
         } else {
             return ClauseArgumentTypes::NONE;
