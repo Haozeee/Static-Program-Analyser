@@ -2,9 +2,9 @@
 
 #include <string>
 #include <memory>
-#include "../program_knowledge_base/StorageUtil.h"
+#include "source_processor/storage/interface/IStore.h"
 
 class SourceManager {
  public:
-    void process(std::string filename, std::shared_ptr<StorageUtil> storageUtil);
+    void process(const std::string& filename, std::shared_ptr<IStore> store);
 };

@@ -4,14 +4,14 @@
 #include <string>
 #include "source_processor/design_extractor/extractor/BaseExtractor.h"
 #include "source_processor/design_extractor/interface/IEntityExtractor.h"
-#include "source_processor/storage/store/EntityStore.h"
+#include "source_processor/storage/interface/IEntityStore.h"
 
 class EntityExtractor : public BaseExtractor, IEntityExtractor {
  private:
-    std::shared_ptr<EntityStore> entityStore;
+    std::shared_ptr<IEntityStore> entityStore;
     void insertExprEntities();
  public:
-    explicit EntityExtractor(std::shared_ptr<EntityStore> entityStore);
+    explicit EntityExtractor(std::shared_ptr<IEntityStore> entityStore);
 
     void extractProcedure(std::shared_ptr<ProcedureNode> node) override;
     void extractStmt(std::shared_ptr<StmtNode> node) override;
