@@ -7,12 +7,17 @@
 
 using TableRow = std::vector<std::string>;
 
+/**
+ * Hash function to hash a vector.
+ * Obtained from:
+ * https://stackoverflow.com/questions/29855908/c-unordered-set-of-vectors
+ */
 struct VectorHash {
     size_t operator()(const std::vector<std::string>& v) const {
         std::hash<std::string> hasher;
         size_t seed = v.size();
         for (auto i : v) {
-            seed ^= hasher(i) + 0x9e3779b9 + (seed<<6) + (seed>>2);
+            seed ^= hasher(i) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
         }
         return seed;
     }
