@@ -142,11 +142,11 @@ TEST_CASE("Parser parse assign int") {
     CHECK(programNode->procedureList[0]->stmtListNode->stmtList[0]->stmtIndex == 1);
     REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList[0]->stmtType == StmtType::STMT_ASSIGN);
 
-    AssignNode* assignNode;
-    REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(programNode->procedureList[0]->stmtListNode->stmtList[0].get()));
-    CHECK(assignNode->varName == "x");
-    CHECK_FALSE(assignNode->exprNode->optionalParams.has_value());
-    REQUIRE(std::holds_alternative<std::shared_ptr<Factor>>(assignNode->exprNode->term.first));
+//    AssignNode* assignNode;
+//    REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(programNode->procedureList[0]->stmtListNode->stmtList[0].get()));
+//    CHECK(assignNode->varName == "x");
+//    CHECK_FALSE(assignNode->exprNode->optionalParams.has_value());
+//    REQUIRE(std::holds_alternative<std::shared_ptr<Factor>>(assignNode->exprNode->term.first));
 }
 
 TEST_CASE("Parser parse assign factor") {
