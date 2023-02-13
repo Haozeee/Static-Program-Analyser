@@ -7,4 +7,8 @@ class UsesPClause : public SuchThatClause {
     UsesPClause(Argument leftArg, Argument rightArg);
 
     ClauseEvaluator* getClauseEvaluator() override;
+
+    ValidArgumentType getValidArgumentType() override;
+
+    ValidDesignEntity getValidDesignEntity() override;
 };

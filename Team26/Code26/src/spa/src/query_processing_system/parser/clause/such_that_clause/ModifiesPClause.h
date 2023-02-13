@@ -7,4 +7,8 @@ class ModifiesPClause : public SuchThatClause {
     ModifiesPClause(Argument leftArg, Argument rightArg);
 
     ClauseEvaluator* getClauseEvaluator() override;
+
+    ValidArgumentType getValidArgumentType() override;
+
+    ValidDesignEntity getValidDesignEntity() override;
 };

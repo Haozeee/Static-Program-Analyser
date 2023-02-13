@@ -7,4 +7,8 @@ class FollowsTClause : public SuchThatClause {
     FollowsTClause(Argument leftArg, Argument rightArg);
 
     ClauseEvaluator* getClauseEvaluator() override;
+
+    ValidArgumentType getValidArgumentType() override;
+
+    ValidDesignEntity getValidDesignEntity() override;
 };

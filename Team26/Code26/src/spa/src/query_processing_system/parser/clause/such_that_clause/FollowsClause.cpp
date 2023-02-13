@@ -8,3 +8,11 @@ FollowsClause::FollowsClause(Argument leftArg, Argument rightArg)
 ClauseEvaluator* FollowsClause::getClauseEvaluator() {
     return new FollowsClauseEvaluator(getLeftArg(), getRightArg());
 }
+
+ValidArgumentType FollowsClause::getValidArgumentType() {
+    return std::make_pair(stmtRef, stmtRef);
+}
+
+ValidDesignEntity FollowsClause::getValidDesignEntity() {
+    return std::make_pair(allStatements, allStatements);
+}

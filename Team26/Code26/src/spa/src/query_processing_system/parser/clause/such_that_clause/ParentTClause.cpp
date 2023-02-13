@@ -8,3 +8,11 @@ ParentTClause::ParentTClause(Argument leftArg, Argument rightArg)
 ClauseEvaluator* ParentTClause::getClauseEvaluator() {
     return new ParentTClauseEvaluator(getLeftArg(), getRightArg());
 }
+
+ValidArgumentType ParentTClause::getValidArgumentType() {
+    return std::make_pair(stmtRef, stmtRef);
+}
+
+ValidDesignEntity ParentTClause::getValidDesignEntity() {
+    return std::make_pair(allStatements, allStatements);
+}
