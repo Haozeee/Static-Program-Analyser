@@ -31,9 +31,7 @@ class StringExpression {
 
     StringExpression(bool isExactMatch, std::string expression);
 
-    bool getIsWildcard();
-
-    bool getIsExactMatch();
+    bool matchesString(std::string str);
 
     std::string getExpression();
 };
