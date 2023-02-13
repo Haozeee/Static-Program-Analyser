@@ -78,6 +78,28 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         }
     }
 
+    /**
+     * This is a valid evaluation parameter for all such that clauses,
+     * hence it exists in the parent class.
+     */
+    virtual void evaluateSynonymSynonym(StoragePointer storage) = 0;
+
+    void evaluateWildcardSynonym(StoragePointer storage) {
+        handleRightWildcard();
+        evaluateSynonymSynonym(storage);
+        // Remove wildcard placeholder
+        clauseResultTable = ResultTable::createSingleColumnTable(
+                rightArg.getValue(), clauseResultTable->getColumnValues(rightArg.getValue()));
+    }
+
+    void evaluateSynonymWildcard(StoragePointer storage) {
+        handleLeftWildcard();
+        evaluateSynonymSynonym(storage);
+        // Remove wildcard placeholder
+        clauseResultTable = ResultTable::createSingleColumnTable(
+                leftArg.getValue(), clauseResultTable->getColumnValues(leftArg.getValue()));
+    }
+
  public:
     SuchThatClauseEvaluator<T, U>(Argument left, Argument right)
             : leftArg(left), rightArg(right), clauseResultTable(std::make_shared<ResultTable>()) {}

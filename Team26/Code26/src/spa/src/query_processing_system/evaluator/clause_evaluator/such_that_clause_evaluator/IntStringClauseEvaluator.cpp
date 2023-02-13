@@ -13,10 +13,10 @@ std::shared_ptr<ResultTable> IntStringClauseEvaluator::evaluateClause(StoragePoi
         evaluateSynonymSynonym(storage);
     } else if (argumentType == ClauseArgumentTypes::SYNONYM_STRING) {
         evaluateSynonymString(storage);
-    } else if (argumentType == ClauseArgumentTypes::SYNONYM_WILDCARD ||
-               argumentType == ClauseArgumentTypes::WILDCARD_SYNONYM) {
-        handleWildcards();
-        evaluateSynonymSynonym(storage);
+    } else if (argumentType == ClauseArgumentTypes::SYNONYM_WILDCARD) {
+        evaluateSynonymWildcard(storage);
+    } else if (argumentType == ClauseArgumentTypes::WILDCARD_SYNONYM) {
+        evaluateWildcardSynonym(storage);
     } else if (argumentType == ClauseArgumentTypes::NUMBER_WILDCARD) {
         evaluateNumberWildcard(storage);
     } else if (argumentType == ClauseArgumentTypes::WILDCARD_STRING) {

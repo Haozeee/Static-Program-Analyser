@@ -26,9 +26,9 @@ class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string
 
     void handleRightWildcard() override;
 
-    void evaluateNumberSynonym(StoragePointer storage);
+    void evaluateSynonymSynonym(StoragePointer storage) override;
 
-    void evaluateSynonymSynonym(StoragePointer storage);
+    void evaluateNumberSynonym(StoragePointer storage);
 
     void evaluateSynonymString(StoragePointer storage);
 
