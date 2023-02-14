@@ -3,7 +3,7 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <string>
-#include <vector>
+#include <deque>
 #include "ResultTable.h"
 
 class QueryDb {
@@ -19,7 +19,7 @@ class QueryDb {
      * than joining it whenever we have a new table is that some tables may not be irrelevant to the final
      * results. Hence, joining them would be a waste of resources.
      */
-    std::vector<std::shared_ptr<ResultTable>> results;
+    std::deque<std::shared_ptr<ResultTable>> results;
 
     /**
      * The columns whose results are relevant to the final results. Initially, we are only
