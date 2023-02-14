@@ -7,4 +7,8 @@ class ParentClause : public SuchThatClause {
     ParentClause(Argument leftArg, Argument rightArg);
 
     ClauseEvaluator* getClauseEvaluator() override;
+
+    ValidArgumentType getValidArgumentType() override;
+
+    ValidDesignEntity getValidDesignEntity() override;
 };
