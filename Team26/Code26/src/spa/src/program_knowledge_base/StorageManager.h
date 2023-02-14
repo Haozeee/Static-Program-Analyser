@@ -17,7 +17,6 @@ using ReadStroage =  Storage<ReadOnlyRelationshipManager,
 class StorageManager {
  private:
     std::shared_ptr<StorageUtil> storageUtil;
- public:
     StorageManager();
     std::shared_ptr<WriteStorage> getWriteManager();
     std::shared_ptr<ReadStroage> getReadManager();
