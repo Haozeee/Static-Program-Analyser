@@ -7,7 +7,7 @@
 
 class PatternStore : public IPatternStore {
  private:
-    std::shared_ptr<WriteOnlyPatternManager> patternManager;
+    std::shared_ptr<IWritePatternManager> patternManager;
  public:
     explicit PatternStore(std::shared_ptr<WriteStorage> storage);
 

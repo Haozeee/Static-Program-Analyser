@@ -1,6 +1,6 @@
 #include "catch.hpp"
 #include "program_knowledge_base/relationship/RelationshipManager.h"
-#include "program_knowledge_base/relationship/WriteOnlyRelationshipManager.h"
+#include "program_knowledge_base/relationship/IWriteRelationshipManager.h"
 #include "program_knowledge_base/StorageUtil.h"
 #include "program_knowledge_base/StorageManager.h"
 
@@ -248,9 +248,9 @@ TEST_CASE("RelationshipManager _insert int,int,WriteOnlyRelationshipManager") {
     RelationshipManager<int, int> relationshipManager;
 
     REQUIRE(relationshipManager.insertRelationship(0, 1,
-                                                   std::shared_ptr<WriteOnlyRelationshipManger<int, int>>()) == false);
+                                                   std::shared_ptr<IWriteRelationshipManager<int, int>>()) == false);
     REQUIRE(relationshipManager.insertRelationship(1, 0,
-                                                   std::shared_ptr<WriteOnlyRelationshipManger<int, int>>()) == false);
+                                                   std::shared_ptr<IWriteRelationshipManager<int, int>>()) == false);
 
 }
 
