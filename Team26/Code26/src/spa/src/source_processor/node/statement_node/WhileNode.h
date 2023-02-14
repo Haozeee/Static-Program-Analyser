@@ -10,7 +10,7 @@ class WhileNode : public StmtNode, public std::enable_shared_from_this<WhileNode
     const std::shared_ptr<CondExprNode> condExprNode;
     const std::shared_ptr<StmtListNode> stmtListNode;
 
-     WhileNode(int stmtIndex, std::shared_ptr<CondExprNode> condExprNode, std::shared_ptr<StmtListNode> stmtListNode);
+    WhileNode(int stmtIndex, std::shared_ptr<CondExprNode> condExprNode, std::shared_ptr<StmtListNode> stmtListNode);
 
-     void evaluate(IStmtExtractor& extractor) override;
+    void evaluate(IStmtExtractor& extractor) override;
 };

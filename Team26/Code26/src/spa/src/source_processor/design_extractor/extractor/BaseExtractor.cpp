@@ -24,9 +24,9 @@ void BaseExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
 
 void BaseExtractor::extractExpr(std::shared_ptr<ExprNode> node) {
     if (node->isConstant()) {
-        exprIntegerList.emplace_back(node->constant.value());
+        exprIntegerList.emplace_back(node->getConstant().value());
     } else if (node->isVariable()) {
-        exprVariableList.emplace_back(node->varName.value());
+        exprVariableList.emplace_back(node->getVariable().value());
     } else {
         BaseExtractor::extractExpr(node->returnNodes()->first);
         BaseExtractor::extractExpr(node->returnNodes()->second);
