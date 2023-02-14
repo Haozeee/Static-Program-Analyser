@@ -74,10 +74,10 @@ void EntityStore::insertIfStatement(std::shared_ptr<IfNode> node) {
     ifManager->insertEntity(node->stmtIndex);
 }
 
-void EntityStore::insertName(std::string &name) {
+void EntityStore::insertName(const std::string &name) {
     variableManager->insertEntity(name);
 }
 
-void EntityStore::insertConstant(int &integer) {
+void EntityStore::insertConstant(const int &integer) {
     constantManager->insertEntity(integer);
 }

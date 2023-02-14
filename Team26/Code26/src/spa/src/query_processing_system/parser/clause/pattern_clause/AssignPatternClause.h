@@ -1,7 +1,6 @@
 #pragma once
 
 #include "PatternClause.h"
-#include "query_processing_system/parser/Argument.h"
 #include "query_processing_system/parser/StringExpression.h"
 #include "query_processing_system/parser/clause/Clause.h"
 

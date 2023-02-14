@@ -39,7 +39,7 @@ enum class UnaryCondOperatorType {
 using RelExpr = std::tuple<RelExprOperatorType, std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>>;
 
 class CondExprNode : public Node {
- public:
+ private:
     std::optional<std::shared_ptr<RelExpr>> relExpr;
     std::optional<std::tuple<UnaryCondOperatorType, std::shared_ptr<CondExprNode>>> unaryCondExpr;
     std::optional<std::tuple<BinaryCondOperatorType, std::shared_ptr<CondExprNode>,
@@ -47,6 +47,7 @@ class CondExprNode : public Node {
     std::string str;
     CondExprNodeType condExprNodeType;
 
+ public:
     explicit CondExprNode(std::shared_ptr<RelExpr> relExpr, std::string str);
     explicit CondExprNode(std::tuple<UnaryCondOperatorType, std::shared_ptr<CondExprNode>> unaryCondExpr,
         std::string str);

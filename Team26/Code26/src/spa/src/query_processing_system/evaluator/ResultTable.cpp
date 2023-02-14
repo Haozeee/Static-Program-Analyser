@@ -110,9 +110,9 @@ void ResultTable::insertRow(TableRow row) {
 }
 
 TableRow ResultTable::getColumnsNames() const {
-    TableRow res;
+    TableRow res(columnNameMap.size());
     for (auto const& [k, v] : columnNameMap) {
-        res.push_back(v);
+        res.at(k) = v;
     }
     return res;
 }

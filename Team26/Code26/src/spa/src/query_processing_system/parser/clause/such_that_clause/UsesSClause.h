@@ -1,8 +1,8 @@
 #pragma once
 
-#include "SuchThatClause.h"
+#include "IntStringClause.h"
 
-class UsesSClause : public SuchThatClause {
+class UsesSClause : public IntStringClause {
  public:
     UsesSClause(Argument leftArg, Argument rightArg);
 

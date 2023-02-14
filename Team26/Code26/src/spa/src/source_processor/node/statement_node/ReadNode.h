@@ -1,11 +1,12 @@
 #pragma once
 
 #include <string>
+#include <memory>
 #include "source_processor/node/statement_node/StmtNode.h"
 
-class ReadNode : public StmtNode {
+class ReadNode : public StmtNode, public std::enable_shared_from_this<ReadNode> {
  public:
-    std::string varName;
+    const std::string varName;
 
     ReadNode(int stmtIndex, std::string varName);
 
