@@ -2,8 +2,7 @@
 #include "program_knowledge_base/relationship/RelationshipManager.h"
 #include "program_knowledge_base/relationship/WriteOnlyRelationshipManager.h"
 #include "program_knowledge_base/StorageUtil.h"
-#include "program_knowledge_base/WriteOnlyStorage.h"
-#include "program_knowledge_base/ReadOnlyStorage.h"
+#include "program_knowledge_base/StorageManager.h"
 
 
 // testing isEmpty
@@ -256,17 +255,17 @@ TEST_CASE("RelationshipManager _insert int,int,WriteOnlyRelationshipManager") {
 }
 
 TEST_CASE("FollowsManager _insert int,int,WriteOnlyRelationshipManager") {
-    std::shared_ptr<StorageUtil> storageUtil = std::make_shared<StorageUtil>();
-    WriteOnlyStorage* writeOnlyStorage = new WriteOnlyStorage(storageUtil);
-    auto followsManagerWrite = writeOnlyStorage->getFollowsManager();
-    auto followsTManagerWrite = writeOnlyStorage->getFollowsTManager();
+    std::shared_ptr<StorageManager> storageManager = std::make_shared<StorageManager>();
+    auto writeStorage = storageManager->getWriteManager();
+    auto readStorage = storageManager->getReadManager();
+    auto followsManagerWrite = writeStorage->getFollowsManager();
+    auto followsTManagerWrite = writeStorage->getFollowsTManager();
     REQUIRE(followsManagerWrite->insertRelationship(1, 2,followsTManagerWrite));
     REQUIRE(followsManagerWrite->insertRelationship(2, 3, followsTManagerWrite));
     REQUIRE(followsManagerWrite->insertRelationship(3, 4, followsTManagerWrite));
 
-    ReadOnlyStorage* readOnlyStorage = new ReadOnlyStorage(storageUtil);
-    auto followsManagerRead = readOnlyStorage->getFollowsManager();
-    auto followsTManagerRead = readOnlyStorage->getFollowsTManager();
+    auto followsManagerRead = readStorage->getFollowsManager();
+    auto followsTManagerRead = readStorage->getFollowsTManager();
 
     auto map = followsManagerRead->getAllRelationshipEntries();
     auto reversedMap = followsManagerRead->getAllReversedRelationshipEntries();
@@ -295,18 +294,18 @@ TEST_CASE("FollowsManager _insert int,int,WriteOnlyRelationshipManager") {
 }
 
 TEST_CASE("ParentManager _insert int,int,WriteOnlyRelationshipManager") {
-    std::shared_ptr<StorageUtil> storageUtil = std::make_shared<StorageUtil>();
-    WriteOnlyStorage* writeOnlyStorage = new WriteOnlyStorage(storageUtil);
-    auto parentManagerWrite = writeOnlyStorage->getParentManager();
-    auto parentTManagerWrite = writeOnlyStorage->getParentTManager();
+    std::shared_ptr<StorageManager> storageManager = std::make_shared<StorageManager>();
+    auto writeStorage = storageManager->getWriteManager();
+    auto readStorage = storageManager->getReadManager();
+    auto parentManagerWrite = writeStorage->getParentManager();
+    auto parentTManagerWrite = writeStorage->getParentTManager();
     REQUIRE(parentManagerWrite->insertRelationship(1, 2,parentTManagerWrite));
     REQUIRE(parentManagerWrite->insertRelationship(1, 3, parentTManagerWrite));
     REQUIRE(parentManagerWrite->insertRelationship(3, 4, parentTManagerWrite));
     REQUIRE(parentManagerWrite->insertRelationship(4, 5, parentTManagerWrite));
 
-    ReadOnlyStorage* readOnlyStorage = new ReadOnlyStorage(storageUtil);
-    auto parentManagerRead = readOnlyStorage->getParentManager();
-    auto parentTManagerRead = readOnlyStorage->getParentTManager();
+    auto parentManagerRead = readStorage->getParentManager();
+    auto parentTManagerRead = readStorage->getParentTManager();
 
     auto map = parentManagerRead->getAllRelationshipEntries();
     auto reversedMap = parentManagerRead->getAllReversedRelationshipEntries();
