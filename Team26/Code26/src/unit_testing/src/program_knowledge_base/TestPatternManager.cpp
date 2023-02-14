@@ -62,41 +62,77 @@ TEST_CASE("PatternManager containsReversedIndexStmtMap") {
 // testing getAll methods
 TEST_CASE("PatternManager getAllLhsPatternEntries") {
     PatternManager patternManager;
+    auto set = patternManager.getAllLhsPatternEntries();
+    REQUIRE(set.size() == 0);
     std::vector<std::string> test_vector = {"left1", "left2"};
     patternManager.insertPattern(1, "left1", "right1");
     patternManager.insertPattern(2, "left2", "right2");
+    set = patternManager.getAllLhsPatternEntries();
+    REQUIRE(set.size() == 2);
     REQUIRE(patternManager.getAllLhsPatternEntries() == test_vector);
 }
 
 TEST_CASE("PatternManager getAllRhsPatternEntries") {
     PatternManager patternManager;
+    auto set = patternManager.getAllRhsPatternEntries();
+    REQUIRE(set.size() == 0);
     std::vector<std::string> test_vector = {"right1", "right2"};
     patternManager.insertPattern(1, "left1", "right1");
     patternManager.insertPattern(2, "left2", "right2");
+    set = patternManager.getAllRhsPatternEntries();
+    REQUIRE(set.size() == 2);
     REQUIRE(patternManager.getAllRhsPatternEntries() == test_vector);
 }
 
 TEST_CASE("PatternManager getAllPatternEntries") {
     PatternManager patternManager;
+    auto map = patternManager.getAllPatternEntries();
+    REQUIRE(map.size() == 0);
     std::unordered_map<int, int> test_map = {{0, 1}, {1, 2}};
     patternManager.insertPattern(1, "left1", "right1");
     patternManager.insertPattern(2, "left2", "right2");
+    map = patternManager.getAllPatternEntries();
+    REQUIRE(map.size() == 2);
+    REQUIRE(patternManager.getAllPatternEntries()[0] == 1);
     REQUIRE(patternManager.getAllPatternEntries() == test_map);
 }
 
 TEST_CASE("PatternManager getAllReversedPatternEntries") {
     PatternManager patternManager;
+    auto map = patternManager.getAllReversedPatternEntries();
+    REQUIRE(map.size() == 0);
     std::unordered_map<int, int> test_map = {{1, 0}, {2, 1}};
     patternManager.insertPattern(1, "left1", "right1");
     patternManager.insertPattern(2, "left2", "right2");
+    map = patternManager.getAllReversedPatternEntries();
+    REQUIRE(map.size() == 2);
+    REQUIRE(patternManager.getAllReversedPatternEntries()[2] == 1);
     REQUIRE(patternManager.getAllReversedPatternEntries() == test_map);
 }
 
 // testing insert method
 TEST_CASE("PatternManager insertPattern") {
     PatternManager patternManager;
+    REQUIRE(patternManager.isEmptyLhsVector());
+    REQUIRE(patternManager.isEmptyRhsVector());
     REQUIRE(patternManager.isEmptyIndexStmtMap());
+    REQUIRE(patternManager.isEmptyReversedIndexStmtMap());
     patternManager.insertPattern(1, "left1", "right1");
     patternManager.insertPattern(2, "left2", "right2");
+    patternManager.insertPattern(3, "left3", "right3");
+    auto lhs = patternManager.getAllLhsPatternEntries();
+    auto rhs = patternManager.getAllRhsPatternEntries();
+    auto map = patternManager.getAllPatternEntries();
+    auto reversedMap = patternManager.getAllReversedPatternEntries();
+    REQUIRE(lhs.size() == 3);
+    REQUIRE(rhs.size() == 3);
+    REQUIRE(map.size() == 3);
+    REQUIRE(reversedMap.size() == 3);
+    REQUIRE_FALSE(patternManager.isEmptyLhsVector());
+    REQUIRE_FALSE(patternManager.isEmptyRhsVector());
     REQUIRE_FALSE(patternManager.isEmptyIndexStmtMap());
+    REQUIRE_FALSE(patternManager.isEmptyReversedIndexStmtMap());
+
+    // invalid insert
+    REQUIRE_FALSE(patternManager.insertPattern(1, "left3", "right3"));
 }

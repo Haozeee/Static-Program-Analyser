@@ -10,14 +10,14 @@ SuchThatClause *SuchThatClauseFactory::createSuchThatClause(std::string relation
             Query query;
             DesignEntity leftArgDesignEntity = leftArg.getDesignEntity();
             if (leftArgDesignEntity == DesignEntity::PROCEDURE) {  // checks if Synonym is a procedure
-                std::cout << "synonym: procedure created" << std::endl;
+//                std::cout << "synonym: procedure created" << std::endl;
                 if (relation == ModifiesRelation) {
                     return new ModifiesPClause(leftArg, rightArg);
                 } else {
                     return new UsesPClause(leftArg, rightArg);
                 }
             } else {  // else the Synonym is a statement
-                std::cout << "synonym: statement created" << std::endl;
+//                std::cout << "synonym: statement created" << std::endl;
                 if (relation == ModifiesRelation) {
                     return new ModifiesSClause(leftArg, rightArg);
                 } else {
@@ -25,14 +25,14 @@ SuchThatClause *SuchThatClauseFactory::createSuchThatClause(std::string relation
                 }
             }
         } else if (leftArgType == ArgumentType::CHARACTERSTRING) {
-            std::cout << "character string: procedure created" << std::endl;
+//            std::cout << "character string: procedure created" << std::endl;
             if (relation == ModifiesRelation) {
                 return new ModifiesPClause(leftArg, rightArg);
             } else {
                 return new UsesPClause(leftArg, rightArg);
             }
         } else if (leftArgType == ArgumentType::NUMBER) {
-            std::cout << "number: statement created" << std::endl;
+//            std::cout << "number: statement created" << std::endl;
             if (relation == ModifiesRelation) {
                 return new ModifiesSClause(leftArg, rightArg);
             } else {
