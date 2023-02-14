@@ -6,8 +6,7 @@ TEST_CASE("Parser parse empty") {
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
     std::shared_ptr<ProgramNode> programNode;
 
-    REQUIRE_NOTHROW(programNode = Parser(tokens).parse());
-    CHECK(programNode->procedureList.size() == 0);
+    REQUIRE_THROWS(programNode = Parser(tokens).parse());\
 }
 
 TEST_CASE("Parser parse procedure") {
