@@ -15,8 +15,7 @@ ExprNode::ExprNode(std::string factor, ExprNodeType exprNodeType) {
     this->str = factor;
     if (exprNodeType == ExprNodeType::FACTOR_CONSTANT) {
         this->constant = std::stoi(factor);
-    }
-    else {
+    } else {
         this->varName = factor;
     }
 }

@@ -348,7 +348,7 @@ std::shared_ptr<ExprNode> Parser::parseTerm(int startIndex, int endIndex) {
     while (getToken()->getType() != TokenType::TOKEN_END_OF_FILE && index <= endIndex) {
         if (getToken()->getValue() == BRACKETS_START) {
             if (isprevTokenEndBracket) {
-                //throw SourceParserException(ParserInvalidTermFormatExceptionMessage);
+                throw SourceParserException(ParserInvalidTermFormatExceptionMessage);
             }
 
             numOfBrackets++;
