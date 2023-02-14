@@ -5,7 +5,7 @@
 
 class PrintNode : public StmtNode, public std::enable_shared_from_this<PrintNode> {
  public:
-    std::string varName;
+    const std::string varName;
 
     PrintNode(int stmtIndex, std::string varName);
 

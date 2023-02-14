@@ -8,8 +8,8 @@
 
 class AssignNode : public StmtNode, public std::enable_shared_from_this<AssignNode> {
  public:
-    std::string varName;
-    std::shared_ptr<ExprNode> exprNode;
+    const std::string varName;
+    const std::shared_ptr<ExprNode> exprNode;
 
     AssignNode(int stmtIndex, std::string varName, std::shared_ptr<ExprNode> exprNode);
 

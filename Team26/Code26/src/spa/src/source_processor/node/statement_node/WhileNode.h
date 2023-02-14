@@ -7,8 +7,8 @@
 
 class WhileNode : public StmtNode, public std::enable_shared_from_this<WhileNode> {
  public:
-     const std::shared_ptr<CondExprNode> condExprNode;
-     std::shared_ptr<StmtListNode> stmtListNode;
+    const std::shared_ptr<CondExprNode> condExprNode;
+    const std::shared_ptr<StmtListNode> stmtListNode;
 
      WhileNode(int stmtIndex, std::shared_ptr<CondExprNode> condExprNode, std::shared_ptr<StmtListNode> stmtListNode);
 

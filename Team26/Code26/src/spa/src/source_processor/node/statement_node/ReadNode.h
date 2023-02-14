@@ -5,7 +5,7 @@
 
 class ReadNode : public StmtNode, public std::enable_shared_from_this<ReadNode> {
  public:
-    std::string varName;
+    const std::string varName;
 
     ReadNode(int stmtIndex, std::string varName);
 
