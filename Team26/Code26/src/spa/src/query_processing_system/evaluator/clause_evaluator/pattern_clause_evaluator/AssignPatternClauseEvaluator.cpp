@@ -1,7 +1,5 @@
 #include "AssignPatternClauseEvaluator.h"
 
-#include <utility>
-
 AssignPatternClauseEvaluator::AssignPatternClauseEvaluator(Argument patternArg, Argument leftArg,
                                 StringExpression rightArg)
     : PatternClauseEvaluator(std::move(patternArg), std::move(leftArg), std::move(rightArg)) {}
