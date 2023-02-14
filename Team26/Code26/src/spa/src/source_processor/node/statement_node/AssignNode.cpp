@@ -6,9 +6,9 @@ AssignNode::AssignNode(int stmtIndex, std::string varName, std::shared_ptr<ExprN
     : StmtNode(stmtIndex, StmtType::STMT_ASSIGN), varName(varName), exprNode(exprNode) {}
 
 void AssignNode::evaluate(IStmtExtractor &extractor) {
-    extractor.extractAssign(std::make_shared<AssignNode>(stmtIndex, varName, exprNode));
+    extractor.extractAssign(shared_from_this());
 }
 
 void AssignNode::evaluatePattern(IPatternExtractor &extractor) {
-    extractor.extractAssign(std::make_shared<AssignNode>(stmtIndex, varName, exprNode));
+    extractor.extractAssign(shared_from_this());
 }

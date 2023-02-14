@@ -6,7 +6,7 @@
 #include "source_processor/node/statement_node/StmtNode.h"
 #include "source_processor/node/ExprNode.h"
 
-class AssignNode : public StmtNode {
+class AssignNode : public StmtNode, public std::enable_shared_from_this<AssignNode> {
  public:
     std::string varName;
     std::shared_ptr<ExprNode> exprNode;

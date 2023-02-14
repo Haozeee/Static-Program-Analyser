@@ -7,5 +7,5 @@ WhileNode::WhileNode(int stmtIndex, std::shared_ptr<CondExprNode> condExprNode,
 
 
 void WhileNode::evaluate(IStmtExtractor& extractor) {
-    extractor.extractWhile(std::make_shared<WhileNode>(stmtIndex, condExprNode, stmtListNode));
+    extractor.extractWhile(shared_from_this());
 }

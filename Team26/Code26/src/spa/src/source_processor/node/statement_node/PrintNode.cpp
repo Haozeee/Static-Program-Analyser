@@ -6,5 +6,5 @@ PrintNode::PrintNode(int stmtIndex, std::string varName)
     : StmtNode(stmtIndex, StmtType::STMT_PRINT), varName(varName) {}
 
 void PrintNode::evaluate(IStmtExtractor &extractor) {
-    extractor.extractPrint(std::make_shared<PrintNode>(stmtIndex, varName));
+    extractor.extractPrint(shared_from_this());
 }

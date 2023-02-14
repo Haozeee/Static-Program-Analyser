@@ -7,5 +7,5 @@ IfNode::IfNode(int stmtIndex, std::shared_ptr<CondExprNode> condExprNode,
     elseStmtListNode(elseStmtListNode) {}
 
 void IfNode::evaluate(IStmtExtractor& extractor) {
-    extractor.extractIf(std::make_shared<IfNode>(stmtIndex, condExprNode, thenStmtListNode, elseStmtListNode));
+    extractor.extractIf(shared_from_this());
 }

@@ -5,9 +5,9 @@
 #include "source_processor/node/CondExprNode.h"
 #include "source_processor/node/StmtListNode.h"
 
-class WhileNode : public StmtNode {
+class WhileNode : public StmtNode, public std::enable_shared_from_this<WhileNode> {
  public:
-     std::shared_ptr<CondExprNode> condExprNode;
+     const std::shared_ptr<CondExprNode> condExprNode;
      std::shared_ptr<StmtListNode> stmtListNode;
 
      WhileNode(int stmtIndex, std::shared_ptr<CondExprNode> condExprNode, std::shared_ptr<StmtListNode> stmtListNode);
