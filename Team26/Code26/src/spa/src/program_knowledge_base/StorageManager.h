@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 #include "Storage.h"
 #include "program_knowledge_base/relationship/WriteOnlyRelationshipManager.h"
 #include "program_knowledge_base/entity/WriteOnlyEntityManager.h"
@@ -14,9 +15,9 @@ using ReadStroage =  Storage<ReadOnlyRelationshipManager,
         ReadOnlyEntityManager, ReadOnlyPatternManager>;
 
 class StorageManager {
-private:
+ private:
     std::shared_ptr<StorageUtil> storageUtil;
-public:
+ public:
     StorageManager();
     std::shared_ptr<WriteStorage> getWriteManager();
     std::shared_ptr<ReadStroage> getReadManager();
