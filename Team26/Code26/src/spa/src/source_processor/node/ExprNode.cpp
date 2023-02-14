@@ -11,16 +11,12 @@ ExprNode::ExprNode(std::shared_ptr<BinaryOpNode> binaryOpNode, std::string str) 
 }
 
 ExprNode::ExprNode(std::string factor, ExprNodeType exprNodeType) {
+    this->exprNodeType = exprNodeType;
+    this->str = factor;
     if (exprNodeType == ExprNodeType::FACTOR_CONSTANT) {
         this->constant = std::stoi(factor);
-        this->exprNodeType = exprNodeType;
-        this->str = factor;
-    } else if (exprNodeType == ExprNodeType::FACTOR_VARIABLE) {
-        this->varName = factor;
-        this->exprNodeType = exprNodeType;
-        this->str = factor;
     } else {
-        // TODO(oviya): throw error
+        this->varName = factor;
     }
 }
 
