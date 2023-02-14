@@ -7,5 +7,5 @@ ReadNode::ReadNode(int stmtIndex, std::string varName)
     : StmtNode(stmtIndex, StmtType::STMT_READ), varName(std::move(varName)) {}
 
 void ReadNode::evaluate(IStmtExtractor &extractor) {
-    extractor.extractRead(shared_from_this());
+    extractor.extractRead(this->shared_from_this());
 }

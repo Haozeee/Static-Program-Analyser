@@ -11,5 +11,5 @@ IfNode::IfNode(int stmtIndex, std::shared_ptr<CondExprNode> condExprNode,
     elseStmtListNode(std::move(elseStmtListNode)) {}
 
 void IfNode::evaluate(IStmtExtractor& extractor) {
-    extractor.extractIf(shared_from_this());
+    extractor.extractIf(this->shared_from_this());
 }

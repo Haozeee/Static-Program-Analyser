@@ -8,9 +8,9 @@ AssignNode::AssignNode(int stmtIndex, std::string varName, std::shared_ptr<ExprN
     : StmtNode(stmtIndex, StmtType::STMT_ASSIGN), varName(std::move(varName)), exprNode(std::move(exprNode)) {}
 
 void AssignNode::evaluate(IStmtExtractor &extractor) {
-    extractor.extractAssign(shared_from_this());
+    extractor.extractAssign(this->shared_from_this());
 }
 
 void AssignNode::evaluatePattern(IPatternExtractor &extractor) {
-    extractor.extractAssign(shared_from_this());
+    extractor.extractAssign(this->shared_from_this());
 }

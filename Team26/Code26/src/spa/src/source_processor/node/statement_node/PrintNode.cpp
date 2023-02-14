@@ -8,5 +8,5 @@ PrintNode::PrintNode(int stmtIndex, std::string varName)
     : StmtNode(stmtIndex, StmtType::STMT_PRINT), varName(std::move(varName)) {}
 
 void PrintNode::evaluate(IStmtExtractor &extractor) {
-    extractor.extractPrint(shared_from_this());
+    extractor.extractPrint(this->shared_from_this());
 }

@@ -7,5 +7,5 @@ CallNode::CallNode(int stmtIndex, std::string processName)
     : StmtNode(stmtIndex, StmtType::STMT_CALL), processName(std::move(processName)) {}
 
 void CallNode::evaluate(IStmtExtractor &extractor) {
-    extractor.extractCall(shared_from_this());
+    extractor.extractCall(this->shared_from_this());
 }
