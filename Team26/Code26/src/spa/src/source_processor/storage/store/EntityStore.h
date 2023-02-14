@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 #include "source_processor/storage/interface/IEntityStore.h"
-#include "program_knowledge_base/WriteOnlyStorage.h"
+#include "program_knowledge_base/StorageManager.h"
 
 class EntityStore : public IEntityStore {
  private:
@@ -21,7 +21,7 @@ class EntityStore : public IEntityStore {
 
 
  public:
-    explicit EntityStore(std::shared_ptr<WriteOnlyStorage> storage);
+    explicit EntityStore(std::shared_ptr<WriteStorage> storage);
 
     void insertProcedure(std::shared_ptr<ProcedureNode> node) override;
     void insertStatement(std::shared_ptr<StmtNode> node)  override;

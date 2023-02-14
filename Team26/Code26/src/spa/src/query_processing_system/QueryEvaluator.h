@@ -6,7 +6,6 @@
 #include "evaluator/QueryDb.h"
 #include "parser/DesignEntity.h"
 #include "evaluator/PkbUtil.h"
-#include "../program_knowledge_base/ReadOnlyStorage.h"
 
 class QueryEvaluator {
  private:
@@ -14,7 +13,7 @@ class QueryEvaluator {
 
     QueryDb queryResults;
 
-    std::shared_ptr<ReadOnlyStorage> storage;
+    std::shared_ptr<ReadStroage> storage;
 
     /**
      * Evaluate the select clauses in the query.
@@ -27,7 +26,7 @@ class QueryEvaluator {
     void evaluateSuchThatClause();
 
  public:
-    explicit QueryEvaluator(Query* query, std::shared_ptr<ReadOnlyStorage> storage);
+    explicit QueryEvaluator(Query* query, std::shared_ptr<ReadStroage> storage);
 
     QueryDb evaluateQuery();
 };
