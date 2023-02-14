@@ -1,14 +1,10 @@
 #pragma once
 
-#include "SuchThatClause.h"
+#include "IntStringClause.h"
 
-class ParentClause : public SuchThatClause {
+class ParentClause : public IntStringClause {
  public:
     ParentClause(Argument leftArg, Argument rightArg);
 
     ClauseEvaluator* getClauseEvaluator() override;
-
-    ValidArgumentType getValidArgumentType() override;
-
-    ValidDesignEntity getValidDesignEntity() override;
 };

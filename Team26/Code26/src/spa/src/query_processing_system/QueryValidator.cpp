@@ -50,70 +50,29 @@ bool QueryValidator::containsSelectClauseSynonymInDeclaration(
 }
 
 void QueryValidator::validateSuchThatClause() {
-    for (auto suchThatClause : query->getSuchThatClauses()) {
-        ValidArgumentType validArgType = suchThatClause->getValidArgumentType();
-
-        // Validate First Argument Type
-        ArgTypeIndex validFirstArgType = validArgType.first;  // Will return {0, 1, 2} or {0, 1, 3}
-        Argument parsedFirstArg = suchThatClause->getLeftArg();
-        ArgumentType parsedFirstArgType = parsedFirstArg.getArgumentType();
-        int parsedFirstArgTypeIndex = parsedFirstArg.getArgumentTypeIndex(parsedFirstArgType);
-//        for (const auto& value : validFirstArgType) {
-//            std::cout << "validFirstArgType = " << value << std::endl;
-//        }
-//        std::cout << "parsedFirstArgType = " << parsedFirstArg.getArgumentTypeIndex(parsedFirstArgType) << std::endl;
-        if (validFirstArgType.find(parsedFirstArgTypeIndex) == validFirstArgType.end()) {
-            throw QueryValidationException(parsedFirstArg.getValue()
-                                            + QueryValidatorInvalidFirstArgumentTypeInRelation);
-        }
-
-        // Validate Second Argument Type
-        ArgTypeIndex validSecondArgType = validArgType.second;  // Will return {0, 1, 2} or {0, 1, 3}
-        Argument parsedSecondArg = suchThatClause->getRightArg();
-        ArgumentType parsedSecondArgType = parsedSecondArg.getArgumentType();
-        int parsedSecondArgTypeIndex = parsedSecondArg.getArgumentTypeIndex(parsedSecondArgType);
-//        for (const auto& value : validSecondArgType) {
-//            std::cout << "validSecondArgType = " << value << std::endl;
-//        }
-//  std::cout << "validSecondArgType = " << parsedSecondArg.getArgumentTypeIndex(parsedSecondArgType) << std::endl;
-        if (validSecondArgType.find(parsedSecondArgTypeIndex) == validSecondArgType.end()) {
-            throw QueryValidationException(parsedSecondArg.getValue()
-                                           + QueryValidatorInvalidSecondArgumentTypeInRelation);
-        }
-
-        ValidDesignEntity validDesignEntity = suchThatClause->getValidDesignEntity();
-        // Validate First Design Entity
-        std::unordered_set<DesignEntity> firstDesignEntitySet = validDesignEntity.first;
-//        for (const auto& value : firstDesignEntitySet) {
-//            std::cout << "firstDesignEntitySet = " << toString(value) << std::endl;
-//        }
-        if (parsedFirstArg.getArgumentType() == ArgumentType::SYNONYM) {
-            DesignEntity designEntity = query->getSynonymDesignEntity(parsedFirstArg.getValue());
-//            std::cout << "designEntity = " << toString(designEntity) << std::endl;
-            if (firstDesignEntitySet.find(designEntity) == firstDesignEntitySet.end()) {
+    for (auto clause : query->getSuchThatClauses()) {
+        auto validationResult = clause->isValidClause();
+        auto leftArg = clause->getLeftArg();
+        auto rightArg = clause->getRightArg();
+        switch (validationResult) {
+            case SuchThatClauseValidationResult::INVALID_LEFT_ARG_TYPE:
+                throw QueryValidationException(leftArg.getValue()
+                                               + QueryValidatorInvalidFirstArgumentTypeInRelation);
+            case SuchThatClauseValidationResult::INVALID_RIGHT_ARG_TYPE:
+                throw QueryValidationException(rightArg.getValue()
+                                               + QueryValidatorInvalidSecondArgumentTypeInRelation);
+            case SuchThatClauseValidationResult::INVALID_LEFT_DESIGN_ENTITY:
                 throw QueryValidationException(QueryValidatorInvalidFirstDesignEntityInRelation1
-                                                + parsedFirstArg.getValue()
-                                                + QueryValidatorInvalidFirstDesignEntityInRelation2
-                                                + toString(parsedFirstArg.getDesignEntity())
-                                                + QueryValidatorInvalidFirstDesignEntityInRelation);
-            }
-        }
-
-        // Validate Second Design Entity
-        std::unordered_set<DesignEntity> secondDesignEntitySet = validDesignEntity.second;
-//        for (const auto& value : secondDesignEntitySet) {
-//            std::cout << "secondDesignEntitySet = " << toString(value) << std::endl;
-//        }
-        if (parsedSecondArg.getArgumentType() == ArgumentType::SYNONYM) {
-            DesignEntity designEntity = query->getSynonymDesignEntity(parsedSecondArg.getValue());
-//            std::cout << "designEntity = " << toString(designEntity) << std::endl;
-            if (secondDesignEntitySet.find(designEntity) == secondDesignEntitySet.end()) {
-                throw QueryValidationException(QueryValidatorInvalidFirstDesignEntityInRelation1
-                                               + parsedSecondArg.getValue()
+                                               + leftArg.getValue()
                                                + QueryValidatorInvalidFirstDesignEntityInRelation2
-                                               + toString(parsedSecondArg.getDesignEntity())
+                                               + toString(leftArg.getDesignEntity())
+                                               + QueryValidatorInvalidFirstDesignEntityInRelation);
+            case SuchThatClauseValidationResult::INVALID_RIGHT_DESIGN_ENTITY:
+                throw QueryValidationException(QueryValidatorInvalidFirstDesignEntityInRelation1
+                                               + rightArg.getValue()
+                                               + QueryValidatorInvalidFirstDesignEntityInRelation2
+                                               + toString(rightArg.getDesignEntity())
                                                + QueryValidatorInvalidSecondDesignEntityInRelation);
-            }
         }
     }
 }
