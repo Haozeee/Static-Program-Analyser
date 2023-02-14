@@ -4,7 +4,7 @@ IntIntClauseEvaluator::IntIntClauseEvaluator(Argument left, Argument right)
     : SuchThatClauseEvaluator<int, int>(left, right) {}
 
 std::shared_ptr<ResultTable> IntIntClauseEvaluator::evaluateClause(StoragePointer storage) {
-    ClauseArgumentTypes argumentType = getClauseArgumentTypes();
+    auto argumentType = getClauseArgumentType(leftArg.getArgumentType(), rightArg.getArgumentType());
     if (argumentType == ClauseArgumentTypes::NUMBER_NUMBER) {
         evaluateNumberNumber(storage);
     } else if (argumentType == ClauseArgumentTypes::SYNONYM_NUMBER) {

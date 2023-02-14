@@ -5,22 +5,7 @@
 #include <unordered_set>
 #include "../ClauseEvaluator.h"
 #include "../../../parser/Argument.h"
-
-enum class ClauseArgumentTypes {
-    NUMBER_NUMBER,
-    SYNONYM_NUMBER,
-    NUMBER_SYNONYM,
-    SYNONYM_SYNONYM,
-    SYNONYM_STRING,
-    NUMBER_STRING,
-    WILDCARD_NUMBER,
-    NUMBER_WILDCARD,
-    SYNONYM_WILDCARD,
-    WILDCARD_SYNONYM,
-    WILDCARD_WILDCARD,
-    WILDCARD_STRING,
-    NONE
-};
+#include "ClauseArgumentsType.h"
 
 template<typename T, typename U>
 class SuchThatClauseEvaluator : public ClauseEvaluator {
@@ -30,6 +15,9 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     Argument rightArg;
 
     std::shared_ptr<ResultTable> clauseResultTable;
+
+    SuchThatClauseEvaluator<T, U>(Argument left, Argument right)
+            : leftArg(left), rightArg(right), clauseResultTable(std::make_shared<ResultTable>()) {}
 
     virtual std::unordered_map<T, std::unordered_set<U>> getRelationshipManager(StoragePointer storage) = 0;
 
@@ -98,41 +86,5 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         // Remove wildcard placeholder
         clauseResultTable = ResultTable::createSingleColumnTable(
                 leftArg.getValue(), clauseResultTable->getColumnValues(leftArg.getValue()));
-    }
-
- public:
-    SuchThatClauseEvaluator<T, U>(Argument left, Argument right)
-            : leftArg(left), rightArg(right), clauseResultTable(std::make_shared<ResultTable>()) {}
-
-    ClauseArgumentTypes getClauseArgumentTypes() {
-        auto l = leftArg.getArgumentType();
-        auto r = rightArg.getArgumentType();
-        if (l == ArgumentType::NUMBER && r == ArgumentType::NUMBER) {
-            return ClauseArgumentTypes::NUMBER_NUMBER;
-        } else if (l == ArgumentType::SYNONYM && r == ArgumentType::NUMBER) {
-            return ClauseArgumentTypes::SYNONYM_NUMBER;
-        } else if (l == ArgumentType::NUMBER && r == ArgumentType::SYNONYM) {
-            return ClauseArgumentTypes::NUMBER_SYNONYM;
-        } else if (l == ArgumentType::SYNONYM && r == ArgumentType::SYNONYM) {
-            return ClauseArgumentTypes::SYNONYM_SYNONYM;
-        } else if (l == ArgumentType::NUMBER && r == ArgumentType::CHARACTERSTRING) {
-            return ClauseArgumentTypes::NUMBER_STRING;
-        } else if (l == ArgumentType::SYNONYM && r == ArgumentType::CHARACTERSTRING) {
-            return ClauseArgumentTypes::SYNONYM_STRING;
-        } else if (l == ArgumentType::SYNONYM && r == ArgumentType::WILDCARD) {
-            return ClauseArgumentTypes::SYNONYM_WILDCARD;
-        } else if (l == ArgumentType::WILDCARD && r == ArgumentType::SYNONYM) {
-            return ClauseArgumentTypes::WILDCARD_SYNONYM;
-        } else if (l == ArgumentType::WILDCARD && r == ArgumentType::CHARACTERSTRING) {
-            return ClauseArgumentTypes::WILDCARD_STRING;
-        } else if (l == ArgumentType::WILDCARD && r == ArgumentType::NUMBER) {
-            return ClauseArgumentTypes::WILDCARD_NUMBER;
-        } else if (l == ArgumentType::NUMBER && r == ArgumentType::WILDCARD) {
-            return ClauseArgumentTypes::NUMBER_WILDCARD;
-        } else if (l == ArgumentType::WILDCARD && r == ArgumentType::WILDCARD) {
-            return ClauseArgumentTypes::WILDCARD_WILDCARD;
-        } else {
-            return ClauseArgumentTypes::NONE;
-        }
     }
 };
