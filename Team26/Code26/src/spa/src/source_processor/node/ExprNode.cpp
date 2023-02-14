@@ -36,3 +36,15 @@ std::optional<std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>>> E
     BinaryOpNode b = *binaryOpNode.value();
     return std::make_pair(std::get<1>(b), std::get<2>(b));
 }
+
+std::optional<int> ExprNode::getConstant() {
+    return constant;
+}
+
+std::optional<std::string> ExprNode::getVariable() {
+    return varName;
+}
+
+std::string ExprNode::getRawString() {
+    return str;
+}
