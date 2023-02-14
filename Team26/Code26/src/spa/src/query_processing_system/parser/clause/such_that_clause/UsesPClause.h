@@ -1,8 +1,11 @@
 #pragma once
 
-#include "SuchThatClause.h"
+#include "IntIntClause.h"
 
-class UsesPClause : public SuchThatClause {
+/**
+ * Not needed for milestone 1.
+ */
+class UsesPClause : public IntIntClause {
  public:
     UsesPClause(Argument leftArg, Argument rightArg);
 

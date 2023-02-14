@@ -23,10 +23,19 @@ struct VectorHash {
     }
 };
 
+/**
+ * Represents a relational table to store the results of a clause.
+ */
 class ResultTable {
  private:
+    /**
+     * Maps the column number to a column name.
+     */
     std::unordered_map<int, std::string> columnNameMap;
 
+    /**
+     * A vector in which each elements represent a row in the relational table.
+     */
     std::vector<TableRow> relations;
 
     /**
@@ -35,10 +44,17 @@ class ResultTable {
      */
     bool noResults = false;
 
+    /**
+     * Join table 1 and table 2.
+     * @param table1
+     * @param table2
+     * @param column1
+     * @param column2
+     * @return
+     */
     static std::shared_ptr<ResultTable> joinOnColumns(std::shared_ptr<ResultTable> table1,
-                                               std::shared_ptr<ResultTable> table2,
-                                               std::vector<int> column1,
-                                               std::vector<int> column2);
+                                                      std::shared_ptr<ResultTable> table2,
+                                                      std::vector<int> column1, std::vector<int> column2);
     /**
      * Union 2 vectors.
      */
@@ -62,6 +78,11 @@ class ResultTable {
      */
     explicit ResultTable(TableRow columnNames);
 
+    /**
+     * Create a table with one column.
+     * @param column1 The name of the column.
+     * @param values The values of the column.
+     */
     static std::shared_ptr<ResultTable>
     createSingleColumnTable(std::string column1, std::unordered_set<std::string> values);
 
@@ -75,41 +96,73 @@ class ResultTable {
                             std::string column2, std::unordered_set<std::string> values2);
 
     /**
-     * Join on table1.commonColumn = table2.commonColumn
+     * Suppose common columns are a list of columns that are present in table1 and table2.
+     * This function joins the two table on the common columns and return the newly joined table.
+     * Suppose commonColumns = ["A", "B"]. This function joins table1 and table2 on
+     * table1.A = table2.A and table1.B = table2.B.
      */
     static std::shared_ptr<ResultTable> joinOnColumns(std::shared_ptr<ResultTable> table1,
                                                       std::shared_ptr<ResultTable> table2,
                                                       std::vector<std::string> commonColumns);
 
     /**
-     * Given a set of columnNames, check if this table has any column
-     * in the given set.
-     * @return The similar column name. If no matching column name, return "".
+     * Given a set of columnNamesToMatch, check if this table has any of these columns in it.
+     * @return A set containing the names of the matching columns. If there are no matching columns,
+     * an empty set is returned.
      */
-    std::vector<std::string> hasMatchingColumns(std::unordered_set<std::string> columnNames);
+    std::vector<std::string> hasMatchingColumns(std::unordered_set<std::string> columnNamesToMatch);
 
+    /**
+     * Insert a row into this table. An exception is thrown if the row added does not match the dimensions
+     * of the table.
+     * @param row The row to be added.
+     */
     void insertRow(TableRow row);
 
+    /**
+     * Get the entire row at rowNumber.
+     */
     TableRow getRow(int rowNumber) const;
 
+    /**
+     * Given a rowNumber and columnNumber, get the value at that position.
+     * @param rowNumber The row number.
+     * @param columnNumber the column number.
+     * @return The value at that row number and column number.
+     */
     std::string getValueAt(int rowNumber, int columnNumber) const;
 
+    /**
+     * Given a row number i and a list of interested column numbers,
+     * return the ith row containing only the values in the interested columns.
+     */
     std::vector<std::string> getValuesAt(int rowNumber, std::vector<int> columnNumbers) const;
 
     /**
-     * Returns the column numbers of the column with name colName.
-     * @return The column number, -1 if the column does not exist.
-     */
-    std::vector<int> getColumnNumbers(std::vector<std::string> colName) const;
-
-    int getColumnNumber(std::string colName) const;
-    /**
-     * Given a column name, get all the values of this columne.
+     * Given a column name, get all the values under this column.
      */
     std::unordered_set<std::string> getColumnValues(std::string colName);
 
+    /**
+     * Returns the column numbers of the columns that exists in the vector colName.
+     */
+    std::vector<int> getColumnNumbers(std::vector<std::string> colName) const;
+
+    /**
+     * Returns the column number of the column with name colName.
+     * @return The column number, -1 if the column does not exist.
+     */
+    int getColumnNumber(std::string colName) const;
+
+    /**
+     * Get number of rows of this table.
+     */
     int getNumberOfRows() const;
 
+    /**
+     * Get the column names of this table.
+     * @return
+     */
     TableRow getColumnsNames() const;
 
     bool hasNoResults();

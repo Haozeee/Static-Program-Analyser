@@ -52,12 +52,18 @@ std::shared_ptr<ResultTable> ResultTable::joinOnColumns(std::shared_ptr<ResultTa
                                                        std::shared_ptr<ResultTable> table2,
                                                        std::vector<int> column1,
                                                        std::vector<int> column2) {
+    auto newTableColumns = ResultTable::getVectorUnion(table1->getColumnsNames(), table2->getColumnsNames());
+    auto res = std::make_shared<ResultTable>(newTableColumns);
+    if (table2->getNumberOfRows() == 0) {
+        // Joining with an empty table
+        return res;
+    }
+
     std::unordered_multimap<std::vector<std::string >, int, VectorHash> hashmap;
     for (int i = 0; i < table2->getNumberOfRows(); i++) {
         hashmap.insert({table2->getValuesAt(i, column2), i});
     }
-    auto newTableColumns = ResultTable::getVectorUnion(table1->getColumnsNames(), table2->getColumnsNames());
-    auto res = std::make_shared<ResultTable>(newTableColumns);
+
     for (int i = 0; i < table1->getNumberOfRows(); i++) {
         auto range = hashmap.equal_range(table1->getValuesAt(i, column1));
         for (auto it = range.first; it != range.second; it++) {
@@ -120,10 +126,10 @@ std::unordered_set<std::string> ResultTable::getColumnValues(std::string colName
     return res;
 }
 
-std::vector<std::string> ResultTable::hasMatchingColumns(std::unordered_set<std::string> columnNames) {
+std::vector<std::string> ResultTable::hasMatchingColumns(std::unordered_set<std::string> columnNamesToMatch) {
     std::vector<std::string> res;
     for (auto const& [k, v] : columnNameMap) {
-        if (columnNames.count(v)) {
+        if (columnNamesToMatch.count(v)) {
             res.push_back(v);
         }
     }

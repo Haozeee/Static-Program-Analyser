@@ -49,8 +49,38 @@ bool QueryValidator::containsSelectClauseSynonymInDeclaration(
                        });
 }
 
+void QueryValidator::validateSuchThatClause() {
+    for (auto clause : query->getSuchThatClauses()) {
+        auto validationResult = clause->isValidClause();
+        auto leftArg = clause->getLeftArg();
+        auto rightArg = clause->getRightArg();
+        switch (validationResult) {
+            case SuchThatClauseValidationResult::INVALID_LEFT_ARG_TYPE:
+                throw QueryValidationException(leftArg.getValue()
+                                               + QueryValidatorInvalidFirstArgumentTypeInRelation);
+            case SuchThatClauseValidationResult::INVALID_RIGHT_ARG_TYPE:
+                throw QueryValidationException(rightArg.getValue()
+                                               + QueryValidatorInvalidSecondArgumentTypeInRelation);
+            case SuchThatClauseValidationResult::INVALID_LEFT_DESIGN_ENTITY:
+                throw QueryValidationException(QueryValidatorInvalidFirstDesignEntityInRelation1
+                                               + leftArg.getValue()
+                                               + QueryValidatorInvalidFirstDesignEntityInRelation2
+                                               + toString(leftArg.getDesignEntity())
+                                               + QueryValidatorInvalidFirstDesignEntityInRelation);
+            case SuchThatClauseValidationResult::INVALID_RIGHT_DESIGN_ENTITY:
+                throw QueryValidationException(QueryValidatorInvalidFirstDesignEntityInRelation1
+                                               + rightArg.getValue()
+                                               + QueryValidatorInvalidFirstDesignEntityInRelation2
+                                               + toString(rightArg.getDesignEntity())
+                                               + QueryValidatorInvalidSecondDesignEntityInRelation);
+        }
+    }
+}
+
 void QueryValidator::validateQuery() {
     validateNoDuplicateSynonymsInDeclaration();
 
     validateSynonymInSelectClauseWasDeclared();
+
+    validateSuchThatClause();
 }
