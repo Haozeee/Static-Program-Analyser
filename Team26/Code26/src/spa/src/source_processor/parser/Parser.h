@@ -26,7 +26,7 @@ class Parser : public AbstractParser {
     std::shared_ptr<CondExprNode> parseCondExprNode(int startIndex, int endIndex);
     std::shared_ptr<ExprNode> parseFactor(int index, int endIndex);
     bool isBinaryCondOperator();
-    bool isOperator();
+    bool isIllegalArithmeticSplChar();
     OperatorType getOperator();
     bool isExprOperator();
     bool isTermOperator();
