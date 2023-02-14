@@ -72,19 +72,23 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
      */
     virtual void evaluateSynonymSynonym(StoragePointer storage) = 0;
 
-    void evaluateWildcardSynonym(StoragePointer storage) {
-        handleLeftWildcard();
-        evaluateSynonymSynonym(storage);
-        // Remove wildcard placeholder
-        clauseResultTable = ResultTable::createSingleColumnTable(
-                rightArg.getValue(), clauseResultTable->getColumnValues(rightArg.getValue()));
-    }
-
     void evaluateSynonymWildcard(StoragePointer storage) {
         handleRightWildcard();
         evaluateSynonymSynonym(storage);
         // Remove wildcard placeholder
         clauseResultTable = ResultTable::createSingleColumnTable(
                 leftArg.getValue(), clauseResultTable->getColumnValues(leftArg.getValue()));
+    }
+
+    /**
+     * Checks if the result of this such that clause equates to false. The such that clause
+     * is false when there are columns but no row in the ResultTable. If the such that clause is
+     * false, we can set the clause results as false and we do not evaluate any other clauses in
+     * the query.
+     */
+    void optimiseResults() {
+        if (clauseResultTable->getColumnsNames().size() > 0 && clauseResultTable->getNumberOfRows() == 0) {
+            clauseResultTable->setNoResults();
+        }
     }
 };
