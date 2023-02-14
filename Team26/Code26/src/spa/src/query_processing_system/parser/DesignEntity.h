@@ -2,6 +2,7 @@
 #include <string>
 #include <ostream>
 #include <unordered_map>
+#include <unordered_set>
 
 enum class DesignEntity {
     STMT,
@@ -16,6 +17,26 @@ enum class DesignEntity {
     CONSTANT,
     NONE
 };
+
+/**
+ * Based on Basic Design Extractions:
+ * Follows | FollowsT | Parent | ParentT : Relationship between Statements
+ * UsesS | ModifiesS : Relationship between Statement and Variable
+ * UsesP | ModifiesP : Relationship between Procedure and Variable
+ */
+static std::unordered_set<DesignEntity> allStatements = std::unordered_set<DesignEntity>{
+    DesignEntity::STMT,
+    DesignEntity::READ,
+    DesignEntity::PRINT,
+    DesignEntity::ASSIGN,
+    DesignEntity::CALL,
+    DesignEntity::WHILE,
+    DesignEntity::IF
+};
+
+static std::unordered_set<DesignEntity> procedureOnly = std::unordered_set<DesignEntity>({DesignEntity::PROCEDURE});
+
+static std::unordered_set<DesignEntity> variableOnly = std::unordered_set<DesignEntity>({DesignEntity::VARIABLE});
 
 /**
  * Get the corresponding Design Entity from the given string.

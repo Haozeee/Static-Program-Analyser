@@ -8,3 +8,11 @@ UsesSClause::UsesSClause(Argument leftArg, Argument rightArg)
 ClauseEvaluator* UsesSClause::getClauseEvaluator() {
     return new UsesSClauseEvaluator(getLeftArg(), getRightArg());
 }
+
+ValidArgumentType UsesSClause::getValidArgumentType() {
+    return std::make_pair(stmtRef, entRef);
+}
+
+ValidDesignEntity UsesSClause::getValidDesignEntity() {
+    return std::make_pair(allStatements, variableOnly);
+}

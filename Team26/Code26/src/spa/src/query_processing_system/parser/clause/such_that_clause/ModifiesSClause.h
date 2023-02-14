@@ -7,4 +7,8 @@ class ModifiesSClause : public SuchThatClause {
     ModifiesSClause(Argument leftArg, Argument rightArg);
 
     ClauseEvaluator* getClauseEvaluator() override;
+
+    ValidArgumentType getValidArgumentType() override;
+
+    ValidDesignEntity getValidDesignEntity() override;
 };

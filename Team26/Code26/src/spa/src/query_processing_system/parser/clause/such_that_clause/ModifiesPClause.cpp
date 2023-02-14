@@ -9,3 +9,11 @@ ClauseEvaluator* ModifiesPClause::getClauseEvaluator() {
     // TODO(Hao Ze) - Change to be able to build for now
     return new ModifiesSClauseEvaluator(getLeftArg(), getRightArg());
 }
+
+ValidArgumentType ModifiesPClause::getValidArgumentType() {
+    return std::make_pair(entRef, entRef);
+}
+
+ValidDesignEntity ModifiesPClause::getValidDesignEntity() {
+    return std::make_pair(procedureOnly, variableOnly);
+}

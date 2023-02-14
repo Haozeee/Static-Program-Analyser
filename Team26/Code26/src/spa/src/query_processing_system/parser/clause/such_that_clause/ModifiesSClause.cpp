@@ -8,3 +8,11 @@ ModifiesSClause::ModifiesSClause(Argument leftArg, Argument rightArg)
 ClauseEvaluator* ModifiesSClause::getClauseEvaluator() {
     return new ModifiesSClauseEvaluator(getLeftArg(), getRightArg());
 }
+
+ValidArgumentType ModifiesSClause::getValidArgumentType() {
+    return std::make_pair(stmtRef, entRef);
+}
+
+ValidDesignEntity ModifiesSClause::getValidDesignEntity() {
+    return std::make_pair(allStatements, variableOnly);
+}
