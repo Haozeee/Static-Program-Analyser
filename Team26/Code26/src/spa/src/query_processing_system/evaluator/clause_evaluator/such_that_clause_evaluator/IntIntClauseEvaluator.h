@@ -31,6 +31,8 @@ class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
 
     void evaluateNumberWithWildcard(StoragePointer storage);
 
+    void evaluateWildcardSynonym(StoragePointer storage);
+
  public:
     std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage) override;
 };
