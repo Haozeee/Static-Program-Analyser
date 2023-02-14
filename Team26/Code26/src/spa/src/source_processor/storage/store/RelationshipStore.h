@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 #include "source_processor/storage/interface/IRelationshipStore.h"
-#include "program_knowledge_base/WriteOnlyStorage.h"
+#include "program_knowledge_base/StorageManager.h"
 
 class RelationshipStore : public IRelationshipStore {
  private:
@@ -17,7 +17,7 @@ class RelationshipStore : public IRelationshipStore {
     std::shared_ptr<WriteOnlyRelationshipManger<std::string, std::string>> modifiesPManager;
 
  public:
-    explicit RelationshipStore(std::shared_ptr<WriteOnlyStorage> storage);
+    explicit RelationshipStore(std::shared_ptr<WriteStorage> storage);
 
     void insertFollowsRelationship(int &previousStmtNo, int &currentStmtNo) override;
     void insertParentsRelationship(int &parentStmtNo, int &childStmtNo) override;

@@ -3,7 +3,7 @@
 #include "source_processor/storage/store/RelationshipStore.h"
 #include "source_processor/storage/store/EntityStore.h"
 
-Store::Store(const std::shared_ptr<WriteOnlyStorage>& storage) {
+Store::Store(const std::shared_ptr<WriteStorage>& storage) {
     entityStore = std::make_shared<EntityStore>(storage);
     relationshipStore = std::make_shared<RelationshipStore>(storage);
     patternStore = std::make_shared<PatternStore>(storage);
