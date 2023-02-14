@@ -138,14 +138,13 @@ std::shared_ptr<CondExprNode> Parser::parseConditional() {
     while (getToken()->getType() != TokenType::TOKEN_END_OF_FILE) {
         if (getToken()->getValue() == BRACKETS_START) {
             numOfBrackets++;
-        }
-        else if (getToken()->getValue() == BRACKETS_END) {
+        } else if (getToken()->getValue() == BRACKETS_END) {
             numOfBrackets--;
+            if (numOfBrackets == 0) {
+                break;
+            }
         }
 
-        if (getToken()->getValue() == BRACKETS_END && numOfBrackets == 0) {
-            break;
-        }
         getNext();
     }
     int newIndex = index - 1;

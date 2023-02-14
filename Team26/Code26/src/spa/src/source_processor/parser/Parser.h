@@ -43,7 +43,7 @@ class Parser : public AbstractParser {
     std::shared_ptr<IfNode> parseIf();
     std::shared_ptr<AssignNode> parseAssign(std::shared_ptr<Token> nameToken);
     std::shared_ptr<CondExprNode> parseConditional();
-    
+
     std::shared_ptr<RelExpr> parseRelExpr(int startIndex, int endIndex);
     std::shared_ptr<ExprNode> parseExprNode(int startIndex, int endIndex);
     std::shared_ptr<ExprNode> parseTerm(int startIndex, int endIndex);
