@@ -51,4 +51,4 @@ jobs:
             cd .\Team26\Code26\build\src\autotester\Release\
             mkdir tests
             Copy-Item -Path "../../../../../../../../_folder32/uploader.ps1" -Destination "./"
-            start powershell -File .\uploader.ps1 -branchName ${{ github.event.ref }} -sha ${{ github.sha }}
+            start powershell -File .\uploader.ps1 -branchName ${{ github.ref_name }} -sha ${{ github.sha }}
