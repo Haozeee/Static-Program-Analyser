@@ -3,36 +3,37 @@
 #include <string>
 #include "common/exception/ParserException.h"
 
-extern const std::string ValidationException;
+extern const std::string ValidationExceptionMessage;
+extern const std::string ParserExceptionMessage;
 extern const std::string InvalidRelationship;
 extern const std::string InvalidArgument;
 
-class QueryValidationException : public std::runtime_error {
+class QueryValidationException : public ParserException {
  public:
-    QueryValidationException() : std::runtime_error(ValidationException) {}
-    explicit QueryValidationException(const std::string& errorMessage) : std::runtime_error(errorMessage) {}
+    QueryValidationException() : ParserException(ValidationExceptionMessage) {}
+    explicit QueryValidationException(const std::string& errorMessage) : ParserException(errorMessage) {}
 };
 
-class QueryInvalidRelationship : public std::runtime_error {
+class QueryInvalidRelationship : public ParserException {
  public:
-    QueryInvalidRelationship() : std::runtime_error(InvalidRelationship) {}
-    explicit QueryInvalidRelationship(const std::string& errorMessage) : std::runtime_error(errorMessage) {}
+    QueryInvalidRelationship() : ParserException(InvalidRelationship) {}
+    explicit QueryInvalidRelationship(const std::string& errorMessage) : ParserException(errorMessage) {}
 };
 
 class QueryParserException : public ParserException {
  public:
-    QueryParserException() : ParserException(InvalidArgument) {}
+    QueryParserException() : ParserException(ParserExceptionMessage) {}
     explicit QueryParserException(const std::string& errorMessage) : ParserException(errorMessage) {}
 };
 
-class QueryInvalidRelationshipArguments : public std::runtime_error {
+class QueryInvalidRelationshipArguments : public ParserException {
  public:
-    QueryInvalidRelationshipArguments() : std::runtime_error(InvalidArgument) {}
-    explicit QueryInvalidRelationshipArguments(const std::string& errorMessage) : std::runtime_error(errorMessage) {}
+    QueryInvalidRelationshipArguments() : ParserException(InvalidArgument) {}
+    explicit QueryInvalidRelationshipArguments(const std::string& errorMessage) : ParserException(errorMessage) {}
 };
 
-class QueryInvalidPatternArgument : public std::runtime_error {
+class QueryInvalidPatternArgument : public ParserException {
  public:
-    QueryInvalidPatternArgument() : std::runtime_error(InvalidArgument) {}
-    explicit QueryInvalidPatternArgument(const std::string& errorMessage) : std::runtime_error(errorMessage) {}
+    QueryInvalidPatternArgument() : ParserException(InvalidArgument) {}
+    explicit QueryInvalidPatternArgument(const std::string& errorMessage) : ParserException(errorMessage) {}
 };

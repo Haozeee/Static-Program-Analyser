@@ -7,15 +7,16 @@ IntStringClause::IntStringClause(Argument leftArg, Argument rightArg)
 std::unordered_set<ArgumentType> IntStringClause::getValidLeftArgumentType() {
     return std::unordered_set<ArgumentType> {
             ArgumentType::SYNONYM,
-            ArgumentType::CHARACTERSTRING
+            ArgumentType::NUMBER,
+            ArgumentType::WILDCARD
     };
 }
 
 std::unordered_set<ArgumentType> IntStringClause::getValidRightArgumentType() {
     return std::unordered_set<ArgumentType> {
             ArgumentType::SYNONYM,
-            ArgumentType::CHARACTERSTRING,
-            ArgumentType::WILDCARD
+            ArgumentType::WILDCARD,
+            ArgumentType::CHARACTERSTRING
     };
 }
 

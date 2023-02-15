@@ -54,6 +54,9 @@ void QueryValidator::validateSuchThatClause() {
         auto validationResult = clause->isValidClause();
         auto leftArg = clause->getLeftArg();
         auto rightArg = clause->getRightArg();
+        if (leftArg.getArgumentType() != ArgumentType::WILDCARD && leftArg == rightArg) {
+            throw QueryValidationException(QueryValidatorNoRepeatArgumentsAllowed);
+        }
         switch (validationResult) {
             case SuchThatClauseValidationResult::INVALID_LEFT_ARG_TYPE:
                 throw QueryValidationException(leftArg.getValue()

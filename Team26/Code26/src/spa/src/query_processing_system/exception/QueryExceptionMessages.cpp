@@ -18,6 +18,8 @@ const char QueryValidatorInvalidFirstDesignEntityInRelation[] =
         " is an invalid first argument for the given relation.";
 const char QueryValidatorInvalidSecondDesignEntityInRelation[] =
         " is not a valid second argument for the given relation.";
+const char QueryValidatorNoRepeatArgumentsAllowed[] =
+        "Repeat arguments are not allowed in the given relation.";
 
 const char QueryParserInvalidRelationshipInSelectClause[] =
         " is not a valid relationship, please modify your input. Note that PQL is case-sensitive.";
