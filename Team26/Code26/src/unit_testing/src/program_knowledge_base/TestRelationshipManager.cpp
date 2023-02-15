@@ -256,8 +256,8 @@ TEST_CASE("RelationshipManager _insert int,int,WriteOnlyRelationshipManager") {
 
 TEST_CASE("FollowsManager _insert int,int,WriteOnlyRelationshipManager") {
     std::shared_ptr<StorageManager> storageManager = std::make_shared<StorageManager>();
-    auto writeStorage = storageManager->getWriteManager();
-    auto readStorage = storageManager->getReadManager();
+    auto writeStorage = storageManager->getWriteStorage();
+    auto readStorage = storageManager->getReadStorage();
     auto followsManagerWrite = writeStorage->getFollowsManager();
     auto followsTManagerWrite = writeStorage->getFollowsTManager();
     REQUIRE(followsManagerWrite->insertRelationship(1, 2,followsTManagerWrite));
@@ -295,8 +295,8 @@ TEST_CASE("FollowsManager _insert int,int,WriteOnlyRelationshipManager") {
 
 TEST_CASE("ParentManager _insert int,int,WriteOnlyRelationshipManager") {
     std::shared_ptr<StorageManager> storageManager = std::make_shared<StorageManager>();
-    auto writeStorage = storageManager->getWriteManager();
-    auto readStorage = storageManager->getReadManager();
+    auto writeStorage = storageManager->getWriteStorage();
+    auto readStorage = storageManager->getReadStorage();
     auto parentManagerWrite = writeStorage->getParentManager();
     auto parentTManagerWrite = writeStorage->getParentTManager();
     REQUIRE(parentManagerWrite->insertRelationship(1, 2,parentTManagerWrite));
