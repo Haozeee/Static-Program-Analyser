@@ -9,9 +9,10 @@
 class PatternExtractor : public BaseExtractor, public IPatternExtractor {
  private:
     std::shared_ptr<IPatternStore> patternStore;
- public:
-    explicit PatternExtractor(std::shared_ptr<IPatternStore> storage);
 
     void extractStmt(std::shared_ptr<StmtNode> node) override;
     void extractAssign(std::shared_ptr<AssignNode> node) override;
+
+ public:
+    explicit PatternExtractor(std::shared_ptr<IPatternStore> storage);
 };
