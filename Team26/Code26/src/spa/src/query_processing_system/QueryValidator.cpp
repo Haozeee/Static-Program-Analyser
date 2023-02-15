@@ -73,6 +73,28 @@ void QueryValidator::validateSuchThatClause() {
                                                + QueryValidatorInvalidFirstDesignEntityInRelation2
                                                + toString(rightArg.getDesignEntity())
                                                + QueryValidatorInvalidSecondDesignEntityInRelation);
+            default:
+                continue;
+        }
+    }
+}
+
+void QueryValidator::validatePatternClause() {
+    for (auto clause : query->getPatternClause()) {
+        auto validationResult = clause->isValidClause();
+        auto leftArg = clause->getLeftArg();
+        switch (validationResult) {
+            case PatternClauseValidationResult::INVALID_LEFT_ARG_TYPE:
+                throw QueryValidationException(leftArg.getValue()
+                                               + QueryValidatorInvalidFirstArgumentTypeInRelation);
+            case PatternClauseValidationResult::INVALID_LEFT_DESIGN_ENTITY:
+                throw QueryValidationException(QueryValidatorInvalidFirstDesignEntityInRelation1
+                                               + leftArg.getValue()
+                                               + QueryValidatorInvalidFirstDesignEntityInRelation2
+                                               + toString(leftArg.getDesignEntity())
+                                               + QueryValidatorInvalidFirstDesignEntityInRelation);
+            default:
+                continue;
         }
     }
 }
@@ -83,4 +105,6 @@ void QueryValidator::validateQuery() {
     validateSynonymInSelectClauseWasDeclared();
 
     validateSuchThatClause();
+
+    validatePatternClause();
 }

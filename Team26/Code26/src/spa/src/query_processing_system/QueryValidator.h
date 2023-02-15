@@ -10,6 +10,7 @@
 #include "query_processing_system/parser/clause/such_that_clause/SuchThatClauseValidationResult.h"
 #include "query_processing_system/exception/QueryException.h"
 #include "query_processing_system/exception/QueryExceptionMessages.h"
+#include "query_processing_system/evaluator/clause_evaluator/such_that_clause_evaluator/ClauseArgumentsType.h"
 
 class QueryValidator {
  private:
@@ -39,19 +40,7 @@ class QueryValidator {
 
     void validateSuchThatClause();
 
-    /**
-     * Follows & Parent (stmtRef, stmtRef)
-     * Uses & Modifies (entRef, stmtRef)
-     * stmtRef: Synonym, Wildcard, Number
-     * entRef: Synonym, Wildcard, Character String
-     */
-    void validateArgumentTypeInSuchThatClause();
-
-    /**
-     * Synonyms of design entities can appear as relationship arguments,
-     * and should match the design entity defined for the relationship.
-     */
-    void validateDesignEntityOfArgumentInSuchThatClause();
+    void validatePatternClause();
 
     std::unordered_set<std::string> getDeclarationSynonyms();
 
