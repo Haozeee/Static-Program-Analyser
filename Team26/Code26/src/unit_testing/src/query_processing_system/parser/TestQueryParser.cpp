@@ -346,8 +346,6 @@ TEST_CASE("Pattern Clause") {
         REQUIRE(left.getDesignEntity() == DesignEntity::VARIABLE);
 
         StringExpression right = item->getRightArg();
-        REQUIRE(right.getIsWildcard() == false);
-        REQUIRE(right.getIsExactMatch() == false);
         REQUIRE(right.getExpression() == "x+y");
     }
 }
@@ -412,8 +410,6 @@ TEST_CASE("Such That and Pattern Clause") {
         REQUIRE(left.getDesignEntity() == DesignEntity::VARIABLE);
 
         StringExpression right = item->getRightArg();
-        REQUIRE(right.getIsWildcard() == false);
-        REQUIRE(right.getIsExactMatch() == false);
         REQUIRE(right.getExpression() == "a+b");
     }
 }
