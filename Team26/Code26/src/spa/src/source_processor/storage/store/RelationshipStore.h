@@ -19,8 +19,8 @@ class RelationshipStore : public IRelationshipStore {
  public:
     explicit RelationshipStore(std::shared_ptr<WriteOnlyStorage> storage);
 
-    void insertFollowsRelationship(const int &previousStmtNo, int &currentStmtNo) override;
-    void insertParentsRelationship(const int &parentStmtNo, int &childStmtNo) override;
+    void insertFollowsRelationship(const int &previousStmtNo, const int &currentStmtNo) override;
+    void insertParentsRelationship(const int &parentStmtNo, const int &childStmtNo) override;
     void insertUsesSRelationship(const int &stmtNo, const std::string &variableName) override;
     void insertModifiesSRelationship(const int &stmtNo, const std::string &variableName) override;
     void insertUsesPRelationship(std::string  &procedureName, const std::string &variableName) override;
