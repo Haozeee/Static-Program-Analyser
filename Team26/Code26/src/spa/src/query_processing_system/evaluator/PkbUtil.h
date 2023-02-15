@@ -12,13 +12,13 @@ using stringEntitySet = std::unordered_set<std::string>;
 
 class PkbUtil {
  public:
-    static std::unordered_set<std::string> getStringEntitiesFromPkb(std::shared_ptr<ReadStroage> storage,
+    static std::unordered_set<std::string> getStringEntitiesFromPkb(std::shared_ptr<ReadStorage> storage,
                                                                     DesignEntity entity);
 
-    static std::unordered_set<int> getIntEntitiesFromPkb(std::shared_ptr<ReadStroage> storage,
+    static std::unordered_set<int> getIntEntitiesFromPkb(std::shared_ptr<ReadStorage> storage,
                                                          DesignEntity entity);
 
-    static std::unordered_set<std::string> getEntitiesFromPkb(std::shared_ptr<ReadStroage> storage,
+    static std::unordered_set<std::string> getEntitiesFromPkb(std::shared_ptr<ReadStorage> storage,
                                                               DesignEntity entity);
 
     /**

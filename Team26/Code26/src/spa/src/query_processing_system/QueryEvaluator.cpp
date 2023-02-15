@@ -3,7 +3,7 @@
 #include <iterator>
 #include "evaluator/ResultTable.h"
 
-QueryEvaluator::QueryEvaluator(Query* query, std::shared_ptr<ReadStroage> storage)
+QueryEvaluator::QueryEvaluator(Query* query, std::shared_ptr<ReadStorage> storage)
     : query(query), storage(storage), queryResults(QueryDb()) {}
 
 QueryDb QueryEvaluator::evaluateQuery() {

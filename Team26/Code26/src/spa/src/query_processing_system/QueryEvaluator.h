@@ -13,7 +13,7 @@ class QueryEvaluator {
 
     QueryDb queryResults;
 
-    std::shared_ptr<ReadStroage> storage;
+    std::shared_ptr<ReadStorage> storage;
 
     /**
      * Evaluate the select clauses in the query.
@@ -31,7 +31,7 @@ class QueryEvaluator {
     void evaluatePatternClause();
 
  public:
-    explicit QueryEvaluator(Query* query, std::shared_ptr<ReadStroage> storage);
+    explicit QueryEvaluator(Query* query, std::shared_ptr<ReadStorage> storage);
 
     QueryDb evaluateQuery();
 };

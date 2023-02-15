@@ -9,7 +9,7 @@
 #include "evaluator/QueryDb.h"
 
 void QueryManager::process(const std::string& query, std::list<std::string> &results,
-                           std::shared_ptr<ReadStroage> storageUtil) {
+                           std::shared_ptr<ReadStorage> storageUtil) {
     // Create Query object
     auto * queryObject = new Query();
     // Tokenize QPS query

@@ -11,7 +11,7 @@
 #include "program_knowledge_base/pattern/IReadPatternManager.h"
 
 using WriteStorage = Storage<IWriteRelationshipManager, IWriteEntityManager, IWritePatternManager>;
-using ReadStroage =  Storage<IReadRelationshipManager, IReadEntityManager, IReadPatternManager>;
+using ReadStorage =  Storage<IReadRelationshipManager, IReadEntityManager, IReadPatternManager>;
 
 class StorageManager {
  private:
@@ -25,7 +25,7 @@ class StorageManager {
         return std::make_shared<WriteStorage>(storageUtil);
     }
 
-    std::shared_ptr<ReadStroage> getReadManager() {
-        return std::make_shared<ReadStroage>(storageUtil);
+    std::shared_ptr<ReadStorage> getReadManager() {
+        return std::make_shared<ReadStorage>(storageUtil);
     }
 };

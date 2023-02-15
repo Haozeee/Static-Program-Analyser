@@ -4,7 +4,7 @@
 #include "../../../program_knowledge_base/StorageManager.h"
 #include "../ResultTable.h"
 
-using StoragePointer = std::shared_ptr<ReadStroage>;
+using StoragePointer = std::shared_ptr<ReadStorage>;
 
 class ClauseEvaluator {
  public:
