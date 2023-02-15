@@ -1,6 +1,6 @@
 #include <string>
 #include <iostream>
-
+#include <algorithm>
 #include "QueryParser.h"
 #include "query_processing_system/parser/clause/pattern_clause/PatternClauseFactory.h"
 
@@ -180,9 +180,10 @@ StringExpression QueryParser::parseExpression() {
 std::string QueryParser::parseStringExpression() {
     parseNext("'");
     std::shared_ptr<Token> stringExpressionToken = parseNext(TokenType::TOKEN_STRING_EXPRESSION);
-    std::string stringExpression = stringExpressionToken->getValue();
+    std::string str = stringExpressionToken->getValue();
     parseNext("'");
-    return stringExpression;
+    str.erase(std::remove_if(str.begin(), str.end(), isspace), str.end());
+    return str;
 }
 
 void QueryParser::parseEndingUnexpectedToken() {
