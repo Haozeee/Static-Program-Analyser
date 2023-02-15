@@ -2,7 +2,7 @@
 
 #include <utility>
 
-PatternStore::PatternStore(std::shared_ptr<WriteOnlyStorage> storage) {
+PatternStore::PatternStore(std::shared_ptr<WriteStorage> storage) {
     patternManager = storage->getPatternManager();
 }
 

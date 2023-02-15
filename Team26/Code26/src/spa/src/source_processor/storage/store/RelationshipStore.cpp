@@ -2,7 +2,7 @@
 
 #include <utility>
 
-RelationshipStore::RelationshipStore(std::shared_ptr<WriteOnlyStorage> storage) {
+RelationshipStore::RelationshipStore(std::shared_ptr<WriteStorage> storage) {
     followsManager = storage->getFollowsManager();
     followsTManager = storage->getFollowsTManager();
     parentManager = storage->getParentManager();

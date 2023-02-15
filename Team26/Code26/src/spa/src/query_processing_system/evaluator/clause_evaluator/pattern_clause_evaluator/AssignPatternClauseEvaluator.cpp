@@ -4,7 +4,7 @@ AssignPatternClauseEvaluator::AssignPatternClauseEvaluator(Argument patternArg, 
                                 StringExpression rightArg)
     : PatternClauseEvaluator(std::move(patternArg), std::move(leftArg), std::move(rightArg)) {}
 
-std::shared_ptr<ResultTable> AssignPatternClauseEvaluator::evaluateClause(std::shared_ptr<ReadOnlyStorage> storage) {
+std::shared_ptr<ResultTable> AssignPatternClauseEvaluator::evaluateClause(std::shared_ptr<ReadStorage> storage) {
     auto leftArgType = leftArg.getArgumentType();
     if (leftArgType == ArgumentType::SYNONYM) {
         evaluateSynonym(storage);
@@ -20,26 +20,26 @@ std::shared_ptr<ResultTable> AssignPatternClauseEvaluator::evaluateClause(std::s
     return clauseResultTable;
 }
 
-void AssignPatternClauseEvaluator::evaluateSynonym(std::shared_ptr<ReadOnlyStorage> storage) {
+void AssignPatternClauseEvaluator::evaluateSynonym(std::shared_ptr<ReadStorage> storage) {
     auto identities = PkbUtil::getStringEntitiesFromPkb(storage, leftArg.getDesignEntity());
     auto res = evaluateStringHelper(storage, identities);
     clauseResultTable = ResultTable::createDoubleColumnTable(patternArg.getValue(), res.first,
                                                              leftArg.getValue(), res.second);
 }
 
-void AssignPatternClauseEvaluator::evaluateString(std::shared_ptr<ReadOnlyStorage> storage) {
+void AssignPatternClauseEvaluator::evaluateString(std::shared_ptr<ReadStorage> storage) {
     auto res = evaluateStringHelper(storage, {leftArg.getValue()});
     clauseResultTable = ResultTable::createSingleColumnTable(patternArg.getValue(), res.first);
 }
 
-void AssignPatternClauseEvaluator::evaluateWildcard(std::shared_ptr<ReadOnlyStorage> storage) {
+void AssignPatternClauseEvaluator::evaluateWildcard(std::shared_ptr<ReadStorage> storage) {
     auto identities = PkbUtil::getStringEntitiesFromPkb(storage, DesignEntity::VARIABLE);
     auto res = evaluateStringHelper(storage, identities);
     clauseResultTable = ResultTable::createSingleColumnTable(patternArg.getValue(), res.first);
 }
 
 std::pair<std::unordered_set<std::string>, std::unordered_set<std::string>>
-AssignPatternClauseEvaluator::evaluateStringHelper(std::shared_ptr<ReadOnlyStorage> storage,
+AssignPatternClauseEvaluator::evaluateStringHelper(std::shared_ptr<ReadStorage> storage,
                                                    std::unordered_set<std::string> lhsValues) {
     std::unordered_set<std::string> assignResults;
     std::unordered_set<std::string> lhsResults;

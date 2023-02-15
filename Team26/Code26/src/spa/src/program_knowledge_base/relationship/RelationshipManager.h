@@ -4,12 +4,12 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
-#include "ReadOnlyRelationshipManager.h"
-#include "WriteOnlyRelationshipManager.h"
+#include "IReadRelationshipManager.h"
+#include "IWriteRelationshipManager.h"
 
 template <typename T, typename U>
-class RelationshipManager: public ReadOnlyRelationshipManager<T, U>,
-                           public WriteOnlyRelationshipManger<T, U> {
+class RelationshipManager: public IReadRelationshipManager<T, U>,
+                           public IWriteRelationshipManager<T, U> {
  protected:
     std::unordered_map<T, std::unordered_set<U>> relationships_map;
     std::unordered_map<U, std::unordered_set<T>> reversed_relationships_map;
@@ -48,7 +48,6 @@ class RelationshipManager: public ReadOnlyRelationshipManager<T, U>,
     }
 
     bool insertRelationship(T first_param, U second_param) {
-        // std::cout << "NON-Override " << first_param << " " << second_param << "\n";
         bool flag = false;
         bool flag1 = false;
         // the key is not a key in the map
@@ -75,7 +74,8 @@ class RelationshipManager: public ReadOnlyRelationshipManager<T, U>,
     }
 
     bool insertRelationship(T first_param, U second_param,
-                            std::shared_ptr<WriteOnlyRelationshipManger<T, U>> manager) {
+                            std::shared_ptr<IWriteRelationshipManager<T, U>> manager) {
         return false;
+        // TODO(hz): Throw error or refactor
     }
 };

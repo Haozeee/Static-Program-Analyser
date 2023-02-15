@@ -4,7 +4,7 @@
 #include <unordered_set>
 
 template <typename T, typename U>
-class ReadOnlyRelationshipManager {
+class IReadRelationshipManager {
  public:
     virtual bool isEmptyMap() = 0;
     virtual bool isEmptyReversedMap() = 0;
