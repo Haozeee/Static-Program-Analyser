@@ -1,6 +1,7 @@
 #pragma once
 
 #include "source_processor/node/Node.h"
+#include "source_processor/exception/SourceException.h"
 
 class IStmtExtractor;
 class IPatternExtractor;
