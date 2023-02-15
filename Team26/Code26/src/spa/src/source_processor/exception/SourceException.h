@@ -15,3 +15,4 @@ class SourceParserException : public ParserException {
     SourceParserException();
     explicit SourceParserException(const std::string& errorMessage);
 };
+
