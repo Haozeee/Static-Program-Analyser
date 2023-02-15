@@ -14,27 +14,27 @@ RelationshipStore::RelationshipStore(std::shared_ptr<WriteOnlyStorage> storage) 
 }
 
 
-void RelationshipStore::insertFollowsRelationship(int &previousStmtNo, int &currentStmtNo) {
+void RelationshipStore::insertFollowsRelationship(const int &previousStmtNo, int &currentStmtNo) {
     followsManager->insertRelationship(previousStmtNo, currentStmtNo, followsTManager);
 }
 
-void RelationshipStore::insertParentsRelationship(int &parentStmtNo, int &childStmtNo) {
+void RelationshipStore::insertParentsRelationship(const int &parentStmtNo, int &childStmtNo) {
     parentManager->insertRelationship(parentStmtNo, childStmtNo, parentTManager);
 }
 
-void RelationshipStore::insertUsesSRelationship(int &stmtNo, std::string &variableName) {
+void RelationshipStore::insertUsesSRelationship(const int &stmtNo, const std::string &variableName) {
     usesSManager->insertRelationship(stmtNo, variableName);
 }
 
-void RelationshipStore::insertModifiesSRelationship(int &stmtNo, std::string &variableName) {
+void RelationshipStore::insertModifiesSRelationship(const int &stmtNo, const std::string &variableName) {
     modifiesSManager->insertRelationship(stmtNo, variableName);
 }
 
-void RelationshipStore::insertUsesPRelationship(std::string &procedureName, std::string &variableName) {
+void RelationshipStore::insertUsesPRelationship(std::string &procedureName, const std::string &variableName) {
     usesPManager->insertRelationship(procedureName, variableName);
 }
 
-void RelationshipStore::insertModifiesPRelationship(std::string &procedureName, std::string &variableName) {
+void RelationshipStore::insertModifiesPRelationship(std::string &procedureName, const std::string &variableName) {
     modifiesPManager->insertRelationship(procedureName, variableName);
 }
 

@@ -7,5 +7,5 @@ PatternStore::PatternStore(std::shared_ptr<WriteOnlyStorage> storage) {
 }
 
 void PatternStore::insertExpressionPattern(std::shared_ptr<AssignNode> node) {
-    patternManager->insertPattern(node->stmtIndex, node->varName, node->exprNode->str);
+    patternManager->insertPattern(node->stmtIndex, node->varName, node->exprNode->getRawString());
 }
