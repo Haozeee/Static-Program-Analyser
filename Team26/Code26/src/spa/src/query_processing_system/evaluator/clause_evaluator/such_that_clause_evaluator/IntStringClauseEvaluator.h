@@ -34,8 +34,6 @@ class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string
 
     void evaluateNumberString(StoragePointer storage);
 
-    void evaluateWildcardString(StoragePointer storage);
-
     void evaluateNumberWildcard(StoragePointer storage);
 
  public:

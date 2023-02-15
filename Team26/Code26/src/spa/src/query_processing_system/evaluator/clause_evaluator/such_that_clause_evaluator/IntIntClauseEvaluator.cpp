@@ -4,7 +4,7 @@ IntIntClauseEvaluator::IntIntClauseEvaluator(Argument left, Argument right)
     : SuchThatClauseEvaluator<int, int>(left, right) {}
 
 std::shared_ptr<ResultTable> IntIntClauseEvaluator::evaluateClause(StoragePointer storage) {
-    ClauseArgumentTypes argumentType = getClauseArgumentTypes();
+    auto argumentType = getClauseArgumentType(leftArg.getArgumentType(), rightArg.getArgumentType());
     if (argumentType == ClauseArgumentTypes::NUMBER_NUMBER) {
         evaluateNumberNumber(storage);
     } else if (argumentType == ClauseArgumentTypes::SYNONYM_NUMBER) {
@@ -25,6 +25,7 @@ std::shared_ptr<ResultTable> IntIntClauseEvaluator::evaluateClause(StoragePointe
     } else {
         throw std::exception();
     }
+    optimiseResults();
     return clauseResultTable;
 }
 
@@ -86,9 +87,17 @@ void IntIntClauseEvaluator::evaluateNumberWithWildcard(StoragePointer storage) {
     } else {
         evaluateSynonymNumber(storage);
     }
-    if (clauseResultTable->getNumberOfRows()) {
+    if (clauseResultTable->getNumberOfRows() == 0) {
         clauseResultTable->setNoResults();
     }
+}
+
+void IntIntClauseEvaluator::evaluateWildcardSynonym(StoragePointer storage) {
+    handleLeftWildcard();
+    evaluateSynonymSynonym(storage);
+    // Remove wildcard placeholder
+    clauseResultTable = ResultTable::createSingleColumnTable(
+            rightArg.getValue(), clauseResultTable->getColumnValues(rightArg.getValue()));
 }
 
 void IntIntClauseEvaluator::handleLeftWildcard() {

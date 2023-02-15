@@ -4,7 +4,7 @@ IntStringClauseEvaluator::IntStringClauseEvaluator(Argument left, Argument right
     : SuchThatClauseEvaluator<int, std::string>(left, right) {}
 
 std::shared_ptr<ResultTable> IntStringClauseEvaluator::evaluateClause(StoragePointer storage) {
-    ClauseArgumentTypes argumentType = getClauseArgumentTypes();
+    auto argumentType = getClauseArgumentType(leftArg.getArgumentType(), rightArg.getArgumentType());
     if (argumentType == ClauseArgumentTypes::NUMBER_STRING) {
         evaluateNumberString(storage);
     } else if (argumentType == ClauseArgumentTypes::NUMBER_SYNONYM) {
@@ -15,17 +15,12 @@ std::shared_ptr<ResultTable> IntStringClauseEvaluator::evaluateClause(StoragePoi
         evaluateSynonymString(storage);
     } else if (argumentType == ClauseArgumentTypes::SYNONYM_WILDCARD) {
         evaluateSynonymWildcard(storage);
-    } else if (argumentType == ClauseArgumentTypes::WILDCARD_SYNONYM) {
-        evaluateWildcardSynonym(storage);
     } else if (argumentType == ClauseArgumentTypes::NUMBER_WILDCARD) {
         evaluateNumberWildcard(storage);
-    } else if (argumentType == ClauseArgumentTypes::WILDCARD_STRING) {
-        evaluateWildcardString(storage);
-    } else if (argumentType == ClauseArgumentTypes::WILDCARD_WILDCARD) {
-        // No evaluation needed
     } else {
         throw std::exception();
     }
+    optimiseResults();
     return clauseResultTable;
 }
 
@@ -92,14 +87,6 @@ std::unordered_set<std::string> IntStringClauseEvaluator::evaluateNumberSynonymH
 void IntStringClauseEvaluator::evaluateNumberWildcard(StoragePointer storage) {
     auto relationStore = getRelationshipManager(storage);
     auto iterator = relationStore.find(stoi(leftArg.getValue()));
-    if (iterator == relationStore.end() || iterator->second.empty()) {
-        clauseResultTable->setNoResults();
-    }
-}
-
-void IntStringClauseEvaluator::evaluateWildcardString(StoragePointer storage) {
-    auto relationStore = getOppositeRelationshipManager(storage);
-    auto iterator = relationStore.find(rightArg.getValue());
     if (iterator == relationStore.end() || iterator->second.empty()) {
         clauseResultTable->setNoResults();
     }

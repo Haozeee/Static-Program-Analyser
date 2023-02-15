@@ -1,11 +1,12 @@
 #pragma once
 
 #include <string>
+#include <memory>
 #include "source_processor/node/statement_node/StmtNode.h"
 
-class CallNode : public StmtNode {
+class CallNode : public StmtNode, public std::enable_shared_from_this<CallNode> {
  public:
-    std::string processName;
+    const std::string processName;
 
     CallNode(int stmtIndex, std::string processName);
 

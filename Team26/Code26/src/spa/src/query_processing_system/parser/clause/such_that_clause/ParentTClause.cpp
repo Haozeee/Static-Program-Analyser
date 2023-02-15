@@ -3,16 +3,8 @@
 #include "../../../evaluator/clause_evaluator/such_that_clause_evaluator/ParentTClauseEvaluator.h"
 
 ParentTClause::ParentTClause(Argument leftArg, Argument rightArg)
-        : SuchThatClause(std::move(leftArg), std::move(rightArg)) {}
+        : IntStringClause(std::move(leftArg), std::move(rightArg)) {}
 
 ClauseEvaluator* ParentTClause::getClauseEvaluator() {
     return new ParentTClauseEvaluator(getLeftArg(), getRightArg());
-}
-
-ValidArgumentType ParentTClause::getValidArgumentType() {
-    return std::make_pair(stmtRef, stmtRef);
-}
-
-ValidDesignEntity ParentTClause::getValidDesignEntity() {
-    return std::make_pair(allStatements, allStatements);
 }

@@ -1,29 +1,33 @@
 #pragma once
 
-#include <utility>
 #include <unordered_set>
-
+#include "SuchThatClauseValidationResult.h"
 #include "../Clause.h"
 #include "../../Argument.h"
-
-using ValidArgumentType = std::pair<ArgTypeIndex, ArgTypeIndex>;
-using ValidDesignEntity = std::pair<std::unordered_set<DesignEntity>, std::unordered_set<DesignEntity>>;
 
 class SuchThatClause : public Clause {
  private:
     Argument leftArg;
+
     Argument rightArg;
 
- public:
+ protected:
     SuchThatClause(Argument left, Argument right);
 
+    virtual std::unordered_set<ArgumentType> getValidLeftArgumentType() = 0;
+
+    virtual std::unordered_set<ArgumentType> getValidRightArgumentType() = 0;
+
+    virtual std::unordered_set<DesignEntity> getValidLeftDesignEntity() = 0;
+
+    virtual std::unordered_set<DesignEntity> getValidRightDesignEntity() = 0;
+
+ public:
     virtual ~SuchThatClause() = default;
+
+    SuchThatClauseValidationResult isValidClause();
 
     Argument getLeftArg();
 
     Argument getRightArg();
-
-    virtual ValidArgumentType getValidArgumentType() = 0;
-
-    virtual ValidDesignEntity getValidDesignEntity() = 0;
 };

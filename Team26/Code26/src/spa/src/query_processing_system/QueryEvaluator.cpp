@@ -13,12 +13,24 @@ QueryDb QueryEvaluator::evaluateQuery() {
     // Evaluate such that clauses
     evaluateSuchThatClause();
 
+    // Evaluate pattern clauses
+    evaluatePatternClause();
+
     // Return QueryResult
     return queryResults;
 }
 
 void QueryEvaluator::evaluateSuchThatClause() {
     for (SuchThatClause* clause : query->getSuchThatClauses()) {
+        auto clauseEvaluator = clause->getClauseEvaluator();
+        auto clauseResultTable = clauseEvaluator->evaluateClause(storage);
+        queryResults.addResult(clauseResultTable);
+        delete clauseEvaluator;
+    }
+}
+
+void QueryEvaluator::evaluatePatternClause() {
+    for (PatternClause* clause : query->getPatternClause()) {
         auto clauseEvaluator = clause->getClauseEvaluator();
         auto clauseResultTable = clauseEvaluator->evaluateClause(storage);
         queryResults.addResult(clauseResultTable);

@@ -21,9 +21,14 @@ class QueryEvaluator {
     void evaluateSelectClause();
 
     /**
-     * Evalutate the such that clauses in the query.
+     * Evaluate the such that clauses in the query.
      */
     void evaluateSuchThatClause();
+
+    /**
+     * Evaluate the pattern clauses in the query.
+     */
+    void evaluatePatternClause();
 
  public:
     explicit QueryEvaluator(Query* query, std::shared_ptr<ReadStroage> storage);

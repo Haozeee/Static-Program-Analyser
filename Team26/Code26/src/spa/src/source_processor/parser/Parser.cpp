@@ -90,20 +90,20 @@ std::shared_ptr<StmtListNode> Parser::parseStmtList() {
 }
 
 std::shared_ptr<WhileNode> Parser::parseWhile() {
+    int whileStmtIndex = ++stmtIndex;
     parseNext(BRACKETS_START);
     std::shared_ptr<CondExprNode> condExprNode = parseConditional();
     parseNext(BRACKETS_END);
-
-    stmtIndex++;
 
     parseNext(STMTLIST_START);
     std::shared_ptr<StmtListNode> stmtListNode = parseStmtList();
     parseNext(STMTLIST_END);
 
-    return std::make_shared<WhileNode>(stmtIndex, condExprNode, stmtListNode);
+    return std::make_shared<WhileNode>(whileStmtIndex, condExprNode, stmtListNode);
 }
 
 std::shared_ptr<IfNode> Parser::parseIf() {
+    int ifStmtIndex = ++stmtIndex;
     parseNext(BRACKETS_START);
     std::shared_ptr<CondExprNode> condExprNode = parseConditional();
     parseNext(BRACKETS_END);
@@ -113,7 +113,6 @@ std::shared_ptr<IfNode> Parser::parseIf() {
         throw SourceParserException(ParserMissingThenKeywordExceptionMessage);
     }
 
-    stmtIndex++;
     parseNext(STMTLIST_START);
     std::shared_ptr<StmtListNode> thenStmtListNode = parseStmtList();
     parseNext(STMTLIST_END);
@@ -123,12 +122,11 @@ std::shared_ptr<IfNode> Parser::parseIf() {
         throw SourceParserException(ParserMissingElseKeywordExceptionMessage);
     }
 
-    stmtIndex++;
     parseNext(STMTLIST_START);
     std::shared_ptr<StmtListNode> elseStmtListNode = parseStmtList();
     parseNext(STMTLIST_END);
 
-    return std::make_shared<IfNode>(stmtIndex, condExprNode, thenStmtListNode, elseStmtListNode);
+    return std::make_shared<IfNode>(ifStmtIndex, condExprNode, thenStmtListNode, elseStmtListNode);
 }
 
 std::shared_ptr<CondExprNode> Parser::parseConditional() {
@@ -407,6 +405,7 @@ std::shared_ptr<ExprNode> Parser::parseFactor(int startIndex, int endIndex) {
 }
 
 std::shared_ptr<AssignNode> Parser::parseAssign(std::shared_ptr<Token> nameToken) {
+    stmtIndex++;
     parseNext(ASSIGN_OPERATOR);
 
     int currIndex = index;
@@ -417,30 +416,28 @@ std::shared_ptr<AssignNode> Parser::parseAssign(std::shared_ptr<Token> nameToken
     auto exprNode = parseExprNode(currIndex, newIndex);
     index = newIndex + 1;
     parseNext(STMT_END);
-    stmtIndex++;
     return std::make_shared<AssignNode>(stmtIndex, nameToken->getValue(), exprNode);
 }
 
 std::shared_ptr<ReadNode> Parser::parseRead() {
+    stmtIndex++;
     std::shared_ptr<Token> nameToken = parseNext(TokenType::TOKEN_NAME);
     parseNext(STMT_END);
-    stmtIndex++;
-
     return std::make_shared<ReadNode>(stmtIndex, nameToken->getValue());
 }
 
 std::shared_ptr<PrintNode> Parser::parsePrint() {
+    stmtIndex++;
     std::shared_ptr<Token> nameToken = parseNext(TokenType::TOKEN_NAME);
     parseNext(STMT_END);
-    stmtIndex++;
 
     return std::make_shared<PrintNode>(stmtIndex, nameToken->getValue());
 }
 
 std::shared_ptr<CallNode> Parser::parseCall() {
+    stmtIndex++;
     std::shared_ptr<Token> nameToken = parseNext(TokenType::TOKEN_NAME);
     parseNext(STMT_END);
-    stmtIndex++;
 
     return std::make_shared<CallNode>(stmtIndex, nameToken->getValue());
 }
