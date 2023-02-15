@@ -8,3 +8,10 @@ SourceTokenizerException::SourceTokenizerException() = default;
 
 SourceTokenizerException::SourceTokenizerException(const std::string &errorMessage) : TokenizerException(errorMessage) {
 }
+
+SourceExtractorException::SourceExtractorException() : std::runtime_error(BaseExtractRuntimeExceptionMessage) {
+}
+
+SourceExtractorException::SourceExtractorException(const std::string &errorMessage) : runtime_error(errorMessage) {
+}
+
