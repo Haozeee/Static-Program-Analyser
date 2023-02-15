@@ -21,11 +21,11 @@ class StorageManager {
         storageUtil = std::make_shared<StorageUtil>();
     }
 
-    std::shared_ptr<WriteStorage> getWriteManager() {
+    std::shared_ptr<WriteStorage> getWriteStorage() {
         return std::make_shared<WriteStorage>(storageUtil);
     }
 
-    std::shared_ptr<ReadStorage> getReadManager() {
+    std::shared_ptr<ReadStorage> getReadStorage() {
         return std::make_shared<ReadStorage>(storageUtil);
     }
 };
