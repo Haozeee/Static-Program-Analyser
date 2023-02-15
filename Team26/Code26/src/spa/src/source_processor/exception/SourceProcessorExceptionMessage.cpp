@@ -43,3 +43,11 @@ extern const char ParserInvalidTermFormatExceptionMessage[] = "Invalid term clau
 extern const char ParserInvalidFactorLengthExceptionMessage[] = "Invalid attempt to parse multi-token clause as factor "
                                                                 "deteched. Valid factor clauses include: 1 name token,"
                                                                 " 1 integer token";
+
+extern const char BaseExtractRuntimeExceptionMessage[] =
+        "A run time error occurred with the Base Extractor.";
+
+extern const char BaseExtractorEmptyStatementListExceptionMessage[] =
+        "Empty Statement list detected.";
+extern const char BaseExtractorEmptyProcedureListExceptionMessage[] =
+        "Empty Procedure list detected.";
