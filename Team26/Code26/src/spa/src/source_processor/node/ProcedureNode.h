@@ -7,8 +7,8 @@
 
 class ProcedureNode : public Node {
  public:
-    std::string procedureName;
-    std::shared_ptr<StmtListNode> stmtListNode;
+    const std::string procedureName;
+    const std::shared_ptr<StmtListNode> stmtListNode;
 
     ProcedureNode(std::string procedureName, std::shared_ptr<StmtListNode> stmtListNode);
 };

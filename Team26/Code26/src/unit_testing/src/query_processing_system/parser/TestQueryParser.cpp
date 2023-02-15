@@ -1,4 +1,7 @@
 #include "catch.hpp"
+#include <string>
+#include <memory>
+#include <vector>
 #include "common/tokenizer/token/NameToken.h"
 #include "common/tokenizer/token/SpecialCharToken.h"
 #include "common/tokenizer/token/EndOfFileToken.h"

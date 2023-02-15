@@ -16,8 +16,8 @@ enum class StmtType {
 
 class StmtNode : public Node {
  public:
-    int stmtIndex;
-    StmtType stmtType;
+    const int stmtIndex;
+    const StmtType stmtType;
 
     virtual void evaluate(IStmtExtractor& extractor) = 0;
     virtual void evaluatePattern(IPatternExtractor& extractor);

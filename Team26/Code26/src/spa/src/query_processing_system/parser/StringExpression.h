@@ -14,7 +14,7 @@ class StringExpression {
     /**
      * Whether the expression is a Wildcard, represented by '_'.
      */
-    bool isWildcard;
+    bool isWildcard = false;
 
     /**
      * Whether the expression is an exact or partial match.
@@ -31,9 +31,7 @@ class StringExpression {
 
     StringExpression(bool isExactMatch, std::string expression);
 
-    bool getIsWildcard();
-
-    bool getIsExactMatch();
+    bool matchesString(std::string str);
 
     std::string getExpression();
 };

@@ -6,7 +6,7 @@
 
 class StmtListNode : public Node {
  public:
-    std::vector<std::shared_ptr<StmtNode>> stmtList;
+    const std::vector<std::shared_ptr<StmtNode>> stmtList;
 
     explicit StmtListNode(std::vector<std::shared_ptr<StmtNode>> stmtList);
 };

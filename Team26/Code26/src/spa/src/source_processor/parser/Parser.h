@@ -22,6 +22,16 @@
 
 
 class Parser : public AbstractParser {
+ private:
+    std::shared_ptr<CondExprNode> parseCondExprNode(int startIndex, int endIndex);
+    std::shared_ptr<ExprNode> parseFactor(int index, int endIndex);
+    bool isBinaryCondOperator();
+    bool isIllegalArithmeticSplChar();
+    OperatorType getOperator();
+    bool isExprOperator();
+    bool isTermOperator();
+    bool isFactor();
+
  public:
     int stmtIndex;
     std::shared_ptr<ProcedureNode> parseProcedure();
@@ -32,13 +42,13 @@ class Parser : public AbstractParser {
     std::shared_ptr<WhileNode> parseWhile();
     std::shared_ptr<IfNode> parseIf();
     std::shared_ptr<AssignNode> parseAssign(std::shared_ptr<Token> nameToken);
-    std::shared_ptr<CondExprNode> parseCondExprNode(int startIndex, int endIndex);
+    std::shared_ptr<CondExprNode> parseConditional();
+
     std::shared_ptr<RelExpr> parseRelExpr(int startIndex, int endIndex);
     std::shared_ptr<ExprNode> parseExprNode(int startIndex, int endIndex);
     std::shared_ptr<ExprNode> parseTerm(int startIndex, int endIndex);
     std::string toString(int startIndex, int endIndex);
 
-// public:
     explicit Parser(std::vector<std::shared_ptr<Token>> tokens);
     std::shared_ptr<ProgramNode> parse();
 };

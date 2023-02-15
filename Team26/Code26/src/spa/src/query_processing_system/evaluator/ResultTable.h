@@ -160,8 +160,8 @@ class ResultTable {
     int getNumberOfRows() const;
 
     /**
-     * Get the column names of this table.
-     * @return
+     * Get the column names of this table. The order of the column
+     * names matter.
      */
     TableRow getColumnsNames() const;
 
