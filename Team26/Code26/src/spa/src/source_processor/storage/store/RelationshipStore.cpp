@@ -14,11 +14,11 @@ RelationshipStore::RelationshipStore(std::shared_ptr<WriteStorage> storage) {
 }
 
 
-void RelationshipStore::insertFollowsRelationship(const int &previousStmtNo, int &currentStmtNo) {
+void RelationshipStore::insertFollowsRelationship(const int &previousStmtNo, const int &currentStmtNo) {
     followsManager->insertRelationship(previousStmtNo, currentStmtNo, followsTManager);
 }
 
-void RelationshipStore::insertParentsRelationship(const int &parentStmtNo, int &childStmtNo) {
+void RelationshipStore::insertParentsRelationship(const int &parentStmtNo, const int &childStmtNo) {
     parentManager->insertRelationship(parentStmtNo, childStmtNo, parentTManager);
 }
 
