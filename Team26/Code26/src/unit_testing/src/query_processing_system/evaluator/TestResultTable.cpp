@@ -15,7 +15,7 @@ auto tableB = ResultTable::createDoubleColumnTable(tableBCol1, tableBItems1, tab
 
 TEST_CASE("Single Table") {
     // Check correct dimensions of table
-    REQUIRE(tableA->getNumberOfRows() == 1);
+    REQUIRE(tableA->getNumberOfRows() == tableAItems.size());
     // REQUIRE(tableA->getColumnsNames() == {tableACol});
     std::unordered_set<std::string> items {"a", "b", "c"};
     std::string colName = "col1";
