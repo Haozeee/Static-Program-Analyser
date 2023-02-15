@@ -9,7 +9,7 @@
 class PatternExtractor : public BaseExtractor, public IPatternExtractor {
  private:
     std::shared_ptr<IPatternStore> patternStore;
-    
+
     bool isSupported(StmtType type);
 
     void extractStmt(std::shared_ptr<StmtNode> node) override;

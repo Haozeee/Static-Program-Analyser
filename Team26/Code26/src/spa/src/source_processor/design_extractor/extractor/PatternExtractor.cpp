@@ -8,7 +8,7 @@ PatternExtractor::PatternExtractor(std::shared_ptr<IPatternStore> storage) : Bas
 
 bool PatternExtractor::isSupported(StmtType type) {
     return type == StmtType::STMT_ASSIGN || type == StmtType::STMT_IF || type == StmtType::STMT_WHILE;
-};
+}
 
 void PatternExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
     if (isSupported(node->stmtType)) {

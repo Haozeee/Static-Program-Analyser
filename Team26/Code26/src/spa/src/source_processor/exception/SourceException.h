@@ -17,7 +17,6 @@ class SourceParserException : public ParserException {
     explicit SourceParserException(const std::string& errorMessage);
 };
 
-
 class SourceExtractorException : public std::runtime_error {
  public:
     SourceExtractorException();
