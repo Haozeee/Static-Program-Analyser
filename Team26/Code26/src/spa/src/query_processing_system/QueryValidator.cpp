@@ -83,7 +83,7 @@ void QueryValidator::validatePatternClause() {
     for (auto clause : query->getPatternClause()) {
         auto validationResult = clause->isValidClause();
         auto leftArg = clause->getLeftArg();
-        switch(validationResult) {
+        switch (validationResult) {
             case PatternClauseValidationResult::INVALID_LEFT_ARG_TYPE:
                 throw QueryValidationException(leftArg.getValue()
                                                + QueryValidatorInvalidFirstArgumentTypeInRelation);

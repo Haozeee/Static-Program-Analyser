@@ -2,6 +2,7 @@
 
 #include <utility>
 #include <variant>
+#include <unordered_set>
 
 #include "query_processing_system/parser/clause/Clause.h"
 #include "query_processing_system/parser/Argument.h"
