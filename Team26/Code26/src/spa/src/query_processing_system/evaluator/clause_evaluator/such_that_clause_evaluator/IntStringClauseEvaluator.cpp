@@ -65,7 +65,7 @@ void IntStringClauseEvaluator::evaluateSynonymSynonym(StoragePointer storage) {
 
 std::unordered_set<std::string> IntStringClauseEvaluator::evaluateNumberSynonymHelper(StoragePointer storage,
                                                                                       int stmtNumber) {
-    auto parentRelation = storage->getParentTManager()->getAllRelationshipEntries();
+    auto parentRelation = getChildrenRelationMap(storage);
     auto iterator = parentRelation.find(stmtNumber);
     auto relationshipStore = getRelationshipManager(storage);
     std::unordered_set<std::string> res;
@@ -85,11 +85,15 @@ std::unordered_set<std::string> IntStringClauseEvaluator::evaluateNumberSynonymH
 }
 
 void IntStringClauseEvaluator::evaluateNumberWildcard(StoragePointer storage) {
-    auto relationStore = getRelationshipManager(storage);
-    auto iterator = relationStore.find(stoi(leftArg.getValue()));
-    if (iterator == relationStore.end() || iterator->second.empty()) {
+    auto res = evaluateNumberSynonymHelper(storage, stoi(leftArg.getValue()));
+    if (res.empty()) {
         clauseResultTable->setNoResults();
     }
+}
+
+std::unordered_map<int, std::unordered_set<int>>
+IntStringClauseEvaluator::getChildrenRelationMap(StoragePointer storage) {
+    return storage->getParentTManager()->getAllRelationshipEntries();
 }
 
 void IntStringClauseEvaluator::handleLeftWildcard() {

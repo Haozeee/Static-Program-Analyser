@@ -21,7 +21,7 @@ std::shared_ptr<ResultTable> IntIntClauseEvaluator::evaluateClause(StoragePointe
                 argumentType == ClauseArgumentTypes::WILDCARD_NUMBER) {
         evaluateNumberWithWildcard(storage);
     } else if (argumentType == ClauseArgumentTypes::WILDCARD_WILDCARD) {
-        // No evaluation needed
+        evaluateWildcardWildcard(storage);
     } else {
         throw std::exception();
     }
@@ -29,9 +29,6 @@ std::shared_ptr<ResultTable> IntIntClauseEvaluator::evaluateClause(StoragePointe
     return clauseResultTable;
 }
 
-/**
- * Evaluate a such that clause in the form of clause(int, int)
- */
 void IntIntClauseEvaluator::evaluateNumberNumber(StoragePointer storage) {
     auto relationshipStore = getRelationshipManager(storage);
     auto iterator = relationshipStore.find(stoi(leftArg.getValue()));
@@ -41,9 +38,6 @@ void IntIntClauseEvaluator::evaluateNumberNumber(StoragePointer storage) {
     }
 }
 
-/**
- * Evaluate a such that clause in the form of clause(int, synonym)
- */
 void IntIntClauseEvaluator::evaluateNumberSynonym(StoragePointer storage) {
     auto synonymValues = getRightArgEntities(storage);
     auto relationshipStore = getRelationshipManager(storage);
@@ -55,9 +49,6 @@ void IntIntClauseEvaluator::evaluateNumberSynonym(StoragePointer storage) {
     setRightArgResult(res);
 }
 
-/**
- * Evaluate a such that clause in the form of clause(synonym, int)
- */
 void IntIntClauseEvaluator::evaluateSynonymNumber(StoragePointer storage) {
     auto synonymValues = getLeftArgEntities(storage);
     auto relationshipStore = getOppositeRelationshipManager(storage);
@@ -69,9 +60,6 @@ void IntIntClauseEvaluator::evaluateSynonymNumber(StoragePointer storage) {
     setLeftArgResult(res);
 }
 
-/**
- * Evaluate a such that clause in the form of clause(synonym, synonym)
- */
 void IntIntClauseEvaluator::evaluateSynonymSynonym(StoragePointer storage) {
     // Maybe can make use of the opposite relationship map??
     auto filteredMap = PkbUtil::filterMap(getRelationshipManager(storage), getLeftArgEntities(storage));
@@ -92,6 +80,12 @@ void IntIntClauseEvaluator::evaluateNumberWithWildcard(StoragePointer storage) {
     }
 }
 
+void IntIntClauseEvaluator::evaluateWildcardWildcard(StoragePointer storage) {
+    auto relationMap = getRelationshipManager(storage);
+    if (relationMap.empty()) {
+        clauseResultTable->setNoResults();
+    }
+}
 void IntIntClauseEvaluator::evaluateWildcardSynonym(StoragePointer storage) {
     handleLeftWildcard();
     evaluateSynonymSynonym(storage);
