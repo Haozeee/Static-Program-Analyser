@@ -168,82 +168,82 @@ while w;
 Select w such that Parent(_, w)
 11, 13, 23
 5000
-34 - Parent: _, while
+35 - Parent: _, while
 while w;
 Select w such that Parent(_, w)
 11, 13, 23
 5000
-34 - Parent: _, stmt number (true)
+36 - Parent: _, stmt number (true)
 constant c;
 Select c such that Parent(_, 4)
 1, 2, 3, 8, 9, 10, 11, 18, 55555, 1234567
 5000
-35 - Parent: _, stmt number (false)
+37 - Parent: _, stmt number (false)
 constant c;
 Select c such that Parent(_, 2)
 none
 5000
-36 - Parent: stmt number, stmt
+38 - Parent: stmt number, stmt
 stmt s;
 Select s such that Parent(5, s)
 6, 7, 11, 21, 22, 23
 5000
-37 - Parent: stmt number, read
+39 - Parent: stmt number, read
 read r;
 Select r such that Parent(26, r)
 30
 5000
-38 - Parent: stmt number, print
+40 - Parent: stmt number, print
 print p;
 Select p such that Parent(26, p)
 27, 29
 5000
-39 - Parent: stmt number, assign
+41 - Parent: stmt number, assign
 assign a;
 Select a such that Parent(5, a)
 6, 22
 5000
-40 - Parent: stmt number, if
+42 - Parent: stmt number, if
 if ifs;
 Select ifs such that Parent(3, ifs)
 5
 5000
-41 - Parent: stmt number, while
+43 - Parent: stmt number, while
 while w;
 Select w such that Parent(5, w)
 11, 23
 5000
-37 - Parent: stmt number, _ (select true)
+44 - Parent: stmt number, _ (select true)
 constant c;
 Select c such that Parent(3, _)
 1, 2, 3, 8, 9, 10, 11, 18, 55555, 1234567
 5000
-38 - Parent: stmt number, stmt number (true)
+45 - Parent: stmt number, stmt number (true)
 constant c;
 Select c such that Parent(3, 4)
 1, 2, 3, 8, 9, 10, 11, 18, 55555, 1234567
 5000
-39 - Parent: stmt number, stmt number (false)
+46 - Parent: stmt number, stmt number (false)
 constant c;
 Select c such that Parent(1, 2)
 none
 5000
-40 - Parent: _, _
+47 - Parent: _, _
 constant c;
 Select c such that Parent(_, _)
 1, 2, 3, 8, 9, 10, 11, 18, 55555, 1234567
 5000
-41 - Parent: _, constant
+48 - Parent: _, constant
 constant c;
 Select c such that Parent(3, c)
 SemanticError
 5000
-42 - Parent: stmt, read (select instead of Select)
+49 - Parent: stmt, read (select instead of Select)
 stmt s; read r;
 select s such that Parent(s, r)
 SyntaxError
 5000
-42 - Parent: stmt, read (missing ;)
+50 - Parent: stmt, read (missing ;)
 stmt s; read r
 select s such that Parent(s, r)
 SyntaxError
