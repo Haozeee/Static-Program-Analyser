@@ -3,7 +3,7 @@
 #include <memory>
 #include "source_processor/node/ProgramNode.h"
 #include "source_processor/storage/Store.h"
-#include "program_knowledge_base/WriteOnlyStorage.h"
+#include "program_knowledge_base/StorageManager.h"
 #include "source_processor/design_extractor/extractor/BaseExtractor.h"
 
 

@@ -17,10 +17,11 @@ void SourceManager::process(const std::string& filename, std::shared_ptr<IStore>
     auto tokens = sourceTokenizer.tokenize();
 
     Parser sourceParser = Parser(tokens);
-    auto programNode = sourceParser.parse();
+    sourceParser.parse();
+    std::shared_ptr<ProgramNode> programRoot = sourceParser.getProgramNode();
 
     DesignExtractor designExtractor = DesignExtractor(std::move(store));
-    designExtractor.extract(programNode);
+    designExtractor.extract(programRoot);
 
     input.close();
 }

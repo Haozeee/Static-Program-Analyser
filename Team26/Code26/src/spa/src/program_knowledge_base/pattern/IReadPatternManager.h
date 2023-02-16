@@ -4,7 +4,7 @@
 #include <vector>
 #include <unordered_map>
 
-class ReadOnlyPatternManager {
+class IReadPatternManager {
  public:
     virtual bool isEmptyLhsVector() = 0;
     virtual bool isEmptyRhsVector() = 0;

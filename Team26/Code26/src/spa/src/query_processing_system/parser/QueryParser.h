@@ -89,5 +89,5 @@ class QueryParser : public AbstractParser {
     /**
      * Parses tokens and returns Query wrapper object.
      */
-    void parse();
+    void parse() override;
 };

@@ -3,7 +3,7 @@
 #include <unordered_set>
 
 template<typename T>
-class ReadOnlyEntityManager {
+class IReadEntityManager {
  public:
     virtual bool isEmpty() = 0;
     virtual bool contains(T) = 0;

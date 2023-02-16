@@ -1,10 +1,10 @@
 #pragma once
 #include <memory>
 #include "../PkbUtil.h"
-#include "../../../program_knowledge_base/ReadOnlyStorage.h"
+#include "../../../program_knowledge_base/StorageManager.h"
 #include "../ResultTable.h"
 
-using StoragePointer = std::shared_ptr<ReadOnlyStorage>;
+using StoragePointer = std::shared_ptr<ReadStorage>;
 
 class ClauseEvaluator {
  public:
