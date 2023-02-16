@@ -21,7 +21,7 @@ bool StringExpression::matchesString(std::string str) {
     } else {
         // check partial match
         auto expressionTree = ShuntingYardParser::parse(expression);
-        auto partialTree = ShuntingYardParser::parse(str);
-        return ShuntNode::isSubTree(expressionTree, partialTree);
+        auto statementTree = ShuntingYardParser::parse(str);
+        return ShuntNode::isSubTree(statementTree, expressionTree);
     }
 }
