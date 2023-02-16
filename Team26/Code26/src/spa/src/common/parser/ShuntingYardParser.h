@@ -6,6 +6,7 @@
 #include <utility>
 #include <vector>
 #include <memory>
+#include <unordered_map>
 #include "ShuntNode.h"
 
 class ShuntingYardParser {
@@ -19,7 +20,12 @@ class ShuntingYardParser {
     static std::shared_ptr<ShuntNode> parse(std::string expr) {
         std::stack<std::shared_ptr<ShuntNode>> result;
         std::stack<char> opStack;
-        std::vector<char> ops{'+', '-', '*', '/', '%', '(', ')'};
+        std::unordered_map<char, int> ranking;
+        ranking['+'] = 1;
+        ranking['-'] = 1;
+        ranking['*'] = 2;
+        ranking['/'] = 2;
+        ranking['%'] = 2;
 
         for (int i = 0; i < expr.size(); ++i) {
             const char c = expr[i];
@@ -55,8 +61,7 @@ class ShuntingYardParser {
                     }
                     opStack.pop();
                 } else {
-                    while (!opStack.empty() && opStack.top() != '(' && ((c == '*' || c == '/' || c == '%') || (opStack
-                    .top() =='+' || opStack.top() == '-'))) {
+                    while (!opStack.empty() && ranking[opStack.top()] >= ranking[c]) {
                         std::shared_ptr<ShuntNode> node = std::make_shared<ShuntNode>(std::string(1, opStack.top()));
                         opStack.pop();
                         node->right = result.top();
