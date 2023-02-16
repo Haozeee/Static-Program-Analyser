@@ -1,4 +1,6 @@
 #include "StringExpression.h"
+#include "common/parser/ShuntNode.h"
+#include "common/parser/ShuntingYardParser.h"
 
 StringExpression::StringExpression(bool isWildcard) : isWildcard(isWildcard) {}
 
@@ -17,7 +19,9 @@ bool StringExpression::matchesString(std::string str) {
     if (isExactMatch) {
         return str == expression;
     } else {
-        // check if expression is a substring of str
-        return str.find(expression) != std::string::npos;
+        // check partial match
+        auto expressionTree = ShuntingYardParser::parse(expression);
+        auto partialTree = ShuntingYardParser::parse(str);
+        return ShuntNode::isSubTree(expressionTree, partialTree);
     }
 }
