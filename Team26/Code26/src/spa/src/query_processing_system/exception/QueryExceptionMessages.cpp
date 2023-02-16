@@ -1,5 +1,8 @@
 #include "QueryExceptionMessages.h"
 
+/**
+ * Semantic Errors
+ */
 const char QueryValidatorDuplicatedSynonymInDeclaration[] =
         "No duplicated synonyms allowed. This synonym has been declared more than once: ";
 const char QueryValidatorUndeclaredSelectClauseSynonym[] =
@@ -20,16 +23,20 @@ const char QueryValidatorInvalidSecondDesignEntityInRelation[] =
         " is not a valid second argument for the given relation.";
 const char QueryValidatorNoRepeatArgumentsAllowed[] =
         "Repeat arguments are not allowed in the given relation.";
+const char QueryValidatorInvalidModifiesOrUsesRelationshipInSelectClause[] =
+        " relationship was not created as the first argument cannot be identified. Note that wildcards are invalid.";
+const char QueryInvalidCreatePatternArgument[] =
+        " needs to be declared as an assign synonym to be used in an assign pattern clause.";
 
+/**
+ * Syntax Errors
+ */
 const char QueryParserInvalidRelationshipInSelectClause[] =
         " is not a valid relationship, please modify your input. Note that PQL is case-sensitive.";
-const char QueryParserInvalidModifiesOrUsesRelationshipInSelectClause[] =
-        " relationship was not created as the first argument cannot be identified. Note that wildcards are invalid.";
 const char QueryParserInvalidTokenForRelationshipArgument[] =
         " is an invalid argument type in the relationship clause. Please modify your input.";
 const char QueryParserInvalidEndingSemicolon[] =
         "Please remove the semicolon at the end of your Select clause.";
 const char QueryParserUnexpectedToken[] =
         "Please check your input, unexpected token while parsing: ";
-const char QueryInvalidCreatePatternArgument[] =
-        " needs to be declared as an assign synonym to be used in an assign pattern clause.";
+

@@ -49,17 +49,11 @@ void QueryManager::process(const std::string& query, std::list<std::string> &res
                 results.push_back(str);
             }
         }
-    } catch (QueryValidationException) {
+    } catch (QuerySemanticException) {
         addSemanticError(results);
-    } catch (QueryInvalidRelationship) {
+    } catch (QuerySyntaxException) {
         addSyntaxError(results);
-    } catch (QueryParserException) {
-        addSyntaxError(results);
-    } catch (QueryInvalidRelationshipArguments) {
-        addSyntaxError(results);
-    } catch (QueryInvalidPatternArgument) {
-        addSyntaxError(results);
-    } catch (TokenizerException) {
+    } catch (ParserException) {
         addSyntaxError(results);
     }
 
