@@ -32,8 +32,10 @@ class Parser : public AbstractParser {
     bool isTermOperator();
     bool isFactor();
 
- public:
+    std::shared_ptr<ProgramNode> programRoot;
+
     int stmtIndex;
+    std::shared_ptr<ProgramNode> parseProgram();
     std::shared_ptr<ProcedureNode> parseProcedure();
     std::shared_ptr<StmtListNode> parseStmtList();
     std::shared_ptr<ReadNode> parseRead();
@@ -49,6 +51,10 @@ class Parser : public AbstractParser {
     std::shared_ptr<ExprNode> parseTerm(int startIndex, int endIndex);
     std::string toString(int startIndex, int endIndex);
 
+ public:
     explicit Parser(std::vector<std::shared_ptr<Token>> tokens);
-    std::shared_ptr<ProgramNode> parse();
+
+    void parse() override;
+
+    std::shared_ptr<ProgramNode> getProgramNode();
 };

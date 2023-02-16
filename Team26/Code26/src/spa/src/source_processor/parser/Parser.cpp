@@ -35,7 +35,11 @@
 Parser::Parser(std::vector<std::shared_ptr<Token>> tokens)
     : AbstractParser(tokens), stmtIndex(INITIAL_STMT_INDEX) {}
 
-std::shared_ptr<ProgramNode> Parser::parse() {
+void Parser::parse() {
+    programRoot = parseProgram();
+}
+
+std::shared_ptr<ProgramNode> Parser::parseProgram() {
     std::vector<std::shared_ptr<ProcedureNode>> procedureList;
     while (!isTypeOf(TokenType::TOKEN_END_OF_FILE)) {
         procedureList.emplace_back(parseProcedure());
@@ -454,4 +458,8 @@ std::string Parser::toString(int startIndex, int endIndex) {
 
     index = oldIndex;
     return result;
+}
+
+std::shared_ptr<ProgramNode> Parser::getProgramNode() {
+    return this->programRoot;
 }

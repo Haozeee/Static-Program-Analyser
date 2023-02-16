@@ -6,7 +6,7 @@ TEST_CASE("Parser parse empty") {
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
     std::shared_ptr<ProgramNode> programNode;
 
-    REQUIRE_THROWS(programNode = Parser(tokens).parse());\
+    REQUIRE_THROWS(Parser(tokens).parse());
 }
 
 TEST_CASE("Parser parse procedure") {
@@ -18,7 +18,11 @@ TEST_CASE("Parser parse procedure") {
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
     std::shared_ptr<ProgramNode> programNode;
-    REQUIRE_NOTHROW(programNode = Parser(tokens).parse());
+    REQUIRE_NOTHROW(Parser(tokens).parse());
+
+    auto parser = Parser(tokens);
+    parser.parse();
+    programNode = parser.getProgramNode();
 
     CHECK(programNode->procedureList.size() == 1);
     CHECK(programNode->procedureList[0]->procedureName == "proc");
@@ -36,7 +40,9 @@ TEST_CASE("Parser parse procedure") {
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-    programNode = Parser(tokens).parse();
+    parser = Parser(tokens);
+    parser.parse();
+    programNode = parser.getProgramNode();
 
     REQUIRE(programNode->procedureList.size() == 2);
     CHECK(programNode->procedureList[0]->procedureName == "proc1");
@@ -57,7 +63,11 @@ TEST_CASE("Parser parse read") {
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
     std::shared_ptr<ProgramNode> programNode;
-    REQUIRE_NOTHROW(programNode = Parser(tokens).parse());
+    REQUIRE_NOTHROW(Parser(tokens).parse());
+
+    auto parser = Parser(tokens);
+    parser.parse();
+    programNode = parser.getProgramNode();
 
     REQUIRE(programNode->procedureList.size() == 1);
     CHECK(programNode->procedureList[0]->procedureName == "proc");
@@ -82,7 +92,11 @@ TEST_CASE("Parser parse print") {
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
     std::shared_ptr<ProgramNode> programNode;
-    REQUIRE_NOTHROW(programNode = Parser(tokens).parse());
+    REQUIRE_NOTHROW(Parser(tokens).parse());
+
+    auto parser = Parser(tokens);
+    parser.parse();
+    programNode = parser.getProgramNode();
 
     REQUIRE(programNode->procedureList.size() == 1);
     CHECK(programNode->procedureList[0]->procedureName == "proc");
@@ -107,7 +121,11 @@ TEST_CASE("Parser parse call") {
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
     std::shared_ptr<ProgramNode> programNode;
-    REQUIRE_NOTHROW(programNode = Parser(tokens).parse());
+    REQUIRE_NOTHROW(Parser(tokens).parse());
+
+    auto parser = Parser(tokens);
+    parser.parse();
+    programNode = parser.getProgramNode();
 
     REQUIRE(programNode->procedureList.size() == 1);
     CHECK(programNode->procedureList[0]->procedureName == "proc");
@@ -133,7 +151,11 @@ TEST_CASE("Parser parse assign int") {
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
     std::shared_ptr<ProgramNode> programNode;
-    REQUIRE_NOTHROW(programNode = Parser(tokens).parse());
+    REQUIRE_NOTHROW(Parser(tokens).parse());
+
+    auto parser = Parser(tokens);
+    parser.parse();
+    programNode = parser.getProgramNode();
 
     REQUIRE(programNode->procedureList.size() == 1);
     CHECK(programNode->procedureList[0]->procedureName == "proc");
@@ -163,7 +185,11 @@ TEST_CASE("Parser parse assign factor") {
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
     std::shared_ptr<ProgramNode> programNode;
-    REQUIRE_NOTHROW(programNode = Parser(tokens).parse());
+    REQUIRE_NOTHROW(Parser(tokens).parse());
+
+    auto parser = Parser(tokens);
+    parser.parse();
+    programNode = parser.getProgramNode();
 
     REQUIRE(programNode->procedureList.size() == 1);
     CHECK(programNode->procedureList[0]->procedureName == "proc");
@@ -209,7 +235,11 @@ TEST_CASE("Parser parse if") {
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
 
     std::shared_ptr<ProgramNode> programNode;
-    REQUIRE_NOTHROW(programNode = Parser(tokens).parse());
+    REQUIRE_NOTHROW(Parser(tokens).parse());
+
+    auto parser = Parser(tokens);
+    parser.parse();
+    programNode = parser.getProgramNode();
 }
 
 TEST_CASE("Parser parse while") {
@@ -238,5 +268,5 @@ TEST_CASE("Parser parse while") {
     tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
 
     std::shared_ptr<ProgramNode> programNode;
-    REQUIRE_NOTHROW(programNode = Parser(tokens).parse());
+    REQUIRE_NOTHROW(Parser(tokens).parse());
 }
