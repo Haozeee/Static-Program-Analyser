@@ -31,6 +31,10 @@ std::shared_ptr<Token> TestParser::parseNext(const std::string& value) {
     return AbstractParser::parseNext(value);
 }
 
+void TestParser::parse() {
+
+}
+
 TEST_CASE("Test hasNext") {
     SECTION("TRUTHY") {
         std::vector<std::shared_ptr<Token>> tokens;
