@@ -51,8 +51,7 @@ class Parser : public AbstractParser {
     std::shared_ptr<ExprNode> parseTerm(int startIndex, int endIndex);
     std::string toString(int startIndex, int endIndex);
 
-public:
-
+ public:
     explicit Parser(std::vector<std::shared_ptr<Token>> tokens);
 
     void parse() override;
