@@ -24,6 +24,7 @@ std::unordered_set<DesignEntity> IntIntClause::getValidLeftDesignEntity() {
         DesignEntity::CALL,
         DesignEntity::PRINT,
         DesignEntity::READ,
+        DesignEntity::IF,
     };
 }
 

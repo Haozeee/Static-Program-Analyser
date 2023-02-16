@@ -14,4 +14,5 @@ class TestParser : public AbstractParser {
     bool isValueOf(const std::string& value);
     std::shared_ptr<Token> parseNext(TokenType type);
     std::shared_ptr<Token> parseNext(const std::string& value);
+    void parse();
 };

@@ -67,6 +67,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
     /**
+     * Evaluate a such that clause in the form of clause(synonym, synonym).
      * This is a valid evaluation parameter for all such that clauses,
      * hence it exists in the parent class.
      */
@@ -87,7 +88,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
      * the query.
      */
     void optimiseResults() {
-        if (clauseResultTable->getColumnsNames().size() > 0 && clauseResultTable->getNumberOfRows() == 0) {
+        if (!clauseResultTable->getColumnsNames().empty() && clauseResultTable->getNumberOfRows() == 0) {
             clauseResultTable->setNoResults();
         }
     }
