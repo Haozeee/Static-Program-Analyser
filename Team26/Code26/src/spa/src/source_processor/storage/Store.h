@@ -5,7 +5,7 @@
 #include "source_processor/storage/interface/IEntityStore.h"
 #include "source_processor/storage/interface/IPatternStore.h"
 #include "source_processor/storage/interface/IStore.h"
-#include "program_knowledge_base/WriteOnlyStorage.h"
+#include "program_knowledge_base/StorageManager.h"
 
 class Store : public IStore {
  private:
@@ -14,7 +14,7 @@ class Store : public IStore {
     std::shared_ptr<IPatternStore> patternStore;
 
  public:
-    explicit Store(const std::shared_ptr<WriteOnlyStorage>& storage);
+    explicit Store(const std::shared_ptr<WriteStorage>& storage);
 
     std::shared_ptr<IEntityStore> getEntityStore() override;
     std::shared_ptr<IPatternStore> getPatternStore() override;

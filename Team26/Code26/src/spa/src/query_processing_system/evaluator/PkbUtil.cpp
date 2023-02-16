@@ -8,7 +8,7 @@ stringEntitySet PkbUtil::intSetToStringSet(std::unordered_set<int> intSet) {
 }
 
 
-std::unordered_set<std::string> PkbUtil::getEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage,
+std::unordered_set<std::string> PkbUtil::getEntitiesFromPkb(std::shared_ptr<ReadStorage> storage,
                                                             DesignEntity entity) {
     if (entity == DesignEntity::VARIABLE || entity == DesignEntity::PROCEDURE) {
         return PkbUtil::getStringEntitiesFromPkb(storage, entity);
@@ -17,7 +17,7 @@ std::unordered_set<std::string> PkbUtil::getEntitiesFromPkb(std::shared_ptr<Read
     }
 }
 
-std::unordered_set<std::string> PkbUtil::getStringEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage,
+std::unordered_set<std::string> PkbUtil::getStringEntitiesFromPkb(std::shared_ptr<ReadStorage> storage,
                                                                   DesignEntity entity) {
     switch (entity) {
         case DesignEntity::VARIABLE:
@@ -29,7 +29,7 @@ std::unordered_set<std::string> PkbUtil::getStringEntitiesFromPkb(std::shared_pt
     }
 }
 
-std::unordered_set<int> PkbUtil::getIntEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage, DesignEntity entity) {
+std::unordered_set<int> PkbUtil::getIntEntitiesFromPkb(std::shared_ptr<ReadStorage> storage, DesignEntity entity) {
     switch (entity) {
         case DesignEntity::ASSIGN:
             return storage->getAssignManager()->getAllEntitiesEntries();
@@ -46,7 +46,7 @@ std::unordered_set<int> PkbUtil::getIntEntitiesFromPkb(std::shared_ptr<ReadOnlyS
         case DesignEntity::CALL:
             return storage->getCallManager()->getAllEntitiesEntries();
         case DesignEntity::WHILE:
-            return {};
+            return storage->getWhileManager()->getAllEntitiesEntries();
         default:
             return {};
     }

@@ -1,11 +1,11 @@
 #pragma once
 #include <unordered_set>
-#include "WriteOnlyEntityManager.h"
-#include "ReadOnlyEntityManager.h"
+#include "IWriteEntityManager.h"
+#include "IReadEntityManager.h"
 
 template <typename T>
-class EntityManager : public WriteOnlyEntityManager<T>,
-        public ReadOnlyEntityManager<T> {
+class EntityManager : public IWriteEntityManager<T>,
+        public IReadEntityManager<T> {
  private:
     std::unordered_set<T> entities_set;
 

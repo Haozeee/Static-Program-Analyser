@@ -9,7 +9,7 @@
 #include "evaluator/QueryDb.h"
 
 void QueryManager::process(const std::string& query, std::list<std::string> &results,
-                           std::shared_ptr<StorageUtil> storageUtil) {
+                           std::shared_ptr<ReadStorage> storageUtil) {
     // Create Query object
     auto * queryObject = new Query();
     // Tokenize QPS query
@@ -31,10 +31,10 @@ void QueryManager::process(const std::string& query, std::list<std::string> &res
     // std::cout << *queryObject << "\n";
 
     // Create pkb read instance
-    auto storage = std::make_shared<ReadOnlyStorage>(storageUtil);
+//    auto storage = std::make_shared<ReadOnlyStorage>(storageUtil);
 
     // Evaluate query
-    QueryEvaluator evaluator = QueryEvaluator(queryObject, storage);
+    QueryEvaluator evaluator = QueryEvaluator(queryObject, storageUtil);
     QueryDb queryDb = evaluator.evaluateQuery();
     auto queryResults = queryDb.getInterestedResults();
 
