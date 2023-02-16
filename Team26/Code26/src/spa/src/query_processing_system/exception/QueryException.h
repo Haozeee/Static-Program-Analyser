@@ -1,38 +1,43 @@
 #pragma once
+
 #include <stdexcept>
 #include <string>
-#include "common/exception/ParserException.h"
 
-extern const std::string ValidationException;
+#include "QuerySemanticException.h"
+#include "QuerySyntaxException.h"
+
+extern const std::string ValidationExceptionMessage;
+extern const std::string ParserExceptionMessage;
 extern const std::string InvalidRelationship;
 extern const std::string InvalidArgument;
 
-class QueryValidationException : public std::runtime_error {
+class QueryValidationException : public QuerySemanticException {
  public:
-    QueryValidationException() : std::runtime_error(ValidationException) {}
-    explicit QueryValidationException(const std::string& errorMessage) : std::runtime_error(errorMessage) {}
+    QueryValidationException() : QuerySemanticException(ValidationExceptionMessage) {}
+    explicit QueryValidationException(const std::string& errorMessage) : QuerySemanticException(errorMessage) {}
 };
 
-class QueryInvalidRelationship : public std::runtime_error {
+class QueryInvalidPatternArgument : public QuerySemanticException {
  public:
-    QueryInvalidRelationship() : std::runtime_error(InvalidRelationship) {}
-    explicit QueryInvalidRelationship(const std::string& errorMessage) : std::runtime_error(errorMessage) {}
+    QueryInvalidPatternArgument() : QuerySemanticException(InvalidArgument) {}
+    explicit QueryInvalidPatternArgument(const std::string& errorMessage) : QuerySemanticException(errorMessage) {}
 };
 
-class QueryParserException : public ParserException {
+class QueryInvalidRelationshipArguments : public QuerySemanticException {
  public:
-    QueryParserException() : ParserException(InvalidArgument) {}
-    explicit QueryParserException(const std::string& errorMessage) : ParserException(errorMessage) {}
+    QueryInvalidRelationshipArguments() : QuerySemanticException(InvalidArgument) {}
+    explicit QueryInvalidRelationshipArguments(const std::string& errorMessage)
+        : QuerySemanticException(errorMessage) {}
 };
 
-class QueryInvalidRelationshipArguments : public std::runtime_error {
+class QueryInvalidRelationship : public QuerySyntaxException {
  public:
-    QueryInvalidRelationshipArguments() : std::runtime_error(InvalidArgument) {}
-    explicit QueryInvalidRelationshipArguments(const std::string& errorMessage) : std::runtime_error(errorMessage) {}
+    QueryInvalidRelationship() : QuerySyntaxException(InvalidRelationship) {}
+    explicit QueryInvalidRelationship(const std::string& errorMessage) : QuerySyntaxException(errorMessage) {}
 };
 
-class QueryInvalidPatternArgument : public std::runtime_error {
+class QueryParserException : public QuerySyntaxException {
  public:
-    QueryInvalidPatternArgument() : std::runtime_error(InvalidArgument) {}
-    explicit QueryInvalidPatternArgument(const std::string& errorMessage) : std::runtime_error(errorMessage) {}
+    QueryParserException() : QuerySyntaxException(ParserExceptionMessage) {}
+    explicit QueryParserException(const std::string& errorMessage) : QuerySyntaxException(errorMessage) {}
 };

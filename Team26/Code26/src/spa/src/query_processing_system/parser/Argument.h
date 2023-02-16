@@ -48,4 +48,6 @@ class Argument {
     ArgumentType getArgumentType();
 
     DesignEntity getDesignEntity();
+
+    bool operator==(const Argument &other) const;
 };

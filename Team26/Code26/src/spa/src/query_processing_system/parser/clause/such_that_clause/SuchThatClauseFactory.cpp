@@ -40,7 +40,7 @@ SuchThatClause *SuchThatClauseFactory::createSuchThatClause(std::string relation
             }
         } else {
             // Wildcards cannot be created
-            throw QueryInvalidRelationship(relation + QueryParserInvalidModifiesOrUsesRelationshipInSelectClause);
+            throw QueryValidationException(relation + QueryValidatorInvalidModifiesOrUsesRelationshipInSelectClause);
         }
     } else if (relation == FollowsRelation) {
         return new FollowsClause(std::move(leftArg), std::move(rightArg));
