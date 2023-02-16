@@ -87,5 +87,7 @@ class AbstractParser {
     * @param tokens The token list to be parse.
     * */
     explicit AbstractParser(std::vector<std::shared_ptr<Token>> tokens);
+
+    virtual void parse() = 0;
 };
 

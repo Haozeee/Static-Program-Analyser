@@ -15,3 +15,9 @@ std::string Argument::getValue() {
 DesignEntity Argument::getDesignEntity() {
     return designEntity;
 }
+
+bool Argument::operator==(const Argument &other) const {
+    return this->argumentType == other.argumentType
+        && this->value == other.value
+        && this->designEntity == other.designEntity;
+}

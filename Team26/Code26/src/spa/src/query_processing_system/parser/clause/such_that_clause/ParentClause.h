@@ -1,8 +1,8 @@
 #pragma once
 
-#include "IntStringClause.h"
+#include "IntIntClause.h"
 
-class ParentClause : public IntStringClause {
+class ParentClause : public IntIntClause {
  public:
     ParentClause(Argument leftArg, Argument rightArg);
 
