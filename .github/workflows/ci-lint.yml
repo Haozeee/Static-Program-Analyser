@@ -1,4 +1,4 @@
-name: CI for Linting - Windows
+name: CI for Linting
 
 on: [push]
 
