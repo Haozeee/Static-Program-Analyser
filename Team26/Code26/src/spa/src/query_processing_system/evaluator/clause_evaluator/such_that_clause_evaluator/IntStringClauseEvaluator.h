@@ -2,6 +2,7 @@
 #include "SuchThatClauseEvaluator.h"
 #include <string>
 #include <unordered_set>
+#include <unordered_map>
 #include <memory>
 
 class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string> {
@@ -35,6 +36,8 @@ class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string
     void evaluateNumberString(StoragePointer storage);
 
     void evaluateNumberWildcard(StoragePointer storage);
+
+    virtual std::unordered_map<int, std::unordered_set<int>> getChildrenRelationMap(StoragePointer storage);
 
  public:
     std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage) override;
