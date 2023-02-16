@@ -18,15 +18,16 @@ class QueryValidationException : public QuerySemanticException {
 };
 
 class QueryInvalidPatternArgument : public QuerySemanticException {
-public:
+ public:
     QueryInvalidPatternArgument() : QuerySemanticException(InvalidArgument) {}
     explicit QueryInvalidPatternArgument(const std::string& errorMessage) : QuerySemanticException(errorMessage) {}
 };
 
 class QueryInvalidRelationshipArguments : public QuerySemanticException {
-public:
+ public:
     QueryInvalidRelationshipArguments() : QuerySemanticException(InvalidArgument) {}
-    explicit QueryInvalidRelationshipArguments(const std::string& errorMessage) : QuerySemanticException(errorMessage) {}
+    explicit QueryInvalidRelationshipArguments(const std::string& errorMessage)
+        : QuerySemanticException(errorMessage) {}
 };
 
 class QueryInvalidRelationship : public QuerySyntaxException {
