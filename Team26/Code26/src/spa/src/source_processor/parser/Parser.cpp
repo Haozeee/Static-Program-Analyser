@@ -281,6 +281,10 @@ std::shared_ptr<ExprNode> Parser::parseExprNode(int startIndex, int endIndex) {
             numOfBrackets--;
             lastBracketIndex = (index > lastBracketIndex) ? index : lastBracketIndex;
         } else if (isValueOf(BRACKETS_START)) {
+            if (!isPrevTokenNonBracket && !isPrevTokenStartBracket) {
+                throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
+            }
+
             isPrevTokenNonBracket = false;
             isPrevTokenStartBracket = true;
             numOfBrackets++;
@@ -368,6 +372,10 @@ std::shared_ptr<ExprNode> Parser::parseTerm(int startIndex, int endIndex) {
             numOfBrackets--;
             lastBracketIndex = (index > lastBracketIndex) ? index : lastBracketIndex;
         } else if (isValueOf(BRACKETS_START)) {
+            if (!isPrevTokenNonBracket && !isPrevTokenStartBracket) {
+                throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
+            }
+
             isPrevTokenNonBracket = false;
             isPrevTokenStartBracket = true;
             numOfBrackets++;
