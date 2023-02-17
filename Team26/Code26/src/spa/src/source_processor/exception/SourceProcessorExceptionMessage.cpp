@@ -10,6 +10,8 @@ extern const char TokenizerSpecialCharExceptionMessage[] = "Invalid special char
 
 extern const char ParserEmptySourceExceptionMessage[] = "Source code contains no procedures. Valid source code is"
                                                         " contained within procedure blocks.";
+extern const char ParserEmptyStmtListExceptionMessage[] = "Empty stmt list detected. Valid stmt lists contain at "
+                                                          "least one stmt.";
 extern const char ParserInvalidStmtStartTokenTypeExceptionMessage[] = "Non-name token at start of statement list"
                                                                       " detected.";
 extern const char ParserInvalidStmtStartTokenUnknownExceptionMessage[] = "Invalid token at start of statement"

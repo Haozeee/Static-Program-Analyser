@@ -89,6 +89,10 @@ std::shared_ptr<StmtListNode> Parser::parseStmtList() {
         stmtList.emplace_back(stmtNode);
     }
 
+    if (stmtList.empty()) {
+        throw SourceParserException(ParserEmptyStmtListExceptionMessage);
+    }
+
     return std::make_shared<StmtListNode>(stmtList);
 }
 

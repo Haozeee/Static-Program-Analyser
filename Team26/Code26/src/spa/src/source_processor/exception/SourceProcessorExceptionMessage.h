@@ -4,6 +4,7 @@ extern const char TokenizerInvalidLogicalOpExceptionMessage[];
 extern const char TokenizerSpecialCharExceptionMessage[];
 
 extern const char ParserEmptySourceExceptionMessage[];
+extern const char ParserEmptyStmtListExceptionMessage[];
 extern const char ParserInvalidStmtStartTokenTypeExceptionMessage[];
 extern const char ParserInvalidStmtStartTokenUnknownExceptionMessage[];
 extern const char ParserInvalidFactorExceptionMessage[];
