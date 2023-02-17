@@ -8,6 +8,15 @@ stringEntitySet PkbUtil::intSetToStringSet(std::unordered_set<int> intSet) {
 }
 
 
+std::unordered_map<std::string, std::unordered_set<std::string>>
+PkbUtil::intMapTostringMap(std::unordered_map<int, std::unordered_set<int>> intMap) {
+    std::unordered_map<std::string, std::unordered_set<std::string>> res;
+    for (auto const& [k, v] : intMap) {
+        res.insert({std::to_string(k), PkbUtil::intSetToStringSet(v)});
+    }
+    return res;
+}
+
 std::unordered_set<std::string> PkbUtil::getEntitiesFromPkb(std::shared_ptr<ReadStorage> storage,
                                                             DesignEntity entity) {
     if (entity == DesignEntity::VARIABLE || entity == DesignEntity::PROCEDURE) {
