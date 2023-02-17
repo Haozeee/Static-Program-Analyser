@@ -48,7 +48,6 @@ std::shared_ptr<ProgramNode> Parser::parseProgram() {
     if (procedureList.empty()) {
         throw SourceParserException(ParserEmptySourceExceptionMessage);
     }
-
     return std::make_shared<ProgramNode>(procedureList);
 }
 
@@ -164,17 +163,19 @@ std::shared_ptr<CondExprNode> Parser::parseCondExprNode(int startIndex, int endI
 
     // If cond_expr = !(cond_expr)
     index = startIndex;
-    if (endIndex >= startIndex + 3 && isValueOf(NOT_OPERATOR) && getNext()->getValue() == BRACKETS_START) {
-        std::shared_ptr<CondExprNode> condExprNode = parseCondExprNode(startIndex + 2, endIndex - 1);
-        return std::make_shared<CondExprNode>(std::make_tuple(UnaryCondOperatorType::NOT, condExprNode),
-            toString(startIndex, endIndex));
+    if (endIndex >= startIndex + 3 && isValueOf(NOT_OPERATOR)) {
+        int currIndex = index;
+        index++;
+        if (getToken()->getValue() == BRACKETS_START) {
+            std::shared_ptr<CondExprNode> condExprNode = parseCondExprNode(startIndex + 2, endIndex - 1);
+            return std::make_shared<CondExprNode>(std::make_tuple(UnaryCondOperatorType::NOT, condExprNode),
+                toString(startIndex, endIndex));
+        }
+        index = currIndex;
     }
 
     // If cond_expr = (cond_expr) && (cond_expr) or cond_expr = (cond_expr) || (cond_expr)
     index = startIndex;
-    if (getToken()->getValue() != BRACKETS_START) {
-        throw SourceParserException(ParserInvalidBinaryCondExprFormatExceptionMessage);
-    }
 
     int numOfBrackets = 0;
     while (getToken()->getType() != TokenType::TOKEN_END_OF_FILE && index <= endIndex) {
@@ -206,7 +207,9 @@ std::shared_ptr<CondExprNode> Parser::parseCondExprNode(int startIndex, int endI
         getNext();
     }
 
-    throw SourceParserException(ParserInvalidBinaryCondExprFormatExceptionMessage);
+    // If cond_expr = rel_expr
+    return std::make_shared<CondExprNode>(parseRelExpr(startIndex, endIndex),
+        toString(startIndex, endIndex));
 }
 
 bool Parser::isBinaryCondOperator() {
@@ -247,7 +250,6 @@ std::shared_ptr<RelExpr> Parser::parseRelExpr(int startIndex, int endIndex) {
     int currIndex = index;
     auto exprNode1 = parseExprNode(startIndex, currIndex - 1);
     auto exprNode2 = parseExprNode(currIndex + 1, endIndex);
-
     return std::make_shared<RelExpr>(std::make_tuple(opType.value(), exprNode1, exprNode2));
 }
 
@@ -283,7 +285,7 @@ std::shared_ptr<ExprNode> Parser::parseExprNode(int startIndex, int endIndex) {
             index = currIndex;
             return std::make_shared<ExprNode>(std::make_shared<ExprNode::BinaryOpNode>
                 (getOperator(), exprNode1, exprNode2), toString(startIndex, endIndex));
-        } else if (isExprOperator()) {
+        } else if (isExprOperator() || isTermOperator()) {
             isprevTokenEndBracket = false;
         } else if (isFactor() && isprevTokenEndBracket) {
             throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
@@ -366,7 +368,7 @@ std::shared_ptr<ExprNode> Parser::parseTerm(int startIndex, int endIndex) {
             index = currIndex;
             return std::make_shared<ExprNode>(std::make_shared<ExprNode::BinaryOpNode>
                 (getOperator(), exprNode1, exprNode2), toString(startIndex, endIndex));
-        } else if (isTermOperator()) {
+        } else if (isTermOperator() || isExprOperator()) {
             isprevTokenEndBracket = false;
         } else if (isFactor() && isprevTokenEndBracket) {
             throw SourceParserException(ParserInvalidTermFormatExceptionMessage);
@@ -420,6 +422,7 @@ std::shared_ptr<AssignNode> Parser::parseAssign(std::shared_ptr<Token> nameToken
     auto exprNode = parseExprNode(currIndex, newIndex);
     index = newIndex + 1;
     parseNext(STMT_END);
+
     return std::make_shared<AssignNode>(stmtIndex, nameToken->getValue(), exprNode);
 }
 

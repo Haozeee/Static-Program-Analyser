@@ -12,7 +12,8 @@
 
 Tokenizer::Tokenizer(std::istream* stream) : AbstractTokenizer(stream) {}
 
-std::unordered_set<std::string> specialChar({"{", "}", ";", "(", ")", "=", ">", "<", "+", "-", "*", "/", "%", "!"});
+std::unordered_set<std::string> specialChar({"{", "}", ";", "(", ")", "=", ">", "<", "+", "-", "*", "/", "%", "!",
+                                             "&", "|"});
 std::unordered_set<std::string> validLogicalOps({"&&", "||", ">=", "<=", "==", "!="});
 std::unordered_set<std::string> firstOp({"&", "|", ">", "<", "=", "!"});
 std::unordered_set<char> secondOp({'&', '|', '='});
