@@ -32,6 +32,7 @@ TEST_CASE("Test Base Extractor") {
         CHECK(procedureNode->procedureName == procedureName);
 
         // Test Empty Stmt List
+        programNode = std::make_shared<ProgramNode>(procedureList);
         REQUIRE_THROWS(baseExtractor->extractProgram(programNode));
 
         // Test Valid extractStatement

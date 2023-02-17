@@ -27,7 +27,7 @@ void RelationshipExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
         relationshipStore->insertFollowsRelationship(currentFollowsNesting->back(), (node->stmtIndex));
     }
     currentFollowsNesting->push_back(node->stmtIndex);
-
+    
     if (!parentIndexStack.empty()) {
         relationshipStore->insertParentsRelationship(parentIndexStack.back(), node->stmtIndex);
     }

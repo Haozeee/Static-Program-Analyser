@@ -10,7 +10,7 @@ class TestExtractorUtil {
     static std::shared_ptr<IfNode> makeSimpleIfNode(int stmtNumber) {
         int ifNo = stmtNumber;
         int thenStmtNumber = ifNo + 1;
-        int elseStmtNumber = elseStmtNumber + 1;
+        int elseStmtNumber = thenStmtNumber + 1;
 
         auto constExprNode1 = std::make_shared<ExprNode>("1", ExprNodeType::FACTOR_CONSTANT);
         auto constExprNode2 = std::make_shared<ExprNode>("1", ExprNodeType::FACTOR_CONSTANT);
@@ -21,7 +21,7 @@ class TestExtractorUtil {
         std::shared_ptr<CondExprNode> condExpr = std::make_shared<CondExprNode>(relExpr, "1=1");
 
         std::shared_ptr<ReadNode> thenReadNode = std::make_shared<ReadNode>(thenStmtNumber, "IfThenRead");
-        std::shared_ptr<ReadNode> elseReadNode = std::make_shared<ReadNode>(elseStmtNumber, "IfTElseRead");
+        std::shared_ptr<ReadNode> elseReadNode = std::make_shared<ReadNode>(elseStmtNumber, "IfElseRead");
 
         std::vector<std::shared_ptr<StmtNode>> thenStmtList;
         thenStmtList.emplace_back(thenReadNode);
