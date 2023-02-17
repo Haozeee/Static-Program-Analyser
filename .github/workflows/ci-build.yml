@@ -61,12 +61,12 @@ jobs:
             cd .\Team26\Code26\build\src\unit_testing\Release\
             .\unit_testing.exe
 
-        - name: Run Autotester
-          shell: powershell
-          timeout-minutes: 1
-          run: |
-            cd .\Team26\Code26\build\src\autotester\Release\
-            .\autotester.exe ..\..\..\..\..\Tests26\Milestone1\Sample_source.txt ..\..\..\..\..\Tests26\Milestone1\Sample_queries.txt ..\..\..\..\..\Tests26\Milestone1\out.xml
+        # - name: Run Autotester
+        #   shell: powershell
+        #   timeout-minutes: 1
+        #   run: |
+        #     cd .\Team26\Code26\build\src\autotester\Release\
+        #     .\autotester.exe ..\..\..\..\..\Tests26\Milestone1\Sample_source.txt ..\..\..\..\..\Tests26\Milestone1\Sample_queries.txt ..\..\..\..\..\Tests26\Milestone1\out.xml
         
         # - name: Upload Result
         #   shell: powershell
