@@ -1,54 +1,119 @@
 #include "catch.hpp"
 #include "source_processor/parser/Parser.h"
 
-TEST_CASE("Parser parse empty") {
+TEST_CASE("Parser parseProgram") {
     std::vector<std::shared_ptr<Token>> tokens;
-    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-    std::shared_ptr<ProgramNode> programNode;
 
-    REQUIRE_THROWS(Parser(tokens).parse());
+    SECTION("empty Source") {
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
+        REQUIRE_THROWS(Parser(tokens).parse());
+    };
+
+    SECTION("single stmt Source") {
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "x"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
+        REQUIRE_THROWS(Parser(tokens).parse());
+    };
+
+    SECTION("stmt outside Procedure") {
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "x"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
+        REQUIRE_THROWS(Parser(tokens).parse());
+    };
 }
 
-TEST_CASE("Parser parse procedure") {
-    // one procedure: positive test case
+TEST_CASE("Parser Procedure") {
     std::vector<std::shared_ptr<Token>> tokens;
-    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
-    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
-    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
-    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-    std::shared_ptr<ProgramNode> programNode;
-    REQUIRE_NOTHROW(Parser(tokens).parse());
 
-    auto parser = Parser(tokens);
-    parser.parse();
-    programNode = parser.getProgramNode();
+    SECTION("empty Procedure") {
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
+        REQUIRE_THROWS(Parser(tokens).parse());
+    };
 
-    CHECK(programNode->procedureList.size() == 1);
-    CHECK(programNode->procedureList[0]->procedureName == "proc");
-    CHECK(programNode->procedureList[0]->stmtListNode->stmtList.size() == 0);
+    SECTION("single procedure") {
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "x"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
+        REQUIRE_NOTHROW(Parser(tokens).parse());
 
-    tokens.clear();
+        auto parser = Parser(tokens);
+        parser.parse();
+        std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
 
-    // two procedures: positive test case
-    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
-    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc1"));
-    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
-    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
-    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc2"));
-    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
-    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-    parser = Parser(tokens);
-    parser.parse();
-    programNode = parser.getProgramNode();
+        REQUIRE(programNode->procedureList.size() == 1);
+        CHECK(programNode->procedureList[0]->procedureName == "proc");
+        REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() == 1);
 
-    REQUIRE(programNode->procedureList.size() == 2);
-    CHECK(programNode->procedureList[0]->procedureName == "proc1");
-    CHECK(programNode->procedureList[0]->stmtListNode->stmtList.size() == 0);
-    CHECK(programNode->procedureList[1]->procedureName == "proc2");
-    CHECK(programNode->procedureList[1]->stmtListNode->stmtList.size() == 0);
+        std::vector<std::shared_ptr<StmtNode>> stmtList =
+            programNode->procedureList[0]->stmtListNode->stmtList;
+        std::shared_ptr<StmtNode> stmtNode = stmtList.at(0);
+        CHECK(stmtList.at(0)->stmtIndex == 1);
+        REQUIRE(stmtList.at(0)->stmtType == StmtType::STMT_READ);
+    };
+
+    SECTION("double procedure") {
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc1"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "x"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc2"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "print"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "y"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
+        REQUIRE_NOTHROW(Parser(tokens).parse());
+
+        auto parser = Parser(tokens);
+        parser.parse();
+        std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
+
+        REQUIRE(programNode->procedureList.size() == 2);
+
+        SECTION("first procedure") {
+            CHECK(programNode->procedureList[0]->procedureName == "proc1");
+            REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() == 1);
+
+            std::vector<std::shared_ptr<StmtNode>> stmtList =
+                programNode->procedureList[0]->stmtListNode->stmtList;
+            std::shared_ptr<StmtNode> stmtNode = stmtList.at(0);
+            CHECK(stmtList.at(0)->stmtIndex == 1);
+            REQUIRE(stmtList.at(0)->stmtType == StmtType::STMT_READ);
+        }
+
+        SECTION("second procedure") {
+            CHECK(programNode->procedureList[1]->procedureName == "proc2");
+            REQUIRE(programNode->procedureList[1]->stmtListNode->stmtList.size() == 1);
+
+            std::vector<std::shared_ptr<StmtNode>> stmtList =
+                programNode->procedureList[1]->stmtListNode->stmtList;
+            std::shared_ptr<StmtNode> stmtNode = stmtList.at(0);
+            CHECK(stmtList.at(0)->stmtIndex == 2);
+            REQUIRE(stmtList.at(0)->stmtType == StmtType::STMT_PRINT);
+        }
+    };
 }
 
 TEST_CASE("Parser parse read") {
