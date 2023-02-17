@@ -51,3 +51,5 @@ extern const char BaseExtractorEmptyStatementListExceptionMessage[] =
         "Empty Statement list detected.";
 extern const char BaseExtractorEmptyProcedureListExceptionMessage[] =
         "Empty Procedure list detected.";
+extern const char BaseExtractorNotSupportedEvaluationExceptionMessage[] =
+        "Evaluation of this node type using this extractor is not supported.";

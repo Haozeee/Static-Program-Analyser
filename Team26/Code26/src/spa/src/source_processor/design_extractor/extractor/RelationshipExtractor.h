@@ -13,6 +13,10 @@ class RelationshipExtractor : public BaseExtractor, IRelationshipExtractor {
     std::vector<std::shared_ptr<std::vector<int>>> followsStack;
     std::vector<int> parentIndexStack;
 
+    void insertUsesGroup(const std::shared_ptr<VariableNameNode>& node);
+    void insertModifiesGroup(const std::shared_ptr<VariableNameNode>& node);
+    void insertExprUsesGroup();
+
     void extractProcedure(std::shared_ptr<ProcedureNode> node) override;
     void extractStmtList(std::shared_ptr<StmtListNode> node) override;
     void extractStmt(std::shared_ptr<StmtNode> node) override;

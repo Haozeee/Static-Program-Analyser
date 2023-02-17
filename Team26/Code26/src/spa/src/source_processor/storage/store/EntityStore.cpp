@@ -2,7 +2,7 @@
 
 #include <utility>
 
-EntityStore::EntityStore(std::shared_ptr<WriteOnlyStorage> storage) {
+EntityStore::EntityStore(std::shared_ptr<WriteStorage> storage) {
     procedureManager = storage->getProcedureManager();
     statementManager = storage->getStmtManager();
     readManager = storage->getReadManager();

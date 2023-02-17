@@ -19,5 +19,6 @@ extern const char ParserInvalidFactorLengthExceptionMessage[];
 extern const char BaseExtractRuntimeExceptionMessage[];
 extern const char BaseExtractorEmptyStatementListExceptionMessage[];
 extern const char BaseExtractorEmptyProcedureListExceptionMessage[];
+extern const char BaseExtractorNotSupportedEvaluationExceptionMessage[];
 
 class SourceProcessorExceptionMessage {};

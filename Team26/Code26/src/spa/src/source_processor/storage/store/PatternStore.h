@@ -3,13 +3,13 @@
 #include <string>
 #include <memory>
 #include "source_processor/storage/interface/IPatternStore.h"
-#include "program_knowledge_base/WriteOnlyStorage.h"
+#include "program_knowledge_base/StorageManager.h"
 
 class PatternStore : public IPatternStore {
  private:
-    std::shared_ptr<WriteOnlyPatternManager> patternManager;
+    std::shared_ptr<IWritePatternManager> patternManager;
  public:
-    explicit PatternStore(std::shared_ptr<WriteOnlyStorage> storage);
+    explicit PatternStore(std::shared_ptr<WriteStorage> storage);
 
     void insertExpressionPattern(std::shared_ptr<AssignNode> node) override;
 };
