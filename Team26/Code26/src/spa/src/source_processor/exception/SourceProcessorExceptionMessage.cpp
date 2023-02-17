@@ -1,5 +1,7 @@
 #include "SourceProcessorExceptionMessage.h"
 
+extern const char ManagerInvalidInputFile[] = "Invalid input file."
+
 extern const char TokenizerInvalidLogicalOpExceptionMessage[] = "Invalid logical operation detected. Valid logical "
                                                                 "operations includes: \"&&\", \"||\", \">=\", \"<=\", "
                                                                 "\"==\", \"!=\".";

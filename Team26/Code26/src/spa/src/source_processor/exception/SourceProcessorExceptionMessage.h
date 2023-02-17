@@ -1,5 +1,7 @@
 #pragma once
 
+extern const char ManagerInvalidInputFile[];
+
 extern const char TokenizerInvalidLogicalOpExceptionMessage[];
 extern const char TokenizerSpecialCharExceptionMessage[];
 
