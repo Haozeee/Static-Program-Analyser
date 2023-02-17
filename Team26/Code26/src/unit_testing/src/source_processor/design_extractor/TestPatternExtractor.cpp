@@ -1,10 +1,10 @@
 #include "catch.hpp"
 #include "MockStore.h"
 #include "TestUtil.h"
-#include "source_processor/design_extractor/extractor/RelationshipExtractor.h"
+#include "source_processor/design_extractor/extractor/PatternExtractor.h"
 #include "source_processor/storage/interface/IStore.h"
 
-TEST_CASE("Test Relationship Extractor") {
+TEST_CASE("Test Pattern Extractor") {
 
     SECTION("Single Procedure") {
         const std::string procedureName = "procedure";
@@ -15,9 +15,10 @@ TEST_CASE("Test Relationship Extractor") {
         const std::string constant = "26";
         const std::string variable = "a";
 
-        std::shared_ptr<MockRelationshipStore> relationshipStore = std::make_shared<MockRelationshipStore>();
+        std::shared_ptr<MockPatternStore> mockPatternStore = std::make_shared<MockPatternStore>();
 
-        std::unique_ptr<RelationshipExtractor> relationshipExtractor = std::make_unique<RelationshipExtractor>(relationshipStore);
+        std::unique_ptr<PatternExtractor> patternExtractor = std::make_unique<PatternExtractor>(
+                mockPatternStore);
         std::shared_ptr<ReadNode> readNode = std::make_shared<ReadNode>(nodeIndex++, readNodeName);
         std::shared_ptr<PrintNode> printNode = std::make_shared<PrintNode>(nodeIndex++, printNodeName);
         auto ifNode = TestExtractorUtil::makeSimpleIfNode(nodeIndex);
@@ -28,7 +29,8 @@ TEST_CASE("Test Relationship Extractor") {
                                                                              ExprNodeType::FACTOR_CONSTANT);
         std::shared_ptr<ExprNode> variableExprNode = std::make_shared<ExprNode>(variable,
                                                                                 ExprNodeType::FACTOR_VARIABLE);
-        std::shared_ptr<AssignNode> assignNode1 = std::make_shared<AssignNode>(nodeIndex++, assignNodeName, constExprNode);
+        std::shared_ptr<AssignNode> assignNode1 = std::make_shared<AssignNode>(nodeIndex++, assignNodeName,
+                                                                               constExprNode);
         std::shared_ptr<AssignNode> assignNode2 = std::make_shared<AssignNode>(nodeIndex++, assignNodeName + "1",
                                                                                variableExprNode);
         std::vector<std::shared_ptr<StmtNode>> stmtList;
@@ -46,41 +48,8 @@ TEST_CASE("Test Relationship Extractor") {
         procedureList.emplace_back(procedureNode);
         std::shared_ptr<ProgramNode> programNode = std::make_shared<ProgramNode>(procedureList);
 
-        relationshipExtractor->extractProgram(programNode);
+        patternExtractor->extractProgram(programNode);
 
-        /*
-         * 1. read
-         * 2. print
-         * 3. if
-         * 4. if -> read
-         * 5. else -> read
-         * 6. while
-         * 7. while -> read
-         * 8. assign
-         * 9. assign
-         * */
-        REQUIRE(relationshipStore->findFollows(1,2));
-        REQUIRE(relationshipStore->findFollows(2,3));
-        REQUIRE(relationshipStore->findFollows(3,6));
-        REQUIRE(relationshipStore->findFollows(6,8));
-        REQUIRE(relationshipStore->findFollows(8,9));
-
-        REQUIRE(relationshipStore->findParents(6,7));
-        REQUIRE(relationshipStore->findParents(3,4));
-        REQUIRE(relationshipStore->findParents(3,5));
-
-        REQUIRE(relationshipStore->findUseS(2,"print"));
-        REQUIRE(relationshipStore->findUseS(9,"a"));
-
-        REQUIRE(relationshipStore->findModifiesS(1,"read"));
-        REQUIRE(relationshipStore->findModifiesS(3,"IfThenRead"));
-        REQUIRE(relationshipStore->findModifiesS(3,"IfElseRead"));
-        REQUIRE(relationshipStore->findModifiesS(4,"IfThenRead"));
-        REQUIRE(relationshipStore->findModifiesS(5,"IfElseRead"));
-        REQUIRE(relationshipStore->findModifiesS(6,"WhileRead"));
-        REQUIRE(relationshipStore->findModifiesS(7,"WhileRead"));
-        REQUIRE(relationshipStore->findModifiesS(8,"assign"));
-        REQUIRE(relationshipStore->findModifiesS(9,"assign1"));
+        REQUIRE(mockPatternStore->assignStore.size() == 2);
     }
-
 }

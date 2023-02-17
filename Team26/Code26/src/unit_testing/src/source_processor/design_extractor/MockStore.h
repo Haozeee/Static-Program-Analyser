@@ -2,6 +2,7 @@
 
 #include "source_processor/storage/interface/IEntityStore.h"
 #include "source_processor/storage/interface/IRelationshipStore.h"
+#include "source_processor/storage/interface/IPatternStore.h"
 #include <unordered_set>
 #include <set>
 #include <unordered_map>
@@ -39,9 +40,9 @@ public:
         assignSet.insert(node);
     };
 
-//    void insertCallStatement(std::shared_ptr<CallNode> node) override {
-//        callSet.insert(node);
-//    };
+    void insertCallStatement(std::shared_ptr<CallNode> node) override {
+        callSet.insert(node);
+    };
 
     void insertWhileStatement(std::shared_ptr<WhileNode> node) override {
         whileSet.insert(node);
@@ -63,7 +64,6 @@ public:
 
 class MockRelationshipStore : public IRelationshipStore {
  public:
-
     std::unordered_map<int, std::unordered_set<int>> followsStore;
     std::unordered_map<int, std::unordered_set<int>> parentsStore;
     std::unordered_map<int, std::unordered_set<std::string>> usesSStore;
@@ -111,4 +111,12 @@ class MockRelationshipStore : public IRelationshipStore {
         auto curr = modifiesSStore.find(x);
         return curr != modifiesSStore.end() && curr->second.find(y) != curr->second.end();
     }
+};
+
+class MockPatternStore : public IPatternStore {
+ public:
+    std::set<std::shared_ptr<AssignNode>> assignStore;
+    void insertExpressionPattern(std::shared_ptr<AssignNode> node) {
+        assignStore.insert(node);
+    };
 };
