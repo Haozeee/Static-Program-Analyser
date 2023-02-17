@@ -36,6 +36,19 @@ ResultTable::createDoubleColumnTable(std::string column1, std::unordered_set<std
     return res;
 }
 
+std::shared_ptr<ResultTable>
+ResultTable::createTableFromMap(std::unordered_map<std::string, std::unordered_set<std::string>> map,
+                                std::string keysCol, std::string valuesCol) {
+    auto colNames = TableRow {keysCol, valuesCol};
+    auto res = std::make_shared<ResultTable>(colNames);
+    for (auto const& [k, v] : map) {
+        for (auto item : v) {
+            res->insertRow({k, item});
+        }
+    }
+    return res;
+}
+
 std::shared_ptr<ResultTable> ResultTable::joinOnColumns(std::shared_ptr<ResultTable> table1,
                                                        std::shared_ptr<ResultTable> table2,
                                                        std::vector<std::string> commonColumns) {

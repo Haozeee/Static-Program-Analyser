@@ -1,0 +1,41 @@
+procedure Example {
+    x1 = 1;
+    i2 = 2;
+    while (i3 < 0) {
+        x4 = x - 1;
+        if (x5 == 1) then {
+            z6 = x / 1;
+            read z7;
+        } else {
+            y8 = z + x;
+            print x;
+            print w9;
+        }
+        z10 = z + x + i;
+        call q11;
+        i12 = i;
+    }
+    if (x13 > 10) then {
+        x14 = p + r;
+        read x15;
+        print x16;
+    } else {
+        x17 = p + q + r + s - a - b - c;
+        a18 = 18;
+        print x19;
+        read x20;
+        x21 = p / q;
+    }
+    a22 = 2 + 22 + 222 + c * b;
+    call p23;
+    print a24;
+    read c25;
+}
+
+procedure q11 {
+    print x;
+}
+
+procedure p23 {
+    print y;
+}

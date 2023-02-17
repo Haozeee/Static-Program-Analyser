@@ -22,6 +22,18 @@ TEST_CASE("Test Int Set To String Set") {
     REQUIRE(stringSet == PkbUtil::intSetToStringSet(intSet));
 }
 
+TEST_CASE("Test Int Map To String Map") {
+    std::unordered_map<int, IntSet> intMap {
+            {1, {2, 4}},
+            {5, {6}}
+    };
+    std::unordered_map<std::string, StringSet> stringMap {
+            {"1", {"2", "4"}},
+            {"5", {"6"}}
+    };
+    REQUIRE(stringMap == PkbUtil::intMapTostringMap(intMap));
+}
+
 TEST_CASE("Test Set Intersection") {
     IntSet res;
     PkbUtil::setIntersection(setA, setB, res);
@@ -69,8 +81,9 @@ TEST_CASE("Test Filter Map") {
 
 TEST_CASE("Test Map Set Intersection") {
     auto res = PkbUtil::mapSetIntersection(mapA, setA);
-    IntSet expectedFirst {1, 3};
-    IntSet expectedSecond {2, 3, 4};
-    REQUIRE(res.first == expectedFirst);
-    REQUIRE(res.second == expectedSecond);
+    std::unordered_map<int, IntSet> expectedRes {
+            {1, {2, 3, 4}},
+            {3, {4}}
+    };
+    REQUIRE(res == expectedRes);
 }

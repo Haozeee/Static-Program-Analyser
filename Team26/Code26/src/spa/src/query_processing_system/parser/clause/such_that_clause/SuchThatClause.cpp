@@ -24,7 +24,7 @@ SuchThatClauseValidationResult SuchThatClause::isValidClause() {
         return SuchThatClauseValidationResult::INVALID_LEFT_DESIGN_ENTITY;
     }
     if (rightArg.getArgumentType() == ArgumentType::SYNONYM &&
-        !getValidLeftDesignEntity().count(rightArg.getDesignEntity())) {
+        !getValidRightDesignEntity().count(rightArg.getDesignEntity())) {
         return SuchThatClauseValidationResult::INVALID_RIGHT_DESIGN_ENTITY;
     }
     return SuchThatClauseValidationResult::VALID;
