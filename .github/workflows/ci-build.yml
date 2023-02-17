@@ -1,6 +1,6 @@
 name: CI for Cmake Project - Windows
 
-on: [pull_request]
+on: [pull]
 
 jobs:
   checkstyle:
