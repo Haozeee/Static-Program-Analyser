@@ -261,7 +261,7 @@ std::shared_ptr<ExprNode> Parser::parseExprNode(int startIndex, int endIndex) {
     index = startIndex;
 
     // Parse single name/integer factor
-    if (startIndex == endIndex) {
+    if (startIndex >= endIndex) {
         return parseFactor(startIndex, endIndex);
     }
 
@@ -344,7 +344,7 @@ std::shared_ptr<ExprNode> Parser::parseTerm(int startIndex, int endIndex) {
     index = startIndex;
 
     // Parse single name/integer factor
-    if (startIndex == endIndex) {
+    if (startIndex >= endIndex) {
         return parseFactor(startIndex, endIndex);
     }
 
@@ -419,7 +419,7 @@ std::shared_ptr<AssignNode> Parser::parseAssign(std::shared_ptr<Token> nameToken
     parseNext(ASSIGN_OPERATOR);
 
     int currIndex = index;
-    while (getToken()->getValue() != STMT_END) {
+    while (!isValueOf(STMT_END) && !isTypeOf(TokenType::TOKEN_END_OF_FILE)) {
         getNext();
     }
     int newIndex = index - 1;
