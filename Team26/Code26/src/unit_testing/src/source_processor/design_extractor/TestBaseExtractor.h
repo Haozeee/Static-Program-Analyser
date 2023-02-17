@@ -1,11 +1,9 @@
-#include <utility>
+#pragma once
 
+#include <utility>
 #include "source_processor/design_extractor/extractor/BaseExtractor.h"
 
 class TestBaseExtractor : public BaseExtractor {
-//    int currentStmtNo = -1;
-//    std::vector<int> exprIntegerList;
-//    std::vector<std::string> exprVariableList;
  public:
     int getStatementNumber() {
         return currentStmtNo;

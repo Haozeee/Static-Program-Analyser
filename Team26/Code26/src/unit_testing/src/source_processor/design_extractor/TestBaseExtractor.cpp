@@ -46,8 +46,8 @@ TEST_CASE("Test Base Extractor") {
         REQUIRE_NOTHROW(baseExtractor->extractProgram(programNode));
         CHECK(baseExtractor->getStatementNumber() == nodeIndex);
     }
-    SECTION("Test extractExpr using Expr") {
 
+    SECTION("Test extractExpr using Expr") {
         std::unique_ptr<TestBaseExtractor> baseExtractor = std::make_unique<TestBaseExtractor>();
 
         // AST Setup Single Expr node
@@ -83,5 +83,8 @@ TEST_CASE("Test Base Extractor") {
         baseExtractor->testExtractExpr(binaryOPNodeExpr);
         CHECK(baseExtractor->getExprIntegerList().size() == 2);
         CHECK(baseExtractor->getExprIntegerList().size() == 2);
+        baseExtractor->testClearExprStack();
+        CHECK(baseExtractor->getExprIntegerList().empty());
+        CHECK(baseExtractor->getExprIntegerList().empty());
     }
 }
