@@ -22,3 +22,8 @@ class SourceExtractorException : public std::runtime_error {
     SourceExtractorException();
     explicit SourceExtractorException(const std::string &errorMessage);
 };
+
+class SourceManagerException : public std::runtime_error {
+ public:
+    explicit SourceManagerException(const std::string& errorMessage);
+};

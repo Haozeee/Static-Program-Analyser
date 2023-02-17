@@ -1,5 +1,7 @@
 #include "SourceException.h"
 
+
+
 SourceParserException::SourceParserException() = default;
 
 SourceParserException::SourceParserException(const std::string &errorMessage) : ParserException(errorMessage) {}
@@ -15,3 +17,5 @@ SourceExtractorException::SourceExtractorException() : std::runtime_error(BaseEx
 SourceExtractorException::SourceExtractorException(const std::string &errorMessage) : runtime_error(errorMessage) {
 }
 
+SourceManagerException::SourceManagerException(const std::string &errorMessage) : runtime_error(errorMessage)  {
+}

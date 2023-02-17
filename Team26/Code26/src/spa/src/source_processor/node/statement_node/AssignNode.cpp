@@ -5,7 +5,7 @@
 #include "source_processor/design_extractor/interface/IPatternExtractor.h"
 
 AssignNode::AssignNode(int stmtIndex, std::string varName, std::shared_ptr<ExprNode> exprNode)
-    : StmtNode(stmtIndex, StmtType::STMT_ASSIGN), varName(std::move(varName)), exprNode(std::move(exprNode)) {}
+    : VariableNameNode(stmtIndex, std::move(varName), StmtType::STMT_ASSIGN) , exprNode(std::move(exprNode)) {}
 
 void AssignNode::evaluate(IStmtExtractor &extractor) {
     extractor.extractAssign(this->shared_from_this());
