@@ -50,17 +50,15 @@ void IntStringClauseEvaluator::evaluateNumberSynonym(StoragePointer storage) {
 
 void IntStringClauseEvaluator::evaluateSynonymSynonym(StoragePointer storage) {
     // Set initial empty results
-    std::unordered_set<int> leftResults;
-    std::unordered_set<std::string> rightResults;
+    std::unordered_map<std::string, std::unordered_set<std::string>> res;
     auto statementsToEvaluate = getLeftArgEntities(storage);
     for (int statement : statementsToEvaluate) {
-        auto res = evaluateNumberSynonymHelper(storage, statement);
-        if (!res.empty()) {
-            leftResults.insert(statement);
-            rightResults.insert(res.begin(), res.end());
+        auto synonymResults = evaluateNumberSynonymHelper(storage, statement);
+        if (!synonymResults.empty()) {
+            res.insert({std::to_string(statement), synonymResults});
         }
     }
-    setLeftAndRightArgResult(leftResults, rightResults);
+    setLeftAndRightArgResult(res);
 }
 
 std::unordered_set<std::string> IntStringClauseEvaluator::evaluateNumberSynonymHelper(StoragePointer storage,
@@ -113,11 +111,9 @@ void IntStringClauseEvaluator::setRightArgResult(std::unordered_set<std::string>
     clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), result);
 }
 
-void IntStringClauseEvaluator::setLeftAndRightArgResult(std::unordered_set<int> resultLeft,
-                                                        std::unordered_set<std::string> resultRight) {
-    clauseResultTable = ResultTable::createDoubleColumnTable(leftArg.getValue(),
-                                                             PkbUtil::intSetToStringSet(resultLeft),
-                                                             rightArg.getValue(), resultRight);
+void IntStringClauseEvaluator::setLeftAndRightArgResult(
+        std::unordered_map<std::string, std::unordered_set<std::string>> results) {
+    clauseResultTable = ResultTable::createTableFromMap(results, leftArg.getValue(), rightArg.getValue());
 }
 
 std::unordered_set<int> IntStringClauseEvaluator::getLeftArgEntities(StoragePointer storage) {

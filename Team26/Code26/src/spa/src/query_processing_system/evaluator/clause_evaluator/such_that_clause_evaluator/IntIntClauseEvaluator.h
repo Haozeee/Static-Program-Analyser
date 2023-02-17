@@ -2,6 +2,8 @@
 #include "SuchThatClauseEvaluator.h"
 #include <memory>
 #include <unordered_set>
+#include <unordered_map>
+#include <string>
 
 class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
  protected:
@@ -11,7 +13,7 @@ class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
 
     void setRightArgResult(std::unordered_set<int> result) override;
 
-    void setLeftAndRightArgResult(std::unordered_set<int> resultLeft, std::unordered_set<int> resultRight) override;
+    void setLeftAndRightArgResult(std::unordered_map<std::string, std::unordered_set<std::string>> results) override;
 
     std::unordered_set<int> getLeftArgEntities(StoragePointer storage) override;
 
