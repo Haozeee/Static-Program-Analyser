@@ -48,7 +48,6 @@ std::shared_ptr<ProgramNode> Parser::parseProgram() {
     if (procedureList.empty()) {
         throw SourceParserException(ParserEmptySourceExceptionMessage);
     }
-
     return std::make_shared<ProgramNode>(procedureList);
 }
 
@@ -286,7 +285,7 @@ std::shared_ptr<ExprNode> Parser::parseExprNode(int startIndex, int endIndex) {
             index = currIndex;
             return std::make_shared<ExprNode>(std::make_shared<ExprNode::BinaryOpNode>
                 (getOperator(), exprNode1, exprNode2), toString(startIndex, endIndex));
-        } else if (isExprOperator()) {
+        } else if (isExprOperator() || isTermOperator()) {
             isprevTokenEndBracket = false;
         } else if (isFactor() && isprevTokenEndBracket) {
             throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
@@ -369,7 +368,7 @@ std::shared_ptr<ExprNode> Parser::parseTerm(int startIndex, int endIndex) {
             index = currIndex;
             return std::make_shared<ExprNode>(std::make_shared<ExprNode::BinaryOpNode>
                 (getOperator(), exprNode1, exprNode2), toString(startIndex, endIndex));
-        } else if (isTermOperator()) {
+        } else if (isTermOperator() || isExprOperator()) {
             isprevTokenEndBracket = false;
         } else if (isFactor() && isprevTokenEndBracket) {
             throw SourceParserException(ParserInvalidTermFormatExceptionMessage);
@@ -423,6 +422,7 @@ std::shared_ptr<AssignNode> Parser::parseAssign(std::shared_ptr<Token> nameToken
     auto exprNode = parseExprNode(currIndex, newIndex);
     index = newIndex + 1;
     parseNext(STMT_END);
+
     return std::make_shared<AssignNode>(stmtIndex, nameToken->getValue(), exprNode);
 }
 
