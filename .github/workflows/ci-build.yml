@@ -42,6 +42,7 @@ jobs:
           run: |
             cd .\Team26\Code26
             mkdir build
+            cd build
             cmake ..    
 
         - name: Build Project
