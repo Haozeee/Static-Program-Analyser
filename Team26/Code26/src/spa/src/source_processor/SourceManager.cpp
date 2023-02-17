@@ -10,7 +10,7 @@ void SourceManager::process(const std::string& filename, std::shared_ptr<IStore>
     std::ifstream input(filename);
 
     if (!input) {
-        // #TODO(zhengteck): Throw Error
+        throw SourceManagerException(ManagerInvalidInputFile);
     }
 
     Tokenizer sourceTokenizer = Tokenizer(&input);

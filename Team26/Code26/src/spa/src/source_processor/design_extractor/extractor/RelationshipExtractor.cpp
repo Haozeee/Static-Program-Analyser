@@ -34,31 +34,20 @@ void RelationshipExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
 }
 
 void RelationshipExtractor::extractRead(std::shared_ptr<ReadNode> node) {
-    relationshipStore->insertModifiesSRelationship(node->stmtIndex, node->varName);
-    relationshipStore->insertModifiesPRelationship(currProcedureName, node->varName);
-    for (int& parentIndex : parentIndexStack) {
-        relationshipStore->insertModifiesSRelationship(parentIndex, node->varName);
-    }
+    insertModifiesGroup(node);
 }
 
 void RelationshipExtractor::extractPrint(std::shared_ptr<PrintNode> node) {
-    relationshipStore->insertUsesSRelationship(node->stmtIndex, node->varName);
-    relationshipStore->insertUsesPRelationship(currProcedureName, node->varName);
-    for (int& parentIndex : parentIndexStack) {
-        relationshipStore->insertUsesSRelationship(parentIndex, node->varName);
-    }
+    insertUsesGroup(node);
 }
 
 void RelationshipExtractor::extractAssign(std::shared_ptr<AssignNode> node) {
-    relationshipStore->insertModifiesSRelationship(node->stmtIndex, node->varName);
-    relationshipStore->insertModifiesPRelationship(currProcedureName, node->varName);
-    for (int& parentIndex : parentIndexStack) {
-        relationshipStore->insertModifiesSRelationship(parentIndex, node->varName);
-    }
+    insertModifiesGroup(node);
     extractExpr(node->exprNode);
 }
 
 void RelationshipExtractor::extractCall(std::shared_ptr<CallNode> node) {
+    // TODO(zt): For future sprints
 }
 
 void RelationshipExtractor::extractWhile(std::shared_ptr<WhileNode> node) {
@@ -79,6 +68,16 @@ void RelationshipExtractor::extractIf(std::shared_ptr<IfNode> node) {
 void RelationshipExtractor::extractExpr(std::shared_ptr<ExprNode> node) {
     clearExprStack();
     BaseExtractor::extractExpr(node);
+    insertExprUsesGroup();
+}
+
+void RelationshipExtractor::extractCondExpr(std::shared_ptr<CondExprNode> node) {
+    clearExprStack();
+    BaseExtractor::extractCondExpr(node);
+    insertExprUsesGroup();
+}
+
+void RelationshipExtractor::insertExprUsesGroup() {
     for (auto &variable : exprVariableList) {
         relationshipStore->insertUsesSRelationship(currentStmtNo, variable);
         for (int& parentIndex : parentIndexStack) {
@@ -88,14 +87,21 @@ void RelationshipExtractor::extractExpr(std::shared_ptr<ExprNode> node) {
     }
 }
 
-void RelationshipExtractor::extractCondExpr(std::shared_ptr<CondExprNode> node) {
-    clearExprStack();
-    BaseExtractor::extractCondExpr(node);
-    for (auto &variable : exprVariableList) {
-        relationshipStore->insertUsesSRelationship(currentStmtNo, variable);
-        for (int& parentIndex : parentIndexStack) {
-            relationshipStore->insertUsesSRelationship(parentIndex, variable);
-        }
-        relationshipStore->insertUsesPRelationship(currProcedureName, variable);
+void RelationshipExtractor::insertUsesGroup(const std::shared_ptr<VariableNameNode>& node) {
+    relationshipStore->insertUsesSRelationship(node->stmtIndex, node->varName);
+    relationshipStore->insertUsesPRelationship(currProcedureName, node->varName);
+    for (int& parentIndex : parentIndexStack) {
+        relationshipStore->insertUsesSRelationship(parentIndex, node->varName);
     }
 }
+
+void RelationshipExtractor::insertModifiesGroup(const std::shared_ptr<VariableNameNode>& node) {
+    relationshipStore->insertModifiesSRelationship(node->stmtIndex, node->varName);
+    relationshipStore->insertModifiesPRelationship(currProcedureName, node->varName);
+    for (int& parentIndex : parentIndexStack) {
+        relationshipStore->insertModifiesSRelationship(parentIndex, node->varName);
+    }
+}
+
+
+

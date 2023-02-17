@@ -1,7 +1,6 @@
 #include "catch.hpp"
 #include "TestBaseExtractor.h"
 #include "source_processor/node/statement_node/ReadNode.h"
-#include "source_processor/node/statement_node/AssignNode.h"
 #include "source_processor/node/ExprNode.h"
 
 TEST_CASE("Test Base Extractor") {
@@ -33,6 +32,7 @@ TEST_CASE("Test Base Extractor") {
         CHECK(procedureNode->procedureName == procedureName);
 
         // Test Empty Stmt List
+        programNode = std::make_shared<ProgramNode>(procedureList);
         REQUIRE_THROWS(baseExtractor->extractProgram(programNode));
 
         // Test Valid extractStatement
@@ -46,8 +46,8 @@ TEST_CASE("Test Base Extractor") {
         REQUIRE_NOTHROW(baseExtractor->extractProgram(programNode));
         CHECK(baseExtractor->getStatementNumber() == nodeIndex);
     }
-    SECTION("Test extractExpr using Expr") {
 
+    SECTION("Test extractExpr using Expr") {
         std::unique_ptr<TestBaseExtractor> baseExtractor = std::make_unique<TestBaseExtractor>();
 
         // AST Setup Single Expr node
@@ -60,21 +60,6 @@ TEST_CASE("Test Base Extractor") {
                                                                                           constExprNode,
                                                                           variableExprNode));
         std::shared_ptr<ExprNode> binaryOPNodeExpr = std::make_shared<ExprNode>(binaryOPNode,"1+a");
-//
-//        std::shared_ptr<AssignNode> assignNode1 = std::make_shared<AssignNode>(nodeIndex, nodeName, constExprNode);
-//        std::shared_ptr<AssignNode> assignNode2 = std::make_shared<AssignNode>(nodeIndex + 1, nodeName, variableExprNode);
-//
-//        std::vector<std::shared_ptr<StmtNode>> stmtList;
-//        stmtList.push_back(assignNode1);
-//        stmtList.push_back(assignNode2);
-//        std::shared_ptr<StmtListNode> stmtListNode = std::make_shared<StmtListNode>(stmtList);
-//
-//        std::shared_ptr<ProcedureNode> procedureNode = std::make_shared<ProcedureNode>(procedureName, stmtListNode);
-//        std::vector<std::shared_ptr<ProcedureNode>> procedureList;
-//        procedureList.push_back(procedureNode);
-//
-//        std::shared_ptr<ProgramNode> programNode = std::make_shared<ProgramNode>(procedureList);
-//        REQUIRE_NOTHROW(baseExtractor->extractProgram(programNode));
 
         baseExtractor->testExtractExpr(variableExprNode);
         CHECK(baseExtractor->getExprVariableList().size() == 1);
@@ -83,5 +68,8 @@ TEST_CASE("Test Base Extractor") {
         baseExtractor->testExtractExpr(binaryOPNodeExpr);
         CHECK(baseExtractor->getExprIntegerList().size() == 2);
         CHECK(baseExtractor->getExprIntegerList().size() == 2);
+        baseExtractor->testClearExprStack();
+        CHECK(baseExtractor->getExprIntegerList().empty());
+        CHECK(baseExtractor->getExprIntegerList().empty());
     }
 }

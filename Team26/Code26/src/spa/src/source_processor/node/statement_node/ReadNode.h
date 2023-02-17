@@ -2,12 +2,10 @@
 
 #include <string>
 #include <memory>
-#include "source_processor/node/statement_node/StmtNode.h"
+#include "source_processor/node/statement_node/VariableNameNode.h"
 
-class ReadNode : public StmtNode, public std::enable_shared_from_this<ReadNode> {
+class ReadNode : public VariableNameNode, public std::enable_shared_from_this<ReadNode> {
  public:
-    const std::string varName;
-
     ReadNode(int stmtIndex, std::string varName);
 
     void evaluate(IStmtExtractor& extractor) override;
