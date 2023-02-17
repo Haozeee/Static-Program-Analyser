@@ -7,14 +7,9 @@
 #include "source_processor/SourceManager.h"
 
 TEST_CASE("Test insert entity for all managers") {
-    std::string cwd = std::filesystem::current_path().string();
-    std::string word = "/cmake-build-debug";
-    size_t pos = cwd.find(word);
-    if (pos != std::string::npos) {
-        cwd.erase(pos, word.length());
-    }
-    const std::string& filename = cwd + "/src/source_processor_to_program_knowledge_base/source_entity_insert.txt";
-
+    //std::string cwd = std::filesystem::current_path().string();
+    const std::string& filename = "../../../src/integration_testing/src"
+                                  "/source_processor_to_program_knowledge_base/source_entity_insert.txt";
     std::unique_ptr<StorageManager> storageManager = std::make_unique<StorageManager>();
     SourceManager sourceManager;
     std::shared_ptr<IStore> store = std::make_shared<Store>(storageManager->getWriteStorage());

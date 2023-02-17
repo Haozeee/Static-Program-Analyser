@@ -7,13 +7,9 @@
 #include "source_processor/SourceManager.h"
 
 TEST_CASE("Test insert relationship for all managers") {
-    std::string cwd = std::filesystem::current_path().string();
-    std::string word = "/cmake-build-debug";
-    size_t pos = cwd.find(word);
-    if (pos != std::string::npos) {
-        cwd.erase(pos, word.length());
-    }
-    const std::string &filename = cwd + "/src/source_processor_to_program_knowledge_base/source_relationship_insert.txt";
+    //std::string cwd = std::filesystem::current_path().string();
+    const std::string& filename = "../../../src/integration_testing/src"
+                                  "/source_processor_to_program_knowledge_base/source_relationship_insert.txt";
 
     std::unique_ptr<StorageManager> storageManager = std::make_unique<StorageManager>();
     SourceManager sourceManager;
@@ -23,8 +19,11 @@ TEST_CASE("Test insert relationship for all managers") {
 
     // test FollowsManager
     auto followsManager = readStorage->getFollowsManager();
-    std::unordered_map<int, std::unordered_set<int>> follows_map = {{1, {2}}, {2, {3}}, {4, {5}}, {3, {7}}, {7, {8}},  {8, {14}}, {9, {13}}, {11, {12}}};
-    std::unordered_map<int, std::unordered_set<int>> reversed_follows_map = {{2, {1}}, {3, {2}}, {5, {4}}, {7, {3}}, {8, {7}},  {14, {8}}, {13, {9}}, {12, {11}}};
+    std::unordered_map<int, std::unordered_set<int>> follows_map = {{1, {2}}, {2, {3}}, {4, {5}}, {3, {7}}, {7, {8}},
+                                                                    {8, {14}}, {9, {13}}, {11, {12}}};
+    std::unordered_map<int, std::unordered_set<int>> reversed_follows_map = {{2, {1}}, {3, {2}}, {5, {4}},
+                                                                             {7, {3}}, {8, {7}},  {14, {8}},
+                                                                             {13, {9}}, {12, {11}}};
 
     REQUIRE(followsManager->containsMap(1, 2));
     REQUIRE(followsManager->containsMap(2, 3));
@@ -48,8 +47,12 @@ TEST_CASE("Test insert relationship for all managers") {
 
     // test FollowsTManager
     auto followsTManager = readStorage->getFollowsTManager();
-    std::unordered_map<int, std::unordered_set<int>> followsT_map = {{1, {2, 3, 7, 8 , 14}}, {2, {3, 7, 8, 14}}, {4, {5}}, {3, {7, 8 ,14}}, {7, {8, 14}},  {8, {14}}, {9, {13}}, {11, {12}}};
-    std::unordered_map<int, std::unordered_set<int>> reversed_followsT_map = {{8, {1,2,3,7}}, {14, {1, 2, 3, 7, 8}}, {3, {1,2}}, {5, {4}}, {12, {11}},  {7, {1,2,3}}, {13, {9}}, {2, {1}}};
+    std::unordered_map<int, std::unordered_set<int>> followsT_map = {{1, {2, 3, 7, 8 , 14}}, {2, {3, 7, 8, 14}},
+                                                                     {4, {5}}, {3, {7, 8 ,14}}, {7, {8, 14}},
+                                                                     {8, {14}}, {9, {13}}, {11, {12}}};
+    std::unordered_map<int, std::unordered_set<int>> reversed_followsT_map = {{8, {1,2,3,7}}, {14, {1, 2, 3, 7, 8}},
+                                                                              {3, {1,2}}, {5, {4}}, {12, {11}},
+                                                                              {7, {1,2,3}}, {13, {9}}, {2, {1}}};
 
     REQUIRE(followsTManager->containsMap(1, 2));
     REQUIRE(followsTManager->containsMap(1, 3));
@@ -95,7 +98,9 @@ TEST_CASE("Test insert relationship for all managers") {
     auto modifiesPManager = readStorage->getModifiesPManager();
 
     std::unordered_map<std::string, std::unordered_set<std::string>> modifiesP_map = {{"test1", {"a", "x", "y"}}};
-    std::unordered_map<std::string, std::unordered_set<std::string>> reversed_modifiesP_map = {{"a", {"test1"}}, {"x", {"test1"}}, {"y", {"test1"}}};
+    std::unordered_map<std::string, std::unordered_set<std::string>> reversed_modifiesP_map = {{"a", {"test1"}},
+                                                                                               {"x", {"test1"}},
+                                                                                               {"y", {"test1"}}};
 
     REQUIRE(modifiesPManager->containsMap("test1", "a"));
     REQUIRE(modifiesPManager->containsMap("test1", "x"));
@@ -110,8 +115,13 @@ TEST_CASE("Test insert relationship for all managers") {
     // test ModifiesSManager
     auto modifiesSManager = readStorage->getModifiesSManager();
 
-    std::unordered_map<int, std::unordered_set<std::string>> modifiesS_map = {{1, {"a"}}, {2, {"x"}}, {3, {"x"}}, {4, {"x"}}, {6, {"x"}}, {7, {"y"}}, {8, {"x", "y"}}, {9, {"x"}}, {11, {"x"}}, {13, {"y"}}, {14, {"y"}}};
-    std::unordered_map<std::string, std::unordered_set<int>> reversed_modifiesS_map = {{"a", {1}}, {"x", {2, 3, 4, 6,8, 9,11}}, {"y", {7, 8, 13, 14}}};
+    std::unordered_map<int, std::unordered_set<std::string>> modifiesS_map = {{1, {"a"}}, {2, {"x"}}, {3, {"x"}},
+                                                                              {4, {"x"}}, {6, {"x"}}, {7, {"y"}},
+                                                                              {8, {"x", "y"}}, {9, {"x"}}, {11, {"x"}},
+                                                                              {13, {"y"}}, {14, {"y"}}};
+    std::unordered_map<std::string, std::unordered_set<int>> reversed_modifiesS_map = {{"a", {1}},
+                                                                                       {"x", {2, 3, 4, 6,8, 9,11}},
+                                                                                       {"y", {7, 8, 13, 14}}};
 
     REQUIRE(modifiesSManager->containsMap(1,"a"));
     REQUIRE(modifiesSManager->containsMap(2,"x"));
@@ -144,7 +154,9 @@ TEST_CASE("Test insert relationship for all managers") {
     // test ParentManager
     auto parentManager = readStorage->getParentManager();
     std::unordered_map<int, std::unordered_set<int>> parent_map = {{3, {4, 5, 6}}, {8, {9, 13}}, {9, {10, 11, 12}}};
-    std::unordered_map<int, std::unordered_set<int>> reversed_parent_map = {{4, {3}}, {5, {3}}, {6, {3}}, {9, {8}}, {13, {8}},  {10, {9}}, {11, {9}}, {12, {9}}};
+    std::unordered_map<int, std::unordered_set<int>> reversed_parent_map = {{4, {3}}, {5, {3}}, {6, {3}},
+                                                                            {9, {8}}, {13, {8}},  {10, {9}},
+                                                                            {11, {9}}, {12, {9}}};
 
     REQUIRE(parentManager->containsMap(3, 4));
     REQUIRE(parentManager->containsMap(3, 5));
@@ -169,8 +181,11 @@ TEST_CASE("Test insert relationship for all managers") {
 
     // test ParentTManager
     auto parentTManager = readStorage->getParentTManager();
-    std::unordered_map<int, std::unordered_set<int>> parentT_map = {{3, {4, 5, 6}}, {8, {9, 10, 11, 12, 13}}, {9, {10, 11, 12}}};
-    std::unordered_map<int, std::unordered_set<int>> reversed_parentT_map = {{4, {3}}, {5, {3}}, {6, {3}}, {9, {8}}, {13, {8}},  {10, {8, 9}}, {11, {8, 9}}, {12, {8, 9}}};
+    std::unordered_map<int, std::unordered_set<int>> parentT_map = {{3, {4, 5, 6}}, {8, {9, 10, 11, 12, 13}},
+                                                                    {9, {10, 11, 12}}};
+    std::unordered_map<int, std::unordered_set<int>> reversed_parentT_map = {{4, {3}}, {5, {3}}, {6, {3}}, {9, {8}},
+                                                                             {13, {8}},  {10, {8, 9}}, {11, {8, 9}},
+                                                                             {12, {8, 9}}};
 
     REQUIRE(parentTManager->containsMap(3, 4));
     REQUIRE(parentTManager->containsMap(3, 5));
@@ -202,7 +217,9 @@ TEST_CASE("Test insert relationship for all managers") {
     auto usesPManager = readStorage->getUsesPManager();
 
     std::unordered_map<std::string, std::unordered_set<std::string>> usesP_map = {{"test1", {"a", "x", "y"}}};
-    std::unordered_map<std::string, std::unordered_set<std::string>> reversed_usesP_map = {{"a", {"test1"}}, {"x", {"test1"}}, {"y", {"test1"}}};
+    std::unordered_map<std::string, std::unordered_set<std::string>> reversed_usesP_map = {{"a", {"test1"}},
+                                                                                           {"x", {"test1"}},
+                                                                                           {"y", {"test1"}}};
 
     REQUIRE(usesPManager->containsMap("test1", "a"));
     REQUIRE(usesPManager->containsMap("test1", "x"));
@@ -217,8 +234,12 @@ TEST_CASE("Test insert relationship for all managers") {
     // test UsesSManager
     auto usesSManager = readStorage->getUsesSManager();
 
-    std::unordered_map<int, std::unordered_set<std::string>> usesS_map = {{3, {"a", "x"}}, {4, {"x"}}, {5, {"x"}},  {8, {"x", "y"}}, {9, {"x"}}, {10, {"x"}}, {12, {"x"}}, {13, {"y"}}, {14, {"x"}}};
-    std::unordered_map<std::string, std::unordered_set<int>> reversed_usesS_map = {{"a", {3}}, {"x", {3, 4, 5, 8, 9, 10, 12, 14}}, {"y", {8, 13}}};
+    std::unordered_map<int, std::unordered_set<std::string>> usesS_map = {{3, {"a", "x"}}, {4, {"x"}}, {5, {"x"}},
+                                                                          {8, {"x", "y"}}, {9, {"x"}}, {10, {"x"}},
+                                                                          {12, {"x"}}, {13, {"y"}}, {14, {"x"}}};
+    std::unordered_map<std::string, std::unordered_set<int>> reversed_usesS_map = {{"a", {3}},
+                                                                                   {"x", {3, 4, 5, 8, 9, 10, 12, 14}},
+                                                                                   {"y", {8, 13}}};
 
     REQUIRE(usesSManager->containsMap(3, "a"));
     REQUIRE(usesSManager->containsMap(3, "x"));
@@ -246,5 +267,4 @@ TEST_CASE("Test insert relationship for all managers") {
     REQUIRE(usesSManager->containsReversedMap("y", 13));
     REQUIRE(usesSManager->containsReversedMap("x", 14));
     REQUIRE(usesSManager->getAllReversedRelationshipEntries() == reversed_usesS_map);
-
 }
