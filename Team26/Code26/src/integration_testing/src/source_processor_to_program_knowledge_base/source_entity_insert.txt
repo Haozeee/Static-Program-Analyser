@@ -1,0 +1,19 @@
+procedure test1 {
+    x = 10;
+    call Test2;
+    if (a > b) then {
+        x = x + a;
+    } else {
+        x = x + b;
+    }
+    y = 3;
+    while (y < 0) {
+        print x;
+        y = y - 1;
+    }
+}
+
+procedure test2 {
+    read a;
+    read b;
+}
