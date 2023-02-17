@@ -22,13 +22,11 @@ void UsesPClauseEvaluator::setRightArgResult(std::unordered_set<int> result) {
                                                              PkbUtil::intSetToStringSet(result));
 }
 
-void UsesPClauseEvaluator::setLeftAndRightArgResult(std::unordered_set<int> resultLeft,
-                                                     std::unordered_set<int> resultRight) {
-    clauseResultTable = ResultTable::createDoubleColumnTable(leftArg.getValue(),
-                                                             PkbUtil::intSetToStringSet(resultLeft),
-                                                             rightArg.getValue(),
-                                                             PkbUtil::intSetToStringSet(resultRight));
+void UsesPClauseEvaluator::setLeftAndRightArgResult(
+        std::unordered_map<std::string, std::unordered_set<std::string>> results) {
+    clauseResultTable = ResultTable::createTableFromMap(results, leftArg.getValue(), rightArg.getValue());
 }
+
 
 std::unordered_set<int> UsesPClauseEvaluator::getLeftArgEntities(StoragePointer storage) {
     return PkbUtil::getIntEntitiesFromPkb(storage, leftArg.getDesignEntity());

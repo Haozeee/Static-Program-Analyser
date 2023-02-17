@@ -96,6 +96,13 @@ class ResultTable {
                             std::string column2, std::unordered_set<std::string> values2);
 
     /**
+     * Given an unordered map, create a 2 column relational table with each (key, value) pair to
+     * be in the table.
+     */
+    static std::shared_ptr<ResultTable>
+    createTableFromMap(std::unordered_map<std::string, std::unordered_set<std::string>> map,
+                       std::string keysCol, std::string valuesCol);
+    /**
      * Suppose common columns are a list of columns that are present in table1 and table2.
      * This function joins the two table on the common columns and return the newly joined table.
      * Suppose commonColumns = ["A", "B"]. This function joins table1 and table2 on

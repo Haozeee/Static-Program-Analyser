@@ -18,6 +18,20 @@ std::unordered_set<std::string> tableCItems1 {"b"};
 std::unordered_set<std::string> tableCItems2 {"c", "d"};
 auto tableC = ResultTable::createDoubleColumnTable(tableBCol1, tableCItems1, tableBCol2, tableCItems2);
 
+TEST_CASE("Constructing Table From Map") {
+    std::unordered_map<std::string, std::unordered_set<std::string>> map {
+            {"1", {"2", "3"}},
+            {"9", {"12"}}
+    };
+    auto mapTable = ResultTable::createTableFromMap(map, tableBCol1, tableBCol2);
+    std::vector<std::string> row1 = {"1", "2"};
+    std::vector<std::string> row2 = {"1", "3"};
+    std::vector<std::string> row3 = {"9", "12"};
+    REQUIRE(mapTable->getRow(0) == row1);
+    REQUIRE(mapTable->getRow(1) == row2);
+    REQUIRE(mapTable->getRow(2) == row3);
+}
+
 TEST_CASE("Double Table") {
     // Check correct dimensions of table
     auto tableBColNames = tableB->getColumnsNames();
@@ -36,6 +50,10 @@ TEST_CASE("Double Table") {
     auto row1Values = tableB->getRow(0);
     std::vector<std::string> expectedValues {"a", "c"};
     REQUIRE(row1Values == expectedValues);
+
+    // Check column values
+    std::unordered_set<std::string> expectedRes = {"a", "b"};
+    REQUIRE(tableB->getColumnValues(tableBCol1) == expectedRes);
 
     // Check column naming
     REQUIRE(tableB->getColumnNumber(tableBCol1) == 0);
