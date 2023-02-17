@@ -1728,57 +1728,409 @@
 //    }
 //}
 
-
-//TEST_CASE("Parser parse if") {
-//    // one if stmt: positive test case
+//TEST_CASE("Parser While") {
 //    std::vector<std::shared_ptr<Token>> tokens;
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
 //
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "if"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "then"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "else"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//    SECTION("single While: missing keyword") {
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_INTEGER, "0"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
+//        REQUIRE_THROWS(Parser(tokens).parse());
+//    }
 //
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
-//    tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
+//    SECTION("single While: missing cond_expr start_bracket") {
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_INTEGER, "0"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
+//        REQUIRE_THROWS(Parser(tokens).parse());
+//    }
 //
-//    std::shared_ptr<ProgramNode> programNode;
-//    REQUIRE_NOTHROW(Parser(tokens).parse());
+//    SECTION("single While: missing cond_expr end_bracket") {
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_INTEGER, "0"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
+//        REQUIRE_THROWS(Parser(tokens).parse());
+//    }
 //
-//    auto parser = Parser(tokens);
-//    parser.parse();
-//    programNode = parser.getProgramNode();
+//    SECTION("single While: empty cond_expr") {
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
+//        REQUIRE_THROWS(Parser(tokens).parse());
+//    }
+//
+//    SECTION("single While: empty cond_expr") {
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
+//        REQUIRE_THROWS(Parser(tokens).parse());
+//    }
+//
+//    SECTION("single While: incomplete cond_expr") {
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
+//        REQUIRE_THROWS(Parser(tokens).parse());
+//    }
+//
+//    SECTION("single While: missing start_braces") {
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_INTEGER, "0"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
+//        REQUIRE_THROWS(Parser(tokens).parse());
+//    }
+//
+//    SECTION("single While: missing end_braces") {
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_INTEGER, "0"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
+//        REQUIRE_THROWS(Parser(tokens).parse());
+//    }
+//
+//    SECTION("single While") {
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_INTEGER, "0"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
+//        REQUIRE_NOTHROW(Parser(tokens).parse());
+//
+//        auto parser = Parser(tokens);
+//        parser.parse();
+//        std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
+//
+//        REQUIRE(programNode->procedureList.size() == 1);
+//        REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
+//
+//        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+//        CHECK(stmtNode->stmtIndex == 1);
+//        REQUIRE(stmtNode->stmtType == StmtType::STMT_WHILE);
+//
+//        WhileNode* whileNode;
+//        REQUIRE_NOTHROW(whileNode = dynamic_cast<WhileNode*>(stmtNode.get())); 
+//        REQUIRE(!whileNode->condExprNode->isUnaryCondExpr());
+//        REQUIRE(!whileNode->condExprNode->isBinaryCondExpr());
+//        REQUIRE(whileNode->condExprNode->isRelExpr());
+//        REQUIRE(whileNode->condExprNode->returnRelExprNodes().has_value());
+//        
+//        auto relExprNodes = whileNode->condExprNode->returnRelExprNodes().value();
+//        auto exprNode1 = relExprNodes.first;
+//        REQUIRE(exprNode1->isVariable());
+//        REQUIRE(!exprNode1->isConstant());
+//        REQUIRE(!exprNode1->returnNodes().has_value());
+//        CHECK(exprNode1->getVariable().value() == "num1");
+//        auto exprNode2 = relExprNodes.second;
+//        REQUIRE(exprNode2->isConstant());
+//        REQUIRE(!exprNode2->isVariable());
+//        REQUIRE(!exprNode2->returnNodes().has_value());
+//        CHECK(exprNode2->getConstant().value() == 0);
+//
+//        auto stmtList = whileNode->stmtListNode->stmtList;
+//        REQUIRE(stmtList.size() >= 1);
+//        CHECK(stmtList.at(0)->stmtType == StmtType::STMT_READ);
+//        CHECK(stmtList.at(0)->stmtIndex == 2);
+//    }
+//
+//    SECTION("sequential While same Procedure") {
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_INTEGER, "0"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_INTEGER, "1"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
+//        REQUIRE_NOTHROW(Parser(tokens).parse());
+//
+//        auto parser = Parser(tokens);
+//        parser.parse();
+//        std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
+//
+//        REQUIRE(programNode->procedureList.size() == 1);
+//        REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 2);
+//
+//        SECTION("first While") {
+//            auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+//            CHECK(stmtNode->stmtIndex == 1);
+//            REQUIRE(stmtNode->stmtType == StmtType::STMT_WHILE);
+//
+//            WhileNode* whileNode;
+//            REQUIRE_NOTHROW(whileNode = dynamic_cast<WhileNode*>(stmtNode.get()));
+//            REQUIRE(!whileNode->condExprNode->isUnaryCondExpr());
+//            REQUIRE(!whileNode->condExprNode->isBinaryCondExpr());
+//            REQUIRE(whileNode->condExprNode->isRelExpr());
+//            REQUIRE(whileNode->condExprNode->returnRelExprNodes().has_value());
+//
+//            auto relExprNodes = whileNode->condExprNode->returnRelExprNodes().value();
+//            auto exprNode1 = relExprNodes.first;
+//            REQUIRE(exprNode1->isVariable());
+//            REQUIRE(!exprNode1->isConstant());
+//            REQUIRE(!exprNode1->returnNodes().has_value());
+//            CHECK(exprNode1->getVariable().value() == "num1");
+//            auto exprNode2 = relExprNodes.second;
+//            REQUIRE(exprNode2->isConstant());
+//            REQUIRE(!exprNode2->isVariable());
+//            REQUIRE(!exprNode2->returnNodes().has_value());
+//            CHECK(exprNode2->getConstant().value() == 0);
+//
+//            auto stmtList = whileNode->stmtListNode->stmtList;
+//            REQUIRE(stmtList.size() >= 1);
+//            CHECK(stmtList.at(0)->stmtType == StmtType::STMT_READ);
+//            CHECK(stmtList.at(0)->stmtIndex == 2);
+//        }
+//
+//        SECTION("second While") {
+//            auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[1];
+//            CHECK(stmtNode->stmtIndex == 3);
+//            REQUIRE(stmtNode->stmtType == StmtType::STMT_WHILE);
+//
+//            WhileNode* whileNode;
+//            REQUIRE_NOTHROW(whileNode = dynamic_cast<WhileNode*>(stmtNode.get()));
+//            REQUIRE(!whileNode->condExprNode->isUnaryCondExpr());
+//            REQUIRE(!whileNode->condExprNode->isBinaryCondExpr());
+//            REQUIRE(whileNode->condExprNode->isRelExpr());
+//            REQUIRE(whileNode->condExprNode->returnRelExprNodes().has_value());
+//
+//            auto relExprNodes = whileNode->condExprNode->returnRelExprNodes().value();
+//            auto exprNode1 = relExprNodes.first;
+//            REQUIRE(exprNode1->isVariable());
+//            REQUIRE(!exprNode1->isConstant());
+//            REQUIRE(!exprNode1->returnNodes().has_value());
+//            CHECK(exprNode1->getVariable().value() == "num2");
+//            auto exprNode2 = relExprNodes.second;
+//            REQUIRE(exprNode2->isConstant());
+//            REQUIRE(!exprNode2->isVariable());
+//            REQUIRE(!exprNode2->returnNodes().has_value());
+//            CHECK(exprNode2->getConstant().value() == 1);
+//
+//            auto stmtList = whileNode->stmtListNode->stmtList;
+//            REQUIRE(stmtList.size() >= 1);
+//            CHECK(stmtList.at(0)->stmtType == StmtType::STMT_READ);
+//            CHECK(stmtList.at(0)->stmtIndex == 4);
+//        }
+//    }
+//
+//    SECTION("nested While same Procedure") {
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_INTEGER, "0"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_INTEGER, "1"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+//        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
+//        REQUIRE_NOTHROW(Parser(tokens).parse());
+//
+//        auto parser = Parser(tokens);
+//        parser.parse();
+//        std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
+//
+//        REQUIRE(programNode->procedureList.size() == 1);
+//        REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
+//
+//        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+//        CHECK(stmtNode->stmtIndex == 1);
+//        REQUIRE(stmtNode->stmtType == StmtType::STMT_WHILE);
+//
+//        WhileNode* whileNode;
+//        REQUIRE_NOTHROW(whileNode = dynamic_cast<WhileNode*>(stmtNode.get()));
+//        REQUIRE(!whileNode->condExprNode->isUnaryCondExpr());
+//        REQUIRE(!whileNode->condExprNode->isBinaryCondExpr());
+//        REQUIRE(whileNode->condExprNode->isRelExpr());
+//        REQUIRE(whileNode->condExprNode->returnRelExprNodes().has_value());
+//
+//        auto relExprNodes = whileNode->condExprNode->returnRelExprNodes().value();
+//        auto exprNode1 = relExprNodes.first;
+//        REQUIRE(exprNode1->isVariable());
+//        REQUIRE(!exprNode1->isConstant());
+//        REQUIRE(!exprNode1->returnNodes().has_value());
+//        CHECK(exprNode1->getVariable().value() == "num1");
+//        auto exprNode2 = relExprNodes.second;
+//        REQUIRE(exprNode2->isConstant());
+//        REQUIRE(!exprNode2->isVariable());
+//        REQUIRE(!exprNode2->returnNodes().has_value());
+//        CHECK(exprNode2->getConstant().value() == 0);
+//
+//        auto stmtList = whileNode->stmtListNode->stmtList;
+//        REQUIRE(stmtList.size() >= 1);
+//        CHECK(stmtList.at(0)->stmtIndex == 2);
+//        REQUIRE(stmtList.at(0)->stmtType == StmtType::STMT_WHILE);
+//
+//        REQUIRE_NOTHROW(whileNode = dynamic_cast<WhileNode*>(stmtList.at(0).get()));
+//        REQUIRE(!whileNode->condExprNode->isUnaryCondExpr());
+//        REQUIRE(!whileNode->condExprNode->isBinaryCondExpr());
+//        REQUIRE(whileNode->condExprNode->isRelExpr());
+//        REQUIRE(whileNode->condExprNode->returnRelExprNodes().has_value());
+//
+//        relExprNodes = whileNode->condExprNode->returnRelExprNodes().value();
+//        exprNode1 = relExprNodes.first;
+//        REQUIRE(exprNode1->isVariable());
+//        REQUIRE(!exprNode1->isConstant());
+//        REQUIRE(!exprNode1->returnNodes().has_value());
+//        CHECK(exprNode1->getVariable().value() == "num2");
+//        exprNode2 = relExprNodes.second;
+//        REQUIRE(exprNode2->isConstant());
+//        REQUIRE(!exprNode2->isVariable());
+//        REQUIRE(!exprNode2->returnNodes().has_value());
+//        CHECK(exprNode2->getConstant().value() == 1);
+//
+//        stmtList = whileNode->stmtListNode->stmtList;
+//        REQUIRE(stmtList.size() >= 1);
+//        CHECK(stmtList.at(0)->stmtType == StmtType::STMT_READ);
+//        CHECK(stmtList.at(0)->stmtIndex == 3);
+//    }
+//
+//    // TODO(oviya): add unit test for multiple procedures in upcoming sprint.
 //}
 
-TEST_CASE("Parser While") {
+TEST_CASE("Parser If") {
     std::vector<std::shared_ptr<Token>> tokens;
 
-    SECTION("single While: missing keyword") {
+    SECTION("single If: missing keyword") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "if"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
@@ -1789,23 +2141,10 @@ TEST_CASE("Parser While") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
-    }
-
-    SECTION("single While: missing cond_expr start_bracket") {
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "else"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_INTEGER, "0"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "print"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num3"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
@@ -1813,92 +2152,25 @@ TEST_CASE("Parser While") {
         REQUIRE_THROWS(Parser(tokens).parse());
     }
 
-    SECTION("single While: missing cond_expr end_bracket") {
+    SECTION("single If: missing start_braces") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_INTEGER, "0"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
-    }
-
-    SECTION("single While: empty cond_expr") {
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
-    }
-
-    SECTION("single While: empty cond_expr") {
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
-    }
-
-    SECTION("single While: incomplete cond_expr") {
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
-    }
-
-    SECTION("single While: missing start_braces") {
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "if"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_INTEGER, "0"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "then"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "else"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "print"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num3"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
@@ -1906,7 +2178,7 @@ TEST_CASE("Parser While") {
         REQUIRE_THROWS(Parser(tokens).parse());
     }
 
-    SECTION("single While: missing end_braces") {
+    SECTION("single If: missing end_braces") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
@@ -1920,24 +2192,30 @@ TEST_CASE("Parser While") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
         REQUIRE_THROWS(Parser(tokens).parse());
     }
 
-    SECTION("single While") {
+    SECTION("single If") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "if"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_INTEGER, "0"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "then"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "else"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "print"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num3"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
@@ -1953,16 +2231,16 @@ TEST_CASE("Parser While") {
 
         auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
-        REQUIRE(stmtNode->stmtType == StmtType::STMT_WHILE);
+        REQUIRE(stmtNode->stmtType == StmtType::STMT_IF);
 
-        WhileNode* whileNode;
-        REQUIRE_NOTHROW(whileNode = dynamic_cast<WhileNode*>(stmtNode.get())); 
-        REQUIRE(!whileNode->condExprNode->isUnaryCondExpr());
-        REQUIRE(!whileNode->condExprNode->isBinaryCondExpr());
-        REQUIRE(whileNode->condExprNode->isRelExpr());
-        REQUIRE(whileNode->condExprNode->returnRelExprNodes().has_value());
-        
-        auto relExprNodes = whileNode->condExprNode->returnRelExprNodes().value();
+        IfNode* ifNode;
+        REQUIRE_NOTHROW(ifNode = dynamic_cast<IfNode*>(stmtNode.get()));
+        REQUIRE(!ifNode->condExprNode->isUnaryCondExpr());
+        REQUIRE(!ifNode->condExprNode->isBinaryCondExpr());
+        REQUIRE(ifNode->condExprNode->isRelExpr());
+        REQUIRE(ifNode->condExprNode->returnRelExprNodes().has_value());
+
+        auto relExprNodes = ifNode->condExprNode->returnRelExprNodes().value();
         auto exprNode1 = relExprNodes.first;
         REQUIRE(exprNode1->isVariable());
         REQUIRE(!exprNode1->isConstant());
@@ -1974,130 +2252,51 @@ TEST_CASE("Parser While") {
         REQUIRE(!exprNode2->returnNodes().has_value());
         CHECK(exprNode2->getConstant().value() == 0);
 
-        auto stmtList = whileNode->stmtListNode->stmtList;
+        auto stmtList = ifNode->thenStmtListNode->stmtList;
         REQUIRE(stmtList.size() >= 1);
         CHECK(stmtList.at(0)->stmtType == StmtType::STMT_READ);
         CHECK(stmtList.at(0)->stmtIndex == 2);
+
+        stmtList = ifNode->elseStmtListNode->stmtList;
+        REQUIRE(stmtList.size() >= 1);
+        CHECK(stmtList.at(0)->stmtType == StmtType::STMT_PRINT);
+        CHECK(stmtList.at(0)->stmtIndex == 3);
     }
 
-    SECTION("sequential While same Procedure") {
+    SECTION("nested If same Procedure") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "if"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_INTEGER, "0"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "then"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "else"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "if"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_INTEGER, "1"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "then"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_NOTHROW(Parser(tokens).parse());
-
-        auto parser = Parser(tokens);
-        parser.parse();
-        std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
-
-        REQUIRE(programNode->procedureList.size() == 1);
-        REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 2);
-
-        SECTION("first While") {
-            auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
-            CHECK(stmtNode->stmtIndex == 1);
-            REQUIRE(stmtNode->stmtType == StmtType::STMT_WHILE);
-
-            WhileNode* whileNode;
-            REQUIRE_NOTHROW(whileNode = dynamic_cast<WhileNode*>(stmtNode.get()));
-            REQUIRE(!whileNode->condExprNode->isUnaryCondExpr());
-            REQUIRE(!whileNode->condExprNode->isBinaryCondExpr());
-            REQUIRE(whileNode->condExprNode->isRelExpr());
-            REQUIRE(whileNode->condExprNode->returnRelExprNodes().has_value());
-
-            auto relExprNodes = whileNode->condExprNode->returnRelExprNodes().value();
-            auto exprNode1 = relExprNodes.first;
-            REQUIRE(exprNode1->isVariable());
-            REQUIRE(!exprNode1->isConstant());
-            REQUIRE(!exprNode1->returnNodes().has_value());
-            CHECK(exprNode1->getVariable().value() == "num1");
-            auto exprNode2 = relExprNodes.second;
-            REQUIRE(exprNode2->isConstant());
-            REQUIRE(!exprNode2->isVariable());
-            REQUIRE(!exprNode2->returnNodes().has_value());
-            CHECK(exprNode2->getConstant().value() == 0);
-
-            auto stmtList = whileNode->stmtListNode->stmtList;
-            REQUIRE(stmtList.size() >= 1);
-            CHECK(stmtList.at(0)->stmtType == StmtType::STMT_READ);
-            CHECK(stmtList.at(0)->stmtIndex == 2);
-        }
-
-        SECTION("second While") {
-            auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[1];
-            CHECK(stmtNode->stmtIndex == 3);
-            REQUIRE(stmtNode->stmtType == StmtType::STMT_WHILE);
-
-            WhileNode* whileNode;
-            REQUIRE_NOTHROW(whileNode = dynamic_cast<WhileNode*>(stmtNode.get()));
-            REQUIRE(!whileNode->condExprNode->isUnaryCondExpr());
-            REQUIRE(!whileNode->condExprNode->isBinaryCondExpr());
-            REQUIRE(whileNode->condExprNode->isRelExpr());
-            REQUIRE(whileNode->condExprNode->returnRelExprNodes().has_value());
-
-            auto relExprNodes = whileNode->condExprNode->returnRelExprNodes().value();
-            auto exprNode1 = relExprNodes.first;
-            REQUIRE(exprNode1->isVariable());
-            REQUIRE(!exprNode1->isConstant());
-            REQUIRE(!exprNode1->returnNodes().has_value());
-            CHECK(exprNode1->getVariable().value() == "num2");
-            auto exprNode2 = relExprNodes.second;
-            REQUIRE(exprNode2->isConstant());
-            REQUIRE(!exprNode2->isVariable());
-            REQUIRE(!exprNode2->returnNodes().has_value());
-            CHECK(exprNode2->getConstant().value() == 1);
-
-            auto stmtList = whileNode->stmtListNode->stmtList;
-            REQUIRE(stmtList.size() >= 1);
-            CHECK(stmtList.at(0)->stmtType == StmtType::STMT_READ);
-            CHECK(stmtList.at(0)->stmtIndex == 4);
-        }
-    }
-
-    SECTION("nested While same Procedure") {
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "proc"));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "else"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_INTEGER, "0"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "while"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "("));
+        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "print"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num2"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ">"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_INTEGER, "1"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ")"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "read"));
-        tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "num1"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
@@ -2114,16 +2313,16 @@ TEST_CASE("Parser While") {
 
         auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
-        REQUIRE(stmtNode->stmtType == StmtType::STMT_WHILE);
+        REQUIRE(stmtNode->stmtType == StmtType::STMT_IF);
 
-        WhileNode* whileNode;
-        REQUIRE_NOTHROW(whileNode = dynamic_cast<WhileNode*>(stmtNode.get()));
-        REQUIRE(!whileNode->condExprNode->isUnaryCondExpr());
-        REQUIRE(!whileNode->condExprNode->isBinaryCondExpr());
-        REQUIRE(whileNode->condExprNode->isRelExpr());
-        REQUIRE(whileNode->condExprNode->returnRelExprNodes().has_value());
+        IfNode* ifNode;
+        REQUIRE_NOTHROW(ifNode = dynamic_cast<IfNode*>(stmtNode.get()));
+        REQUIRE(!ifNode->condExprNode->isUnaryCondExpr());
+        REQUIRE(!ifNode->condExprNode->isBinaryCondExpr());
+        REQUIRE(ifNode->condExprNode->isRelExpr());
+        REQUIRE(ifNode->condExprNode->returnRelExprNodes().has_value());
 
-        auto relExprNodes = whileNode->condExprNode->returnRelExprNodes().value();
+        auto relExprNodes = ifNode->condExprNode->returnRelExprNodes().value();
         auto exprNode1 = relExprNodes.first;
         REQUIRE(exprNode1->isVariable());
         REQUIRE(!exprNode1->isConstant());
@@ -2135,18 +2334,23 @@ TEST_CASE("Parser While") {
         REQUIRE(!exprNode2->returnNodes().has_value());
         CHECK(exprNode2->getConstant().value() == 0);
 
-        auto stmtList = whileNode->stmtListNode->stmtList;
+        auto stmtList = ifNode->thenStmtListNode->stmtList;
         REQUIRE(stmtList.size() >= 1);
         CHECK(stmtList.at(0)->stmtIndex == 2);
-        REQUIRE(stmtList.at(0)->stmtType == StmtType::STMT_WHILE);
+        REQUIRE(stmtList.at(0)->stmtType == StmtType::STMT_READ);
 
-        REQUIRE_NOTHROW(whileNode = dynamic_cast<WhileNode*>(stmtList.at(0).get()));
-        REQUIRE(!whileNode->condExprNode->isUnaryCondExpr());
-        REQUIRE(!whileNode->condExprNode->isBinaryCondExpr());
-        REQUIRE(whileNode->condExprNode->isRelExpr());
-        REQUIRE(whileNode->condExprNode->returnRelExprNodes().has_value());
+        stmtList = ifNode->elseStmtListNode->stmtList;
+        REQUIRE(stmtList.size() >= 1);
+        CHECK(stmtList.at(0)->stmtIndex == 3);
+        REQUIRE(stmtList.at(0)->stmtType == StmtType::STMT_IF);
 
-        relExprNodes = whileNode->condExprNode->returnRelExprNodes().value();
+        REQUIRE_NOTHROW(ifNode = dynamic_cast<IfNode*>(stmtList.at(0).get()));
+        REQUIRE(!ifNode->condExprNode->isUnaryCondExpr());
+        REQUIRE(!ifNode->condExprNode->isBinaryCondExpr());
+        REQUIRE(ifNode->condExprNode->isRelExpr());
+        REQUIRE(ifNode->condExprNode->returnRelExprNodes().has_value());
+
+        relExprNodes = ifNode->condExprNode->returnRelExprNodes().value();
         exprNode1 = relExprNodes.first;
         REQUIRE(exprNode1->isVariable());
         REQUIRE(!exprNode1->isConstant());
@@ -2158,10 +2362,16 @@ TEST_CASE("Parser While") {
         REQUIRE(!exprNode2->returnNodes().has_value());
         CHECK(exprNode2->getConstant().value() == 1);
 
-        stmtList = whileNode->stmtListNode->stmtList;
+        stmtList = ifNode->thenStmtListNode->stmtList;
         REQUIRE(stmtList.size() >= 1);
         CHECK(stmtList.at(0)->stmtType == StmtType::STMT_READ);
-        CHECK(stmtList.at(0)->stmtIndex == 3);
+        CHECK(stmtList.at(0)->stmtIndex == 4);
+
+        stmtList = ifNode->elseStmtListNode->stmtList;
+        REQUIRE(stmtList.size() >= 1);
+        CHECK(stmtList.at(0)->stmtType == StmtType::STMT_PRINT);
+        CHECK(stmtList.at(0)->stmtIndex == 5);
+
     }
 
     // TODO(oviya): add unit test for multiple procedures in upcoming sprint.
