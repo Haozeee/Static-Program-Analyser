@@ -1,14 +1,20 @@
-name: CI for Linting - Windows
+name: CI for Linting
 
 on: [push]
 
 jobs:
   checkstyle:
-    runs-on: [self-hosted, Windows, X64]
+    runs-on: [self-hosted, Linux, X64]
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11.1'
+          
+      - name: Install cpplint
+        run: pip install cpplint
 
       - name: Run Linter
         run: |
-          cd .\Team26\Code26\src\spa
+          cd Team26/Code26/src/spa
           cpplint --recursive --filter=-legal/copyright,-runtime/references --linelength=120 extensions=cpp,h .

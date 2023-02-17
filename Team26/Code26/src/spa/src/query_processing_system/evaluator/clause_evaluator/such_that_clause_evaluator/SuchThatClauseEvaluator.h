@@ -3,6 +3,7 @@
 #include <utility>
 #include <unordered_map>
 #include <unordered_set>
+#include <string>
 #include "../ClauseEvaluator.h"
 #include "../../../parser/Argument.h"
 #include "ClauseArgumentsType.h"
@@ -42,7 +43,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
      * Should only be used when the right argument is a synonym.
      * @param result The result to be projected.
      */
-    virtual void setLeftAndRightArgResult(std::unordered_set<T> resultLeft, std::unordered_set<U> resultRight) = 0;
+    virtual void setLeftAndRightArgResult(std::unordered_map<std::string, std::unordered_set<std::string>> results) = 0;
 
     /**
      * Get all the entities that have the same design entity as that of the left argument.

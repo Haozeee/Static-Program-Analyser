@@ -65,7 +65,7 @@ void IntIntClauseEvaluator::evaluateSynonymSynonym(StoragePointer storage) {
     auto filteredMap = PkbUtil::filterMap(getRelationshipManager(storage), getLeftArgEntities(storage));
     // Find intersection with all items of the right arg design entity
     auto res = PkbUtil::mapSetIntersection(filteredMap, getRightArgEntities(storage));
-    setLeftAndRightArgResult(res.first, res.second);
+    setLeftAndRightArgResult(PkbUtil::intMapTostringMap(res));
 }
 
 void IntIntClauseEvaluator::evaluateNumberWithWildcard(StoragePointer storage) {
@@ -112,12 +112,9 @@ void IntIntClauseEvaluator::setRightArgResult(std::unordered_set<int> result) {
                                                              PkbUtil::intSetToStringSet(result));
 }
 
-void IntIntClauseEvaluator::setLeftAndRightArgResult(std::unordered_set<int> resultLeft,
-                                                     std::unordered_set<int> resultRight) {
-    clauseResultTable = ResultTable::createDoubleColumnTable(leftArg.getValue(),
-                                                             PkbUtil::intSetToStringSet(resultLeft),
-                                                             rightArg.getValue(),
-                                                             PkbUtil::intSetToStringSet(resultRight));
+void IntIntClauseEvaluator::setLeftAndRightArgResult(
+        std::unordered_map<std::string, std::unordered_set<std::string>> results) {
+    clauseResultTable = ResultTable::createTableFromMap(results, leftArg.getValue(), rightArg.getValue());
 }
 
 std::unordered_set<int> IntIntClauseEvaluator::getLeftArgEntities(StoragePointer storage) {
