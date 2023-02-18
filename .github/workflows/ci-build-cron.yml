@@ -48,6 +48,11 @@ jobs:
         shell: bash
         run: ./unit_testing
 
+      - name: Intergration Testing
+        working-directory: ${{runner.workspace}}/Team26/Code26/build/src/integration_testing
+        shell: bash
+        run: ./integration_testing
+
   checkstyle:
     runs-on: ubuntu-latest
     steps:
