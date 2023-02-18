@@ -64,5 +64,6 @@ TEST_CASE("Test Entity Extractor") {
         REQUIRE(entityStore->constantSet.size() == 2);
 
         REQUIRE(entityStore->procedureSet.begin()->get()->procedureName == procedureNode->procedureName);
+        REQUIRE(entityStore->printSet.begin()->get()->varName == printNode->varName);
     }
 }
