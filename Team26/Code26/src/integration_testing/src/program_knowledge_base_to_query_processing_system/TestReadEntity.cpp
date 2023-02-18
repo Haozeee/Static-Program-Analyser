@@ -3,11 +3,7 @@
 #include <utility>
 #include "program_knowledge_base/StorageManager.h"
 #include "query_processing_system/QueryManager.h"
-
-// helper function to compare list of int strings
-bool compare_int_string(const std::string& str1, const std::string& str2) {
-    return std::stoi(str1) < std::stoi(str2);
-}
+#include "../test_helpers/compare_int_string.h"
 
 TEST_CASE("Test reading entity for all manager") {
     std::unique_ptr<StorageManager> storageManager = std::make_unique<StorageManager>();
