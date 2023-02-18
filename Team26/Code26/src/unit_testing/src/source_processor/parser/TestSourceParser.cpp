@@ -929,8 +929,8 @@ TEST_CASE("Parser ExprNode") {
     SECTION("factor */%+- factor") {
         std::string op = "*/%+-";
 
-        for (char& c : op) {
-            std::string c(1, c);
+        for (char& a : op) {
+            std::string c(1, a);
             std::string title = std::string("factor ") + c + std::string(" factor");
             SECTION(title) {
                 tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "procedure"));
