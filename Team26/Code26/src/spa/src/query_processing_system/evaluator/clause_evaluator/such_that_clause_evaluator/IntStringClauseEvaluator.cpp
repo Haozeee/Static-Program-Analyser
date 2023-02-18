@@ -74,10 +74,9 @@ std::unordered_set<std::string> IntStringClauseEvaluator::evaluateNumberSynonymH
                 PkbUtil::setUnion(res, relationshipStore.find(child)->second);
             }
         }
-    } else {
-        if (relationshipStore.count(stmtNumber)) {
-            PkbUtil::setUnion(res, relationshipStore.find(stmtNumber)->second);
-        }
+    }
+    if (relationshipStore.count(stmtNumber)) {
+        PkbUtil::setUnion(res, relationshipStore.find(stmtNumber)->second);
     }
     return res;
 }
