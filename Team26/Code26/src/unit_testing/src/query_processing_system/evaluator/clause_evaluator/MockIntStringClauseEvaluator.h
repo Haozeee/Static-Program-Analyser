@@ -6,9 +6,6 @@
 #include <string>
 
 class MockIntStringClauseEvaluator : public IntStringClauseEvaluator {
- protected:
-    std::unordered_map<int, std::unordered_set<int>> getChildrenRelationMap(StoragePointer storage) override;
-
  public:
     MockIntStringClauseEvaluator(Argument left, Argument right);
 
