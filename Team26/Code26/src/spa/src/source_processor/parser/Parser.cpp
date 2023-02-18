@@ -274,9 +274,6 @@ std::shared_ptr<ExprNode> Parser::parseExprNode(int startIndex, int endIndex) {
     int numOfBrackets = 0;
     bool isPrevTokenStartBracket = false;
     bool isPrevTokenNonBracket = true;
-    bool isPrevBracketStartBracket = false;
-    bool isPrevBracketEndBracket = false;
-
     std::vector<int> endBracketStack;
 
     while (!isTypeOf(TokenType::TOKEN_END_OF_FILE) && index >= startIndex) {
@@ -288,8 +285,6 @@ std::shared_ptr<ExprNode> Parser::parseExprNode(int startIndex, int endIndex) {
             isPrevTokenNonBracket = false;
             isPrevTokenStartBracket = false;
             numOfBrackets--;
-            isPrevBracketEndBracket = true;
-            isPrevBracketStartBracket = false;
             endBracketStack.emplace_back(index);
         } else if (isValueOf(BRACKETS_START)) {
             if (!isPrevTokenNonBracket && !isPrevTokenStartBracket) {
@@ -309,9 +304,6 @@ std::shared_ptr<ExprNode> Parser::parseExprNode(int startIndex, int endIndex) {
             if (endBracketStack.empty()) {
                 throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
             }
-
-            isPrevBracketEndBracket = false;
-            isPrevBracketStartBracket = true;
             endBracketStack.pop_back();
         } else if (isExprOperator() && numOfBrackets == 0) {
             int currIndex = index;
@@ -385,9 +377,6 @@ std::shared_ptr<ExprNode> Parser::parseTerm(int startIndex, int endIndex) {
     int numOfBrackets = 0;
     bool isPrevTokenStartBracket = false;
     bool isPrevTokenNonBracket = true;
-    bool isPrevBracketStartBracket = false;
-    bool isPrevBracketEndBracket = false;
-
     std::vector<int> endBracketStack;
 
     while (!isTypeOf(TokenType::TOKEN_END_OF_FILE) && index >= startIndex) {
@@ -399,8 +388,6 @@ std::shared_ptr<ExprNode> Parser::parseTerm(int startIndex, int endIndex) {
             isPrevTokenNonBracket = false;
             isPrevTokenStartBracket = false;
             numOfBrackets--;
-            isPrevBracketEndBracket = true;
-            isPrevBracketStartBracket = false;
             endBracketStack.emplace_back(index);
         } else if (isValueOf(BRACKETS_START)) {
             if (!isPrevTokenNonBracket && !isPrevTokenStartBracket) {
@@ -419,9 +406,6 @@ std::shared_ptr<ExprNode> Parser::parseTerm(int startIndex, int endIndex) {
             if (endBracketStack.empty()) {
                 throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
             }
-
-            isPrevBracketEndBracket = false;
-            isPrevBracketStartBracket = true;
             endBracketStack.pop_back();
         } else if (isTermOperator() && numOfBrackets == 0) {
             int currIndex = index;
