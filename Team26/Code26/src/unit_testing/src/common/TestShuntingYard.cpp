@@ -1,8 +1,10 @@
 #include "catch.hpp"
 #include <string>
+#include <vector>
 #include "common/parser/ShuntingYardParser.h"
 #include "common/parser/ShuntNode.h"
 
+using StringList = std::vector<std::string>;
 std::string simpleTestExpression = "x+y";
 std::string testExpression = "v+x*y+z*t";
 
@@ -11,15 +13,19 @@ TEST_CASE("Test Parse Correctly") {
     auto simpleExpressionTree = ShuntingYardParser::parse(simpleTestExpression);
     auto inOrder = ShuntNode::getInOrderTraversal(simpleExpressionTree);
     auto preOrder = ShuntNode::getPreOrderTraversal(simpleExpressionTree);
-    REQUIRE(inOrder == "x+y");
-    REQUIRE(preOrder == "+xy");
+    StringList expectedInOrder = {"x", "+", "y"};
+    StringList expectedPreOrder = {"+", "x", "y"};
+    REQUIRE(inOrder == expectedInOrder);
+    REQUIRE(preOrder == expectedPreOrder);
 
     // Complex expression
     auto expressionTree = ShuntingYardParser::parse(testExpression);
     inOrder = ShuntNode::getInOrderTraversal(expressionTree);
     preOrder = ShuntNode::getPreOrderTraversal(expressionTree);
-    REQUIRE(inOrder == "v+x*y+z*t");
-    REQUIRE(preOrder == "++v*xy*zt");
+    expectedInOrder = {"v", "+", "x", "*", "y", "+", "z", "*", "t"};
+    expectedPreOrder = {"+", "+", "v", "*", "x", "y", "*", "z", "t"};
+    REQUIRE(inOrder == expectedInOrder);
+    REQUIRE(preOrder == expectedPreOrder);
 }
 
 TEST_CASE("Test Is Match") {
