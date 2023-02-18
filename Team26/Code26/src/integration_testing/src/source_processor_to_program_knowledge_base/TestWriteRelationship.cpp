@@ -74,12 +74,12 @@ TEST_CASE("Test insert relationship for all managers") {
 
     // test FollowsTManager
     auto followsTManager = readStorage->getFollowsTManager();
-    std::unordered_map<int, std::unordered_set<int>> followsT_map = {{1, {2, 3, 7, 8 , 14}}, {2, {3, 7, 8, 14}},
+    std::unordered_map<int, std::unordered_set<int>> followsT_map = {{1, {2, 3, 7, 8, 14}}, {2, {3, 7, 8, 14}},
                                                                      {4, {5}}, {3, {7, 8 ,14}}, {7, {8, 14}},
                                                                      {8, {14}}, {9, {13}}, {11, {12}}};
-    std::unordered_map<int, std::unordered_set<int>> reversed_followsT_map = {{8, {1,2,3,7}}, {14, {1, 2, 3, 7, 8}},
-                                                                              {3, {1,2}}, {5, {4}}, {12, {11}},
-                                                                              {7, {1,2,3}}, {13, {9}}, {2, {1}}};
+    std::unordered_map<int, std::unordered_set<int>> reversed_followsT_map = {{8, {1, 2, 3, 7}}, {14, {1, 2, 3, 7, 8}},
+                                                                              {3, {1, 2}}, {5, {4}}, {12, {11}},
+                                                                              {7, {1, 2, 3}}, {13, {9}}, {2, {1}}};
 
     REQUIRE(followsTManager->containsMap(1, 2));
     REQUIRE(followsTManager->containsMap(1, 3));
@@ -147,7 +147,7 @@ TEST_CASE("Test insert relationship for all managers") {
                                                                               {8, {"x", "y"}}, {9, {"x"}}, {11, {"x"}},
                                                                               {13, {"y"}}, {14, {"y"}}};
     std::unordered_map<std::string, std::unordered_set<int>> reversed_modifiesS_map = {{"a", {1}},
-                                                                                       {"x", {2, 3, 4, 6,8, 9,11}},
+                                                                                       {"x", {2, 3, 4, 6, 8, 9, 11}},
                                                                                        {"y", {7, 8, 13, 14}}};
 
     REQUIRE(modifiesSManager->containsMap(1,"a"));
