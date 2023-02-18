@@ -52,6 +52,7 @@ jobs:
             cd build
             cmake --build . --target autotester --config Release
             cmake --build . --target unit_testing --config Release
+            cmake --build . --target integration_testing --config Release
             cd ../..
         
         - name: Run Unit Test
@@ -60,6 +61,13 @@ jobs:
           run: |
             cd .\Team26\Code26\build\src\unit_testing\Release\
             .\unit_testing.exe
+
+        - name: Run Intergration Test
+          shell: powershell
+          timeout-minutes: 1
+          run: |
+            cd .\Team26\Code26\build\src\integration_testing\Release\
+            .\integration_testing.exe
 
         # - name: Run Autotester
         #   shell: powershell
