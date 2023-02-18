@@ -252,15 +252,13 @@ TEST_CASE("Test reading relationships for all managers") {
     REQUIRE(q5b_results == a5b_results);
 
     // test Uses
-    // awaiting bug fix for test case 6a
-    /*
     std::list<std::string> q6a_results;
     std::string q6a = "stmt s; Select s such that Uses(s, \"a\")";
     queryManager.process(q6a, q6a_results, storageManager->getReadStorage());
 
     std::list<std::string> a6a_results = {"3"};
     REQUIRE(q6a_results == a6a_results);
-    */
+
     std::list<std::string> q6b_results;
     std::string q6b = "assign a; Select a such that Uses(a, \"x\")";
     queryManager.process(q6b, q6b_results, storageManager->getReadStorage());
