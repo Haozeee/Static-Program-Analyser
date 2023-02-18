@@ -2,18 +2,45 @@
 #include <filesystem>
 #include <string>
 #include <utility>
+#include <iostream>
+#include <fstream>
 #include "source_processor/storage/interface/IStore.h"
 #include "source_processor/storage/Store.h"
 #include "source_processor/SourceManager.h"
 
 TEST_CASE("Test insert entity for all managers") {
-    //std::string cwd = std::filesystem::current_path().string();
-    const std::string& filename = "../../../src/integration_testing/src"
-                                  "/source_processor_to_program_knowledge_base/source_entity_insert.txt";
+
+    std::string testFileName = "./testFile.txt";
+
+    std::string testInput = "procedure test1 {\n"
+                            "    x = 10;\n"
+                            "    call Test2;\n"
+                            "    if (a > b) then {\n"
+                            "        x = x + a;\n"
+                            "    } else {\n"
+                            "        x = x + b;\n"
+                            "    }\n"
+                            "    y = 3;\n"
+                            "    while (y < 0) {\n"
+                            "        print x;\n"
+                            "        y = y - 1;\n"
+                            "    }\n"
+                            "}\n"
+                            "\n"
+                            "procedure test2 {\n"
+                            "    read a;\n"
+                            "    read b;\n"
+                            "}";
+
+    std::ofstream testFile;
+    testFile.open (testFileName);
+    testFile << testInput;
+    testFile.close();
+
     std::unique_ptr<StorageManager> storageManager = std::make_unique<StorageManager>();
     SourceManager sourceManager;
     std::shared_ptr<IStore> store = std::make_shared<Store>(storageManager->getWriteStorage());
-    sourceManager.process(filename, store);
+    sourceManager.process(testFileName, store);
     auto readStorage = storageManager->getReadStorage();
 
     // test AssignManager
@@ -107,4 +134,6 @@ TEST_CASE("Test insert entity for all managers") {
 
     REQUIRE(whileManager->contains(7));
     REQUIRE(whileManager->getAllEntitiesEntries() == whileSet);
+
+    std::filesystem::remove(testFileName);
 }

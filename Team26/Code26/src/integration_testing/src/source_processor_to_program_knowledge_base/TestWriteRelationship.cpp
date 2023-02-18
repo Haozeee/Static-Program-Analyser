@@ -2,19 +2,46 @@
 #include <filesystem>
 #include <string>
 #include <utility>
+#include <iostream>
+#include <fstream>
 #include "source_processor/storage/interface/IStore.h"
 #include "source_processor/storage/Store.h"
 #include "source_processor/SourceManager.h"
 
 TEST_CASE("Test insert relationship for all managers") {
-    //std::string cwd = std::filesystem::current_path().string();
-    const std::string& filename = "../../../src/integration_testing/src"
-                                  "/source_processor_to_program_knowledge_base/source_relationship_insert.txt";
+    std::string testInput = "procedure test1 {\n"
+                            "    read a;\n"
+                            "    x = 1;\n"
+                            "    if (a > 0) then {\n"
+                            "        x = x + 2;\n"
+                            "        print x;\n"
+                            "    } else {\n"
+                            "        x = 0;\n"
+                            "    }\n"
+                            "    y = 2;\n"
+                            "    while (y > 2) {\n"
+                            "        if (x > 0) then {\n"
+                            "            print x;\n"
+                            "        } else {\n"
+                            "            x = 1;\n"
+                            "            print x;\n"
+                            "        }\n"
+                            "        y = y - 1;\n"
+                            "    }\n"
+                            "    y = x;\n"
+                            "}";
+
+    std::string testFileName = "./testFile.txt";
+
+    std::ofstream testFile;
+    testFile.open (testFileName);
+    testFile << testInput;
+    testFile.close();
 
     std::unique_ptr<StorageManager> storageManager = std::make_unique<StorageManager>();
     SourceManager sourceManager;
     std::shared_ptr<IStore> store = std::make_shared<Store>(storageManager->getWriteStorage());
-    sourceManager.process(filename, store);
+    sourceManager.process(testFileName, store);
     auto readStorage = storageManager->getReadStorage();
 
     // test FollowsManager
@@ -267,4 +294,6 @@ TEST_CASE("Test insert relationship for all managers") {
     REQUIRE(usesSManager->containsReversedMap("y", 13));
     REQUIRE(usesSManager->containsReversedMap("x", 14));
     REQUIRE(usesSManager->getAllReversedRelationshipEntries() == reversed_usesS_map);
+
+    std::filesystem::remove(testFileName);
 }
