@@ -63,8 +63,8 @@ std::shared_ptr<ProcedureNode> Parser::parseProcedure() {
 std::shared_ptr<StmtListNode> Parser::parseStmtList() {
     std::vector<std::shared_ptr<StmtNode>> stmtList;
 
-    while (getToken()->getValue() != STMTLIST_END) {
-        if (getToken()->getType() != TokenType::TOKEN_NAME) {
+    while (!isValueOf(STMTLIST_END)) {
+        if (!isTypeOf(TokenType::TOKEN_NAME)) {
             throw SourceParserException(ParserInvalidStmtStartTokenTypeExceptionMessage);
         }
         std::shared_ptr<StmtNode> stmtNode;
@@ -139,10 +139,10 @@ std::shared_ptr<IfNode> Parser::parseIf() {
 std::shared_ptr<CondExprNode> Parser::parseConditional() {
     int oldIndex = index;
     int numOfBrackets = 1;
-    while (getToken()->getType() != TokenType::TOKEN_END_OF_FILE) {
-        if (getToken()->getValue() == BRACKETS_START) {
+    while (!isTypeOf(TokenType::TOKEN_END_OF_FILE)) {
+        if (isValueOf(BRACKETS_START)) {
             numOfBrackets++;
-        } else if (getToken()->getValue() == BRACKETS_END) {
+        } else if (isValueOf(BRACKETS_END)) {
             numOfBrackets--;
             if (numOfBrackets == 0) {
                 break;
@@ -182,15 +182,15 @@ std::shared_ptr<CondExprNode> Parser::parseCondExprNode(int startIndex, int endI
     index = startIndex;
 
     int numOfBrackets = 0;
-    while (getToken()->getType() != TokenType::TOKEN_END_OF_FILE && index <= endIndex) {
+    while (!isTypeOf(TokenType::TOKEN_END_OF_FILE) && index <= endIndex) {
         if (isBinaryCondOperator()) {
             int currIndex = index;
             index--;
-            if (getToken()->getValue() != BRACKETS_END) {
+            if (!isValueOf(BRACKETS_END)) {
                 throw SourceParserException(ParserInvalidBinaryCondExprFormatExceptionMessage);
             }
             index += 2;
-            if (getToken()->getValue() != BRACKETS_START) {
+            if (!isValueOf(BRACKETS_START)) {
                 throw SourceParserException(ParserInvalidBinaryCondExprFormatExceptionMessage);
             }
 
@@ -203,9 +203,9 @@ std::shared_ptr<CondExprNode> Parser::parseCondExprNode(int startIndex, int endI
                 : BinaryCondOperatorType::OR;
             return std::make_shared<CondExprNode>(std::make_tuple(opType, condExprNode1, condExprNode2),
                 toString(startIndex, endIndex));
-        } else if (getToken()->getValue() == BRACKETS_START) {
+        } else if (isValueOf(BRACKETS_START)) {
             numOfBrackets++;
-        } else if (getToken()->getValue() == BRACKETS_END) {
+        } else if (isValueOf(BRACKETS_END)) {
             numOfBrackets--;
         }
         getNext();
@@ -225,22 +225,22 @@ std::shared_ptr<RelExpr> Parser::parseRelExpr(int startIndex, int endIndex) {
     std::optional<RelExprOperatorType> opType = std::nullopt;
 
     while (getToken()->getType() != TokenType::TOKEN_END_OF_FILE && index <= endIndex) {
-        if (getToken()->getValue() == GT_OPERATOR) {
+        if (isValueOf(GT_OPERATOR)) {
             opType = RelExprOperatorType::GT;
             break;
-        } else if (getToken()->getValue() == GTE_OPERATOR) {
+        } else if (isValueOf(GTE_OPERATOR)) {
             opType = RelExprOperatorType::GTE;
             break;
-        } else if (getToken()->getValue() == LT_OPERATOR) {
+        } else if (isValueOf(LT_OPERATOR)) {
             opType = RelExprOperatorType::LT;
             break;
-        } else if (getToken()->getValue() == LTE_OPERATOR) {
+        } else if (isValueOf(LTE_OPERATOR)) {
             opType = RelExprOperatorType::LTE;
             break;
-        } else if (getToken()->getValue() == EQ_OPERATOR) {
+        } else if (isValueOf(EQ_OPERATOR)) {
             opType = RelExprOperatorType::EQ;
             break;
-        } else if (getToken()->getValue() == NEQ_OPERATOR) {
+        } else if (isValueOf(NEQ_OPERATOR)) {
             opType = RelExprOperatorType::NEQ;
             break;
         }
