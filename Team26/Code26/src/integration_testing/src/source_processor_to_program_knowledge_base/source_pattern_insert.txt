@@ -1,0 +1,7 @@
+procedure test1 {
+    x = 5;
+    y = x * 3;
+    read z;
+    z = x * y + x / y;
+    x = z;
+}
