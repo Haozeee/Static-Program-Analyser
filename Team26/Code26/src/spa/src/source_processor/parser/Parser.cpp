@@ -278,6 +278,7 @@ std::shared_ptr<ExprNode> Parser::parseExprNode(int startIndex, int endIndex) {
             }
 
             isPrevTokenNonBracket = false;
+            isPrevTokenStartBracket = false;
             numOfBrackets--;
             lastBracketIndex = (index > lastBracketIndex) ? index : lastBracketIndex;
         } else if (isValueOf(BRACKETS_START)) {
@@ -296,11 +297,11 @@ std::shared_ptr<ExprNode> Parser::parseExprNode(int startIndex, int endIndex) {
             index = currIndex;
             return std::make_shared<ExprNode>(std::make_shared<ExprNode::BinaryOpNode>
                 (getOperator(), exprNode1, exprNode2), toString(startIndex, endIndex));
-        } else if (isExprOperator() || isTermOperator()) {
-            isPrevTokenNonBracket = true;
-            isPrevTokenStartBracket = false;
         } else if (isFactor() && isPrevTokenStartBracket) {
             throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
+        } else if (isExprOperator() || isTermOperator() || isFactor()) {
+            isPrevTokenNonBracket = true;
+            isPrevTokenStartBracket = false;
         } else if (isIllegalArithmeticSplChar()) {
             throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
         }
@@ -365,7 +366,7 @@ std::shared_ptr<ExprNode> Parser::parseTerm(int startIndex, int endIndex) {
     while (!isTypeOf(TokenType::TOKEN_END_OF_FILE) && index >= startIndex) {
         if (isValueOf(BRACKETS_END)) {
             if (isPrevTokenStartBracket) {
-                throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
+                throw SourceParserException(ParserInvalidTermFormatExceptionMessage);
             }
 
             isPrevTokenNonBracket = false;
@@ -373,7 +374,7 @@ std::shared_ptr<ExprNode> Parser::parseTerm(int startIndex, int endIndex) {
             lastBracketIndex = (index > lastBracketIndex) ? index : lastBracketIndex;
         } else if (isValueOf(BRACKETS_START)) {
             if (!isPrevTokenNonBracket && !isPrevTokenStartBracket) {
-                throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
+                throw SourceParserException(ParserInvalidTermFormatExceptionMessage);
             }
 
             isPrevTokenNonBracket = false;
@@ -387,13 +388,13 @@ std::shared_ptr<ExprNode> Parser::parseTerm(int startIndex, int endIndex) {
             index = currIndex;
             return std::make_shared<ExprNode>(std::make_shared<ExprNode::BinaryOpNode>
                 (getOperator(), exprNode1, exprNode2), toString(startIndex, endIndex));
-        } else if (isExprOperator() || isTermOperator()) {
+        } else if (isFactor() && isPrevTokenStartBracket) {
+            throw SourceParserException(ParserInvalidTermFormatExceptionMessage);
+        } else if (isExprOperator() || isTermOperator() || isFactor()) {
             isPrevTokenNonBracket = true;
             isPrevTokenStartBracket = false;
-        } else if (isFactor() && isPrevTokenStartBracket) {
-            throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
-        } else if (isIllegalArithmeticSplChar()) {
-            throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
+        }  else if (isIllegalArithmeticSplChar()) {
+            throw SourceParserException(ParserInvalidTermFormatExceptionMessage);
         }
 
         index--;
