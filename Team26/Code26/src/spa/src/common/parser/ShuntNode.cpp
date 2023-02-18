@@ -18,10 +18,10 @@ std::vector<std::string> ShuntNode::getInOrderTraversal(std::shared_ptr<ShuntNod
     if (node == nullptr) {
         return res;
     }
-    auto left = getPreOrderTraversal(node->left);
+    auto left = getInOrderTraversal(node->left);
     res.insert(res.end(), left.begin(), left.end());
     res.push_back(node->value);
-    auto right = getPreOrderTraversal(node->right);
+    auto right = getInOrderTraversal(node->right);
     res.insert(res.end(), right.begin(), right.end());
     return res;
 }
@@ -34,6 +34,9 @@ bool ShuntNode::isSubVector(std::vector<std::string> stringVector, std::vector<s
             j++;
         } else {
             j = 0;
+            if (stringVector[i] == subVector[j]) {
+                j++;
+            }
         }
         i++;
     }
