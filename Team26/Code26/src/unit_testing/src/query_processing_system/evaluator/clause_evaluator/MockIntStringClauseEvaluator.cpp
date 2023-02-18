@@ -19,14 +19,6 @@ MockIntStringClauseEvaluator::getOppositeRelationshipManager(StoragePointer stor
     return res;
 }
 
-std::unordered_map<int, std::unordered_set<int>>
-MockIntStringClauseEvaluator::getChildrenRelationMap(StoragePointer storage) {
-    std::unordered_map<int, std::unordered_set<int>> res {
-            {2, {3, 4}}
-    };
-    return res;
-}
-
 std::shared_ptr<ResultTable> MockIntStringClauseEvaluator::getClauseResult() {
     return clauseResultTable;
 }
