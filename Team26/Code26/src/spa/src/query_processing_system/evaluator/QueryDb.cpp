@@ -16,31 +16,15 @@ std::unordered_map<std::string, std::unordered_set<std::string>> QueryDb::getInt
     if (resultTablesHasFalse()) {
         return res;
     }
-    auto interestedResults = std::make_shared<ResultTable>();
-    // Get base results
-    for (int i = 0 ; i < results.size(); i++) {
-        auto match = results.at(i)->hasMatchingColumns(interestedColumns);
-        if (!match.empty()) {
-            interestedResults = results.at(i);
-            results.erase(results.begin() + i);
-            break;
-        }
-    }
 
-    // Keep joining the interested tables until there are no more interested tables to join
-    int i = 0;
-    while (!results.empty() && i < results.size()) {
+    auto interestedResults = results.front();
+    results.pop_front();
+
+    while (!results.empty()) {
         auto table = results.front();
         results.pop_front();
-        auto match = table->hasMatchingColumns(interestedColumns);
-        if (!match.empty()) {
-            interestedResults = ResultTable::joinOnColumns(interestedResults, table, match);
-            auto cols = interestedResults->getColumnsNames();
-            interestedColumns.insert(cols.begin(), cols.end());
-            i = 0;
-        } else {
-            results.push_back(table);
-            i++;
+        if (!table->getColumnsNamesSet().empty()) {
+            interestedResults = ResultTable::joinTable(interestedResults, table);
         }
     }
 
