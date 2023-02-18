@@ -4,6 +4,9 @@ on:
   pull_request:
     types: [ opened, synchronize, reopened, ready_for_review ]
 
+  push:
+    branches: ["master"]
+
 jobs:
   build:
       runs-on: [self-hosted, Windows, X64]
