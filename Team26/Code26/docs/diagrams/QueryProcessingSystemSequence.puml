@@ -1,0 +1,66 @@
+@startuml
+
+!include style.puml
+box QPS
+participant ":UI" as UI LOGIC_COLOR
+participant ":QueryManager" as QueryManager LOGIC_COLOR
+participant ":QueryTokenizer" as QueryTokenizer LOGIC_COLOR
+participant ":QueryParser" as QueryParser LOGIC_COLOR
+participant ":Query" as Query LOGIC_COLOR
+participant ":QueryEvaluator" as QueryEvaluator LOGIC_COLOR
+participant ":ReadOnlyStorage" as ReadOnlyStorage LOGIC_COLOR
+end box
+activate UI
+
+UI -> QueryManager : processQuery(query: string)
+activate QueryManager
+
+create QueryTokenizer
+QueryManager -> QueryTokenizer: QueryTokenizer(query: string)
+activate QueryTokenizer
+
+QueryTokenizer --> QueryManager: QueryTokenizer
+deactivate QueryTokenizer
+
+QueryManager -> QueryTokenizer: tokenize()
+activate QueryTokenizer
+
+QueryTokenizer --> QueryManager: list<Tokens>
+deactivate QueryTokenizer
+
+create QueryParser
+QueryManager -> QueryParser : QueryParser(query: list<Tokens>)
+activate QueryParser
+
+QueryParser --> QueryManager: QueryParser
+deactivate QueryParser
+
+QueryManager -> QueryParser: parse()
+activate QueryParser
+
+create Query
+QueryParser -> Query: Query(list <tokens>)
+activate Query
+
+Query --> QueryParser: Query
+deactivate Query
+
+QueryParser --> QueryManager: Query
+deactivate QueryParser
+
+QueryManager -> QueryEvaluator: evaluateQuery(query: Query)
+activate QueryEvaluator
+
+QueryEvaluator -> ReadOnlyStorage: Read from PKB
+activate ReadOnlyStorage
+
+ReadOnlyStorage --> QueryEvaluator: Read results
+deactivate ReadOnlyStorage
+
+QueryEvaluator --> QueryManager: queryResults
+deactivate QueryEvaluator
+
+QueryManager --> UI: queryResults
+deactivate QueryManager
+
+@enduml
