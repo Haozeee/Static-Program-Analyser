@@ -14,13 +14,13 @@ extern const char QueryValidatorInvalidFirstDesignEntityInRelation1[];
 extern const char QueryValidatorInvalidFirstDesignEntityInRelation2[];
 extern const char QueryValidatorInvalidFirstDesignEntityInRelation[];
 extern const char QueryValidatorInvalidSecondDesignEntityInRelation[];
-extern const char QueryValidatorNoRepeatArgumentsAllowed[];
 extern const char QueryValidatorInvalidModifiesOrUsesRelationshipInSelectClause[];
 extern const char QueryInvalidCreatePatternArgument[];
 
 /**
  * Syntax Errors
  */
+extern const char QueryParserInvalidWildcardInSelectClause[];
 extern const char QueryParserInvalidRelationshipInSelectClause[];
 extern const char QueryParserInvalidTokenForRelationshipArgument[];
 extern const char QueryParserInvalidEndingSemicolon[];

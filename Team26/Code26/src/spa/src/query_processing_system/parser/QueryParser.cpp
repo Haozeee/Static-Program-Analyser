@@ -13,7 +13,6 @@ void QueryParser::parseAllDeclarations() {
             break;
         }
     }
-    parseNext("Select");
 }
 
 // Structure: design-entity (',', synonym)*';'
@@ -58,7 +57,12 @@ bool QueryParser::parseDeclaration() {
 // Structure: select-cl: declaration* 'Select' synonym
 // Example: Select v; Select a; Select p; Select c; Select s;
 void QueryParser::parseSelectClause() {
+    parseNext("Select");
     std::shared_ptr<Token> synonymToken = getNext();
+    if (synonymToken->getValue() == "_") {
+        throw QueryParserException(QueryParserInvalidWildcardInSelectClause);
+    }
+    std::cout << synonymToken->getValue() << std::endl;
     SelectClauseItem selectClauseItem = parseSynonym(synonymToken);
     auto selectClauseItems = std::make_shared<std::vector<SelectClauseItem>>();
     selectClauseItems->push_back(selectClauseItem);
