@@ -17,27 +17,25 @@ jobs:
       steps:
         - uses: actions/checkout@v3
 
-        - name: Restore build cache
-          id: cache-build
-          uses: actions/cache@v3
-          with:
-            path: Team26/Code26/build
-            key: build-cache
+        - name: Set Compiler
+          shell: powershell
+          run: |
+            cd .\Team26\Code26
+            Add-Content -Path "./CMakeLists.txt" -Value "set(CMAKE_C_COMPILER_LAUNCHER ccache)"
+            Add-Content -Path "./CMakeLists.txt" -Value "set(CMAKE_CXX_COMPILER_LAUNCHER ccache)"
 
         - name: Make Build folder
-          if: steps.cache-build.outputs.cache-hit != 'true'
           shell: powershell
           run: |
             cd .\Team26\Code26
             mkdir build
             cd build
-            cmake ..    
+            cmake ..
 
         - name: Build Project
           shell: powershell
           run: |
-            cd .\Team26\Code26
-            cd build
+            cd Team26\Code26\build
             cmake --build . --config Release
             cd ../..
         
