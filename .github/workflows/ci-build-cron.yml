@@ -6,7 +6,7 @@ on:
   
   workflow_dispatch:     
     branches:     
-      - master
+      - "*"
 
 env:
     BUILD_TYPE: Release
@@ -19,20 +19,39 @@ jobs:
       fail-fast: true
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - uses: seanmiddleditch/gha-setup-ninja@master
+
+      - name: Restore build cache
+        id: cache-build
+        uses: actions/cache@v3
+        with:
+          path: ${{runner.workspace}}/Team26/Code26/build
+          key: build-cache-macos
 
       - name: Create Build Environment
-        run: cmake -E make_directory ${{runner.workspace}}/build
+        if: steps.cache-build.outputs.cache-hit != 'true'
+        run: cmake -E make_directory ${{runner.workspace}}/Team26/Code26/build
 
       - name: Configure CMake
-        shell: bash
-        working-directory: ${{runner.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE/Team26/Code26/ -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+        working-directory: ${{runner.workspace}}/Team26/Code26/build
+        if: steps.cache-build.outputs.cache-hit != 'true'
+        run: cmake $GITHUB_WORKSPACE/Team26/Code26/ -G Ninja
 
       - name: Build Project
-        working-directory: ${{runner.workspace}}/build
         shell: bash
+        working-directory: ${{runner.workspace}}/Team26/Code26/build
         run: cmake --build . --config $BUILD_TYPE
+
+      - name: Unit Testing
+        working-directory: ${{runner.workspace}}/Team26/Code26/build/src/unit_testing
+        shell: bash
+        run: ./unit_testing
+
+      - name: Intergration Testing
+        working-directory: ${{runner.workspace}}/Team26/Code26/build/src/integration_testing
+        shell: bash
+        run: ./integration_testing
 
   checkstyle:
     runs-on: ubuntu-latest

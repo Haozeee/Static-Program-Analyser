@@ -2,11 +2,11 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include "ReadOnlyPatternManager.h"
-#include "WriteOnlyPatternManager.h"
+#include "IReadPatternManager.h"
+#include "IWritePatternManager.h"
 
 
-class PatternManager: public ReadOnlyPatternManager, public WriteOnlyPatternManager {
+class PatternManager: public IReadPatternManager, public IWritePatternManager {
  private:
     std::vector<std::string> lhs_vector;
     std::vector<std::string> rhs_vector;

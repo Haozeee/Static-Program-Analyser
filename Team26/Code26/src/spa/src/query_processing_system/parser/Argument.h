@@ -14,22 +14,11 @@
  * StringExpression: String within a set of inverted commas
  */
 enum class ArgumentType {
-    SYNONYM = 0,
-    NUMBER = 1,
-    WILDCARD = 2,
-    CHARACTERSTRING = 3
+    SYNONYM,
+    NUMBER,
+    WILDCARD,
+    CHARACTERSTRING
 };
-
-/**
- * Follows | FollowsT | Parent | ParentT : stmtRef, stmtRef
- * UsesS | ModifiesS : stmtRef, entRef
- * UsesP | ModifiesP : entRef, entRef
- * stmtRef = Synonym, Number, Wildcard
- * entRef = Synonym, Number, Character String
- */
-using ArgTypeIndex = std::unordered_set<unsigned int>;
-static ArgTypeIndex stmtRef{0, 1, 2};
-static ArgTypeIndex entRef{0, 1, 3};
 
 /**
  * Stores an argument of a query clause.
@@ -60,5 +49,5 @@ class Argument {
 
     DesignEntity getDesignEntity();
 
-    int getArgumentTypeIndex(ArgumentType);
+    bool operator==(const Argument &other) const;
 };

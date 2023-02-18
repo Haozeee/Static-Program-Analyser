@@ -6,19 +6,19 @@
 #include <string>
 #include <utility>
 #include "../parser/DesignEntity.h"
-#include "../../program_knowledge_base/ReadOnlyStorage.h"
+#include "../../program_knowledge_base/StorageManager.h"
 
 using stringEntitySet = std::unordered_set<std::string>;
 
 class PkbUtil {
  public:
-    static std::unordered_set<std::string> getStringEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage,
+    static std::unordered_set<std::string> getStringEntitiesFromPkb(std::shared_ptr<ReadStorage> storage,
                                                                     DesignEntity entity);
 
-    static std::unordered_set<int> getIntEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage,
+    static std::unordered_set<int> getIntEntitiesFromPkb(std::shared_ptr<ReadStorage> storage,
                                                          DesignEntity entity);
 
-    static std::unordered_set<std::string> getEntitiesFromPkb(std::shared_ptr<ReadOnlyStorage> storage,
+    static std::unordered_set<std::string> getEntitiesFromPkb(std::shared_ptr<ReadStorage> storage,
                                                               DesignEntity entity);
 
     /**
@@ -27,6 +27,15 @@ class PkbUtil {
     * @return The string set.
     */
     static std::unordered_set<std::string> intSetToStringSet(std::unordered_set<int> intSet);
+
+    /**
+     * Takes in a map containing integer keys and integers sets as values and
+     * converts all the integer values to strings.
+     * @param intMap The map to be converted.
+     * @return The converted string map.
+     */
+    static std::unordered_map<std::string, std::unordered_set<std::string>> intMapTostringMap(
+            std::unordered_map<int, std::unordered_set<int>> intMap);
 
     /**
      * Given two sets containing elements of type T, get the intersection of the two sets.
@@ -82,27 +91,25 @@ class PkbUtil {
 
     /**
      * Find the intersection between a Map of type <T, Set<U>> with a set of type <U>.
-     * Given a map with keys k and values v and a set S, this function finds all the common elements
-     * of v and S. For these elements find the corresponding k.
+     * Given a map with keys k and values v and a set S, this function filters the values v
+     * such that they only contain values in S.
      * @tparam T The type of the keys of the map.
      * @tparam U The type of the set.
      */
     template<typename T, typename U>
-    static std::pair<std::unordered_set<T>, std::unordered_set<U>> mapSetIntersection(
+    static std::unordered_map<T, std::unordered_set<U>> mapSetIntersection(
             std::unordered_map<T, std::unordered_set<U>> map, std::unordered_set<U> set) {
-        std::unordered_set<T> firstRes;
-        std::unordered_set<U> secondRes;
+        std::unordered_map<T, std::unordered_set<U>> res;
         if (set.empty()) {
-            return std::make_pair(firstRes, secondRes);
+            return res;
         }
         for (auto const& [k, v] : map) {
             std::unordered_set<U> intersection;
             PkbUtil::setIntersection(v, set, intersection);
             if (!intersection.empty()) {
-                firstRes.insert(k);
-                secondRes.insert(intersection.begin(), intersection.end());
+                res.insert({k, intersection});
             }
         }
-        return std::make_pair(firstRes, secondRes);
+        return res;
     }
 };

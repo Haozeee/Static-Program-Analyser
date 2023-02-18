@@ -10,17 +10,18 @@ void SourceManager::process(const std::string& filename, std::shared_ptr<IStore>
     std::ifstream input(filename);
 
     if (!input) {
-        // #TODO(zhengteck): Throw Error
+        throw SourceManagerException(ManagerInvalidInputFile);
     }
 
     Tokenizer sourceTokenizer = Tokenizer(&input);
     auto tokens = sourceTokenizer.tokenize();
 
     Parser sourceParser = Parser(tokens);
-    auto programNode = sourceParser.parse();
+    sourceParser.parse();
+    std::shared_ptr<ProgramNode> programRoot = sourceParser.getProgramNode();
 
     DesignExtractor designExtractor = DesignExtractor(std::move(store));
-    designExtractor.extract(programNode);
+    designExtractor.extract(programRoot);
 
     input.close();
 }

@@ -1,5 +1,7 @@
 #include "SourceProcessorExceptionMessage.h"
 
+extern const char ManagerInvalidInputFile[] = "Invalid input file.";
+
 extern const char TokenizerInvalidLogicalOpExceptionMessage[] = "Invalid logical operation detected. Valid logical "
                                                                 "operations includes: \"&&\", \"||\", \">=\", \"<=\", "
                                                                 "\"==\", \"!=\".";
@@ -10,6 +12,8 @@ extern const char TokenizerSpecialCharExceptionMessage[] = "Invalid special char
 
 extern const char ParserEmptySourceExceptionMessage[] = "Source code contains no procedures. Valid source code is"
                                                         " contained within procedure blocks.";
+extern const char ParserEmptyStmtListExceptionMessage[] = "Empty stmt list detected. Valid stmt lists contain at "
+                                                          "least one stmt.";
 extern const char ParserInvalidStmtStartTokenTypeExceptionMessage[] = "Non-name token at start of statement list"
                                                                       " detected.";
 extern const char ParserInvalidStmtStartTokenUnknownExceptionMessage[] = "Invalid token at start of statement"
@@ -43,3 +47,13 @@ extern const char ParserInvalidTermFormatExceptionMessage[] = "Invalid term clau
 extern const char ParserInvalidFactorLengthExceptionMessage[] = "Invalid attempt to parse multi-token clause as factor "
                                                                 "deteched. Valid factor clauses include: 1 name token,"
                                                                 " 1 integer token";
+
+extern const char BaseExtractRuntimeExceptionMessage[] =
+        "A run time error occurred with the Base Extractor.";
+
+extern const char BaseExtractorEmptyStatementListExceptionMessage[] =
+        "Empty Statement list detected.";
+extern const char BaseExtractorEmptyProcedureListExceptionMessage[] =
+        "Empty Procedure list detected.";
+extern const char BaseExtractorNotSupportedEvaluationExceptionMessage[] =
+        "Evaluation of this node type using this extractor is not supported.";

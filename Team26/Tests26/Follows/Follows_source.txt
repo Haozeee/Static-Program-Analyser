@@ -1,0 +1,129 @@
+procedure parent {
+    x1 = 1;
+    x2 = 2;
+    while ((x3 > 1) && (y3 > 2) ) {
+        x4 = p + q;
+        read x5;
+        if (x5 > 1) then {
+            z6 = x * 3 - 2;
+
+            if (y7 < 10) then {
+                z8 = x + y + 1 * 2;
+            } else {
+                read z9;
+                read x4;
+                print z10;
+
+                if (z10 == 1) then {
+                    call child2;
+                } else {
+                    call child;
+                }
+                
+                if (y7 > z9) then {
+                    print y7;
+                } else {
+                    print z9;
+                }
+
+                print z10;
+                while (z10 > 1) {
+                    print z10;
+                    z10 = z10 - 1;
+                }
+
+                call child;
+                while (x2 < x3) {
+                    x3 = x3 - x2;
+                }
+
+                while (x2 < x4) {
+                    x4 = x4 - x2;
+                }
+
+                if (x4 == 1) then {
+                    print x4;
+                } else {
+                    call child2;
+                    x4 = 1;
+                }
+
+                call child;
+            }
+
+            read x11;
+            while ((x11 / 10 * 9 + 11) < 11) {
+                a12  = b + 1 + x + r + e;
+
+                while (!(x13 == a + b)) {
+                    if (10 % y14 != x14) then {
+                        a15 = b + 3;
+                    } else {
+                        b16 = a + b + p + q - 9;
+                    }
+                    read c17;
+                    a18 = c * 18;
+                }
+                read a19;
+                print b20;
+                call child;
+                call child2;
+
+                if (b20 < a19) then {
+                    while (b20 < a19) {
+                        read b20;
+                    }
+                } else {
+                    read a19;
+                }
+            }
+            read x21;
+            a22 = b22 - c22;
+        } else {
+            while (x23 > 8) {
+                x24 = z24 + 10;
+                x25 = x25 + x + (a + b * c) * x25 * x25;
+                if (x26 > 55555) then {
+                    print x27;
+                    x28 = 1234567; }
+                else {
+                    print x29;
+                    print x4;
+                    read x30;
+                    call child2;
+                    read x4;
+                }
+
+                x29 = x4;
+            }
+            print x4;
+        }
+        read y32;
+        print x33;
+        call child;
+        print y32;
+    }
+    a35 = x * y + b;
+
+    if (a35 < b37) then {
+        a35 = b37;
+    } else {
+        a35 = x38;
+    }
+
+    while (a35 <= a36) {
+        a35 = a35 + 1;
+    }
+
+    print a36;
+    print b37;
+    print x38;
+}
+
+procedure child {
+    read h39;
+}
+
+procedure child2 {
+    read k40;
+}

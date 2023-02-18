@@ -12,7 +12,8 @@
 
 Tokenizer::Tokenizer(std::istream* stream) : AbstractTokenizer(stream) {}
 
-std::unordered_set<std::string> specialChar({"{", "}", ";", "(", ")", "=", ">", "<", "+", "-", "*", "/", "%", "!"});
+std::unordered_set<std::string> specialChar({"{", "}", ";", "(", ")", "=", ">", "<", "+", "-", "*", "/", "%", "!",
+                                             "&", "|"});
 std::unordered_set<std::string> validLogicalOps({"&&", "||", ">=", "<=", "==", "!="});
 std::unordered_set<std::string> firstOp({"&", "|", ">", "<", "=", "!"});
 std::unordered_set<char> secondOp({'&', '|', '='});
@@ -65,12 +66,6 @@ std::vector<std::shared_ptr<Token>> Tokenizer::tokenize() {
         }
         currentToken = "";
     }
-
-    // TODO(zhengteck): Remove when not required
-    // FOR DEBUGGING
-    //    for (const auto& element : token) {
-    //        std::cerr << element->getValue() << std::endl;
-    //    }
 
     return tokens;
 }
