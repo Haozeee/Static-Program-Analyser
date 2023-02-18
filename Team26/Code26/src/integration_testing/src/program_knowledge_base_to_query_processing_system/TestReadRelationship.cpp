@@ -209,6 +209,7 @@ TEST_CASE("Test reading relationships for all managers") {
     queryManager.process(q3b, q3b_results, storageManager->getReadStorage());
 
     std::list<std::string> a3b_results = {"x", "y"};
+    q3b_results.sort();
     REQUIRE(q3b_results == a3b_results);
 
     std::list<std::string> q3c_results;
