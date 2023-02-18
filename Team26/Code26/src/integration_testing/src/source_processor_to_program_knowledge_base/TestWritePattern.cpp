@@ -9,7 +9,6 @@
 #include "source_processor/SourceManager.h"
 
 TEST_CASE("Test insert pattern") {
-
     std::string testInput = "procedure test1 {\n"
                             "    x = 5;\n"
                             "    y = x * 3;\n"

@@ -5,6 +5,7 @@
 #include "query_processing_system/QueryManager.h"
 #include "../test_helpers/compare_int_string.h"
 
+// refer to ../test_helpers/source_entity_test.txt for source program of following test
 TEST_CASE("Test reading entity for all manager") {
     std::unique_ptr<StorageManager> storageManager = std::make_unique<StorageManager>();
     QueryManager queryManager;

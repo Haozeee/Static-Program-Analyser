@@ -5,6 +5,7 @@
 #include "query_processing_system/QueryManager.h"
 #include "../test_helpers/compare_int_string.h"
 
+// refer to ../test_helpers/source_relationship_test.txt for source program of following test
 TEST_CASE("Test reading relationships for all managers") {
     std::unique_ptr<StorageManager> storageManager = std::make_unique<StorageManager>();
     QueryManager queryManager;
