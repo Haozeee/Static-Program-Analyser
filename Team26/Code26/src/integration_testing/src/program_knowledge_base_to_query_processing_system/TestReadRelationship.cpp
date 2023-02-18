@@ -273,7 +273,4 @@ TEST_CASE("Test reading relationships for all managers") {
 
     std::list<std::string> a6c_results = {"x"};
     REQUIRE(q6c_results == a6c_results);
-    
-
-
 }
