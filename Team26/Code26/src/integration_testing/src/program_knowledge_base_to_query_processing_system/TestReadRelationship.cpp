@@ -11,6 +11,7 @@ TEST_CASE("Test reading relationships for all managers") {
     QueryManager queryManager;
     auto writeStorage = storageManager->getWriteStorage();
 
+    // populate PKB
     auto assignManager = writeStorage->getAssignManager();
     assignManager->insertEntity(2);
     assignManager->insertEntity(4);

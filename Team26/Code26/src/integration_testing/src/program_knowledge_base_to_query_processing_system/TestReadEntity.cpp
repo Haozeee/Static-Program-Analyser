@@ -11,6 +11,7 @@ TEST_CASE("Test reading entity for all manager") {
     QueryManager queryManager;
     auto writeStorage = storageManager->getWriteStorage();
 
+    // populate PKB
     auto assignManager = writeStorage->getAssignManager();
     assignManager->insertEntity(1);
     assignManager->insertEntity(4);
