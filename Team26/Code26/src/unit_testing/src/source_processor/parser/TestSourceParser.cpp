@@ -215,7 +215,7 @@ TEST_CASE("Parser Read") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_READ);
 
@@ -246,7 +246,7 @@ TEST_CASE("Parser Read") {
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 2);
 
         SECTION("first Read") {
-            auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+            std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
             CHECK(stmtNode->stmtIndex == 1);
             REQUIRE(stmtNode->stmtType == StmtType::STMT_READ);
 
@@ -256,7 +256,7 @@ TEST_CASE("Parser Read") {
         }
 
         SECTION("second Read") {
-            auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[1];
+            std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[1];
             CHECK(stmtNode->stmtIndex == 2);
             REQUIRE(stmtNode->stmtType == StmtType::STMT_READ);
 
@@ -292,7 +292,7 @@ TEST_CASE("Parser Read") {
 
         SECTION("first Procedure") {
             REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
-            auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+            std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
             CHECK(stmtNode->stmtIndex == 1);
             REQUIRE(stmtNode->stmtType == StmtType::STMT_READ);
 
@@ -303,7 +303,7 @@ TEST_CASE("Parser Read") {
 
         SECTION("second Procedure") {
             REQUIRE(programNode->procedureList[1]->stmtListNode->stmtList.size() >= 1);
-            auto stmtNode = programNode->procedureList[1]->stmtListNode->stmtList[0];
+            std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[1]->stmtListNode->stmtList[0];
             CHECK(stmtNode->stmtIndex == 2);
             REQUIRE(stmtNode->stmtType == StmtType::STMT_READ);
 
@@ -368,7 +368,7 @@ TEST_CASE("Parser Print") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_PRINT);
 
@@ -399,7 +399,7 @@ TEST_CASE("Parser Print") {
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 2);
 
         SECTION("first Print") {
-            auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+            std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
             CHECK(stmtNode->stmtIndex == 1);
             REQUIRE(stmtNode->stmtType == StmtType::STMT_PRINT);
 
@@ -409,7 +409,7 @@ TEST_CASE("Parser Print") {
         }
 
         SECTION("second Print") {
-            auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[1];
+            std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[1];
             CHECK(stmtNode->stmtIndex == 2);
             REQUIRE(stmtNode->stmtType == StmtType::STMT_PRINT);
 
@@ -445,7 +445,7 @@ TEST_CASE("Parser Print") {
 
         SECTION("first Procedure") {
             REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
-            auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+            std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
             CHECK(stmtNode->stmtIndex == 1);
             REQUIRE(stmtNode->stmtType == StmtType::STMT_PRINT);
 
@@ -456,7 +456,7 @@ TEST_CASE("Parser Print") {
 
         SECTION("second Procedure") {
             REQUIRE(programNode->procedureList[1]->stmtListNode->stmtList.size() >= 1);
-            auto stmtNode = programNode->procedureList[1]->stmtListNode->stmtList[0];
+            std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[1]->stmtListNode->stmtList[0];
             CHECK(stmtNode->stmtIndex == 2);
             REQUIRE(stmtNode->stmtType == StmtType::STMT_PRINT);
 
@@ -523,7 +523,7 @@ TEST_CASE("Parser Call") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_CALL);
 
@@ -554,7 +554,7 @@ TEST_CASE("Parser Call") {
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 2);
 
         SECTION("first Call") {
-            auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+            std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
             CHECK(stmtNode->stmtIndex == 1);
             REQUIRE(stmtNode->stmtType == StmtType::STMT_CALL);
 
@@ -564,7 +564,7 @@ TEST_CASE("Parser Call") {
         }
 
         SECTION("second Call") {
-            auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[1];
+            std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[1];
             CHECK(stmtNode->stmtIndex == 2);
             REQUIRE(stmtNode->stmtType == StmtType::STMT_CALL);
 
@@ -600,7 +600,7 @@ TEST_CASE("Parser Call") {
 
         SECTION("first Procedure") {
             REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
-            auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+            std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
             CHECK(stmtNode->stmtIndex == 1);
             REQUIRE(stmtNode->stmtType == StmtType::STMT_CALL);
 
@@ -611,7 +611,7 @@ TEST_CASE("Parser Call") {
 
         SECTION("second Procedure") {
             REQUIRE(programNode->procedureList[1]->stmtListNode->stmtList.size() >= 1);
-            auto stmtNode = programNode->procedureList[1]->stmtListNode->stmtList[0];
+            std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[1]->stmtListNode->stmtList[0];
             CHECK(stmtNode->stmtIndex == 2);
             REQUIRE(stmtNode->stmtType == StmtType::STMT_CALL);
 
@@ -692,7 +692,7 @@ TEST_CASE("Parser Assign") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_ASSIGN);
 
@@ -700,7 +700,7 @@ TEST_CASE("Parser Assign") {
         REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(stmtNode.get()));
         CHECK(assignNode->varName == "read");
 
-        auto exprNode = assignNode->exprNode;
+        std::shared_ptr<ExprNode> exprNode = assignNode->exprNode;
         REQUIRE(exprNode->isConstant());
         REQUIRE(!exprNode->isVariable());
         REQUIRE(!exprNode->returnNodes().has_value());
@@ -726,7 +726,7 @@ TEST_CASE("Parser Assign") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_ASSIGN);
 
@@ -734,7 +734,7 @@ TEST_CASE("Parser Assign") {
         REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(stmtNode.get()));
         CHECK(assignNode->varName == "x");
 
-        auto exprNode = assignNode->exprNode;
+        std::shared_ptr<ExprNode> exprNode = assignNode->exprNode;
         REQUIRE(exprNode->isVariable());
         REQUIRE(!exprNode->isConstant());
         REQUIRE(!exprNode->returnNodes().has_value());
@@ -767,7 +767,7 @@ TEST_CASE("Parser Assign") {
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 2);
 
         SECTION("first Assign") {
-            auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+            std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
             CHECK(stmtNode->stmtIndex == 1);
             REQUIRE(stmtNode->stmtType == StmtType::STMT_ASSIGN);
 
@@ -775,7 +775,7 @@ TEST_CASE("Parser Assign") {
             REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(stmtNode.get()));
             CHECK(assignNode->varName == "x");
 
-            auto exprNode = assignNode->exprNode;
+            std::shared_ptr<ExprNode> exprNode = assignNode->exprNode;
             REQUIRE(exprNode->isConstant());
             REQUIRE(!exprNode->isVariable());
             REQUIRE(!exprNode->returnNodes().has_value());
@@ -783,7 +783,7 @@ TEST_CASE("Parser Assign") {
         }
 
         SECTION("second Assign") {
-            auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[1];
+            std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[1];
             CHECK(stmtNode->stmtIndex == 2);
             REQUIRE(stmtNode->stmtType == StmtType::STMT_ASSIGN);
 
@@ -791,7 +791,7 @@ TEST_CASE("Parser Assign") {
             REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(stmtNode.get()));
             CHECK(assignNode->varName == "y");
 
-            auto exprNode = assignNode->exprNode;
+            std::shared_ptr<ExprNode> exprNode = assignNode->exprNode;
             REQUIRE(exprNode->isVariable());
             REQUIRE(!exprNode->isConstant());
             REQUIRE(!exprNode->returnNodes().has_value());
@@ -827,7 +827,7 @@ TEST_CASE("Parser Assign") {
 
         SECTION("first Procedure") {
             REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
-            auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+            std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
             CHECK(stmtNode->stmtIndex == 1);
             REQUIRE(stmtNode->stmtType == StmtType::STMT_ASSIGN);
 
@@ -835,7 +835,7 @@ TEST_CASE("Parser Assign") {
             REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(stmtNode.get()));
             CHECK(assignNode->varName == "x");
 
-            auto exprNode = assignNode->exprNode;
+            std::shared_ptr<ExprNode> exprNode = assignNode->exprNode;
             REQUIRE(exprNode->isConstant());
             REQUIRE(!exprNode->isVariable());
             REQUIRE(!exprNode->returnNodes().has_value());
@@ -844,7 +844,7 @@ TEST_CASE("Parser Assign") {
 
         SECTION("second Procedure") {
             REQUIRE(programNode->procedureList[1]->stmtListNode->stmtList.size() >= 1);
-            auto stmtNode = programNode->procedureList[1]->stmtListNode->stmtList[0];
+            std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[1]->stmtListNode->stmtList[0];
             CHECK(stmtNode->stmtIndex == 2);
             REQUIRE(stmtNode->stmtType == StmtType::STMT_ASSIGN);
 
@@ -852,7 +852,7 @@ TEST_CASE("Parser Assign") {
             REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(stmtNode.get()));
             CHECK(assignNode->varName == "y");
 
-            auto exprNode = assignNode->exprNode;
+            std::shared_ptr<ExprNode> exprNode = assignNode->exprNode;
             REQUIRE(exprNode->isVariable());
             REQUIRE(!exprNode->isConstant());
             REQUIRE(!exprNode->returnNodes().has_value());
@@ -911,7 +911,7 @@ TEST_CASE("Parser ExprNode") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_ASSIGN);
 
@@ -919,7 +919,7 @@ TEST_CASE("Parser ExprNode") {
         REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(stmtNode.get()));
         CHECK(assignNode->varName == "x");
 
-        auto exprNode = assignNode->exprNode;
+        std::shared_ptr<ExprNode> exprNode = assignNode->exprNode;
         REQUIRE(exprNode->isVariable());
         REQUIRE(!exprNode->isConstant());
         REQUIRE(!exprNode->returnNodes().has_value());
@@ -953,21 +953,22 @@ TEST_CASE("Parser ExprNode") {
                 REQUIRE(programNode->procedureList.size() == 1);
                 REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-                auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+                std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
                 CHECK(stmtNode->stmtIndex == 1);
                 REQUIRE(stmtNode->stmtType == StmtType::STMT_ASSIGN);
 
                 AssignNode* assignNode;
                 REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(stmtNode.get()));
 
-                auto exprNode = assignNode->exprNode;
+                std::shared_ptr<ExprNode> exprNode = assignNode->exprNode;
                 REQUIRE(!exprNode->isConstant());
                 REQUIRE(!exprNode->isVariable());
                 REQUIRE(exprNode->returnNodes().has_value());
 
-                auto nodes = exprNode->returnNodes().value();
+                std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> nodes
+                    = exprNode->returnNodes().value();
                 SECTION("left ExprNode") {
-                    auto child = nodes.first;
+                    std::shared_ptr<ExprNode> child = nodes.first;
                     REQUIRE(child->isVariable());
                     REQUIRE(!child->isConstant());
                     REQUIRE(!child->returnNodes().has_value());
@@ -975,7 +976,7 @@ TEST_CASE("Parser ExprNode") {
                 }
 
                 SECTION("right ExprNode") {
-                    auto child = nodes.second;
+                    std::shared_ptr<ExprNode> child = nodes.second;
                     REQUIRE(child->isConstant());
                     REQUIRE(!child->isVariable());
                     REQUIRE(!child->returnNodes().has_value());
@@ -1018,23 +1019,23 @@ TEST_CASE("Parser ExprNode") {
                 REQUIRE(programNode->procedureList.size() == 1);
                 REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-                auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+                std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
                 CHECK(stmtNode->stmtIndex == 1);
                 REQUIRE(stmtNode->stmtType == StmtType::STMT_ASSIGN);
 
                 AssignNode* assignNode;
                 REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(stmtNode.get()));
 
-                auto exprNode = assignNode->exprNode;
+                std::shared_ptr<ExprNode> exprNode = assignNode->exprNode;
                 REQUIRE(!exprNode->isConstant());
                 REQUIRE(!exprNode->isVariable());
                 REQUIRE(exprNode->returnNodes().has_value());
 
-                auto nodes = exprNode->returnNodes().value();
+                std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> nodes = exprNode->returnNodes().value();
                 auto subNodes = nodes.first->returnNodes();
 
                 SECTION("left subExprNode") {
-                    auto child1 = subNodes.value().first;
+                    std::shared_ptr<ExprNode> child1 = subNodes.value().first;
                     REQUIRE(child1->isConstant());
                     REQUIRE(!child1->isVariable());
                     REQUIRE(!child1->returnNodes().has_value());
@@ -1042,7 +1043,7 @@ TEST_CASE("Parser ExprNode") {
                 }
 
                 SECTION("right subExprNode") {
-                    auto child2 = subNodes.value().second;
+                    std::shared_ptr<ExprNode> child2 = subNodes.value().second;
                     REQUIRE(child2->isVariable());
                     REQUIRE(!child2->isConstant());
                     REQUIRE(!child2->returnNodes().has_value());
@@ -1050,7 +1051,7 @@ TEST_CASE("Parser ExprNode") {
                 }
 
                 SECTION("right ExprNode") {
-                    auto child = nodes.second;
+                    std::shared_ptr<ExprNode> child = nodes.second;
                     REQUIRE(child->isVariable());
                     REQUIRE(!child->isConstant());
                     REQUIRE(!child->returnNodes().has_value());
@@ -1085,22 +1086,22 @@ TEST_CASE("Parser ExprNode") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_ASSIGN);
 
         AssignNode* assignNode;
         REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(stmtNode.get()));
 
-        auto exprNode = assignNode->exprNode;
+        std::shared_ptr<ExprNode> exprNode = assignNode->exprNode;
         REQUIRE(!exprNode->isConstant());
         REQUIRE(!exprNode->isVariable());
         REQUIRE(exprNode->returnNodes().has_value());
 
-        auto nodes = exprNode->returnNodes().value();
+        std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> nodes = exprNode->returnNodes().value();
 
         SECTION("right ExprNode") {
-            auto child = nodes.first;
+            std::shared_ptr<ExprNode> child = nodes.first;
             REQUIRE(child->isConstant());
             REQUIRE(!child->isVariable());
             REQUIRE(!child->returnNodes().has_value());
@@ -1110,7 +1111,7 @@ TEST_CASE("Parser ExprNode") {
         auto subNodes = nodes.second->returnNodes();
 
         SECTION("left subExprNode") {
-            auto child1 = subNodes.value().first;
+            std::shared_ptr<ExprNode> child1 = subNodes.value().first;
             CHECK(subNodes.has_value());
             REQUIRE(child1->isVariable());
             REQUIRE(!child1->isConstant());
@@ -1120,7 +1121,7 @@ TEST_CASE("Parser ExprNode") {
         }
 
         SECTION("right subExprNode") {
-            auto child2 = subNodes.value().second;
+            std::shared_ptr<ExprNode> child2 = subNodes.value().second;
             REQUIRE(child2->isVariable());
             REQUIRE(!child2->isConstant());
             REQUIRE(!child2->returnNodes().has_value());
@@ -1151,22 +1152,22 @@ TEST_CASE("Parser ExprNode") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_ASSIGN);
 
         AssignNode* assignNode;
         REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(stmtNode.get()));
 
-        auto exprNode = assignNode->exprNode;
+        std::shared_ptr<ExprNode> exprNode = assignNode->exprNode;
         REQUIRE(!exprNode->isConstant());
         REQUIRE(!exprNode->isVariable());
         REQUIRE(exprNode->returnNodes().has_value());
 
-        auto nodes = exprNode->returnNodes().value();
+        std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> nodes = exprNode->returnNodes().value();
 
         SECTION("right ExprNode") {
-            auto child = nodes.first;
+            std::shared_ptr<ExprNode> child = nodes.first;
             REQUIRE(child->isConstant());
             REQUIRE(!child->isVariable());
             REQUIRE(!child->returnNodes().has_value());
@@ -1176,7 +1177,7 @@ TEST_CASE("Parser ExprNode") {
         auto subNodes = nodes.second->returnNodes();
 
         SECTION("left subExprNode") {
-            auto child1 = subNodes.value().first;
+            std::shared_ptr<ExprNode> child1 = subNodes.value().first;
             CHECK(subNodes.has_value());
             REQUIRE(child1->isVariable());
             REQUIRE(!child1->isConstant());
@@ -1186,7 +1187,7 @@ TEST_CASE("Parser ExprNode") {
         }
 
         SECTION("right subExprNode") {
-            auto child2 = subNodes.value().second;
+            std::shared_ptr<ExprNode> child2 = subNodes.value().second;
             REQUIRE(child2->isVariable());
             REQUIRE(!child2->isConstant());
             REQUIRE(!child2->returnNodes().has_value());
@@ -1217,22 +1218,23 @@ TEST_CASE("Parser ExprNode") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_ASSIGN);
 
         AssignNode* assignNode;
         REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(stmtNode.get()));
 
-        auto exprNode = assignNode->exprNode;
+        std::shared_ptr<ExprNode> exprNode = assignNode->exprNode;
         REQUIRE(!exprNode->isConstant());
         REQUIRE(!exprNode->isVariable());
         REQUIRE(exprNode->returnNodes().has_value());
 
-        auto nodes = exprNode->returnNodes().value();
+        std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> nodes
+            = exprNode->returnNodes().value();
 
         SECTION("right ExprNode") {
-            auto child = nodes.first;
+            std::shared_ptr<ExprNode> child = nodes.first;
             REQUIRE(child->isConstant());
             REQUIRE(!child->isVariable());
             REQUIRE(!child->returnNodes().has_value());
@@ -1242,7 +1244,7 @@ TEST_CASE("Parser ExprNode") {
         auto subNodes = nodes.second->returnNodes();
 
         SECTION("left subExprNode") {
-            auto child1 = subNodes.value().first;
+            std::shared_ptr<ExprNode> child1 = subNodes.value().first;
             CHECK(subNodes.has_value());
             REQUIRE(child1->isVariable());
             REQUIRE(!child1->isConstant());
@@ -1252,7 +1254,7 @@ TEST_CASE("Parser ExprNode") {
         }
 
         SECTION("right subExprNode") {
-            auto child2 = subNodes.value().second;
+            std::shared_ptr<ExprNode> child2 = subNodes.value().second;
             REQUIRE(child2->isVariable());
             REQUIRE(!child2->isConstant());
             REQUIRE(!child2->returnNodes().has_value());
@@ -1283,22 +1285,23 @@ TEST_CASE("Parser ExprNode") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_ASSIGN);
 
         AssignNode* assignNode;
         REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(stmtNode.get()));
 
-        auto exprNode = assignNode->exprNode;
+        std::shared_ptr<ExprNode> exprNode = assignNode->exprNode;
         REQUIRE(!exprNode->isConstant());
         REQUIRE(!exprNode->isVariable());
         REQUIRE(exprNode->returnNodes().has_value());
 
-        auto nodes = exprNode->returnNodes().value();
+        std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> nodes
+            = exprNode->returnNodes().value();
 
         SECTION("right ExprNode") {
-            auto child = nodes.first;
+            std::shared_ptr<ExprNode> child = nodes.first;
             REQUIRE(child->isConstant());
             REQUIRE(!child->isVariable());
             REQUIRE(!child->returnNodes().has_value());
@@ -1308,7 +1311,7 @@ TEST_CASE("Parser ExprNode") {
         auto subNodes = nodes.second->returnNodes();
 
         SECTION("left subExprNode") {
-            auto child1 = subNodes.value().first;
+            std::shared_ptr<ExprNode> child1 = subNodes.value().first;
             CHECK(subNodes.has_value());
             REQUIRE(child1->isVariable());
             REQUIRE(!child1->isConstant());
@@ -1318,7 +1321,7 @@ TEST_CASE("Parser ExprNode") {
         }
 
         SECTION("right subExprNode") {
-            auto child2 = subNodes.value().second;
+            std::shared_ptr<ExprNode> child2 = subNodes.value().second;
             REQUIRE(child2->isVariable());
             REQUIRE(!child2->isConstant());
             REQUIRE(!child2->returnNodes().has_value());
@@ -1349,22 +1352,23 @@ TEST_CASE("Parser ExprNode") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_ASSIGN);
 
         AssignNode* assignNode;
         REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(stmtNode.get()));
 
-        auto exprNode = assignNode->exprNode;
+        std::shared_ptr<ExprNode> exprNode = assignNode->exprNode;
         REQUIRE(!exprNode->isConstant());
         REQUIRE(!exprNode->isVariable());
         REQUIRE(exprNode->returnNodes().has_value());
 
-        auto nodes = exprNode->returnNodes().value();
+        std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> nodes
+            = exprNode->returnNodes().value();
 
         SECTION("right ExprNode") {
-            auto child = nodes.first;
+            std::shared_ptr<ExprNode> child = nodes.first;
             REQUIRE(child->isConstant());
             REQUIRE(!child->isVariable());
             REQUIRE(!child->returnNodes().has_value());
@@ -1374,7 +1378,7 @@ TEST_CASE("Parser ExprNode") {
         auto subNodes = nodes.second->returnNodes();
 
         SECTION("left subExprNode") {
-            auto child1 = subNodes.value().first;
+            std::shared_ptr<ExprNode> child1 = subNodes.value().first;
             CHECK(subNodes.has_value());
             REQUIRE(child1->isVariable());
             REQUIRE(!child1->isConstant());
@@ -1384,7 +1388,7 @@ TEST_CASE("Parser ExprNode") {
         }
 
         SECTION("right subExprNode") {
-            auto child2 = subNodes.value().second;
+            std::shared_ptr<ExprNode> child2 = subNodes.value().second;
             REQUIRE(child2->isVariable());
             REQUIRE(!child2->isConstant());
             REQUIRE(!child2->returnNodes().has_value());
@@ -1415,22 +1419,23 @@ TEST_CASE("Parser ExprNode") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_ASSIGN);
 
         AssignNode* assignNode;
         REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(stmtNode.get()));
 
-        auto exprNode = assignNode->exprNode;
+        std::shared_ptr<ExprNode> exprNode = assignNode->exprNode;
         REQUIRE(!exprNode->isConstant());
         REQUIRE(!exprNode->isVariable());
         REQUIRE(exprNode->returnNodes().has_value());
 
-        auto nodes = exprNode->returnNodes().value();
+        std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> nodes
+            = exprNode->returnNodes().value();
 
         SECTION("right ExprNode") {
-            auto child = nodes.first;
+            std::shared_ptr<ExprNode> child = nodes.first;
             REQUIRE(child->isConstant());
             REQUIRE(!child->isVariable());
             REQUIRE(!child->returnNodes().has_value());
@@ -1440,7 +1445,7 @@ TEST_CASE("Parser ExprNode") {
         auto subNodes = nodes.second->returnNodes();
 
         SECTION("left subExprNode") {
-            auto child1 = subNodes.value().first;
+            std::shared_ptr<ExprNode> child1 = subNodes.value().first;
             CHECK(subNodes.has_value());
             REQUIRE(child1->isVariable());
             REQUIRE(!child1->isConstant());
@@ -1450,7 +1455,7 @@ TEST_CASE("Parser ExprNode") {
         }
 
         SECTION("right subExprNode") {
-            auto child2 = subNodes.value().second;
+            std::shared_ptr<ExprNode> child2 = subNodes.value().second;
             REQUIRE(child2->isVariable());
             REQUIRE(!child2->isConstant());
             REQUIRE(!child2->returnNodes().has_value());
@@ -1483,23 +1488,24 @@ TEST_CASE("Parser ExprNode") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_ASSIGN);
 
         AssignNode* assignNode;
         REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(stmtNode.get()));
 
-        auto exprNode = assignNode->exprNode;
+        std::shared_ptr<ExprNode> exprNode = assignNode->exprNode;
         REQUIRE(!exprNode->isConstant());
         REQUIRE(!exprNode->isVariable());
         REQUIRE(exprNode->returnNodes().has_value());
 
-        auto nodes = exprNode->returnNodes().value();
+        std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> nodes
+            = exprNode->returnNodes().value();
         auto subNodes = nodes.first->returnNodes();
 
         SECTION("left subExprNode") {
-            auto child1 = subNodes.value().first;
+            std::shared_ptr<ExprNode> child1 = subNodes.value().first;
             REQUIRE(child1->isConstant());
             REQUIRE(!child1->isVariable());
             REQUIRE(!child1->returnNodes().has_value());
@@ -1507,7 +1513,7 @@ TEST_CASE("Parser ExprNode") {
         }
 
         SECTION("right subExprNode") {
-            auto child2 = subNodes.value().second;
+            std::shared_ptr<ExprNode> child2 = subNodes.value().second;
             REQUIRE(child2->isVariable());
             REQUIRE(!child2->isConstant());
             REQUIRE(!child2->returnNodes().has_value());
@@ -1515,7 +1521,7 @@ TEST_CASE("Parser ExprNode") {
         }
 
         SECTION("right ExprNode") {
-            auto child = nodes.second;
+            std::shared_ptr<ExprNode> child = nodes.second;
             REQUIRE(child->isVariable());
             REQUIRE(!child->isConstant());
             REQUIRE(!child->returnNodes().has_value());
@@ -1550,23 +1556,24 @@ TEST_CASE("Parser ExprNode") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_ASSIGN);
 
         AssignNode* assignNode;
         REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(stmtNode.get()));
 
-        auto exprNode = assignNode->exprNode;
+        std::shared_ptr<ExprNode> exprNode = assignNode->exprNode;
         REQUIRE(!exprNode->isConstant());
         REQUIRE(!exprNode->isVariable());
         REQUIRE(exprNode->returnNodes().has_value());
 
-        auto nodes = exprNode->returnNodes().value();
+        std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> nodes
+            = exprNode->returnNodes().value();
         auto subNodes = nodes.first->returnNodes();
 
         SECTION("left subExprNode") {
-            auto child1 = subNodes.value().first;
+            std::shared_ptr<ExprNode> child1 = subNodes.value().first;
             REQUIRE(child1->isConstant());
             REQUIRE(!child1->isVariable());
             REQUIRE(!child1->returnNodes().has_value());
@@ -1574,7 +1581,7 @@ TEST_CASE("Parser ExprNode") {
         }
 
         SECTION("right subExprNode") {
-            auto child2 = subNodes.value().second;
+            std::shared_ptr<ExprNode> child2 = subNodes.value().second;
             REQUIRE(child2->isVariable());
             REQUIRE(!child2->isConstant());
             REQUIRE(!child2->returnNodes().has_value());
@@ -1582,7 +1589,7 @@ TEST_CASE("Parser ExprNode") {
         }
 
         SECTION("right ExprNode") {
-            auto child = nodes.second;
+            std::shared_ptr<ExprNode> child = nodes.second;
             REQUIRE(child->isVariable());
             REQUIRE(!child->isConstant());
             REQUIRE(!child->returnNodes().has_value());
@@ -1617,22 +1624,23 @@ TEST_CASE("Parser ExprNode") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_ASSIGN);
 
         AssignNode* assignNode;
         REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(stmtNode.get()));
 
-        auto exprNode = assignNode->exprNode;
+        std::shared_ptr<ExprNode> exprNode = assignNode->exprNode;
         REQUIRE(!exprNode->isConstant());
         REQUIRE(!exprNode->isVariable());
         REQUIRE(exprNode->returnNodes().has_value());
 
-        auto nodes = exprNode->returnNodes().value();
+        std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> nodes
+            = exprNode->returnNodes().value();
 
         SECTION("right ExprNode") {
-            auto child = nodes.first;
+            std::shared_ptr<ExprNode> child = nodes.first;
             REQUIRE(child->isConstant());
             REQUIRE(!child->isVariable());
             REQUIRE(!child->returnNodes().has_value());
@@ -1642,7 +1650,7 @@ TEST_CASE("Parser ExprNode") {
         auto subNodes = nodes.second->returnNodes();
 
         SECTION("left subExprNode") {
-            auto child1 = subNodes.value().first;
+            std::shared_ptr<ExprNode> child1 = subNodes.value().first;
             CHECK(subNodes.has_value());
             REQUIRE(child1->isVariable());
             REQUIRE(!child1->isConstant());
@@ -1652,7 +1660,7 @@ TEST_CASE("Parser ExprNode") {
         }
 
         SECTION("right subExprNode") {
-            auto child2 = subNodes.value().second;
+            std::shared_ptr<ExprNode> child2 = subNodes.value().second;
             REQUIRE(child2->isVariable());
             REQUIRE(!child2->isConstant());
             REQUIRE(!child2->returnNodes().has_value());
@@ -1685,22 +1693,22 @@ TEST_CASE("Parser ExprNode") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_ASSIGN);
 
         AssignNode* assignNode;
         REQUIRE_NOTHROW(assignNode = dynamic_cast<AssignNode*>(stmtNode.get()));
 
-        auto exprNode = assignNode->exprNode;
+        std::shared_ptr<ExprNode> exprNode = assignNode->exprNode;
         REQUIRE(!exprNode->isConstant());
         REQUIRE(!exprNode->isVariable());
         REQUIRE(exprNode->returnNodes().has_value());
 
-        auto nodes = exprNode->returnNodes().value();
+        std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> nodes = exprNode->returnNodes().value();
 
         SECTION("right ExprNode") {
-            auto child = nodes.first;
+            std::shared_ptr<ExprNode> child = nodes.first;
             REQUIRE(child->isConstant());
             REQUIRE(!child->isVariable());
             REQUIRE(!child->returnNodes().has_value());
@@ -1710,7 +1718,7 @@ TEST_CASE("Parser ExprNode") {
         auto subNodes = nodes.second->returnNodes();
 
         SECTION("left subExprNode") {
-            auto child1 = subNodes.value().first;
+            std::shared_ptr<ExprNode> child1 = subNodes.value().first;
             CHECK(subNodes.has_value());
             REQUIRE(child1->isVariable());
             REQUIRE(!child1->isConstant());
@@ -1720,7 +1728,7 @@ TEST_CASE("Parser ExprNode") {
         }
 
         SECTION("right subExprNode") {
-            auto child2 = subNodes.value().second;
+            std::shared_ptr<ExprNode> child2 = subNodes.value().second;
             REQUIRE(child2->isVariable());
             REQUIRE(!child2->isConstant());
             REQUIRE(!child2->returnNodes().has_value());
@@ -1908,7 +1916,7 @@ TEST_CASE("Parser While") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_WHILE);
 
@@ -1919,19 +1927,20 @@ TEST_CASE("Parser While") {
         REQUIRE(whileNode->condExprNode->isRelExpr());
         REQUIRE(whileNode->condExprNode->returnRelExprNodes().has_value());
         
-        auto relExprNodes = whileNode->condExprNode->returnRelExprNodes().value();
-        auto exprNode1 = relExprNodes.first;
+        std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> relExprNodes
+            = whileNode->condExprNode->returnRelExprNodes().value();
+        std::shared_ptr<ExprNode> exprNode1 = relExprNodes.first;
         REQUIRE(exprNode1->isVariable());
         REQUIRE(!exprNode1->isConstant());
         REQUIRE(!exprNode1->returnNodes().has_value());
         CHECK(exprNode1->getVariable().value() == "num1");
-        auto exprNode2 = relExprNodes.second;
+        std::shared_ptr<ExprNode> exprNode2 = relExprNodes.second;
         REQUIRE(exprNode2->isConstant());
         REQUIRE(!exprNode2->isVariable());
         REQUIRE(!exprNode2->returnNodes().has_value());
         CHECK(exprNode2->getConstant().value() == 0);
 
-        auto stmtList = whileNode->stmtListNode->stmtList;
+        std::vector<std::shared_ptr<StmtNode>> stmtList = whileNode->stmtListNode->stmtList;
         REQUIRE(stmtList.size() >= 1);
         CHECK(stmtList.at(0)->stmtType == StmtType::STMT_READ);
         CHECK(stmtList.at(0)->stmtIndex == 2);
@@ -1975,7 +1984,7 @@ TEST_CASE("Parser While") {
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 2);
 
         SECTION("first While") {
-            auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+            std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
             CHECK(stmtNode->stmtIndex == 1);
             REQUIRE(stmtNode->stmtType == StmtType::STMT_WHILE);
 
@@ -1986,26 +1995,27 @@ TEST_CASE("Parser While") {
             REQUIRE(whileNode->condExprNode->isRelExpr());
             REQUIRE(whileNode->condExprNode->returnRelExprNodes().has_value());
 
-            auto relExprNodes = whileNode->condExprNode->returnRelExprNodes().value();
-            auto exprNode1 = relExprNodes.first;
+            std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> relExprNodes
+                = whileNode->condExprNode->returnRelExprNodes().value();
+            std::shared_ptr<ExprNode> exprNode1 = relExprNodes.first;
             REQUIRE(exprNode1->isVariable());
             REQUIRE(!exprNode1->isConstant());
             REQUIRE(!exprNode1->returnNodes().has_value());
             CHECK(exprNode1->getVariable().value() == "num1");
-            auto exprNode2 = relExprNodes.second;
+            std::shared_ptr<ExprNode> exprNode2 = relExprNodes.second;
             REQUIRE(exprNode2->isConstant());
             REQUIRE(!exprNode2->isVariable());
             REQUIRE(!exprNode2->returnNodes().has_value());
             CHECK(exprNode2->getConstant().value() == 0);
 
-            auto stmtList = whileNode->stmtListNode->stmtList;
+            std::vector<std::shared_ptr<StmtNode>> stmtList = whileNode->stmtListNode->stmtList;
             REQUIRE(stmtList.size() >= 1);
             CHECK(stmtList.at(0)->stmtType == StmtType::STMT_READ);
             CHECK(stmtList.at(0)->stmtIndex == 2);
         }
 
         SECTION("second While") {
-            auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[1];
+            std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[1];
             CHECK(stmtNode->stmtIndex == 3);
             REQUIRE(stmtNode->stmtType == StmtType::STMT_WHILE);
 
@@ -2016,19 +2026,20 @@ TEST_CASE("Parser While") {
             REQUIRE(whileNode->condExprNode->isRelExpr());
             REQUIRE(whileNode->condExprNode->returnRelExprNodes().has_value());
 
-            auto relExprNodes = whileNode->condExprNode->returnRelExprNodes().value();
-            auto exprNode1 = relExprNodes.first;
+            std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> relExprNodes
+                = whileNode->condExprNode->returnRelExprNodes().value();
+            std::shared_ptr<ExprNode> exprNode1 = relExprNodes.first;
             REQUIRE(exprNode1->isVariable());
             REQUIRE(!exprNode1->isConstant());
             REQUIRE(!exprNode1->returnNodes().has_value());
             CHECK(exprNode1->getVariable().value() == "num2");
-            auto exprNode2 = relExprNodes.second;
+            std::shared_ptr<ExprNode> exprNode2 = relExprNodes.second;
             REQUIRE(exprNode2->isConstant());
             REQUIRE(!exprNode2->isVariable());
             REQUIRE(!exprNode2->returnNodes().has_value());
             CHECK(exprNode2->getConstant().value() == 1);
 
-            auto stmtList = whileNode->stmtListNode->stmtList;
+            std::vector<std::shared_ptr<StmtNode>> stmtList = whileNode->stmtListNode->stmtList;
             REQUIRE(stmtList.size() >= 1);
             CHECK(stmtList.at(0)->stmtType == StmtType::STMT_READ);
             CHECK(stmtList.at(0)->stmtIndex == 4);
@@ -2069,7 +2080,7 @@ TEST_CASE("Parser While") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_WHILE);
 
@@ -2080,19 +2091,20 @@ TEST_CASE("Parser While") {
         REQUIRE(whileNode->condExprNode->isRelExpr());
         REQUIRE(whileNode->condExprNode->returnRelExprNodes().has_value());
 
-        auto relExprNodes = whileNode->condExprNode->returnRelExprNodes().value();
-        auto exprNode1 = relExprNodes.first;
+        std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> relExprNodes
+            = whileNode->condExprNode->returnRelExprNodes().value();
+        std::shared_ptr<ExprNode> exprNode1 = relExprNodes.first;
         REQUIRE(exprNode1->isVariable());
         REQUIRE(!exprNode1->isConstant());
         REQUIRE(!exprNode1->returnNodes().has_value());
         CHECK(exprNode1->getVariable().value() == "num1");
-        auto exprNode2 = relExprNodes.second;
+        std::shared_ptr<ExprNode> exprNode2 = relExprNodes.second;
         REQUIRE(exprNode2->isConstant());
         REQUIRE(!exprNode2->isVariable());
         REQUIRE(!exprNode2->returnNodes().has_value());
         CHECK(exprNode2->getConstant().value() == 0);
 
-        auto stmtList = whileNode->stmtListNode->stmtList;
+        std::vector<std::shared_ptr<StmtNode>> stmtList = whileNode->stmtListNode->stmtList;
         REQUIRE(stmtList.size() >= 1);
         CHECK(stmtList.at(0)->stmtIndex == 2);
         REQUIRE(stmtList.at(0)->stmtType == StmtType::STMT_WHILE);
@@ -2230,7 +2242,7 @@ TEST_CASE("Parser If") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_IF);
 
@@ -2241,19 +2253,20 @@ TEST_CASE("Parser If") {
         REQUIRE(ifNode->condExprNode->isRelExpr());
         REQUIRE(ifNode->condExprNode->returnRelExprNodes().has_value());
 
-        auto relExprNodes = ifNode->condExprNode->returnRelExprNodes().value();
-        auto exprNode1 = relExprNodes.first;
+        std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> relExprNodes
+            = ifNode->condExprNode->returnRelExprNodes().value();
+        std::shared_ptr<ExprNode> exprNode1 = relExprNodes.first;
         REQUIRE(exprNode1->isVariable());
         REQUIRE(!exprNode1->isConstant());
         REQUIRE(!exprNode1->returnNodes().has_value());
         CHECK(exprNode1->getVariable().value() == "num1");
-        auto exprNode2 = relExprNodes.second;
+        std::shared_ptr<ExprNode> exprNode2 = relExprNodes.second;
         REQUIRE(exprNode2->isConstant());
         REQUIRE(!exprNode2->isVariable());
         REQUIRE(!exprNode2->returnNodes().has_value());
         CHECK(exprNode2->getConstant().value() == 0);
 
-        auto stmtList = ifNode->thenStmtListNode->stmtList;
+        std::vector<std::shared_ptr<StmtNode>> stmtList = ifNode->thenStmtListNode->stmtList;
         REQUIRE(stmtList.size() >= 1);
         CHECK(stmtList.at(0)->stmtType == StmtType::STMT_READ);
         CHECK(stmtList.at(0)->stmtIndex == 2);
@@ -2312,7 +2325,7 @@ TEST_CASE("Parser If") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_IF);
 
@@ -2323,19 +2336,20 @@ TEST_CASE("Parser If") {
         REQUIRE(ifNode->condExprNode->isRelExpr());
         REQUIRE(ifNode->condExprNode->returnRelExprNodes().has_value());
 
-        auto relExprNodes = ifNode->condExprNode->returnRelExprNodes().value();
-        auto exprNode1 = relExprNodes.first;
+        std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> relExprNodes
+            = ifNode->condExprNode->returnRelExprNodes().value();
+        std::shared_ptr<ExprNode> exprNode1 = relExprNodes.first;
         REQUIRE(exprNode1->isVariable());
         REQUIRE(!exprNode1->isConstant());
         REQUIRE(!exprNode1->returnNodes().has_value());
         CHECK(exprNode1->getVariable().value() == "num1");
-        auto exprNode2 = relExprNodes.second;
+        std::shared_ptr<ExprNode> exprNode2 = relExprNodes.second;
         REQUIRE(exprNode2->isConstant());
         REQUIRE(!exprNode2->isVariable());
         REQUIRE(!exprNode2->returnNodes().has_value());
         CHECK(exprNode2->getConstant().value() == 0);
 
-        auto stmtList = ifNode->thenStmtListNode->stmtList;
+        std::vector<std::shared_ptr<StmtNode>> stmtList = ifNode->thenStmtListNode->stmtList;
         REQUIRE(stmtList.size() >= 1);
         CHECK(stmtList.at(0)->stmtIndex == 2);
         REQUIRE(stmtList.at(0)->stmtType == StmtType::STMT_READ);
@@ -2439,7 +2453,7 @@ TEST_CASE("Parser CondExpr") {
                 REQUIRE(programNode->procedureList.size() == 1);
                 REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-                auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+                std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
                 CHECK(stmtNode->stmtIndex == 1);
                 REQUIRE(stmtNode->stmtType == StmtType::STMT_WHILE);
 
@@ -2450,13 +2464,14 @@ TEST_CASE("Parser CondExpr") {
                 REQUIRE(whileNode->condExprNode->isRelExpr());
                 REQUIRE(whileNode->condExprNode->returnRelExprNodes().has_value());
 
-                auto relExprNodes = whileNode->condExprNode->returnRelExprNodes().value();
-                auto exprNode1 = relExprNodes.first;
+                std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> relExprNodes
+                    = whileNode->condExprNode->returnRelExprNodes().value();
+                std::shared_ptr<ExprNode> exprNode1 = relExprNodes.first;
                 REQUIRE(exprNode1->isVariable());
                 REQUIRE(!exprNode1->isConstant());
                 REQUIRE(!exprNode1->returnNodes().has_value());
                 CHECK(exprNode1->getVariable().value() == "x");
-                auto exprNode2 = relExprNodes.second;
+                std::shared_ptr<ExprNode> exprNode2 = relExprNodes.second;
                 REQUIRE(exprNode2->isConstant());
                 REQUIRE(!exprNode2->isVariable());
                 REQUIRE(!exprNode2->returnNodes().has_value());
@@ -2498,7 +2513,7 @@ TEST_CASE("Parser CondExpr") {
                 REQUIRE(programNode->procedureList.size() == 1);
                 REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-                auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+                std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
                 CHECK(stmtNode->stmtIndex == 1);
                 REQUIRE(stmtNode->stmtType == StmtType::STMT_WHILE);
 
@@ -2509,15 +2524,17 @@ TEST_CASE("Parser CondExpr") {
                 REQUIRE(whileNode->condExprNode->isRelExpr());
                 REQUIRE(whileNode->condExprNode->returnRelExprNodes().has_value());
 
-                auto exprNodes = whileNode->condExprNode->returnRelExprNodes().value();
+                std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> exprNodes
+                    = whileNode->condExprNode->returnRelExprNodes().value();
 
-                auto exprNode = exprNodes.first;
+                std::shared_ptr<ExprNode> exprNode = exprNodes.first;
                 REQUIRE(!exprNode->isVariable());
                 REQUIRE(!exprNode->isConstant());
                 REQUIRE(exprNode->returnNodes().has_value());
 
-                auto subNodes = exprNode->returnNodes().value();
-                auto child = subNodes.first;
+                std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> subNodes
+                    = exprNode->returnNodes().value();
+                std::shared_ptr<ExprNode> child = subNodes.first;
                 REQUIRE(child->isVariable());
                 REQUIRE(!child->isConstant());
                 REQUIRE(!child->returnNodes().has_value());
@@ -2582,7 +2599,7 @@ TEST_CASE("Parser CondExpr") {
                 REQUIRE(programNode->procedureList.size() == 1);
                 REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-                auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+                std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
                 CHECK(stmtNode->stmtIndex == 1);
                 REQUIRE(stmtNode->stmtType == StmtType::STMT_WHILE);
 
@@ -2593,15 +2610,17 @@ TEST_CASE("Parser CondExpr") {
                 REQUIRE(whileNode->condExprNode->isRelExpr());
                 REQUIRE(whileNode->condExprNode->returnRelExprNodes().has_value());
 
-                auto exprNodes = whileNode->condExprNode->returnRelExprNodes().value();
+                std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>>  exprNodes
+                    = whileNode->condExprNode->returnRelExprNodes().value();
 
-                auto exprNode = exprNodes.first;
+                std::shared_ptr<ExprNode> exprNode = exprNodes.first;
                 REQUIRE(!exprNode->isVariable());
                 REQUIRE(!exprNode->isConstant());
                 REQUIRE(exprNode->returnNodes().has_value());
 
-                auto subNodes = exprNode->returnNodes().value();
-                auto child = subNodes.first;
+                std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> subNodes
+                    = exprNode->returnNodes().value();
+                std::shared_ptr<ExprNode> child = subNodes.first;
                 REQUIRE(child->isVariable());
                 REQUIRE(!child->isConstant());
                 REQUIRE(!child->returnNodes().has_value());
@@ -2661,7 +2680,7 @@ TEST_CASE("Parser CondExpr") {
         REQUIRE(programNode->procedureList.size() == 1);
         REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-        auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+        std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
         REQUIRE(stmtNode->stmtType == StmtType::STMT_WHILE);
 
@@ -2672,18 +2691,19 @@ TEST_CASE("Parser CondExpr") {
         REQUIRE(!whileNode->condExprNode->isRelExpr());
         REQUIRE(whileNode->condExprNode->returnNodes().has_value());
 
-        auto nodes = whileNode->condExprNode->returnNodes().value();
+        std::vector<std::shared_ptr<CondExprNode>> nodes = whileNode->condExprNode->returnNodes().value();
         REQUIRE(nodes.size() == 1);
 
-        auto child = nodes.at(0);
+        std::shared_ptr<CondExprNode> child = nodes.at(0);
         REQUIRE(!child->isUnaryCondExpr());
         REQUIRE(!child->isBinaryCondExpr());
         REQUIRE(child->isRelExpr());
         REQUIRE(child->returnRelExprNodes().has_value());
 
-        auto exprNodes = child->returnRelExprNodes().value();
+        std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> exprNodes
+            = child->returnRelExprNodes().value();
 
-        auto exprNode = exprNodes.first;
+        std::shared_ptr<ExprNode> exprNode = exprNodes.first;
         REQUIRE(exprNode->isVariable());
         REQUIRE(!exprNode->isConstant());
         REQUIRE(!exprNode->returnNodes().has_value());
@@ -2742,7 +2762,7 @@ TEST_CASE("Parser CondExpr") {
                 REQUIRE(programNode->procedureList.size() == 1);
                 REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
 
-                auto stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
+                std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
                 CHECK(stmtNode->stmtIndex == 1);
                 REQUIRE(stmtNode->stmtType == StmtType::STMT_WHILE);
 
@@ -2753,17 +2773,18 @@ TEST_CASE("Parser CondExpr") {
                 REQUIRE(!whileNode->condExprNode->isRelExpr());
                 REQUIRE(whileNode->condExprNode->returnNodes().has_value());
 
-                auto nodes = whileNode->condExprNode->returnNodes().value();
+                std::vector<std::shared_ptr<CondExprNode>> nodes = whileNode->condExprNode->returnNodes().value();
                 REQUIRE(nodes.size() == 2);
 
-                auto child = nodes.at(0);
+                std::shared_ptr<CondExprNode> child = nodes.at(0);
                 REQUIRE(!child->isUnaryCondExpr());
                 REQUIRE(!child->isBinaryCondExpr());
                 REQUIRE(child->isRelExpr());
                 REQUIRE(child->returnRelExprNodes().has_value());
 
-                auto exprNodes = child->returnRelExprNodes().value();
-                auto exprNode = exprNodes.first;
+                std::pair<std::shared_ptr<ExprNode>, std::shared_ptr<ExprNode>> exprNodes
+                    = child->returnRelExprNodes().value();
+                std::shared_ptr<ExprNode> exprNode = exprNodes.first;
                 REQUIRE(exprNode->isVariable());
                 REQUIRE(!exprNode->isConstant());
                 REQUIRE(!exprNode->returnNodes().has_value());
