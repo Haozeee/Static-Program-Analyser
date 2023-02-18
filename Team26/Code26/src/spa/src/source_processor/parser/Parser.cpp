@@ -63,14 +63,16 @@ std::shared_ptr<ProcedureNode> Parser::parseProcedure() {
 std::shared_ptr<StmtListNode> Parser::parseStmtList() {
     std::vector<std::shared_ptr<StmtNode>> stmtList;
 
-    while (getToken()->getValue() != STMTLIST_END) {
-        if (getToken()->getType() != TokenType::TOKEN_NAME) {
+    while (!isValueOf(STMTLIST_END)) {
+        if (!isTypeOf(TokenType::TOKEN_NAME)) {
             throw SourceParserException(ParserInvalidStmtStartTokenTypeExceptionMessage);
         }
         std::shared_ptr<StmtNode> stmtNode;
         std::shared_ptr<Token> nameToken = parseNext(TokenType::TOKEN_NAME);
 
-        if (nameToken->getValue() == PRINT_KEYWORD) {
+        if (isValueOf(ASSIGN_OPERATOR)) {
+            stmtNode = parseAssign(nameToken);
+        } else if (nameToken->getValue() == PRINT_KEYWORD) {
             stmtNode = parsePrint();
         } else if (nameToken->getValue() == READ_KEYWORD) {
             stmtNode = parseRead();
@@ -80,13 +82,15 @@ std::shared_ptr<StmtListNode> Parser::parseStmtList() {
             stmtNode = parseWhile();
         } else if (nameToken->getValue() == IF_KEYWORD) {
             stmtNode = parseIf();
-        } else if (isValueOf(ASSIGN_OPERATOR)) {
-            stmtNode = parseAssign(nameToken);
         } else {
             throw SourceParserException(ParserInvalidStmtStartTokenUnknownExceptionMessage);
         }
 
         stmtList.emplace_back(stmtNode);
+    }
+
+    if (stmtList.empty()) {
+        throw SourceParserException(ParserEmptyStmtListExceptionMessage);
     }
 
     return std::make_shared<StmtListNode>(stmtList);
@@ -135,10 +139,10 @@ std::shared_ptr<IfNode> Parser::parseIf() {
 std::shared_ptr<CondExprNode> Parser::parseConditional() {
     int oldIndex = index;
     int numOfBrackets = 1;
-    while (getToken()->getType() != TokenType::TOKEN_END_OF_FILE) {
-        if (getToken()->getValue() == BRACKETS_START) {
+    while (!isTypeOf(TokenType::TOKEN_END_OF_FILE)) {
+        if (isValueOf(BRACKETS_START)) {
             numOfBrackets++;
-        } else if (getToken()->getValue() == BRACKETS_END) {
+        } else if (isValueOf(BRACKETS_END)) {
             numOfBrackets--;
             if (numOfBrackets == 0) {
                 break;
@@ -174,19 +178,25 @@ std::shared_ptr<CondExprNode> Parser::parseCondExprNode(int startIndex, int endI
         index = currIndex;
     }
 
+    // If cond_expr = rel_expr
+    if (!isValueOf(BRACKETS_START)) {
+        return std::make_shared<CondExprNode>(parseRelExpr(startIndex, endIndex),
+            toString(startIndex, endIndex));
+    }
+
     // If cond_expr = (cond_expr) && (cond_expr) or cond_expr = (cond_expr) || (cond_expr)
     index = startIndex;
 
     int numOfBrackets = 0;
-    while (getToken()->getType() != TokenType::TOKEN_END_OF_FILE && index <= endIndex) {
-        if (isBinaryCondOperator()) {
+    while (!isTypeOf(TokenType::TOKEN_END_OF_FILE) && index <= endIndex) {
+        if (isBinaryCondOperator() && numOfBrackets == 0) {
             int currIndex = index;
             index--;
-            if (getToken()->getValue() != BRACKETS_END) {
+            if (!isValueOf(BRACKETS_END)) {
                 throw SourceParserException(ParserInvalidBinaryCondExprFormatExceptionMessage);
             }
             index += 2;
-            if (getToken()->getValue() != BRACKETS_START) {
+            if (!isValueOf(BRACKETS_START)) {
                 throw SourceParserException(ParserInvalidBinaryCondExprFormatExceptionMessage);
             }
 
@@ -199,9 +209,9 @@ std::shared_ptr<CondExprNode> Parser::parseCondExprNode(int startIndex, int endI
                 : BinaryCondOperatorType::OR;
             return std::make_shared<CondExprNode>(std::make_tuple(opType, condExprNode1, condExprNode2),
                 toString(startIndex, endIndex));
-        } else if (getToken()->getValue() == BRACKETS_START) {
+        } else if (isValueOf(BRACKETS_START)) {
             numOfBrackets++;
-        } else if (getToken()->getValue() == BRACKETS_END) {
+        } else if (isValueOf(BRACKETS_END)) {
             numOfBrackets--;
         }
         getNext();
@@ -221,22 +231,22 @@ std::shared_ptr<RelExpr> Parser::parseRelExpr(int startIndex, int endIndex) {
     std::optional<RelExprOperatorType> opType = std::nullopt;
 
     while (getToken()->getType() != TokenType::TOKEN_END_OF_FILE && index <= endIndex) {
-        if (getToken()->getValue() == GT_OPERATOR) {
+        if (isValueOf(GT_OPERATOR)) {
             opType = RelExprOperatorType::GT;
             break;
-        } else if (getToken()->getValue() == GTE_OPERATOR) {
+        } else if (isValueOf(GTE_OPERATOR)) {
             opType = RelExprOperatorType::GTE;
             break;
-        } else if (getToken()->getValue() == LT_OPERATOR) {
+        } else if (isValueOf(LT_OPERATOR)) {
             opType = RelExprOperatorType::LT;
             break;
-        } else if (getToken()->getValue() == LTE_OPERATOR) {
+        } else if (isValueOf(LTE_OPERATOR)) {
             opType = RelExprOperatorType::LTE;
             break;
-        } else if (getToken()->getValue() == EQ_OPERATOR) {
+        } else if (isValueOf(EQ_OPERATOR)) {
             opType = RelExprOperatorType::EQ;
             break;
-        } else if (getToken()->getValue() == NEQ_OPERATOR) {
+        } else if (isValueOf(NEQ_OPERATOR)) {
             opType = RelExprOperatorType::NEQ;
             break;
         }
@@ -254,54 +264,82 @@ std::shared_ptr<RelExpr> Parser::parseRelExpr(int startIndex, int endIndex) {
 }
 
 std::shared_ptr<ExprNode> Parser::parseExprNode(int startIndex, int endIndex) {
-    index = startIndex;
+    index = endIndex;
 
     // Parse single name/integer factor
-    if (startIndex == endIndex) {
+    if (startIndex >= endIndex) {
         return parseFactor(startIndex, endIndex);
     }
 
     int numOfBrackets = 0;
-    int firstBracketIndex = endIndex + 1;
-    int lastBracketIndex = startIndex - 1;
-    bool isprevTokenEndBracket = false;
+    bool isPrevTokenStartBracket = false;
+    bool isPrevTokenNonBracket = true;
+    bool isPrevBracketStartBracket = false;
+    bool isPrevBracketEndBracket = false;
 
-    while (getToken()->getType() != TokenType::TOKEN_END_OF_FILE && index <= endIndex) {
-        if (getToken()->getValue() == BRACKETS_START) {
-            if (isprevTokenEndBracket) {
+    std::vector<int> endBracketStack;
+
+    while (!isTypeOf(TokenType::TOKEN_END_OF_FILE) && index >= startIndex) {
+        if (isValueOf(BRACKETS_END)) {
+            if (isPrevTokenStartBracket) {
                 throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
             }
 
-            numOfBrackets++;
-            firstBracketIndex = (index < firstBracketIndex) ? index : firstBracketIndex;
-        } else if (getToken()->getValue() == BRACKETS_END) {
-            isprevTokenEndBracket = true;
+            isPrevTokenNonBracket = false;
+            isPrevTokenStartBracket = false;
             numOfBrackets--;
-            lastBracketIndex = (index > lastBracketIndex) ? index : lastBracketIndex;
+            isPrevBracketEndBracket = true;
+            isPrevBracketStartBracket = false;
+            endBracketStack.emplace_back(index);
+        } else if (isValueOf(BRACKETS_START)) {
+            if (!isPrevTokenNonBracket && !isPrevTokenStartBracket) {
+                throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
+            }
+
+            isPrevTokenNonBracket = false;
+            isPrevTokenStartBracket = true;
+            numOfBrackets++;
+
+            if (endBracketStack.at(0) == endIndex && endBracketStack.size() == 1
+                && index == startIndex && numOfBrackets == 0) {
+                auto s = parseExprNode(startIndex + 1, endIndex - 1);
+                return s;
+            }
+
+            if (endBracketStack.empty()) {
+                throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
+            }
+
+            isPrevBracketEndBracket = false;
+            isPrevBracketStartBracket = true;
+            endBracketStack.pop_back();
         } else if (isExprOperator() && numOfBrackets == 0) {
             int currIndex = index;
             auto exprNode1 = parseExprNode(startIndex, currIndex - 1);
             auto exprNode2 = parseExprNode(currIndex + 1, endIndex);
             index = currIndex;
+
             return std::make_shared<ExprNode>(std::make_shared<ExprNode::BinaryOpNode>
                 (getOperator(), exprNode1, exprNode2), toString(startIndex, endIndex));
-        } else if (isExprOperator() || isTermOperator()) {
-            isprevTokenEndBracket = false;
-        } else if (isFactor() && isprevTokenEndBracket) {
+        } else if (isFactor() && isPrevTokenStartBracket) {
             throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
+        } else if (isExprOperator() || isTermOperator() || isFactor()) {
+            isPrevTokenNonBracket = true;
+            isPrevTokenStartBracket = false;
         } else if (isIllegalArithmeticSplChar()) {
             throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
         }
 
-        getNext();
+        // Pop brackets if they are together
+        isPrevBracketEndBracket = true;
+        isPrevBracketStartBracket = false;
+        endBracketStack.emplace_back(index);
+
+        index--;
     }
 
     if (numOfBrackets != 0) {
         throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
-    }
-
-    if (firstBracketIndex == startIndex && lastBracketIndex == endIndex) {
-        return parseExprNode(startIndex + 1, endIndex - 1);
     }
 
     return parseTerm(startIndex, endIndex);
@@ -337,30 +375,54 @@ bool Parser::isTermOperator() {
 }
 
 std::shared_ptr<ExprNode> Parser::parseTerm(int startIndex, int endIndex) {
-    index = startIndex;
+    index = endIndex;
 
     // Parse single name/integer factor
-    if (startIndex == endIndex) {
+    if (startIndex >= endIndex) {
         return parseFactor(startIndex, endIndex);
     }
 
     int numOfBrackets = 0;
-    int firstBracketIndex = 0;
-    int lastBracketIndex = 0;
-    bool isprevTokenEndBracket = false;
+    bool isPrevTokenStartBracket = false;
+    bool isPrevTokenNonBracket = true;
+    bool isPrevBracketStartBracket = false;
+    bool isPrevBracketEndBracket = false;
 
-    while (getToken()->getType() != TokenType::TOKEN_END_OF_FILE && index <= endIndex) {
-        if (getToken()->getValue() == BRACKETS_START) {
-            if (isprevTokenEndBracket) {
-                throw SourceParserException(ParserInvalidTermFormatExceptionMessage);
+    std::vector<int> endBracketStack;
+
+    while (!isTypeOf(TokenType::TOKEN_END_OF_FILE) && index >= startIndex) {
+        if (isValueOf(BRACKETS_END)) {
+            if (isPrevTokenStartBracket) {
+                throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
             }
 
-            numOfBrackets++;
-            firstBracketIndex = (numOfBrackets == 0) ? index : firstBracketIndex;
-        } else if (getToken()->getValue() == BRACKETS_END) {
-            isprevTokenEndBracket = true;
+            isPrevTokenNonBracket = false;
+            isPrevTokenStartBracket = false;
             numOfBrackets--;
-            lastBracketIndex = (numOfBrackets == 0) ? index : lastBracketIndex;
+            isPrevBracketEndBracket = true;
+            isPrevBracketStartBracket = false;
+            endBracketStack.emplace_back(index);
+        } else if (isValueOf(BRACKETS_START)) {
+            if (!isPrevTokenNonBracket && !isPrevTokenStartBracket) {
+                throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
+            }
+
+            isPrevTokenNonBracket = false;
+            isPrevTokenStartBracket = true;
+            numOfBrackets++;
+
+            if (endBracketStack.at(0) == endIndex && endBracketStack.size() == 1
+                && index == startIndex && numOfBrackets == 0) {
+                return parseExprNode(startIndex + 1, endIndex - 1);
+            }
+
+            if (endBracketStack.empty()) {
+                throw SourceParserException(ParserInvalidExprFormatExceptionMessage);
+            }
+
+            isPrevBracketEndBracket = false;
+            isPrevBracketStartBracket = true;
+            endBracketStack.pop_back();
         } else if (isTermOperator() && numOfBrackets == 0) {
             int currIndex = index;
             auto exprNode1 = parseExprNode(startIndex, currIndex - 1);
@@ -368,23 +430,20 @@ std::shared_ptr<ExprNode> Parser::parseTerm(int startIndex, int endIndex) {
             index = currIndex;
             return std::make_shared<ExprNode>(std::make_shared<ExprNode::BinaryOpNode>
                 (getOperator(), exprNode1, exprNode2), toString(startIndex, endIndex));
-        } else if (isTermOperator() || isExprOperator()) {
-            isprevTokenEndBracket = false;
-        } else if (isFactor() && isprevTokenEndBracket) {
+        } else if (isFactor() && isPrevTokenStartBracket) {
             throw SourceParserException(ParserInvalidTermFormatExceptionMessage);
-        } else if (isIllegalArithmeticSplChar()) {
+        } else if (isExprOperator() || isTermOperator() || isFactor()) {
+            isPrevTokenNonBracket = true;
+            isPrevTokenStartBracket = false;
+        }  else if (isIllegalArithmeticSplChar()) {
             throw SourceParserException(ParserInvalidTermFormatExceptionMessage);
         }
 
-        getNext();
+        index--;
     }
 
     if (numOfBrackets != 0) {
         throw SourceParserException(ParserInvalidTermFormatExceptionMessage);
-    }
-
-    if (firstBracketIndex == startIndex && lastBracketIndex == endIndex) {
-        return parseExprNode(startIndex + 1, endIndex - 1);
     }
 
     return parseExprNode(startIndex, endIndex);
@@ -415,7 +474,7 @@ std::shared_ptr<AssignNode> Parser::parseAssign(std::shared_ptr<Token> nameToken
     parseNext(ASSIGN_OPERATOR);
 
     int currIndex = index;
-    while (getToken()->getValue() != STMT_END) {
+    while (!isValueOf(STMT_END) && !isTypeOf(TokenType::TOKEN_END_OF_FILE)) {
         getNext();
     }
     int newIndex = index - 1;

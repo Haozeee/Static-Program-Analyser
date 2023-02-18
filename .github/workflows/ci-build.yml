@@ -1,25 +1,13 @@
 name: CI for Cmake Project - Windows
 
-on: [push]
+on:   
+  pull_request:
+    types: [ opened, synchronize, reopened, ready_for_review ]
+
+  push:
+    branches: ["master"]
 
 jobs:
-  checkstyle:
-    runs-on: [self-hosted, Linux, X64]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.11.1'
-          
-      - name: Install cpplint
-        run: pip install cpplint
-
-      - name: Run Linter
-        run: |
-          cd Team26/Code26/src/spa
-          cpplint --recursive --filter=-legal/copyright,-runtime/references --linelength=120 extensions=cpp,h .
-
-
   build:
       runs-on: [self-hosted, Windows, X64]
       timeout-minutes: 10
@@ -29,30 +17,26 @@ jobs:
       steps:
         - uses: actions/checkout@v3
 
-        - name: Restore build cache
-          id: cache-build
-          uses: actions/cache@v3
-          with:
-            path: Team26/Code26/build
-            key: build-cache
+        - name: Set Compiler
+          shell: powershell
+          run: |
+            cd .\Team26\Code26
+            Add-Content -Path "./CMakeLists.txt" -Value "set(CMAKE_C_COMPILER_LAUNCHER ccache)"
+            Add-Content -Path "./CMakeLists.txt" -Value "set(CMAKE_CXX_COMPILER_LAUNCHER ccache)"
 
         - name: Make Build folder
-          if: steps.cache-build.outputs.cache-hit != 'true'
           shell: powershell
           run: |
             cd .\Team26\Code26
             mkdir build
             cd build
-            cmake ..    
+            cmake ..
 
         - name: Build Project
           shell: powershell
           run: |
-            cd .\Team26\Code26
-            cd build
-            cmake --build . --target autotester --config Release
-            cmake --build . --target unit_testing --config Release
-            cmake --build . --target integration_testing --config Release
+            cd Team26\Code26\build
+            cmake --build . --config Release
             cd ../..
         
         - name: Run Unit Test
