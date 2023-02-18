@@ -70,7 +70,9 @@ std::shared_ptr<StmtListNode> Parser::parseStmtList() {
         std::shared_ptr<StmtNode> stmtNode;
         std::shared_ptr<Token> nameToken = parseNext(TokenType::TOKEN_NAME);
 
-        if (nameToken->getValue() == PRINT_KEYWORD) {
+        if (isValueOf(ASSIGN_OPERATOR)) {
+            stmtNode = parseAssign(nameToken);
+        } else if (nameToken->getValue() == PRINT_KEYWORD) {
             stmtNode = parsePrint();
         } else if (nameToken->getValue() == READ_KEYWORD) {
             stmtNode = parseRead();
@@ -80,8 +82,6 @@ std::shared_ptr<StmtListNode> Parser::parseStmtList() {
             stmtNode = parseWhile();
         } else if (nameToken->getValue() == IF_KEYWORD) {
             stmtNode = parseIf();
-        } else if (isValueOf(ASSIGN_OPERATOR)) {
-            stmtNode = parseAssign(nameToken);
         } else {
             throw SourceParserException(ParserInvalidStmtStartTokenUnknownExceptionMessage);
         }
