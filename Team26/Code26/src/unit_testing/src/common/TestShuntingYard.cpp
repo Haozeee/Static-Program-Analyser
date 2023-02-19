@@ -48,3 +48,19 @@ TEST_CASE("Test Invalid Expression") {
     REQUIRE_THROWS(ShuntingYardParser::parse(invalidTestExpression));
     REQUIRE_THROWS(ShuntingYardParser::parse(invalidOperatorTestExpression));
 }
+
+TEST_CASE("Test String Produces Same Tree") {
+    std::string stringA = "a+b";
+    std::string stringB = "(a+b)";
+    // The 2 strings are not equals but should produce the same tree
+    REQUIRE(ShuntNode::stringsProducesEqualTrees(stringA, stringB));
+
+    stringA = "(whileA+2-whileC)*(4/whileE)%whileF";
+    stringB = "((whileA+2)-whileC)*(4/whileE)%whileF";
+    // The 2 strings are not equals but should produce the same tree
+    REQUIRE(ShuntNode::stringsProducesEqualTrees(stringA, stringB));
+
+    stringA = "x+y+z";
+    stringB = "x+y";
+    REQUIRE_FALSE(ShuntNode::stringsProducesEqualTrees(stringA, stringB));
+}

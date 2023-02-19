@@ -17,7 +17,7 @@ bool StringExpression::matchesString(std::string str) {
         return true;
     }
     if (isExactMatch) {
-        return str == expression;
+        return ShuntNode::stringsProducesEqualTrees(str, expression);
     } else {
         // check partial match
         auto expressionTree = ShuntingYardParser::parse(expression);
