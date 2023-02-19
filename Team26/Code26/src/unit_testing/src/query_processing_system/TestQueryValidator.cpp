@@ -28,6 +28,7 @@ TEST_CASE("Duplicate Synonyms in Declaration") {
 
     QueryValidator validator = QueryValidator(query);
     REQUIRE_THROWS_AS(validator.validateQuery(), QuerySemanticException);
+    delete query;
 }
 
 TEST_CASE("Undeclared Synonym in Select Clause") {
@@ -46,6 +47,7 @@ TEST_CASE("Undeclared Synonym in Select Clause") {
 
     QueryValidator validator = QueryValidator(query);
     REQUIRE_THROWS_AS(validator.validateQuery(), QuerySemanticException);
+    delete query;
 }
 
 TEST_CASE("Misspelled PQL Language") {
@@ -71,6 +73,7 @@ TEST_CASE("Misspelled PQL Language") {
     Query *query = new Query();
     QueryParser parser = QueryParser(tokens, query);
     REQUIRE_THROWS_AS(parser.parse(), QuerySyntaxException);
+    delete query;
 }
 
 TEST_CASE("Validate Such That Clause") {
@@ -100,6 +103,7 @@ TEST_CASE("Validate Such That Clause") {
 
         QueryValidator validator = QueryValidator(query);
         REQUIRE_THROWS_AS(validator.validateQuery(), QuerySemanticException);
+        delete query;
     }
 
     SECTION("FollowsT") {
@@ -129,6 +133,7 @@ TEST_CASE("Validate Such That Clause") {
 
         QueryValidator validator = QueryValidator(query);
         REQUIRE_THROWS_AS(validator.validateQuery(), QuerySemanticException);
+        delete query;
     }
 
     SECTION("Parent") {
@@ -157,6 +162,7 @@ TEST_CASE("Validate Such That Clause") {
 
         QueryValidator validator = QueryValidator(query);
         REQUIRE_THROWS_AS(validator.validateQuery(), QuerySemanticException);
+        delete query;
     }
 
     SECTION("ParentT") {
@@ -186,6 +192,7 @@ TEST_CASE("Validate Such That Clause") {
 
         QueryValidator validator = QueryValidator(query);
         REQUIRE_THROWS_AS(validator.validateQuery(), QuerySemanticException);
+        delete query;
     }
 
     SECTION("UsesS") {
@@ -212,6 +219,7 @@ TEST_CASE("Validate Such That Clause") {
 
         QueryValidator validator = QueryValidator(query);
         REQUIRE_THROWS_AS(validator.validateQuery(), QuerySemanticException);
+        delete query;
     }
 
     SECTION("ModifiesS") {
@@ -238,6 +246,7 @@ TEST_CASE("Validate Such That Clause") {
 
         QueryValidator validator = QueryValidator(query);
         REQUIRE_THROWS_AS(validator.validateQuery(), QuerySemanticException);
+        delete query;
     }
 }
 
@@ -268,4 +277,5 @@ TEST_CASE("Validate Pattern Clause") {
     Query *query = new Query();
     QueryParser parser = QueryParser(tokens, query);
     REQUIRE_THROWS_AS(parser.parse(), QuerySemanticException);
+    delete query;
 }

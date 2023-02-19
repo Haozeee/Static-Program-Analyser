@@ -1,7 +1,10 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
+#include <unordered_set>
+
 #include "QueryParser.h"
+#include "common/parser/ShuntingYardParser.h"
 #include "query_processing_system/parser/clause/pattern_clause/PatternClauseFactory.h"
 
 QueryParser::QueryParser(std::vector<std::shared_ptr<Token>> tokens, Query* query) :
@@ -62,7 +65,6 @@ void QueryParser::parseSelectClause() {
     if (synonymToken->getValue() == "_") {
         throw QueryParserException(QueryParserInvalidWildcardInSelectClause);
     }
-    std::cout << synonymToken->getValue() << std::endl;
     SelectClauseItem selectClauseItem = parseSynonym(synonymToken);
     auto selectClauseItems = std::make_shared<std::vector<SelectClauseItem>>();
     selectClauseItems->push_back(selectClauseItem);
@@ -187,6 +189,11 @@ std::string QueryParser::parseStringExpression() {
     std::string str = stringExpressionToken->getValue();
     parseNext("'");
     str.erase(std::remove_if(str.begin(), str.end(), isspace), str.end());
+    try {
+       ShuntingYardParser::parse(str);
+    } catch (ShuntingYardParserException& e) {
+        throw QueryParserException(QueryParserUnbalancedStringExpression);
+    }
     return str;
 }
 
