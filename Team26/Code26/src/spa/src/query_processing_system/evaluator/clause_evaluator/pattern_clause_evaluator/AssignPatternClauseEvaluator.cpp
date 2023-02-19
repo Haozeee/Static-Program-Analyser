@@ -23,26 +23,32 @@ std::shared_ptr<ResultTable> AssignPatternClauseEvaluator::evaluateClause(std::s
 void AssignPatternClauseEvaluator::evaluateSynonym(std::shared_ptr<ReadStorage> storage) {
     auto identities = PkbUtil::getStringEntitiesFromPkb(storage, leftArg.getDesignEntity());
     auto res = evaluateStringHelper(storage, identities);
-    clauseResultTable = ResultTable::createDoubleColumnTable(patternArg.getValue(), res.first,
-                                                             leftArg.getValue(), res.second);
+    clauseResultTable = ResultTable::createTableFromMap(res, patternArg.getValue(), leftArg.getValue());
 }
 
 void AssignPatternClauseEvaluator::evaluateString(std::shared_ptr<ReadStorage> storage) {
-    auto res = evaluateStringHelper(storage, {leftArg.getValue()});
-    clauseResultTable = ResultTable::createSingleColumnTable(patternArg.getValue(), res.first);
+    auto allResults = evaluateStringHelper(storage, {leftArg.getValue()});
+    std::unordered_set<std::string> interestedResults;
+    for (auto const& [k, v] : allResults) {
+        interestedResults.insert(k);
+    }
+    clauseResultTable = ResultTable::createSingleColumnTable(patternArg.getValue(), interestedResults);
 }
 
 void AssignPatternClauseEvaluator::evaluateWildcard(std::shared_ptr<ReadStorage> storage) {
     auto identities = PkbUtil::getStringEntitiesFromPkb(storage, DesignEntity::VARIABLE);
-    auto res = evaluateStringHelper(storage, identities);
-    clauseResultTable = ResultTable::createSingleColumnTable(patternArg.getValue(), res.first);
+    auto allResults = evaluateStringHelper(storage, identities);
+    std::unordered_set<std::string> interestedResults;
+    for (auto const& [k, v] : allResults) {
+        interestedResults.insert(k);
+    }
+    clauseResultTable = ResultTable::createSingleColumnTable(patternArg.getValue(), interestedResults);
 }
 
-std::pair<std::unordered_set<std::string>, std::unordered_set<std::string>>
+std::unordered_map<std::string, std::unordered_set<std::string>>
 AssignPatternClauseEvaluator::evaluateStringHelper(std::shared_ptr<ReadStorage> storage,
                                                    std::unordered_set<std::string> lhsValues) {
-    std::unordered_set<std::string> assignResults;
-    std::unordered_set<std::string> lhsResults;
+    std::unordered_map<std::string, std::unordered_set<std::string>> res;
     auto assignStatements = storage->getPatternManager()->getAllPatternEntries();
     auto lhsStatements = storage->getPatternManager()->getAllLhsPatternEntries();
     auto rhsStatements = storage->getPatternManager()->getAllRhsPatternEntries();
@@ -52,9 +58,8 @@ AssignPatternClauseEvaluator::evaluateStringHelper(std::shared_ptr<ReadStorage> 
         std::string lhs = lhsStatements.at(k);
         std::string rhs = rhsStatements.at(k);
         if (lhsValues.count(lhs) && rightArg.matchesString(rhs)) {
-            assignResults.insert(std::to_string(v));
-            lhsResults.insert(lhs);
+            res.insert({std::to_string(v), {lhs}});
         }
     }
-    return std::make_pair(assignResults, lhsResults);
+    return res;
 }
