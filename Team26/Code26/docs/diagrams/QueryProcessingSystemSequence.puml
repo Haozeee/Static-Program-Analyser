@@ -8,11 +8,14 @@ participant ":QueryTokenizer" as QueryTokenizer LOGIC_COLOR
 participant ":QueryParser" as QueryParser LOGIC_COLOR
 participant ":Query" as Query LOGIC_COLOR
 participant ":QueryEvaluator" as QueryEvaluator LOGIC_COLOR
+participant ":QueryDb" as QueryDb LOGIC_COLOR
+participant ":Clause" as Clause LOGIC_COLOR
+participant ":ClauseEvaluator" as ClauseEvaluator LOGIC_COLOR
 participant ":ReadOnlyStorage" as ReadOnlyStorage LOGIC_COLOR
 end box
 activate UI
 
-UI -> QueryManager : processQuery(query: string)
+UI -> QueryManager : processQuery(query: string, \n results: list<string>, storage:ReadOnlyStorage)
 activate QueryManager
 
 create QueryTokenizer
@@ -39,8 +42,17 @@ QueryManager -> QueryParser: parse()
 activate QueryParser
 
 create Query
-QueryParser -> Query: Query(list <tokens>)
+QueryParser -> Query: Query()
 activate Query
+
+loop For each parsed clause
+    Create Clause
+    Query -> Clause: Clause()
+    activate Clause
+
+    Clause -> Query: clause
+    deactivate Clause
+end
 
 Query --> QueryParser: Query
 deactivate Query
@@ -48,19 +60,70 @@ deactivate Query
 QueryParser --> QueryManager: Query
 deactivate QueryParser
 
-QueryManager -> QueryEvaluator: evaluateQuery(query: Query)
+create QueryEvaluator
+QueryManager -> QueryEvaluator: QueryEvaluator(query: Query, storage:ReadOnlyStorage)
 activate QueryEvaluator
 
-QueryEvaluator -> ReadOnlyStorage: Read from PKB
-activate ReadOnlyStorage
+create QueryDb
+QueryEvaluator -> QueryDb: QueryDb()
+activate QueryDb
 
-ReadOnlyStorage --> QueryEvaluator: Read results
-deactivate ReadOnlyStorage
+QueryDb -> QueryEvaluator: queryDb
+deactivate QueryDb
 
-QueryEvaluator --> QueryManager: queryResults
+QueryEvaluator -> QueryManager: evaluator
 deactivate QueryEvaluator
+
+QueryManager->QueryEvaluator: evaluate()
+activate QueryEvaluator
+
+Loop For each clause
+   QueryEvaluator-> Clause: getClauseEvaluator()
+   activate Clause
+
+   create ClauseEvaluator
+   Clause -> ClauseEvaluator: ClauseEvaluator()
+   activate ClauseEvaluator
+
+   ClauseEvaluator -> Clause: evaluator
+   deactivate ClauseEvaluator
+
+   Clause -> QueryEvaluator: evaluator
+   deactivate Clause
+
+   QueryEvaluator -> ClauseEvaluator: evaluateClause()
+   activate ClauseEvaluator
+
+   ClauseEvaluator -> ReadOnlyStorage: read from pkb
+   activate ReadOnlyStorage
+
+   ReadOnlyStorage -> ClauseEvaluator: pkbResults
+   deactivate ReadOnlyStorage
+
+   ClauseEvaluator -> QueryEvaluator: clauseResult
+   deactivate ClauseEvaluator
+
+   QueryEvaluator -> QueryDb: addClauseResult(clauseResult)
+   activate QueryDb
+
+   QueryDb->QueryEvaluator
+   deactivate QueryDb
+
+    destroy ClauseEvaluator
+  end
+
+QueryEvaluator --> QueryManager: queryDb
+deactivate QueryEvaluator
+
+QueryManager -> QueryDb: getInterestedResults()
+activate QueryDb
+
+QueryDb -> QueryManager: queryResults
+deactivate QueryDb
 
 QueryManager --> UI: queryResults
 deactivate QueryManager
+
+destroy Query
 
 @enduml
