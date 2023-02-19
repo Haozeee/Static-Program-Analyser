@@ -49,6 +49,33 @@ ResultTable::createTableFromMap(std::unordered_map<std::string, std::unordered_s
     return res;
 }
 
+std::shared_ptr<ResultTable>
+ResultTable::joinTable(std::shared_ptr<ResultTable> table1, std::shared_ptr<ResultTable> table2) {
+    auto commonCols = table1->hasMatchingColumns(table2->getColumnsNamesSet());
+    if (commonCols.empty()) {
+        return joinNoColumns(table1, table2);
+    } else {
+        return joinOnColumns(table1, table2, commonCols);
+    }
+}
+
+std::shared_ptr<ResultTable>
+ResultTable::joinNoColumns(std::shared_ptr<ResultTable> table1, std::shared_ptr<ResultTable> table2) {
+    auto newTableColumns = ResultTable::getVectorUnion(table1->getColumnsNames(), table2->getColumnsNames());
+    auto res = std::make_shared<ResultTable>(newTableColumns);
+    for (int i = 0; i < table1->getNumberOfRows(); i++) {
+        for (int j = 0; j < table2->getNumberOfRows(); j++) {
+            TableRow row;
+            auto table1Row = table1->getRow(i);
+            auto table2Row = table2->getRow(j);
+            row.insert(row.end(), table1Row.begin(), table1Row.end());
+            row.insert(row.end(), table2Row.begin(), table2Row.end());
+            res->insertRow(row);
+        }
+    }
+    return res;
+}
+
 std::shared_ptr<ResultTable> ResultTable::joinOnColumns(std::shared_ptr<ResultTable> table1,
                                                        std::shared_ptr<ResultTable> table2,
                                                        std::vector<std::string> commonColumns) {
@@ -104,10 +131,11 @@ int ResultTable::getColumnNumber(std::string colName) const {
     return -1;
 }
 std::vector<int> ResultTable::getColumnNumbers(std::vector<std::string> colName) const {
-    std::vector<int> res;
+    std::vector<int> res(colName.size());
     for (auto const& [k, v] : columnNameMap) {
-        if (std::find(colName.begin(), colName.end(), v) != colName.end()) {
-            res.push_back(k);
+        auto it = std::find(colName.begin(), colName.end(), v);
+        if (it != colName.end()) {
+            res.at(it - colName.begin()) = k;
         }
     }
     return res;
@@ -126,6 +154,14 @@ TableRow ResultTable::getColumnsNames() const {
     TableRow res(columnNameMap.size());
     for (auto const& [k, v] : columnNameMap) {
         res.at(k) = v;
+    }
+    return res;
+}
+
+std::unordered_set<std::string> ResultTable::getColumnsNamesSet() const {
+    std::unordered_set<std::string> res;
+    for (auto const& [k, v] : columnNameMap) {
+        res.insert(v);
     }
     return res;
 }

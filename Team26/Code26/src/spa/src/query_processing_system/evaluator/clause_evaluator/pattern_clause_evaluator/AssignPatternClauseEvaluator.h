@@ -3,6 +3,7 @@
 #include <memory>
 #include <variant>
 #include <unordered_set>
+#include <unordered_map>
 #include <string>
 #include <utility>
 #include "PatternClauseEvaluator.h"
@@ -27,10 +28,9 @@ class AssignPatternClauseEvaluator : public PatternClauseEvaluator {
     /**
      * Given a set of lhs values, find all the assign statements that have any of the lhs values
      * on the left side and whose right side matches the string expression argument.
-     * @return A pair containing the set of matching assign statements and another set with the
-     * lhs values that has matches.
+     * @return A map with keys as the assign statements and values as the lhs values.
      */
-    std::pair<std::unordered_set<std::string>, std::unordered_set<std::string>>
+    std::unordered_map<std::string, std::unordered_set<std::string>>
     evaluateStringHelper(std::shared_ptr<ReadStorage> storage, std::unordered_set<std::string> lhsValues);
 
  public:

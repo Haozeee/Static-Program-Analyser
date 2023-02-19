@@ -14,7 +14,7 @@ TEST_CASE("Test insert entity for all managers") {
 
     std::string testInput = "procedure test1 {\n"
                             "    x = 10;\n"
-                            "    call Test2;\n"
+                            "    call test2;\n"
                             "    if (a > b) then {\n"
                             "        x = x + a;\n"
                             "    } else {\n"
@@ -87,7 +87,7 @@ TEST_CASE("Test insert entity for all managers") {
 
     // test ProcedureManager
     auto procedureManager = readStorage->getProcedureManager();
-    std::unordered_set<std::string> procedureSet = { "test1", "test2"};
+    std::unordered_set<std::string> procedureSet = {"test1", "test2"};
 
     REQUIRE(procedureManager->contains("test1"));
     REQUIRE(procedureManager->contains("test2"));

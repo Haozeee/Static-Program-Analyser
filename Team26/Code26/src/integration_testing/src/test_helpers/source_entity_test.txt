@@ -1,6 +1,6 @@
 procedure test1 {
     x = 10;
-    call Test2;
+    call test2;
     if (a > b) then {
         x = x + a;
     } else {

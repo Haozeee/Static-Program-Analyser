@@ -4,3 +4,7 @@ extern const char ParserRuntimeExceptionMessage[] = " A run time error occurred 
 
 ParserException::ParserException() : std::runtime_error(ParserRuntimeExceptionMessage) {}
 ParserException::ParserException(const std::string &errorMessage) : std::runtime_error(errorMessage) {}
+
+ShuntingYardParserException::ShuntingYardParserException(const std::string &errorMessage) : ParserException(
+        errorMessage) {
+}
