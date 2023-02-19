@@ -191,7 +191,7 @@ std::string QueryParser::parseStringExpression() {
     char firstChar = str[0];
     char lastChar = str[str.length()-1];
     if (specialChar.find(firstChar) != specialChar.end() || specialChar.find(lastChar) != specialChar.end()) {
-        throw QueryValidationException(QueryInvalidStartOrEndSpecialCharInStringExpression);
+        throw QueryParserException(QueryParserInvalidStartOrEndSpecialCharInStringExpression);
     }
     parseNext("'");
     str.erase(std::remove_if(str.begin(), str.end(), isspace), str.end());
