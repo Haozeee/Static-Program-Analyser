@@ -4,6 +4,7 @@
 #include <unordered_set>
 
 #include "QueryParser.h"
+#include "common/parser/ShuntingYardParser.h"
 #include "query_processing_system/parser/clause/pattern_clause/PatternClauseFactory.h"
 
 QueryParser::QueryParser(std::vector<std::shared_ptr<Token>> tokens, Query* query) :
@@ -186,15 +187,13 @@ std::string QueryParser::parseStringExpression() {
     parseNext("'");
     std::shared_ptr<Token> stringExpressionToken = parseNext(TokenType::TOKEN_STRING_EXPRESSION);
     std::string str = stringExpressionToken->getValue();
-    std::unordered_set<char> specialChar({'{', '}', ';', '=', '>', '<', '+', '-', '*', '/', '%',
-                                                 '!', '&', '|'});
-    char firstChar = str[0];
-    char lastChar = str[str.length()-1];
-    if (specialChar.find(firstChar) != specialChar.end() || specialChar.find(lastChar) != specialChar.end()) {
-        throw QueryParserException(QueryParserInvalidStartOrEndSpecialCharInStringExpression);
-    }
     parseNext("'");
     str.erase(std::remove_if(str.begin(), str.end(), isspace), str.end());
+    try {
+       ShuntingYardParser::parse(str);
+    } catch (ShuntingYardParserException& e) {
+        throw QueryParserException(QueryParserUnbalancedStringExpression);
+    }
     return str;
 }
 

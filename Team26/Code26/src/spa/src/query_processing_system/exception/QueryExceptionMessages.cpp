@@ -39,6 +39,6 @@ const char QueryParserInvalidEndingSemicolon[] =
         "Please remove the semicolon at the end of your Select clause.";
 const char QueryParserUnexpectedToken[] =
         "Please check your input, unexpected token while parsing: ";
-const char QueryParserInvalidStartOrEndSpecialCharInStringExpression[] =
+const char QueryParserUnbalancedStringExpression[] =
         "Cannot start/end string expression with operator";
 
