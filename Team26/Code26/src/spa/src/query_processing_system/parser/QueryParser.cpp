@@ -1,6 +1,8 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
+#include <unordered_set>
+
 #include "QueryParser.h"
 #include "query_processing_system/parser/clause/pattern_clause/PatternClauseFactory.h"
 
