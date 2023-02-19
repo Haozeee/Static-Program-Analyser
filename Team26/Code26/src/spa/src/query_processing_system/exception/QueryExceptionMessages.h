@@ -25,4 +25,4 @@ extern const char QueryParserInvalidRelationshipInSelectClause[];
 extern const char QueryParserInvalidTokenForRelationshipArgument[];
 extern const char QueryParserInvalidEndingSemicolon[];
 extern const char QueryParserUnexpectedToken[];
-extern const char QueryParserInvalidStartOrEndSpecialCharInStringExpression[];
+extern const char QueryParserUnbalancedStringExpression[];
