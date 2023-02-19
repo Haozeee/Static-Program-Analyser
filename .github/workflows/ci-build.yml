@@ -1,11 +1,12 @@
 name: CI for Cmake Project - Windows
 
-on:   
+on:
+
   pull_request:
     types: [ opened, synchronize, reopened, ready_for_review ]
 
   push:
-    branches: ["master"]
+    branches: ["master", "ci-testing"]
 
 jobs:
   build:
@@ -16,21 +17,21 @@ jobs:
 
       steps:
         - uses: actions/checkout@v3
-
-        - name: Set Compiler
-          shell: powershell
-          run: |
-            cd .\Team26\Code26
-            Add-Content -Path "./CMakeLists.txt" -Value "set(CMAKE_C_COMPILER_LAUNCHER ccache)"
-            Add-Content -Path "./CMakeLists.txt" -Value "set(CMAKE_CXX_COMPILER_LAUNCHER ccache)"
+        - name: Restore build cache
+          id: cache-build
+          uses: actions/cache@v3
+          with:
+            path: Team26/Code26/build
+            key: build-cache-windows
 
         - name: Make Build folder
           shell: powershell
+          if: steps.cache-build.outputs.cache-hit != 'true'
           run: |
             cd .\Team26\Code26
             mkdir build
             cd build
-            cmake ..
+            cmake -G "Ninja" ..
 
         - name: Build Project
           shell: powershell
@@ -43,14 +44,14 @@ jobs:
           shell: powershell
           timeout-minutes: 1
           run: |
-            cd .\Team26\Code26\build\src\unit_testing\Release\
+            cd .\Team26\Code26\build\src\unit_testing\
             .\unit_testing.exe
 
         - name: Run Intergration Test
           shell: powershell
           timeout-minutes: 1
           run: |
-            cd .\Team26\Code26\build\src\integration_testing\Release\
+            cd .\Team26\Code26\build\src\integration_testing\
             .\integration_testing.exe
 
         # - name: Run Autotester
