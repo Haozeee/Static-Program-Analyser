@@ -186,7 +186,7 @@ std::string QueryParser::parseStringExpression() {
     parseNext("'");
     std::shared_ptr<Token> stringExpressionToken = parseNext(TokenType::TOKEN_STRING_EXPRESSION);
     std::string str = stringExpressionToken->getValue();
-    std::unordered_set<char> specialChar({'{', '}', ';', '(', ')', '=', '>', '<', '+', '-', '*', '/', '%',
+    std::unordered_set<char> specialChar({'{', '}', ';', '=', '>', '<', '+', '-', '*', '/', '%',
                                                  '!', '&', '|'});
     char firstChar = str[0];
     char lastChar = str[str.length()-1];
