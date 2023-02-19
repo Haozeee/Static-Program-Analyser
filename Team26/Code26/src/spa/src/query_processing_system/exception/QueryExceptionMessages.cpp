@@ -25,6 +25,8 @@ const char QueryValidatorInvalidModifiesOrUsesRelationshipInSelectClause[] =
         " relationship was not created as the first argument cannot be identified. Note that wildcards are invalid.";
 const char QueryInvalidCreatePatternArgument[] =
         " needs to be declared as an assign synonym to be used in an assign pattern clause.";
+const char QueryInvalidStartOrEndSpecialCharInStringExpression[] =
+        "Cannot start/end string expression with operator";
 
 /**
  * Syntax Errors

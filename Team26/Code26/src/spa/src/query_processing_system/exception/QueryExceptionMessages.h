@@ -16,6 +16,7 @@ extern const char QueryValidatorInvalidFirstDesignEntityInRelation[];
 extern const char QueryValidatorInvalidSecondDesignEntityInRelation[];
 extern const char QueryValidatorInvalidModifiesOrUsesRelationshipInSelectClause[];
 extern const char QueryInvalidCreatePatternArgument[];
+extern const char QueryInvalidStartOrEndSpecialCharInStringExpression[];
 
 /**
  * Syntax Errors
