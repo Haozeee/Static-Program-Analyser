@@ -7,6 +7,8 @@
 using StringList = std::vector<std::string>;
 std::string simpleTestExpression = "x+y";
 std::string testExpression = "v+x*y+z*t";
+std::string invalidTestExpression = "v+x*y(+z*t";
+std::string invalidOperatorTestExpression = "v+^x*y(+z*t";
 
 TEST_CASE("Test Parse Correctly") {
     // Simple expression
@@ -40,4 +42,9 @@ TEST_CASE("Test Is Match") {
     REQUIRE_FALSE(ShuntNode::isSubTree(expressionTree, ShuntingYardParser::parse("v+x")));
     REQUIRE_FALSE(ShuntNode::isSubTree(expressionTree, ShuntingYardParser::parse("y+z*t")));
     REQUIRE_FALSE(ShuntNode::isSubTree(expressionTree, ShuntingYardParser::parse("x*y+z*t")));
+}
+
+TEST_CASE("Test Invalid Expression") {
+    REQUIRE_THROWS(ShuntingYardParser::parse(invalidTestExpression));
+    REQUIRE_THROWS(ShuntingYardParser::parse(invalidOperatorTestExpression));
 }
