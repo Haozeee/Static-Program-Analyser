@@ -17,16 +17,9 @@ jobs:
 
       steps:
         - uses: actions/checkout@v3
-        - name: Restore build cache
-          id: cache-build
-          uses: actions/cache@v3
-          with:
-            path: Team26/Code26/build
-            key: build-cache-windows
 
         - name: Make Build folder
           shell: powershell
-          if: steps.cache-build.outputs.cache-hit != 'true'
           run: |
             cd .\Team26\Code26
             mkdir build
