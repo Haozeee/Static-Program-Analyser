@@ -31,6 +31,13 @@ extern const char ParserInvalidBinaryCondExprFormatExceptionMessage[] = "Invalid
 extern const char ParserMissingRelOperatorExceptionMessage[] = "Missing comparison operator in rel_factor detected."
                                                                "Valid comparison operators include: \">\", \"<\","
                                                                " \">=\", \"<=\", \"==\", \"!=\".";
+extern const char ParserInvalidRelExprExceptionMessage[] = "Invalid rel_expr format detected. A valid rel_expr "
+                                                           "expression is of the format: rel_factor: var_name |"
+                                                           " const_value | expr";
+extern const char ParserInvalidCondExprExceptionMessage[] = "Invalid cond_expr format detected. A valid cond_expr "
+                                                            "expression is of the format: rel_expr | '!' '(' "
+                                                            "cond_expr ')' | '(' cond_expr ')' '&&' '(' cond_expr "
+                                                            "')' | '(' cond_expr ')' '||' '(' cond_expr ')'";
 extern const char ParserInvalidExprFormatExceptionMessage[] = "Invalid expr clause detected. A valid expr clause is"
                                                               " of the format: expr '+' term | expr '-' term | term"
                                                               " with term: term '*' factor | term '/' factor | term"
