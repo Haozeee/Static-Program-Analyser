@@ -1,0 +1,47 @@
+@startuml
+
+!include style.puml
+@startuml
+
+!include style.puml
+box PKB (From SP)
+participant "SP" as SP LOGIC_COLOR
+participant “:WriteStorage” as WriteStorage LOGIC_COLOR
+participant “:StmtManager" as StmtManager LOGIC_COLOR
+participant ":ParentManager" as ParentManager LOGIC_COLOR
+participant “:PatternManager” as PatternManager LOGIC_COLOR
+
+end box
+activate SP
+
+SP -> WriteStorage: getStmtManager()
+activate WriteStorage
+WriteStorage --> SP: StmtManager
+deactivate WriteStorage
+
+SP -> StmtManager: insertEntity(int: stmt_no)
+Activate StmtManager
+StmtManager --> SP: bool
+deactivate StmtManager
+
+SP -> WriteStorage: getParentManager()
+activate WriteStorage
+WriteStorage --> SP: parentManager
+deactivate WriteStorage
+
+SP -> ParentManager: insertRelationship(int: stmt_no, int: stmt_no)
+Activate ParentManager
+ParentManager --> SP: bool
+deactivate ParentManager
+
+SP -> WriteStorage: getPatternManager()
+activate WriteStorage
+WriteStorage --> SP: patternManager
+deactivate WriteStorage
+
+SP -> PatternManager: insertPattern(int: stmt_no, string: left, string: right)
+Activate PatternManager
+PatternManager --> SP: bool
+deactivate PatternManager
+
+@enduml
