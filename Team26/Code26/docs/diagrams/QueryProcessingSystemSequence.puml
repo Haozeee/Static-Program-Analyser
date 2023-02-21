@@ -15,11 +15,11 @@ participant ":ReadOnlyStorage" as ReadOnlyStorage LOGIC_COLOR
 end box
 activate UI
 
-UI -> QueryManager : processQuery(query: string, \n results: list<string>, storage:ReadOnlyStorage)
+UI -> QueryManager : processQuery(string: query, \n list<string>: results, ReadOnlyStorage: storage)
 activate QueryManager
 
 create QueryTokenizer
-QueryManager -> QueryTokenizer: QueryTokenizer(query: string)
+QueryManager -> QueryTokenizer: QueryTokenizer(string: query)
 activate QueryTokenizer
 
 QueryTokenizer --> QueryManager: QueryTokenizer
@@ -32,7 +32,7 @@ QueryTokenizer --> QueryManager: list<Tokens>
 deactivate QueryTokenizer
 
 create QueryParser
-QueryManager -> QueryParser : QueryParser(query: list<Tokens>)
+QueryManager -> QueryParser : QueryParser(list<Tokens>: query)
 activate QueryParser
 
 QueryParser --> QueryManager: QueryParser
@@ -61,7 +61,7 @@ QueryParser --> QueryManager: Query
 deactivate QueryParser
 
 create QueryEvaluator
-QueryManager -> QueryEvaluator: QueryEvaluator(query: Query, storage:ReadOnlyStorage)
+QueryManager -> QueryEvaluator: QueryEvaluator(Query: query, ReadOnlyStorage: storage)
 activate QueryEvaluator
 
 create QueryDb
