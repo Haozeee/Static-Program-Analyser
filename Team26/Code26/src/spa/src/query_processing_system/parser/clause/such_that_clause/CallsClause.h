@@ -1,9 +1,9 @@
 #pragma once
 #include "StringStringClause.h"
 
-class ModifiesPClause : public StringStringClause {
+class CallsClause : public StringStringClause {
  public:
-    ModifiesPClause(Argument leftArg, Argument rightArg);
+    CallsClause(Argument leftArg, Argument rightArg);
 
     ClauseEvaluator* getClauseEvaluator() override;
 

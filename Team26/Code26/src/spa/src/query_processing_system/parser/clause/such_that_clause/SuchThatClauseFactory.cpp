@@ -10,14 +10,12 @@ SuchThatClause *SuchThatClauseFactory::createSuchThatClause(std::string relation
             Query query;
             DesignEntity leftArgDesignEntity = leftArg.getDesignEntity();
             if (leftArgDesignEntity == DesignEntity::PROCEDURE) {  // checks if Synonym is a procedure
-//                std::cout << "synonym: procedure created" << std::endl;
                 if (relation == ModifiesRelation) {
-                    return new ModifiesPClause(leftArg, rightArg);
+                     return new ModifiesPClause(leftArg, rightArg);
                 } else {
                     return new UsesPClause(leftArg, rightArg);
                 }
             } else {  // else the Synonym is a statement
-//                std::cout << "synonym: statement created" << std::endl;
                 if (relation == ModifiesRelation) {
                     return new ModifiesSClause(leftArg, rightArg);
                 } else {
@@ -25,14 +23,12 @@ SuchThatClause *SuchThatClauseFactory::createSuchThatClause(std::string relation
                 }
             }
         } else if (leftArgType == ArgumentType::CHARACTERSTRING) {
-//            std::cout << "character string: procedure created" << std::endl;
             if (relation == ModifiesRelation) {
                 return new ModifiesPClause(leftArg, rightArg);
             } else {
                 return new UsesPClause(leftArg, rightArg);
             }
         } else if (leftArgType == ArgumentType::NUMBER) {
-//            std::cout << "number: statement created" << std::endl;
             if (relation == ModifiesRelation) {
                 return new ModifiesSClause(leftArg, rightArg);
             } else {
@@ -42,10 +38,22 @@ SuchThatClause *SuchThatClauseFactory::createSuchThatClause(std::string relation
             // Wildcards cannot be created
             throw QueryValidationException(relation + QueryValidatorInvalidModifiesOrUsesRelationshipInSelectClause);
         }
+    } else if (relation == AffectsRelation) {
+        return new AffectsClause(std::move(leftArg), std::move(rightArg));
+    } else if (relation == AffectsTRelation) {
+        return new AffectsTClause(std::move(leftArg), std::move(rightArg));
+    } else if (relation == CallsRelation) {
+        return new CallsClause(std::move(leftArg), std::move(rightArg));
+    } else if (relation == CallsTRelation) {
+        return new CallsTClause(std::move(leftArg), std::move(rightArg));
     } else if (relation == FollowsRelation) {
         return new FollowsClause(std::move(leftArg), std::move(rightArg));
     } else if (relation == FollowsTRelation) {
         return new FollowsTClause(std::move(leftArg), std::move(rightArg));
+    } else if (relation == NextRelation) {
+        return new NextClause(std::move(leftArg), std::move(rightArg));
+    } else if (relation == NextTRelation) {
+        return new NextTClause(std::move(leftArg), std::move(rightArg));
     } else if (relation == ParentRelation) {
         return new ParentClause(std::move(leftArg), std::move(rightArg));
     } else if (relation == ParentTRelation) {

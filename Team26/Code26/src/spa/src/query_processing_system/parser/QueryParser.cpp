@@ -83,8 +83,17 @@ bool QueryParser::parseIfSuchThatClause() {
     } else {
         parseNext("such");
         parseNext("that");
-        parseRelRef();
+        parseMultipleRelRef();
         return true;
+    }
+}
+
+void QueryParser::parseMultipleRelRef() {
+    parseRelRef();
+
+    while (hasNext() && isValueOf("and")) {
+        parseNext("and");
+        parseRelRef();
     }
 }
 

@@ -54,6 +54,8 @@ class QueryParser : public AbstractParser {
      */
     void parseRelRef();
 
+    void parseMultipleRelRef();
+
     /**
      * Parse Arguments of any relRef relationships.
      * Example: Follows(1, 2) Left argument is 1 and right argument is 2.

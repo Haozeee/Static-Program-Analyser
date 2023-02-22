@@ -1,9 +1,9 @@
 #pragma once
 #include "IntIntClause.h"
 
-class ParentClause : public IntIntClause {
- public:
-    ParentClause(Argument leftArg, Argument rightArg);
+class NextTClause : public IntIntClause {
+public:
+    NextTClause(Argument leftArg, Argument rightArg);
 
     ClauseEvaluator* getClauseEvaluator() override;
 
