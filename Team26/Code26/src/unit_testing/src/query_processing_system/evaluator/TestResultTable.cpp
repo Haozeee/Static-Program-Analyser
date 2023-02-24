@@ -18,6 +18,8 @@ std::unordered_set<std::string> tableCItems1 {"b"};
 std::unordered_set<std::string> tableCItems2 {"c", "d"};
 auto tableC = ResultTable::createDoubleColumnTable(tableBCol1, tableCItems1, tableBCol2, tableCItems2);
 
+auto tableD = ResultTable::createDoubleColumnTable(tableBCol2, tableCItems2, tableBCol1, tableCItems1);
+
 TEST_CASE("Constructing Table From Map") {
     std::unordered_map<std::string, std::unordered_set<std::string>> map {
             {"1", {"2", "3"}},
@@ -74,7 +76,7 @@ TEST_CASE("Double Table") {
 
 TEST_CASE("Join One Matching Columns") {
     // Join table A and B
-    auto res = ResultTable::joinOnColumns(tableA, tableB, {tableBCol1});
+    auto res = ResultTable::joinTable(tableA, tableB);
     // Check result table column names
     std::vector<std::string> colNames = {tableBCol1, tableBCol2};
     REQUIRE(res->getColumnsNames() == colNames);
@@ -92,7 +94,7 @@ TEST_CASE("Join One Matching Columns") {
 
 TEST_CASE("Join two matching column") {
     // Join table B and C
-    auto res = ResultTable::joinOnColumns(tableB, tableC, {tableBCol1, tableBCol2});
+    auto res = ResultTable::joinTable(tableB, tableC);
     // Check result table column names
     std::vector<std::string> colNames = {tableBCol1, tableBCol2};
     REQUIRE(res->getColumnsNames() == colNames);
@@ -102,12 +104,16 @@ TEST_CASE("Join two matching column") {
     std::vector<std::string> row2 = {"b", "d"};
     REQUIRE(res->getRow(0) == row1);
     REQUIRE(res->getRow(1) == row2);
+
+    res = ResultTable::joinTable(tableB, tableD);
+    REQUIRE(res->getRow(0) == row1);
+    REQUIRE(res->getRow(1) == row2);
 }
 
 TEST_CASE("Joining With Empty Table") {
     auto emptyTable = std::make_shared<ResultTable>(tableBCol1);
     // Join tableC and empty table
-    auto res = ResultTable::joinOnColumns(tableC, emptyTable, {tableBCol1});
+    auto res = ResultTable::joinTable(tableC, emptyTable);
     // Check result table column names
     std::vector<std::string> colNames = {tableBCol1, tableBCol2};
     REQUIRE(res->getColumnsNames() == colNames);

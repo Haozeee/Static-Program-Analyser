@@ -7,7 +7,8 @@
 #include <vector>
 #include <memory>
 #include <unordered_map>
-#include "ShuntNode.h"
+#include "common/parser/ShuntNode.h"
+#include "common/exception/ParserException.h"
 
 class ShuntingYardParser {
  public:
@@ -21,11 +22,13 @@ class ShuntingYardParser {
         std::stack<std::shared_ptr<ShuntNode>> result;
         std::stack<char> opStack;
         std::unordered_map<char, int> ranking;
+        std::vector<std::string> ops{"+", "-", "*", "/", "%", "(" , ")"};
         ranking['+'] = 1;
         ranking['-'] = 1;
         ranking['*'] = 2;
         ranking['/'] = 2;
         ranking['%'] = 2;
+
 
         for (int i = 0; i < expr.size(); ++i) {
             const char c = expr[i];
@@ -46,11 +49,18 @@ class ShuntingYardParser {
                 std::shared_ptr<ShuntNode> node = std::make_shared<ShuntNode>(expr.substr(i, k -i));
                 result.push(node);
                 i = k - 1;
-            } else /* operator or bracket */ {
+            } else if (std::find(ops.begin(),
+                                 ops.end(),
+                                 std::string(1, c)) != ops.end()) /* operator or bracket */ {
                 if (c == '(') {
                     opStack.push(c);
                 } else if (c == ')') {
                     while (!opStack.empty() && opStack.top() != '(') {
+                        if (result.size() < 2) {
+                            throw ShuntingYardParserException(
+                                    ParserShuntingYardParserInvalidExpressionExceptionMessage);
+                        }
+
                         std::shared_ptr<ShuntNode> node = std::make_shared<ShuntNode>(std::string(1, opStack.top()));
                         opStack.pop();
                         node->right = result.top();
@@ -62,6 +72,11 @@ class ShuntingYardParser {
                     opStack.pop();
                 } else {
                     while (!opStack.empty() && ranking[opStack.top()] >= ranking[c]) {
+                        if (result.size() < 2) {
+                            throw ShuntingYardParserException(
+                                    ParserShuntingYardParserInvalidExpressionExceptionMessage);
+                        }
+
                         std::shared_ptr<ShuntNode> node = std::make_shared<ShuntNode>(std::string(1, opStack.top()));
                         opStack.pop();
                         node->right = result.top();
@@ -72,9 +87,18 @@ class ShuntingYardParser {
                     }
                     opStack.push(c);
                 }
+            } else {
+                throw ShuntingYardParserException(
+                        ParserShuntingYardParserUnknownOperatorExceptionMessage);
             }
         }
+
         while (!opStack.empty()) {
+            if (result.size() < 2) {
+                throw ShuntingYardParserException(
+                        ParserShuntingYardParserInvalidExpressionExceptionMessage);
+            }
+
             std::shared_ptr<ShuntNode> node = std::make_shared<ShuntNode>(std::string(1, opStack.top()));
             opStack.pop();
             node->right = result.top();
@@ -83,6 +107,11 @@ class ShuntingYardParser {
             result.pop();
             result.push(node);
         }
+
+        if (result.size() != 1) {
+            throw ShuntingYardParserException(ParserShuntingYardParserInvalidExpressionExceptionMessage);
+        }
+
         return result.top();
     }
 };

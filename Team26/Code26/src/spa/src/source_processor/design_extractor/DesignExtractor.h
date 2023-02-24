@@ -9,7 +9,6 @@
 
 class DesignExtractor {
  private:
-    std::shared_ptr<IStore> store;
     std::unique_ptr<BaseExtractor> entityExtractor;
     std::unique_ptr<BaseExtractor> relationshipExtractor;
     std::unique_ptr<BaseExtractor> patternExtractor;

@@ -55,6 +55,22 @@ class ResultTable {
     static std::shared_ptr<ResultTable> joinOnColumns(std::shared_ptr<ResultTable> table1,
                                                       std::shared_ptr<ResultTable> table2,
                                                       std::vector<int> column1, std::vector<int> column2);
+
+    /**
+     * Suppose common columns are a list of columns that are present in table1 and table2.
+     * This function joins the two table on the common columns and return the newly joined table.
+     * Suppose commonColumns = ["A", "B"]. This function joins table1 and table2 on
+     * table1.A = table2.A and table1.B = table2.B.
+     */
+    static std::shared_ptr<ResultTable> joinOnColumns(std::shared_ptr<ResultTable> table1,
+                                                      std::shared_ptr<ResultTable> table2,
+                                                      std::vector<std::string> commonColumns);
+
+    /**
+     * Join 2 tables that have no common columns.
+     */
+    static std::shared_ptr<ResultTable> joinNoColumns(std::shared_ptr<ResultTable> table1,
+                                                      std::shared_ptr<ResultTable> table2);
     /**
      * Union 2 vectors.
      */
@@ -102,15 +118,13 @@ class ResultTable {
     static std::shared_ptr<ResultTable>
     createTableFromMap(std::unordered_map<std::string, std::unordered_set<std::string>> map,
                        std::string keysCol, std::string valuesCol);
+
     /**
-     * Suppose common columns are a list of columns that are present in table1 and table2.
-     * This function joins the two table on the common columns and return the newly joined table.
-     * Suppose commonColumns = ["A", "B"]. This function joins table1 and table2 on
-     * table1.A = table2.A and table1.B = table2.B.
+     * Join table1 and table2. If there are no common columns to join, do a cartesian product between the
+     * 2 tables.
      */
-    static std::shared_ptr<ResultTable> joinOnColumns(std::shared_ptr<ResultTable> table1,
-                                                      std::shared_ptr<ResultTable> table2,
-                                                      std::vector<std::string> commonColumns);
+    static std::shared_ptr<ResultTable> joinTable(std::shared_ptr<ResultTable> table1,
+                                                  std::shared_ptr<ResultTable> table2);
 
     /**
      * Given a set of columnNamesToMatch, check if this table has any of these columns in it.
@@ -171,6 +185,12 @@ class ResultTable {
      * names matter.
      */
     TableRow getColumnsNames() const;
+
+    /**
+     * Get the column names of this table. The order of the column
+     * names does not matter.
+     */
+    std::unordered_set<std::string> getColumnsNamesSet() const;
 
     bool hasNoResults();
 

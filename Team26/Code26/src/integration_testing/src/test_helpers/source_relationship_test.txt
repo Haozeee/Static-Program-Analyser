@@ -1,0 +1,21 @@
+procedure test1 {
+    read a;
+    x = 1;
+    if (a > 0) then {
+        x = x + 2;
+        print x;
+    } else {
+        x = 0;
+    }
+    y = 2;
+    while (y > 2) {
+        if (x > 0) then {
+            print x;
+        } else {
+            x = 1;
+            print x;
+        }
+        y = y - 1;
+    }
+    y = x;
+}

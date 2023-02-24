@@ -89,6 +89,7 @@ TEST_CASE("Basic Declaration") {
     for (auto const item: *query->getSelectClause()->getSelectClauseItems()) {
         REQUIRE(SelectClause::getSynonym(item) == "v");
     }
+    delete query;
 }
 
 TEST_CASE("Such That Clause") {
@@ -127,6 +128,7 @@ TEST_CASE("Such That Clause") {
             REQUIRE(right.getValue() == "xyz");
             REQUIRE(right.getDesignEntity() == DesignEntity::NONE);
         }
+        delete query;
     }
 
     SECTION("FollowsT") {
@@ -163,6 +165,7 @@ TEST_CASE("Such That Clause") {
             REQUIRE(right.getValue() == "c");
             REQUIRE(right.getDesignEntity() == DesignEntity::CONSTANT);
         }
+        delete query;
     }
 
     SECTION("Parent") {
@@ -198,6 +201,7 @@ TEST_CASE("Such That Clause") {
             REQUIRE(right.getValue() == "_");
             REQUIRE(right.getDesignEntity() == DesignEntity::NONE);
         }
+        delete query;
     }
 
     SECTION("ParentT") {
@@ -233,6 +237,7 @@ TEST_CASE("Such That Clause") {
             REQUIRE(right.getValue() == "456");
             REQUIRE(right.getDesignEntity() == DesignEntity::NONE);
         }
+        delete query;
     }
 
     SECTION("UsesS") {
@@ -268,6 +273,7 @@ TEST_CASE("Such That Clause") {
             REQUIRE(right.getValue() == "_");
             REQUIRE(right.getDesignEntity() == DesignEntity::NONE);
         }
+        delete query;
     }
 
     SECTION("ModifiesS") {
@@ -303,6 +309,7 @@ TEST_CASE("Such That Clause") {
             REQUIRE(right.getValue() == "789");
             REQUIRE(right.getDesignEntity() == DesignEntity::NONE);
         }
+        delete query;
     }
 }
 
@@ -348,6 +355,36 @@ TEST_CASE("Pattern Clause") {
         StringExpression right = item->getRightArg();
         REQUIRE(right.getExpression() == "x+y");
     }
+    delete query;
+}
+
+TEST_CASE("Invalid Pattern Clause") {
+    std::vector<std::shared_ptr<Token>> tokens {
+            std::make_shared<NameToken>("variable"),
+            std::make_shared<NameToken>("v"),
+            std::make_shared<SpecialCharToken>(";"),
+            std::make_shared<NameToken>("assign"),
+            std::make_shared<NameToken>("a"),
+            std::make_shared<SpecialCharToken>(";"),
+            std::make_shared<NameToken>("Select"),
+            std::make_shared<NameToken>("v"),
+            std::make_shared<NameToken>("pattern"),
+            std::make_shared<NameToken>("a"),
+            std::make_shared<SpecialCharToken>("("),
+            std::make_shared<NameToken>("v"),
+            std::make_shared<SpecialCharToken>(","),
+            std::make_shared<SpecialCharToken>(("_")),
+            std::make_shared<SpecialCharToken>(("'")),
+            std::make_shared<StringExpressionToken>(("x+")),
+            std::make_shared<SpecialCharToken>(("'")),
+            std::make_shared<SpecialCharToken>(("_")),
+            std::make_shared<SpecialCharToken>(")"),
+            std::make_shared<EndOfFileToken>(),
+    };
+    Query* query = new Query();
+    QueryParser parser = QueryParser(tokens, query);
+    REQUIRE_THROWS(parser.parse());
+    delete query;
 }
 
 TEST_CASE("Such That and Pattern Clause") {
@@ -412,4 +449,5 @@ TEST_CASE("Such That and Pattern Clause") {
         StringExpression right = item->getRightArg();
         REQUIRE(right.getExpression() == "a+b");
     }
+    delete query;
 }

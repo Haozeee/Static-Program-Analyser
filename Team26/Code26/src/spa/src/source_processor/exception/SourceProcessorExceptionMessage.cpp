@@ -1,6 +1,6 @@
 #include "SourceProcessorExceptionMessage.h"
 
-extern const char ManagerInvalidInputFile[] = "Invalid input file."
+extern const char ManagerInvalidInputFile[] = "Invalid input file.";
 
 extern const char TokenizerInvalidLogicalOpExceptionMessage[] = "Invalid logical operation detected. Valid logical "
                                                                 "operations includes: \"&&\", \"||\", \">=\", \"<=\", "
@@ -12,6 +12,8 @@ extern const char TokenizerSpecialCharExceptionMessage[] = "Invalid special char
 
 extern const char ParserEmptySourceExceptionMessage[] = "Source code contains no procedures. Valid source code is"
                                                         " contained within procedure blocks.";
+extern const char ParserEmptyStmtListExceptionMessage[] = "Empty stmt list detected. Valid stmt lists contain at "
+                                                          "least one stmt.";
 extern const char ParserInvalidStmtStartTokenTypeExceptionMessage[] = "Non-name token at start of statement list"
                                                                       " detected.";
 extern const char ParserInvalidStmtStartTokenUnknownExceptionMessage[] = "Invalid token at start of statement"
@@ -29,6 +31,13 @@ extern const char ParserInvalidBinaryCondExprFormatExceptionMessage[] = "Invalid
 extern const char ParserMissingRelOperatorExceptionMessage[] = "Missing comparison operator in rel_factor detected."
                                                                "Valid comparison operators include: \">\", \"<\","
                                                                " \">=\", \"<=\", \"==\", \"!=\".";
+extern const char ParserInvalidRelExprExceptionMessage[] = "Invalid rel_expr format detected. A valid rel_expr "
+                                                           "expression is of the format: rel_factor: var_name |"
+                                                           " const_value | expr";
+extern const char ParserInvalidCondExprExceptionMessage[] = "Invalid cond_expr format detected. A valid cond_expr "
+                                                            "expression is of the format: rel_expr | '!' '(' "
+                                                            "cond_expr ')' | '(' cond_expr ')' '&&' '(' cond_expr "
+                                                            "')' | '(' cond_expr ')' '||' '(' cond_expr ')'";
 extern const char ParserInvalidExprFormatExceptionMessage[] = "Invalid expr clause detected. A valid expr clause is"
                                                               " of the format: expr '+' term | expr '-' term | term"
                                                               " with term: term '*' factor | term '/' factor | term"

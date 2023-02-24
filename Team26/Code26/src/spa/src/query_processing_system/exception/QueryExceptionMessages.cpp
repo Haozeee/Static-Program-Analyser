@@ -21,8 +21,6 @@ const char QueryValidatorInvalidFirstDesignEntityInRelation[] =
         " is an invalid first argument for the given relation.";
 const char QueryValidatorInvalidSecondDesignEntityInRelation[] =
         " is not a valid second argument for the given relation.";
-const char QueryValidatorNoRepeatArgumentsAllowed[] =
-        "Repeat arguments are not allowed in the given relation.";
 const char QueryValidatorInvalidModifiesOrUsesRelationshipInSelectClause[] =
         " relationship was not created as the first argument cannot be identified. Note that wildcards are invalid.";
 const char QueryInvalidCreatePatternArgument[] =
@@ -31,6 +29,8 @@ const char QueryInvalidCreatePatternArgument[] =
 /**
  * Syntax Errors
  */
+const char QueryParserInvalidWildcardInSelectClause[] =
+        "Not allowed to select a wildcard.";
 const char QueryParserInvalidRelationshipInSelectClause[] =
         " is not a valid relationship, please modify your input. Note that PQL is case-sensitive.";
 const char QueryParserInvalidTokenForRelationshipArgument[] =
@@ -39,4 +39,6 @@ const char QueryParserInvalidEndingSemicolon[] =
         "Please remove the semicolon at the end of your Select clause.";
 const char QueryParserUnexpectedToken[] =
         "Please check your input, unexpected token while parsing: ";
+const char QueryParserUnbalancedStringExpression[] =
+        "Cannot start/end string expression with operator";
 
