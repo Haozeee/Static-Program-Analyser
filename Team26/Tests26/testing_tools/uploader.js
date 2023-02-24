@@ -112,7 +112,7 @@ fs.readdir(resultDirPath, { withFileTypes: true }, async (err, resultDir) => {
   const sheetName = generateNanoId(6)
   const sheet = await createNewSheet(sheetName)
   // console.log(util.inspect(sheet, { depth: null }))
-  console.log(`::set-output name=url::=https://docs.google.com/spreadsheets/d/${spreadsheetId}/preview#gid=${sheet.data.replies[0].addSheet.properties.sheetId}`)
+  console.log(`::set-output name=url::https://docs.google.com/spreadsheets/d/${spreadsheetId}/preview#gid=${sheet.data.replies[0].addSheet.properties.sheetId}`)
 
   for (let i = 0; i < resultDir.length; i++) {
     try {
