@@ -46,9 +46,9 @@ jobs:
           with:
             name: build-artifacts
             path: .\artifacts
-            retention-days: 5
+            retention-days: 7
 
-  unit_test:
+  unit-test:
       needs: build
       runs-on: [self-hosted, Windows, X64]
       timeout-minutes: 10
@@ -75,3 +75,51 @@ jobs:
           run: |
             cd .\artifacts
             .\integration_testing.exe
+
+  autotester:
+      needs: build
+      runs-on: [self-hosted, Windows, X64]
+      timeout-minutes: 10
+      strategy:
+        fail-fast: true
+      
+      steps:
+        - uses: actions/checkout@v3
+        - uses: actions/setup-node@v3
+          with:
+            node-version: 16
+
+        - name: Download build artifacts
+          uses: actions/download-artifact@v3
+          with: 
+            name: build-artifacts
+            path: .\artifacts
+
+        - name: Copy Autotester
+          shell: powershell
+          run: |
+            cp .\artifacts\autotester.exe .\Team26\Tests26
+
+        - name: Run Autotester via script
+          shell: powershell
+          run: |
+            cd .\Team26\Tests26\testing_tools
+            node tester.js
+
+        - name: Install dependepncies
+          shell: powershell
+          run: |
+            cd .\Team26\Tests26\testing_tools
+            npm i
+
+        - name: Copy Key
+          run: |
+            cd .\Team26\Tests26\testing_tools
+            Copy-Item -Path "../../../../../../../../../../keys/keys.json" -Destination "./"
+                
+        - name: Run uploader
+          shell: powershell
+          run: |
+            cd .\Team26\Tests26\testing_tools
+            node uploader.js ${{ secrets.SPREADSHEET_ID }}
+
