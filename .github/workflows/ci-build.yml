@@ -32,20 +32,6 @@ jobs:
             cd Team26\Code26\build
             cmake --build . --config Release
             cd ../..
-        
-        - name: Run Unit Test
-          shell: powershell
-          timeout-minutes: 1
-          run: |
-            cd .\Team26\Code26\build\src\unit_testing\
-            .\unit_testing.exe
-
-        - name: Run Intergration Test
-          shell: powershell
-          timeout-minutes: 1
-          run: |
-            cd .\Team26\Code26\build\src\integration_testing\
-            .\integration_testing.exe
 
         - name: Copy Builds
           shell: powershell
@@ -56,7 +42,35 @@ jobs:
             cp .\Team26\Code26\build\src\integration_testing\integration_testing.exe .\artifacts\integration_testing.exe
 
         - name: Upload Builds
-          uses: actions/upload-artifact@v2
+          uses: actions/upload-artifact@v3
           with:
             name: build-artifacts
             path: .\artifacts
+
+  unit_test:
+      needs: build
+      runs-on: [self-hosted, Windows, X64]
+      timeout-minutes: 10
+      strategy:
+        fail-fast: true
+      
+      steps:
+        - name: Download build artifacts
+          uses: actions/download-artifact@v3
+          with: 
+            name: build-artifacts
+            path: .\artifacts
+
+        - name: Run Unit Test
+          shell: powershell
+          timeout-minutes: 1
+          run: |
+            cd .\artifacts
+            .\unit_testing.exe
+
+        - name: Run Intergration Test
+          shell: powershell
+          timeout-minutes: 1
+          run: |
+            cd .\artifacts
+            .\integration_testing.exe
