@@ -106,6 +106,13 @@ jobs:
             cd .\Team26\Tests26\testing_tools
             node tester.js
 
+        - name: Save Test Results
+          uses: actions/upload-artifact@v3
+          with:
+            name: autotester-result
+            path: .\Team26\Tests26\results
+            retention-days: 7
+
         - name: Install dependepncies
           shell: powershell
           run: |
