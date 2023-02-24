@@ -46,6 +46,7 @@ jobs:
           with:
             name: build-artifacts
             path: .\artifacts
+            retention-days: 5
 
   unit_test:
       needs: build
