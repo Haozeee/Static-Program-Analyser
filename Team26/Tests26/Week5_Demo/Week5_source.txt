@@ -1,8 +1,0 @@
-procedure Hello {
-    read read;
-    read x1;
-    read x2;
-    read x3;
-    print print;
-    print x1;
-}
