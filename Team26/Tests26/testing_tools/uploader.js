@@ -133,7 +133,7 @@ fs.readdir(resultDirPath, { withFileTypes: true }, async (err, resultDir) => {
   let col = "A"
 
   // console.log(util.inspect(sheet, { depth: null }))
-  console.log(`::set-output name=url::=https://docs.google.com/spreadsheets/d/${spreadsheetId}/preview#gid=${sheet.data.replies[0].addSheet.properties.sheetId}`)
+  // console.log(`::set-output name=url::=https://docs.google.com/spreadsheets/d/${spreadsheetId}/preview#gid=${sheet.data.replies[0].addSheet.properties.sheetId}`)
 
   for (let i = 0; i < resultDir.length; i++) {
     try {
