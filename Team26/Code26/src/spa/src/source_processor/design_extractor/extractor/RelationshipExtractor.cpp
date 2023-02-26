@@ -1,14 +1,22 @@
 #include "RelationshipExtractor.h"
 #include <utility>
 
-RelationshipExtractor::RelationshipExtractor(std::shared_ptr<IRelationshipStore> relationshipStore) : BaseExtractor
-() {
+RelationshipExtractor::RelationshipExtractor(std::shared_ptr<IRelationshipStore> relationshipStore,
+        std::shared_ptr<ReadStorage> readStorage) : BaseExtractor() {
     this->relationshipStore = std::move(relationshipStore);
+    procedureManager = readStorage->getProcedureManager();
 }
+
+void RelationshipExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
+    BaseExtractor::extractProgram(node);
+    // TODO(zt): handle
+}
+
 
 void RelationshipExtractor::extractProcedure(std::shared_ptr<ProcedureNode> node) {
     parentIndexStack.clear();
     currProcedureName = node->procedureName;
+    procedureUniqueCallCount.insert({node->procedureName, 0});
     BaseExtractor::extractProcedure(node);
 }
 
@@ -46,10 +54,6 @@ void RelationshipExtractor::extractAssign(std::shared_ptr<AssignNode> node) {
     extractExpr(node->exprNode);
 }
 
-void RelationshipExtractor::extractCall(std::shared_ptr<CallNode> node) {
-    // TODO(zt): For future sprints
-}
-
 void RelationshipExtractor::extractWhile(std::shared_ptr<WhileNode> node) {
     extractCondExpr(node->condExprNode);
     parentIndexStack.emplace_back(node->stmtIndex);
@@ -77,6 +81,32 @@ void RelationshipExtractor::extractCondExpr(std::shared_ptr<CondExprNode> node) 
     insertExprUsesGroup();
 }
 
+void RelationshipExtractor::extractCall(std::shared_ptr<CallNode> node) {
+
+    if (currProcedureName == node->procedureName) /* Self call*/ {
+        // THROW EXCEPTION
+    } else if (!procedureManager->contains(node->procedureName)) /* Callee does not exits*/ {
+        // THROW EXCEPTION
+    }
+//        if () /* If this is the first time current procedure called callee */ {
+//            procedureUniqueCallCount[currProcedureName]++;
+//        }
+
+    // PKB Update
+    relationshipStore->insertCallsRelationship(node->stmtIndex, currProcedureName, node->procedureName);
+
+    if (procedureCalledList.find(node->procedureName) == procedureCalledList.end()) {
+        procedureCalledList[node->procedureName] = std::make_unique<std::unordered_set<int>>();
+    }
+
+    // callee is called by current index and its parent index
+    procedureCalledList[node->procedureName]->insert(node->stmtIndex);
+
+    for (auto& parentIndex: parentIndexStack) {
+        procedureCalledList[node->procedureName]->insert(parentIndex);
+    }
+}
+
 void RelationshipExtractor::insertExprUsesGroup() {
     for (auto &variable : exprVariableList) {
         relationshipStore->insertUsesSRelationship(currentStmtNo, variable);
@@ -102,6 +132,5 @@ void RelationshipExtractor::insertModifiesGroup(const std::shared_ptr<VariableNa
         relationshipStore->insertModifiesSRelationship(parentIndex, node->varName);
     }
 }
-
 
 

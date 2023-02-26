@@ -30,7 +30,7 @@ void EntityStore::insertReadStatement(std::shared_ptr<ReadNode> node) {
      *  2. Variable Name
      * */
     readManager->insertEntity(node->stmtIndex);
-    insertName(node->varName);
+    insertVariableName(node->varName);
 }
 
 void EntityStore::insertPrintStatement(std::shared_ptr<PrintNode> node) {
@@ -40,7 +40,7 @@ void EntityStore::insertPrintStatement(std::shared_ptr<PrintNode> node) {
      *  2. Variable Name
      * */
     printManager->insertEntity(node->stmtIndex);
-    insertName(node->varName);
+    insertVariableName(node->varName);
 }
 
 void EntityStore::insertAssignStatement(std::shared_ptr<AssignNode> node) {
@@ -50,11 +50,10 @@ void EntityStore::insertAssignStatement(std::shared_ptr<AssignNode> node) {
      *  2. Variable Name
      * */
     assignManager->insertEntity(node->stmtIndex);
-    insertName(node->varName);
+    insertVariableName(node->varName);
 }
 
 void EntityStore::insertCallStatement(std::shared_ptr<CallNode> node) {
-    // TBD
     callManager->insertEntity(node->stmtIndex);
 }
 
@@ -74,10 +73,11 @@ void EntityStore::insertIfStatement(std::shared_ptr<IfNode> node) {
     ifManager->insertEntity(node->stmtIndex);
 }
 
-void EntityStore::insertName(const std::string &name) {
+void EntityStore::insertVariableName(const std::string &name) {
     variableManager->insertEntity(name);
 }
 
 void EntityStore::insertConstant(const int &integer) {
     constantManager->insertEntity(integer);
 }
+

@@ -3,9 +3,9 @@
 #include "source_processor/design_extractor/extractor/RelationshipExtractor.h"
 #include "source_processor/design_extractor/extractor/PatternExtractor.h"
 
-DesignExtractor::DesignExtractor(const std::shared_ptr<IStore>& store) {
+DesignExtractor::DesignExtractor(const std::shared_ptr<IStore>& store, const std::shared_ptr<ReadStorage>& readStorage){
     entityExtractor = std::make_unique<EntityExtractor>(store->getEntityStore());
-    relationshipExtractor = std::make_unique<RelationshipExtractor>(store->getRelationshipStore());
+    relationshipExtractor = std::make_unique<RelationshipExtractor>(store->getRelationshipStore(), readStorage);
     patternExtractor = std::make_unique<PatternExtractor>(store->getPatternStore());
 }
 

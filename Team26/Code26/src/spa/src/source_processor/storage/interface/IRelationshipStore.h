@@ -10,4 +10,6 @@ class IRelationshipStore {
     virtual void insertModifiesSRelationship(const int &stmtNo, const std::string &variableName) = 0;
     virtual void insertUsesPRelationship(std::string  &procedureName, const std::string &variableName) = 0;
     virtual void insertModifiesPRelationship(std::string  &procedureName, const std::string &variableName) = 0;
+    virtual void insertCallsRelationship(const int &stmtNo, const std::string &callerName, const std::string
+    &calleeName) = 0;
 };

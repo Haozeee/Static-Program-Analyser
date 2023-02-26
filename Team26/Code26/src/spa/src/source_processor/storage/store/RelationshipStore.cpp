@@ -38,3 +38,10 @@ void RelationshipStore::insertModifiesPRelationship(std::string &procedureName, 
     modifiesPManager->insertRelationship(procedureName, variableName);
 }
 
+void RelationshipStore::insertCallsRelationship(const int &stmtNo, const std::string &callerName, const std::string
+&calleeName) {
+
+}
+
+
+

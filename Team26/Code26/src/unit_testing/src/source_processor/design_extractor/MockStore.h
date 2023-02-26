@@ -52,7 +52,7 @@ public:
         ifSet.insert(node);
     };
 
-    void insertName(const std::string &name) override {
+    void insertVariableName(const std::string &name) override {
         variableSet.insert(name);
     };
 
@@ -91,6 +91,11 @@ class MockRelationshipStore : public IRelationshipStore {
     void insertModifiesPRelationship(std::string  &procedureName, const std::string &variableName) {
         //TODO(zt): Sprint 3
     }
+
+    void insertCallsRelationship(const int &stmtNo, const std::string &callerName, const std::string
+    &calleeName) {
+
+    };
 
     bool findFollows(int x, int y) {
         auto curr = followsStore.find(x);
