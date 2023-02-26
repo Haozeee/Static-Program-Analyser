@@ -7,6 +7,6 @@
 
 class SourceManager {
  public:
-    void process(const std::string& filename, const std::shared_ptr<IStore>& store, std::shared_ptr<ReadStorage>
+    void process(const std::string& filename, const std::shared_ptr<IStore>& store, const std::shared_ptr<ReadStorage>&
     readStorage);
 };

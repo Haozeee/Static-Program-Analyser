@@ -1,5 +1,4 @@
 #include "RelationshipStore.h"
-
 #include <utility>
 
 RelationshipStore::RelationshipStore(std::shared_ptr<WriteStorage> storage) {
@@ -40,7 +39,6 @@ void RelationshipStore::insertModifiesPRelationship(std::string &procedureName, 
 
 void RelationshipStore::insertCallsRelationship(const int &stmtNo, const std::string &callerName, const std::string
 &calleeName) {
-
 }
 
 

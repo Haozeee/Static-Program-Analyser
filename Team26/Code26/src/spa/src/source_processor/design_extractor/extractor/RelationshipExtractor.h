@@ -2,6 +2,8 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <unordered_map>
+#include <unordered_set>
 #include "source_processor/design_extractor/extractor/BaseExtractor.h"
 #include "source_processor/storage/interface/IRelationshipStore.h"
 #include "source_processor/design_extractor/interface/IRelationshipExtractor.h"
@@ -37,6 +39,7 @@ class RelationshipExtractor : public BaseExtractor, IRelationshipExtractor {
     void extractIf(std::shared_ptr<IfNode> node) override;
     void extractExpr(std::shared_ptr<ExprNode> node) override;
     void extractCondExpr(std::shared_ptr<CondExprNode> node) override;
+
  public:
     explicit RelationshipExtractor(std::shared_ptr<IRelationshipStore> relationshipStore,
                                    std::shared_ptr<ReadStorage> readStorage);
