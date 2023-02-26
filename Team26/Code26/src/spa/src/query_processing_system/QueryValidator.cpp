@@ -56,21 +56,21 @@ void QueryValidator::validateSuchThatClause() {
         auto rightArg = clause->getRightArg();
         switch (validationResult) {
             case SuchThatClauseValidationResult::INVALID_LEFT_ARG_TYPE:
-                throw QueryValidationException(leftArg.getValue()
+                throw QueryInvalidArgumentType(leftArg.getValue()
                                                + QueryValidatorInvalidFirstArgumentTypeInRelation);
             case SuchThatClauseValidationResult::INVALID_RIGHT_ARG_TYPE:
-                throw QueryValidationException(rightArg.getValue()
+                throw QueryInvalidArgumentType(rightArg.getValue()
                                                + QueryValidatorInvalidSecondArgumentTypeInRelation);
             case SuchThatClauseValidationResult::INVALID_LEFT_DESIGN_ENTITY:
-                throw QueryValidationException(QueryValidatorInvalidFirstDesignEntityInRelation1
+                throw QueryValidationException("The synonym "
                                                + leftArg.getValue()
-                                               + QueryValidatorInvalidFirstDesignEntityInRelation2
+                                               + " of design entity "
                                                + toString(leftArg.getDesignEntity())
                                                + QueryValidatorInvalidFirstDesignEntityInRelation);
             case SuchThatClauseValidationResult::INVALID_RIGHT_DESIGN_ENTITY:
-                throw QueryValidationException(QueryValidatorInvalidFirstDesignEntityInRelation1
+                throw QueryValidationException("The synonym "
                                                + rightArg.getValue()
-                                               + QueryValidatorInvalidFirstDesignEntityInRelation2
+                                               + " of design entity "
                                                + toString(rightArg.getDesignEntity())
                                                + QueryValidatorInvalidSecondDesignEntityInRelation);
             default:
@@ -82,15 +82,23 @@ void QueryValidator::validateSuchThatClause() {
 void QueryValidator::validatePatternClause() {
     for (auto clause : query->getPatternClause()) {
         auto validationResult = clause->isValidClause();
+        auto patternArg = clause->getPatternArg();
         auto leftArg = clause->getLeftArg();
+        auto rightArg = clause->getRightArg();
+        if (patternArg.getDesignEntity() == DesignEntity::IF || patternArg.getDesignEntity() == DesignEntity::WHILE) {
+            if (!rightArg.isWildCard()) {
+                throw QueryInvalidPatternArgument(rightArg.getExpression()
+                                                    + QueryValidatorIfWhilePatternRightArgWildcard);
+            }
+        }
         switch (validationResult) {
             case PatternClauseValidationResult::INVALID_LEFT_ARG_TYPE:
-                throw QueryValidationException(leftArg.getValue()
+                throw QueryInvalidArgumentType(leftArg.getValue()
                                                + QueryValidatorInvalidFirstArgumentTypeInRelation);
             case PatternClauseValidationResult::INVALID_LEFT_DESIGN_ENTITY:
-                throw QueryValidationException(QueryValidatorInvalidFirstDesignEntityInRelation1
+                throw QueryValidationException("The synonym "
                                                + leftArg.getValue()
-                                               + QueryValidatorInvalidFirstDesignEntityInRelation2
+                                               + " of design entity "
                                                + toString(leftArg.getDesignEntity())
                                                + QueryValidatorInvalidFirstDesignEntityInRelation);
             default:

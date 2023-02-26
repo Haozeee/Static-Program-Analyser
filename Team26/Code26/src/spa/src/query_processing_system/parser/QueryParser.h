@@ -67,9 +67,11 @@ class QueryParser : public AbstractParser {
     /**
      * Parses Assign Pattern Clause if any.
      */
-    bool parseIfAssignPatternClause();
+    bool parseIfPatternClause();
 
-    void parseAssignPatternClause();
+    void parsePatternClause();
+
+    void parseMultiplePatternClause();
 
     StringExpression parseExpression();
 

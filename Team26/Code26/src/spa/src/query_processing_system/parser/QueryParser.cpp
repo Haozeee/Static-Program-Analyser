@@ -143,17 +143,26 @@ Argument QueryParser::parseArgument() {
     }
 }
 
-bool QueryParser::parseIfAssignPatternClause() {
+bool QueryParser::parseIfPatternClause() {
     if (!isValueOf("pattern")) {
         return false;
     } else {
         parseNext("pattern");
-        parseAssignPatternClause();
+        parseMultiplePatternClause();
         return true;
     }
 }
 
-void QueryParser::parseAssignPatternClause() {
+void QueryParser::parseMultiplePatternClause() {
+    parsePatternClause();
+
+    while (hasNext() && isValueOf("and")) {
+        parseNext("and");
+        parsePatternClause();
+    }
+}
+
+void QueryParser::parsePatternClause() {
     auto patternArg = parseArgument();
     parseNext("(");
     // First argument can be variable synonyms, wildcard or character strings
@@ -161,11 +170,29 @@ void QueryParser::parseAssignPatternClause() {
     parseNext(",");
     // Second argument can be wildcard or expression for exact/partial match
     StringExpression rightArgument = parseExpression();
-    parseNext(")");
-
-    PatternClause* assignPatternClause =
+    if (patternArg.getDesignEntity() == DesignEntity::ASSIGN || patternArg.getDesignEntity() == DesignEntity::WHILE) {
+        if (!isValueOf(")")) {
+            throw QueryInvalidPatternArgument(toString(patternArg.getDesignEntity())
+                                                + QueryInvalidNumberOfPatternArguments);
+        }
+        parseNext(")");
+    } else if (patternArg.getDesignEntity() == DesignEntity::IF) {
+        if (!isValueOf(",")) {
+            throw QueryInvalidPatternArgument(toString(patternArg.getDesignEntity())
+                                              + QueryInvalidNumberOfPatternArguments);
+        }
+        parseNext(",");
+        if (!isValueOf("_")) {
+            throw QueryParserException(toString(patternArg.getDesignEntity())
+                                                + QueryParserPatternClauseNonWildcardArgument
+                                                + getNext()->getValue());
+        }
+        parseNext("_");
+        parseNext(")");
+    }
+    PatternClause* patternClause =
             PatternClauseFactory::createPatternClause(patternArg, leftArgument, rightArgument);
-    query->addPatternClause(assignPatternClause);
+    query->addPatternClause(patternClause);
 }
 
 StringExpression QueryParser::parseExpression() {
@@ -226,7 +253,7 @@ void QueryParser::parse() {
             continue;
         }
 
-        if (parseIfAssignPatternClause()) {
+        if (parseIfPatternClause()) {
             continue;
         }
 
