@@ -1,5 +1,6 @@
 #include "CallsTClause.h"
 #include <utility>
+#include <unordered_set>
 #include "../../../evaluator/clause_evaluator/such_that_clause_evaluator/UsesSClauseEvaluator.h"
 
 CallsTClause::CallsTClause(Argument leftArg, Argument rightArg)

@@ -25,7 +25,7 @@ class QueryInvalidRelationshipArguments : public QuerySemanticException {
 };
 
 class QueryInvalidPatternArgument : public QuerySyntaxException {
-public:
+ public:
     QueryInvalidPatternArgument() : QuerySyntaxException(InvalidArgument) {}
     explicit QueryInvalidPatternArgument(const std::string& errorMessage) : QuerySyntaxException(errorMessage) {}
 };
@@ -37,7 +37,7 @@ class QueryInvalidRelationship : public QuerySyntaxException {
 };
 
 class QueryInvalidArgumentType : public QuerySyntaxException {
-public:
+ public:
     QueryInvalidArgumentType() : QuerySyntaxException(InvalidRelationship) {}
     explicit QueryInvalidArgumentType(const std::string& errorMessage) : QuerySyntaxException(errorMessage) {}
 };

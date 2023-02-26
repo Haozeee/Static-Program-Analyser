@@ -5,7 +5,7 @@
 #include "query_processing_system/parser/clause/Clause.h"
 
 class IfPatternClause : public PatternClause {
-public:
+ public:
     IfPatternClause(Argument patternArg, Argument leftArg, StringExpression rightArg);
 
     ClauseEvaluator* getClauseEvaluator() override;

@@ -1,5 +1,6 @@
 #include "ModifiesPClause.h"
 #include <utility>
+#include <unordered_set>
 #include "../../../evaluator/clause_evaluator/such_that_clause_evaluator/ModifiesSClauseEvaluator.h"
 
 ModifiesPClause::ModifiesPClause(Argument leftArg, Argument rightArg)

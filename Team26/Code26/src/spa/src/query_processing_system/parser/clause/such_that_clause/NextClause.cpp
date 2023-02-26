@@ -1,5 +1,6 @@
 #include "NextClause.h"
 #include <utility>
+#include <unordered_set>
 #include "../../../evaluator/clause_evaluator/such_that_clause_evaluator/ParentTClauseEvaluator.h"
 
 NextClause::NextClause(Argument leftArg, Argument rightArg)
