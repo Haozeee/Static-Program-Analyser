@@ -43,4 +43,6 @@ const char QueryInvalidCreatePatternArgument[] =
         " needs to be declared as an assign/while/if synonym to be used in a pattern clause.";
 const char QueryValidatorIfWhilePatternRightArgWildcard[] =
         " should be a wildcard instead for if/while pattern clause.";
+const char QueryParserInvalidSelectClause[] =
+        " is an invalid select clause return value.";
 

@@ -36,6 +36,12 @@ class QueryParser : public AbstractParser {
      */
     void parseSelectClause();
 
+    void parseSingleSelectClause();
+
+    void parseTupleSelectClause();
+
+    SelectClauseItem parseReturnValue();
+
     /**
      * Parses a Synonym.
      *

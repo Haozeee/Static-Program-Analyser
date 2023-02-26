@@ -20,6 +20,7 @@ void QueryValidator::validateSynonymInSelectClauseWasDeclared() {
     std::unordered_set<std::string> selectClauseSynonyms;
     for (auto item : *selectClauseItems) {
         std::string selectClauseSynonym = SelectClause::getSynonym(item);
+        if (selectClauseSynonym == "BOOLEAN") return;
         selectClauseSynonyms.insert(selectClauseSynonym);
     }
 

@@ -61,15 +61,52 @@ bool QueryParser::parseDeclaration() {
 // Example: Select v; Select a; Select p; Select c; Select s;
 void QueryParser::parseSelectClause() {
     parseNext("Select");
-    std::shared_ptr<Token> synonymToken = getNext();
-    if (synonymToken->getValue() == "_") {
-        throw QueryParserException(QueryParserInvalidWildcardInSelectClause);
+    if (isTypeOf(TokenType::TOKEN_NAME) || isValueOf("BOOLEAN")) {
+        parseSingleSelectClause();
+    } else if (isValueOf("<")) {
+        parseTupleSelectClause();
+    } else {
+        throw QueryParserException(getNext()->getValue()
+                                     + QueryParserInvalidSelectClause);
     }
-    SelectClauseItem selectClauseItem = parseSynonym(synonymToken);
+//    for (const auto& item : *query->getSelectClause()->getSelectClauseItems()) {
+//        std::shared_ptr<Synonym> synonym_ptr = std::get<std::shared_ptr<Synonym>>(item);
+//        Synonym& synonym = *synonym_ptr;
+//        std::cout << synonym.getIdent() << std::endl;
+//    }
+}
+
+void QueryParser::parseSingleSelectClause() {
+    SelectClauseItem selectClauseItem = parseReturnValue();
     auto selectClauseItems = std::make_shared<std::vector<SelectClauseItem>>();
     selectClauseItems->push_back(selectClauseItem);
     auto selectClauses = std::make_shared<SelectClause>(selectClauseItems);
     query->setSelectClause(selectClauses);
+}
+
+void QueryParser::parseTupleSelectClause() {
+    parseNext("<");
+    SelectClauseItem selectClauseItem = parseReturnValue();
+    auto selectClauseItems = std::make_shared<std::vector<SelectClauseItem>>();
+    selectClauseItems->push_back(selectClauseItem);
+
+    while (hasNext() && isValueOf(",")) {
+        parseNext(",");
+        SelectClauseItem item = parseReturnValue();
+        selectClauseItems->push_back(item);
+    }
+
+    parseNext(">");
+    auto selectClauses = std::make_shared<SelectClause>(selectClauseItems);
+    query->setSelectClause(selectClauses);
+}
+
+SelectClauseItem QueryParser::parseReturnValue() {
+    std::shared_ptr<Token> synonymToken = getNext();
+    if (synonymToken->getValue() == "_") {
+        throw QueryParserException(QueryParserInvalidWildcardInSelectClause);
+    }
+    return parseSynonym(synonymToken);
 }
 
 std::shared_ptr<Synonym> QueryParser::parseSynonym(std::shared_ptr<Token> token) {
