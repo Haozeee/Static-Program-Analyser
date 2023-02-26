@@ -129,7 +129,7 @@ jobs:
           shell: powershell
           run: |
             cd .\Team26\Tests26\testing_tools
-            node uploader.js ${{ vars.SPREADSHEET_ID }}
+            node uploader.js ${{ vars.SPREADSHEET_ID }} >> $GITHUB_OUTPUT
 
         - name: Comment PR
           uses: thollander/actions-comment-pull-request@v2
