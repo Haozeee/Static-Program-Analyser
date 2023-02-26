@@ -3,7 +3,7 @@
 #include "IntIntClause.h"
 
 class NextTClause : public IntIntClause {
-public:
+ public:
     NextTClause(Argument leftArg, Argument rightArg);
 
     ClauseEvaluator* getClauseEvaluator() override;
