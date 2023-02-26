@@ -1,15 +1,15 @@
 const fs = require("fs");
-const path = require("path");
-const https = require("https");
 const { spawn } = require("child_process");
+// const path = require("path");
+// const https = require("https");
 
-const rootDir = __dirname;
-const autotester = `${rootDir}/autotester`;
+const rootDir = `${__dirname}/../`;
+const autotester = `${rootDir}/autotester.exe`;
 const resultFolder = `${rootDir}/results`;
-const hostname = process.argv[2];
+// const hostname = process.argv[2];
 
-if (!fs.existsSync("results")) {
-    fs.mkdir("results", (err) => {
+if (!fs.existsSync(resultFolder)) {
+    fs.mkdir("../results", (err) => {
         if (err) {
             console.log(err);
         }
@@ -22,7 +22,7 @@ fs.readdir(rootDir, { withFileTypes: true }, (err, baseFolder) => {
     }
     baseFolder
         .filter(
-            (f) => f.isDirectory() && f.name != "Indevelopment" && f.name != "results"
+            (f) => f.isDirectory() && f.name != "Indevelopment" && f.name != "results" && f.name != "testing_tools"
         )
         .map((x) => x.name)
         .forEach((subFolder) => {
@@ -57,32 +57,32 @@ fs.readdir(rootDir, { withFileTypes: true }, (err, baseFolder) => {
         });
 });
 
-fs.readdir(resultFolder, (err, results) => {
-    const options = {
-        hostname: hostname,
-        method: `POST`,
-        headers: {
-            "Content-Type": "text/xml",
-        },
-    };
+// fs.readdir(resultFolder, (err, results) => {
+//     const options = {
+//         hostname: hostname,
+//         method: `POST`,
+//         headers: {
+//             "Content-Type": "text/xml",
+//         },
+//     };
     
-    results.forEach((result) => {
-        const xmlData = fs.readFileSync(`${resultFolder}/${result}`, "utf-8");
+//     results.forEach((result) => {
+//         const xmlData = fs.readFileSync(`${resultFolder}/${result}`, "utf-8");
 
-        const req = https.request(options, (res) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log(res);
-            }
+//         const req = https.request(options, (res) => {
+//             if (err) {
+//                 console.log(err);
+//             } else {
+//                 console.log(res);
+//             }
 
-            res.on("data", (d) => { });
-        });
+//             res.on("data", (d) => { });
+//         });
 
-        req.on("error", (err) => {
-            console.log(err.message);
-        });
-        req.write(xmlData);
-        req.end();
-    });
-});
+//         req.on("error", (err) => {
+//             console.log(err.message);
+//         });
+//         req.write(xmlData);
+//         req.end();
+//     });
+// });
