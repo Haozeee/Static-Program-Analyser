@@ -151,6 +151,11 @@ std::shared_ptr<CondExprNode> Parser::parseConditional() {
 
         getNext();
     }
+
+    if (numOfBrackets != 0) {
+        throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+    }
+
     int newIndex = index - 1;
     auto condExprNode = parseCondExprNode(oldIndex, newIndex);
     index = newIndex + 1;
@@ -158,6 +163,10 @@ std::shared_ptr<CondExprNode> Parser::parseConditional() {
 }
 
 std::shared_ptr<CondExprNode> Parser::parseCondExprNode(int startIndex, int endIndex) {
+    if (endIndex <= startIndex + 1) {
+        throw SourceParserException(ParserInvalidBinaryCondExprFormatExceptionMessage);
+    }
+
     // If cond_expr = rel_expr
     index = endIndex;
     if (!isValueOf(BRACKETS_END)) {
@@ -227,6 +236,10 @@ bool Parser::isBinaryCondOperator() {
 }
 
 std::shared_ptr<RelExpr> Parser::parseRelExpr(int startIndex, int endIndex) {
+    if (endIndex <= startIndex + 1) {
+        throw SourceParserException(ParserInvalidRelExprExceptionMessage);
+    }
+
     index = startIndex;
     std::optional<RelExprOperatorType> opType = std::nullopt;
 

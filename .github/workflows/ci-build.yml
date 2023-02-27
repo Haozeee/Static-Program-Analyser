@@ -17,16 +17,9 @@ jobs:
 
       steps:
         - uses: actions/checkout@v3
-        - name: Restore build cache
-          id: cache-build
-          uses: actions/cache@v3
-          with:
-            path: Team26/Code26/build
-            key: build-cache-windows
 
         - name: Make Build folder
           shell: powershell
-          if: steps.cache-build.outputs.cache-hit != 'true'
           run: |
             cd .\Team26\Code26
             mkdir build
@@ -39,33 +32,110 @@ jobs:
             cd Team26\Code26\build
             cmake --build . --config Release
             cd ../..
-        
+
+        - name: Copy Builds
+          shell: powershell
+          run: |
+            mkdir artifacts
+            cp .\Team26\Code26\build\src\autotester\autotester.exe .\artifacts\autotester.exe
+            cp .\Team26\Code26\build\src\unit_testing\unit_testing.exe .\artifacts\unit_testing.exe
+            cp .\Team26\Code26\build\src\integration_testing\integration_testing.exe .\artifacts\integration_testing.exe
+
+        - name: Upload Builds
+          uses: actions/upload-artifact@v3
+          with:
+            name: build-artifacts
+            path: .\artifacts
+            retention-days: 7
+
+  unit-test:
+      needs: build
+      runs-on: [self-hosted, Windows, X64]
+      timeout-minutes: 10
+      strategy:
+        fail-fast: true
+      
+      steps:
+        - name: Download build artifacts
+          uses: actions/download-artifact@v3
+          with: 
+            name: build-artifacts
+            path: .\artifacts
+
         - name: Run Unit Test
           shell: powershell
           timeout-minutes: 1
           run: |
-            cd .\Team26\Code26\build\src\unit_testing\
+            cd .\artifacts
             .\unit_testing.exe
 
         - name: Run Intergration Test
           shell: powershell
           timeout-minutes: 1
           run: |
-            cd .\Team26\Code26\build\src\integration_testing\
+            cd .\artifacts
             .\integration_testing.exe
 
-        # - name: Run Autotester
-        #   shell: powershell
-        #   timeout-minutes: 1
-        #   run: |
-        #     cd .\Team26\Code26\build\src\autotester\Release\
-        #     .\autotester.exe ..\..\..\..\..\Tests26\Milestone1\Sample_source.txt ..\..\..\..\..\Tests26\Milestone1\Sample_queries.txt ..\..\..\..\..\Tests26\Milestone1\out.xml
+  autotester:
+      needs: build
+      runs-on: [self-hosted, Windows, X64]
+      timeout-minutes: 10
+      strategy:
+        fail-fast: true
+      
+      steps:
+        - uses: actions/checkout@v3
+        - uses: actions/setup-node@v3
+          with:
+            node-version: 16
+
+        - name: Download build artifacts
+          uses: actions/download-artifact@v3
+          with: 
+            name: build-artifacts
+            path: .\artifacts
+
+        - name: Copy Autotester
+          shell: powershell
+          run: |
+            cp .\artifacts\autotester.exe .\Team26\Tests26
+
+        - name: Run Autotester via script
+          shell: powershell
+          run: |
+            cd .\Team26\Tests26\testing_tools
+            node tester.js
+
+        - name: Save Test Results
+          uses: actions/upload-artifact@v3
+          with:
+            name: autotester-result
+            path: .\Team26\Tests26\results
+            retention-days: 7
+
+        - name: Install dependepncies
+          shell: powershell
+          run: |
+            cd .\Team26\Tests26\testing_tools
+            npm i
+
+        - name: Copy Key
+          run: |
+            cd .\Team26\Tests26\testing_tools
+            Copy-Item -Path "../../../../../../../../../../keys/keys.json" -Destination "./"
+                
+        - name: Run uploader
+          id: gsheet-uploader
+          shell: powershell
+          run: |
+            cd .\Team26\Tests26\testing_tools
+            node uploader.js ${{ vars.SPREADSHEET_ID }}
+
+        - name: Comment PR
+          uses: thollander/actions-comment-pull-request@v2
+          if: github.event_name != 'push'
+          with:
+            message: |
+              The autotester result: ${{ steps.gsheet-uploader.outputs.url }}
         
-        # - name: Upload Result
-        #   shell: powershell
-        #   timeout-minutes: 1  
-        #   run: |
-        #     cd .\Team26\Code26\build\src\autotester\Release\
-        #     mkdir tests
-        #     Copy-Item -Path "../../../../../../../../_folder32/uploader.ps1" -Destination "./"
-        #     start powershell -ArgumentList "-File .\uploader.ps1 -branchName ${{ github.ref_name }} -sha ${{ github.sha }}"
+
