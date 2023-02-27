@@ -6,37 +6,28 @@
 SuchThatClause *SuchThatClauseFactory::createSuchThatClause(std::string relation, Argument leftArg, Argument rightArg) {
     if (relation == ModifiesRelation || relation == UsesRelation) {
         ArgumentType leftArgType = leftArg.getArgumentType();
-        if (leftArgType == ArgumentType::SYNONYM) {  // checks if first argument type is a Synonym
-            Query query;
-            DesignEntity leftArgDesignEntity = leftArg.getDesignEntity();
-            if (leftArgDesignEntity == DesignEntity::PROCEDURE) {  // checks if Synonym is a procedure
-                if (relation == ModifiesRelation) {
-                     return new ModifiesPClause(leftArg, rightArg);
-                } else {
-                    return new UsesPClause(leftArg, rightArg);
-                }
-            } else {  // else the Synonym is a statement
-                if (relation == ModifiesRelation) {
-                    return new ModifiesSClause(leftArg, rightArg);
-                } else {
-                    return new UsesSClause(leftArg, rightArg);
-                }
-            }
-        } else if (leftArgType == ArgumentType::CHARACTERSTRING) {
-            if (relation == ModifiesRelation) {
-                return new ModifiesPClause(leftArg, rightArg);
-            } else {
-                return new UsesPClause(leftArg, rightArg);
-            }
-        } else if (leftArgType == ArgumentType::NUMBER) {
-            if (relation == ModifiesRelation) {
-                return new ModifiesSClause(leftArg, rightArg);
-            } else {
-                return new UsesSClause(leftArg, rightArg);
-            }
-        } else {
+        if (leftArgType == ArgumentType::WILDCARD) {
             // Wildcards cannot be created
             throw QueryValidationException(relation + QueryValidatorInvalidModifiesOrUsesRelationshipInSelectClause);
+        }
+        DesignEntity leftArgDesignEntity = leftArg.getDesignEntity();
+        if ((leftArgType == ArgumentType::SYNONYM && leftArgDesignEntity == DesignEntity::PROCEDURE)
+            || leftArgType == ArgumentType::CHARACTERSTRING) {
+            if (relation == ModifiesRelation) {
+//                std::cout << "modifies procedure" << std::endl;
+                return new ModifiesPClause(leftArg, rightArg);
+            } else {
+//                std::cout << "uses procedure" << std::endl;
+                return new UsesPClause(leftArg, rightArg);
+            }
+        } else {
+            if (relation == ModifiesRelation) {
+//                std::cout << "modifies statement" << std::endl;
+                return new ModifiesSClause(leftArg, rightArg);
+            } else {
+//                std::cout << "uses procedure" << std::endl;
+                return new UsesSClause(leftArg, rightArg);
+            }
         }
     } else if (relation == AffectsRelation) {
         return new AffectsClause(std::move(leftArg), std::move(rightArg));

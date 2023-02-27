@@ -60,4 +60,6 @@ class SelectClause {
      */
     explicit SelectClause(std::shared_ptr<std::vector<SelectClauseItem>> selectClauseItems,
                           SelectClauseReturnType selectClauseReturnType);
+
+    explicit SelectClause(SelectClauseReturnType selectClauseReturnType);
 };

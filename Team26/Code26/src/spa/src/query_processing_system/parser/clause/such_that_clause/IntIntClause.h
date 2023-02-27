@@ -9,4 +9,8 @@ class IntIntClause : public SuchThatClause {
     std::unordered_set<ArgumentType> getValidLeftArgumentType() override;
 
     std::unordered_set<ArgumentType> getValidRightArgumentType() override;
+
+    std::unordered_set<DesignEntity> getValidLeftDesignEntity() override;
+
+    std::unordered_set<DesignEntity> getValidRightDesignEntity() override;
 };

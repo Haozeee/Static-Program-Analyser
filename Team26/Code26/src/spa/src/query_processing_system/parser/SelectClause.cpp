@@ -4,6 +4,9 @@ SelectClause::SelectClause(std::shared_ptr<std::vector<SelectClauseItem>> select
                            SelectClauseReturnType selectClauseReturnType) :
         selectClauseItems(selectClauseItems), selectClauseReturnType(selectClauseReturnType) {}
 
+SelectClause::SelectClause(SelectClauseReturnType selectClauseReturnType) :
+        selectClauseReturnType(selectClauseReturnType) {}
+
 bool SelectClause::operator==(const SelectClause &other) const {
     for (int i = 0; i < this->selectClauseItems->size(); i++) {
         if (this->selectClauseItems->at(i) == other.selectClauseItems->at(i)) {

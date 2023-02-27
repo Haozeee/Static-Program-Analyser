@@ -9,19 +9,3 @@ ParentClause::ParentClause(Argument leftArg, Argument rightArg)
 ClauseEvaluator* ParentClause::getClauseEvaluator() {
     return new ParentClauseEvaluator(getLeftArg(), getRightArg());
 }
-
-std::unordered_set<DesignEntity> ParentClause::getValidLeftDesignEntity() {
-    return std::unordered_set<DesignEntity> {
-            DesignEntity::STMT,
-            DesignEntity::ASSIGN,
-            DesignEntity::WHILE,
-            DesignEntity::CALL,
-            DesignEntity::PRINT,
-            DesignEntity::READ,
-            DesignEntity::IF,
-    };
-}
-
-std::unordered_set<DesignEntity> ParentClause::getValidRightDesignEntity() {
-    return getValidLeftDesignEntity();
-}

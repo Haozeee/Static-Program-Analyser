@@ -54,7 +54,7 @@ class QueryParser : public AbstractParser {
     /**
      * Parses Such That Clause if any.
      */
-    bool parseIfSuchThatClause();
+    bool hasSuchThatClause();
 
     /**
      * Handles parsing of relRef:
@@ -75,7 +75,7 @@ class QueryParser : public AbstractParser {
     /**
      * Parses Assign Pattern Clause if any.
      */
-    bool parseIfPatternClause();
+    bool hasPatternClause();
 
     void parsePatternClause();
 
@@ -88,6 +88,8 @@ class QueryParser : public AbstractParser {
      * Parses ending semicolon if any and throws exception.
      */
     void parseEndingUnexpectedToken();
+
+    void parseNextIfNextEqualsTo(std::string nextValue, std::string errorMessage);
 
  public:
     /**

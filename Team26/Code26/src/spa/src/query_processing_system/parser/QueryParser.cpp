@@ -69,7 +69,7 @@ void QueryParser::parseSelectClause() {
         parseBooleanSelectClause();
     } else {
         throw QueryParserException(getNext()->getValue()
-        + QueryParserInvalidSelectClause);
+                                    + QueryParserInvalidSelectClause);
     }
 //    for (const auto& item : *query->getSelectClause()->getSelectClauseItems()) {
 //        std::shared_ptr<Synonym> synonym_ptr = std::get<std::shared_ptr<Synonym>>(item);
@@ -106,10 +106,7 @@ void QueryParser::parseTupleSelectClause() {
 void QueryParser::parseBooleanSelectClause() {
     std::shared_ptr<Token> booleanToken = getNext();
     parseNext("BOOLEAN");
-    SelectClauseItem selectClauseItem = parseReturnValue();
-    auto selectClauseItems = std::make_shared<std::vector<SelectClauseItem>>();
-    selectClauseItems->push_back(selectClauseItem);
-    auto selectClauses = std::make_shared<SelectClause>(selectClauseItems, SelectClauseReturnType::BOOLEAN);
+    auto selectClauses = std::make_shared<SelectClause>(SelectClauseReturnType::BOOLEAN);
     query->setSelectClause(selectClauses);
 }
 
@@ -126,7 +123,7 @@ std::shared_ptr<Synonym> QueryParser::parseSynonym(std::shared_ptr<Token> token)
     return synonym;
 }
 
-bool QueryParser::parseIfSuchThatClause() {
+bool QueryParser::hasSuchThatClause() {
     if (!isValueOf("such")) {
         return false;
     } else {
@@ -192,7 +189,7 @@ Argument QueryParser::parseArgument() {
     }
 }
 
-bool QueryParser::parseIfPatternClause() {
+bool QueryParser::hasPatternClause() {
     if (!isValueOf("pattern")) {
         return false;
     } else {
@@ -220,23 +217,14 @@ void QueryParser::parsePatternClause() {
     // Second argument can be wildcard or expression for exact/partial match
     StringExpression rightArgument = parseExpression();
     if (patternArg.getDesignEntity() == DesignEntity::ASSIGN || patternArg.getDesignEntity() == DesignEntity::WHILE) {
-        if (!isValueOf(")")) {
-            throw QueryInvalidPatternArgument(toString(patternArg.getDesignEntity())
-                                                + QueryInvalidNumberOfPatternArguments);
-        }
-        parseNext(")");
+        parseNextIfNextEqualsTo(")", toString(patternArg.getDesignEntity())
+                                     + QueryInvalidNumberOfPatternArguments);
     } else if (patternArg.getDesignEntity() == DesignEntity::IF) {
-        if (!isValueOf(",")) {
-            throw QueryInvalidPatternArgument(toString(patternArg.getDesignEntity())
-                                              + QueryInvalidNumberOfPatternArguments);
-        }
-        parseNext(",");
-        if (!isValueOf("_")) {
-            throw QueryParserException(toString(patternArg.getDesignEntity())
-                                                + QueryParserPatternClauseNonWildcardArgument
-                                                + getNext()->getValue());
-        }
-        parseNext("_");
+        parseNextIfNextEqualsTo(",", toString(patternArg.getDesignEntity())
+                                     + QueryInvalidNumberOfPatternArguments);
+        parseNextIfNextEqualsTo("_", toString(patternArg.getDesignEntity())
+                                     + QueryParserPatternClauseNonWildcardArgument
+                                     + getNext()->getValue());
         parseNext(")");
     }
     PatternClause* patternClause =
@@ -261,7 +249,7 @@ StringExpression QueryParser::parseExpression() {
             // Wildcard
             return StringExpression(true);
         }
-    }  else {
+    } else {
         // Exact match
         std::string stringExpression = parseStringExpression();
         return StringExpression(isExactMatch, stringExpression);
@@ -269,7 +257,8 @@ StringExpression QueryParser::parseExpression() {
 }
 
 std::string QueryParser::parseStringExpression() {
-    parseNext("'");
+    parseNextIfNextEqualsTo("'", getToken()->getValue()
+                            + QueryValidatorIfWhilePatternRightArgWildcard);
     std::shared_ptr<Token> stringExpressionToken = parseNext(TokenType::TOKEN_STRING_EXPRESSION);
     std::string str = stringExpressionToken->getValue();
     parseNext("'");
@@ -290,6 +279,14 @@ void QueryParser::parseEndingUnexpectedToken() {
     }
 }
 
+void QueryParser::parseNextIfNextEqualsTo(std::string nextValue, std::string errorMessage) {
+    if (isValueOf(nextValue)) {
+        parseNext(nextValue);
+    } else {
+        throw QueryInvalidPatternArgument(errorMessage);
+    }
+}
+
 void QueryParser::parse() {
     // First, parse Declaration.
     parseAllDeclarations();
@@ -298,11 +295,11 @@ void QueryParser::parse() {
     parseSelectClause();
 
     while (hasNext()) {
-        if (parseIfSuchThatClause()) {
+        if (hasSuchThatClause()) {
             continue;
         }
 
-        if (parseIfPatternClause()) {
+        if (hasPatternClause()) {
             continue;
         }
 

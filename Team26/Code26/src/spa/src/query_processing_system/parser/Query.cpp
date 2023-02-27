@@ -39,11 +39,7 @@ void Query::addDeclaration(const Synonym& synonym, DesignEntity designEntity) {
 }
 
 bool Query::containsSynonymInDeclaration(std::string string) {
-    if (synonymToDesignEntityMap.find(string) != synonymToDesignEntityMap.end()) {
-        return true;
-    } else {
-        return false;
-    }
+    return synonymToDesignEntityMap.find(string) != synonymToDesignEntityMap.end();
 }
 
 /* Such That Clause */
