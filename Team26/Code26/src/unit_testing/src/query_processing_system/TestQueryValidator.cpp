@@ -102,7 +102,7 @@ TEST_CASE("Validate Such That Clause") {
         parser.parse();
 
         QueryValidator validator = QueryValidator(query);
-        REQUIRE_THROWS_AS(validator.validateQuery(), QuerySyntaxException);
+        REQUIRE_THROWS_AS(validator.validateQuery(), QuerySemanticException);
         delete query;
     }
 
@@ -132,7 +132,7 @@ TEST_CASE("Validate Such That Clause") {
         parser.parse();
 
         QueryValidator validator = QueryValidator(query);
-        REQUIRE_THROWS_AS(validator.validateQuery(), QuerySyntaxException);
+        REQUIRE_THROWS_AS(validator.validateQuery(), QuerySemanticException);
         delete query;
     }
 
@@ -161,7 +161,7 @@ TEST_CASE("Validate Such That Clause") {
         parser.parse();
 
         QueryValidator validator = QueryValidator(query);
-        REQUIRE_THROWS_AS(validator.validateQuery(), QuerySyntaxException);
+        REQUIRE_THROWS_AS(validator.validateQuery(), QuerySemanticException);
         delete query;
     }
 
@@ -191,7 +191,7 @@ TEST_CASE("Validate Such That Clause") {
         parser.parse();
 
         QueryValidator validator = QueryValidator(query);
-        REQUIRE_THROWS_AS(validator.validateQuery(), QuerySyntaxException);
+        REQUIRE_THROWS_AS(validator.validateQuery(), QuerySemanticException);
         delete query;
     }
 
@@ -218,7 +218,7 @@ TEST_CASE("Validate Such That Clause") {
         parser.parse();
 
         QueryValidator validator = QueryValidator(query);
-        REQUIRE_THROWS_AS(validator.validateQuery(), QuerySyntaxException);
+        REQUIRE_THROWS_AS(validator.validateQuery(), QuerySemanticException);
         delete query;
     }
 
@@ -245,7 +245,7 @@ TEST_CASE("Validate Such That Clause") {
         parser.parse();
 
         QueryValidator validator = QueryValidator(query);
-        REQUIRE_THROWS_AS(validator.validateQuery(), QuerySyntaxException);
+        REQUIRE_THROWS_AS(validator.validateQuery(), QuerySemanticException);
         delete query;
     }
 }
