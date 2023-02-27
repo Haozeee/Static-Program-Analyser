@@ -61,13 +61,15 @@ bool QueryParser::parseDeclaration() {
 // Example: Select v; Select a; Select p; Select c; Select s;
 void QueryParser::parseSelectClause() {
     parseNext("Select");
-    if (isTypeOf(TokenType::TOKEN_NAME) || isValueOf("BOOLEAN")) {
+    if (isTypeOf(TokenType::TOKEN_NAME)) {
         parseSingleSelectClause();
     } else if (isValueOf("<")) {
         parseTupleSelectClause();
+    } else if (isValueOf("BOOLEAN") && !query->containsSynonymInDeclaration(getToken()->getValue())) {
+        parseBooleanSelectClause();
     } else {
         throw QueryParserException(getNext()->getValue()
-                                     + QueryParserInvalidSelectClause);
+        + QueryParserInvalidSelectClause);
     }
 //    for (const auto& item : *query->getSelectClause()->getSelectClauseItems()) {
 //        std::shared_ptr<Synonym> synonym_ptr = std::get<std::shared_ptr<Synonym>>(item);
@@ -80,7 +82,7 @@ void QueryParser::parseSingleSelectClause() {
     SelectClauseItem selectClauseItem = parseReturnValue();
     auto selectClauseItems = std::make_shared<std::vector<SelectClauseItem>>();
     selectClauseItems->push_back(selectClauseItem);
-    auto selectClauses = std::make_shared<SelectClause>(selectClauseItems);
+    auto selectClauses = std::make_shared<SelectClause>(selectClauseItems, SelectClauseReturnType::SYNONYM);
     query->setSelectClause(selectClauses);
 }
 
@@ -97,7 +99,17 @@ void QueryParser::parseTupleSelectClause() {
     }
 
     parseNext(">");
-    auto selectClauses = std::make_shared<SelectClause>(selectClauseItems);
+    auto selectClauses = std::make_shared<SelectClause>(selectClauseItems, SelectClauseReturnType::SYNONYM);
+    query->setSelectClause(selectClauses);
+}
+
+void QueryParser::parseBooleanSelectClause() {
+    std::shared_ptr<Token> booleanToken = getNext();
+    parseNext("BOOLEAN");
+    SelectClauseItem selectClauseItem = parseReturnValue();
+    auto selectClauseItems = std::make_shared<std::vector<SelectClauseItem>>();
+    selectClauseItems->push_back(selectClauseItem);
+    auto selectClauses = std::make_shared<SelectClause>(selectClauseItems, SelectClauseReturnType::BOOLEAN);
     query->setSelectClause(selectClauses);
 }
 

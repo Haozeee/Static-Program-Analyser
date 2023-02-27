@@ -42,6 +42,8 @@ class QueryParser : public AbstractParser {
 
     SelectClauseItem parseReturnValue();
 
+    void parseBooleanSelectClause();
+
     /**
      * Parses a Synonym.
      *

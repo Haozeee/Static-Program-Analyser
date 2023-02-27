@@ -9,9 +9,15 @@
 
 using SelectClauseItem = std::variant<std::shared_ptr<Synonym>>;
 
+enum class SelectClauseReturnType {
+    BOOLEAN,
+    SYNONYM,
+};
+
 class SelectClause {
  private:
     std::shared_ptr<std::vector<SelectClauseItem>> selectClauseItems;
+    SelectClauseReturnType selectClauseReturnType;
 
  public:
     /**
@@ -45,10 +51,13 @@ class SelectClause {
      */
     static std::string getSynonym(SelectClauseItem selectClauseItem);
 
+    SelectClauseReturnType getSelectClauseReturnType();
+
     /**
      * Constructor for the SelectClause.
      *
      * @param selectClauseItems stored in a list of Synonym objects.
      */
-    explicit SelectClause(std::shared_ptr<std::vector<SelectClauseItem>> selectClauseItems);
+    explicit SelectClause(std::shared_ptr<std::vector<SelectClauseItem>> selectClauseItems,
+                          SelectClauseReturnType selectClauseReturnType);
 };
