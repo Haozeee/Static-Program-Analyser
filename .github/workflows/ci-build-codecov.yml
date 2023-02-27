@@ -1,0 +1,32 @@
+name: CI for Cmake Project - Linux
+
+on:
+
+  pull_request:
+    types: [ opened, synchronize, reopened, ready_for_review ]
+
+  push:
+    branches: ["master", "ci-testing"]
+
+jobs:
+  build:
+      runs-on: [self-hosted, Linux, X64]
+      timeout-minutes: 10
+      strategy:
+        fail-fast: true
+
+      steps:
+        - uses: actions/checkout@v3
+
+        - name: Make Build folder
+          run: |
+            cd Team26/Code26
+            mkdir build
+            cd build
+            cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM="ninja" -DCMAKE_C_COMPILER=clang-15  -DCMAKE_CXX_COMPILER=clang++-15 -G Ninja ..
+
+        - name: Build Project
+          run: |
+            cd Team26/Code26/build
+            cmake --build . --config Debug
+            cd ../..
