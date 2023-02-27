@@ -88,7 +88,7 @@ void QueryValidator::validatePatternClause() {
         auto rightArg = clause->getRightArg();
         if (patternArg.getDesignEntity() == DesignEntity::IF || patternArg.getDesignEntity() == DesignEntity::WHILE) {
             if (!rightArg.isWildCard()) {
-                throw QueryInvalidPatternArgument(rightArg.getExpression()
+                throw QueryValidationException(rightArg.getExpression()
                                                     + QueryValidatorIfWhilePatternRightArgWildcard);
             }
         }

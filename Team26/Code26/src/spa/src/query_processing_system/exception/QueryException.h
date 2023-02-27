@@ -36,10 +36,10 @@ class QueryInvalidRelationship : public QuerySyntaxException {
     explicit QueryInvalidRelationship(const std::string& errorMessage) : QuerySyntaxException(errorMessage) {}
 };
 
-class QueryInvalidArgumentType : public QuerySyntaxException {
+class QueryInvalidArgumentType : public QuerySemanticException {
  public:
-    QueryInvalidArgumentType() : QuerySyntaxException(InvalidRelationship) {}
-    explicit QueryInvalidArgumentType(const std::string& errorMessage) : QuerySyntaxException(errorMessage) {}
+    QueryInvalidArgumentType() : QuerySemanticException(InvalidRelationship) {}
+    explicit QueryInvalidArgumentType(const std::string& errorMessage) : QuerySemanticException(errorMessage) {}
 };
 
 class QueryParserException : public QuerySyntaxException {
