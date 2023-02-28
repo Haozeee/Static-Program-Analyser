@@ -13,7 +13,7 @@ ReferenceValues WithClauseEvaluator::getAttributeReferenceValues(AttributeRefere
 }
 
 ReferenceValues WithClauseEvaluator::getReferenceValues(Reference ref, StoragePointer storage) {
-    std::visit(overload{
+    return std::visit(overload{
         [](const int& i) -> ReferenceValues { return ReferenceValues {std::to_string(i)}; },
         [](const std::string& i) -> ReferenceValues { return ReferenceValues {i}; },
         [storage](const AttributeReference i) -> ReferenceValues { return getAttributeReferenceValues(i, storage); }

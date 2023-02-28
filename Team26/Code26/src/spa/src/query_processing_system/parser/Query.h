@@ -43,6 +43,8 @@ class Query {
 
     std::vector<PatternClause*> getPatternClause();
 
+    bool containsSynonymInDeclaration(std::string);
+
     /**
      * Add a new declaration to the Query object.
      *

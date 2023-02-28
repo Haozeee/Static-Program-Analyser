@@ -1,5 +1,4 @@
 #include "WithClause.h"
-
 #include <utility>
 #include "query_processing_system/evaluator/clause_evaluator/with_clause_evaluator/WithClauseEvaluator.h"
 
@@ -16,4 +15,3 @@ bool WithClause::validateClause() {
 ClauseEvaluator *WithClause::getClauseEvaluator() {
     return new WithClauseEvaluator(leftRef, rightRef);
 }
-

@@ -2,9 +2,9 @@
 #include <unordered_set>
 #include "IntIntClause.h"
 
-class ParentClause : public IntIntClause {
+class NextTClause : public IntIntClause {
  public:
-    ParentClause(Argument leftArg, Argument rightArg);
+    NextTClause(Argument leftArg, Argument rightArg);
 
     ClauseEvaluator* getClauseEvaluator() override;
 };
