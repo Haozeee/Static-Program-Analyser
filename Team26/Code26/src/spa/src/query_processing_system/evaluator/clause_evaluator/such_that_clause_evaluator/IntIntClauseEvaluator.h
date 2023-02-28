@@ -21,6 +21,14 @@ class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
 
     void handleRightWildcard() override;
 
+    int getLeftArg() override;
+
+    int getRightArg() override;
+
+    bool isLeftArgAmbiguous() override;
+
+    bool isRightArgAmbiguous() override;
+
     void evaluateSynonymSynonym(StoragePointer storage) override;
 
     /**

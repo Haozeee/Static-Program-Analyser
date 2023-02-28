@@ -20,6 +20,14 @@ class StringStringClauseEvaluator : public SuchThatClauseEvaluator<std::string, 
 
     void evaluateSynonymSynonym(StoragePointer storage) override;
 
+    std::string getLeftArg() override;
+
+    std::string getRightArg() override;
+
+    bool isLeftArgAmbiguous() override;
+
+    bool isRightArgAmbiguous() override;
+
     void evaluateStringSynonym(StoragePointer storage);
 
     void evaluateStringWildCard(StoragePointer storage);

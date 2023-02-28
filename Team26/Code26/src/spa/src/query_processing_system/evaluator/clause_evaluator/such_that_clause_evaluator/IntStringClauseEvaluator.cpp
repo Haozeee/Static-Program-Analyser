@@ -16,7 +16,7 @@ std::shared_ptr<ResultTable> IntStringClauseEvaluator::evaluateClause(StoragePoi
     } else if (argumentType == ClauseArgumentTypes::SYNONYM_WILDCARD) {
         evaluateSynonymWildcard(storage);
     } else if (argumentType == ClauseArgumentTypes::NUMBER_WILDCARD) {
-        evaluateNumberWildcard(storage);
+        evaluateValueWildcard(storage);
     } else {
         throw std::exception();
     }
@@ -101,4 +101,20 @@ std::unordered_set<int> IntStringClauseEvaluator::getLeftArgEntities(StoragePoin
 
 std::unordered_set<std::string> IntStringClauseEvaluator::getRightArgEntities(StoragePointer storage) {
     return PkbUtil::getStringEntitiesFromPkb(storage, rightArg.getDesignEntity());
+}
+
+int IntStringClauseEvaluator::getLeftArg() {
+    return stoi(leftArg.getValue());
+}
+
+std::string IntStringClauseEvaluator::getRightArg() {
+    return rightArg.getValue();
+}
+
+bool IntStringClauseEvaluator::isLeftArgAmbiguous() {
+    return true;
+}
+
+bool IntStringClauseEvaluator::isRightArgAmbiguous() {
+    return false;
 }

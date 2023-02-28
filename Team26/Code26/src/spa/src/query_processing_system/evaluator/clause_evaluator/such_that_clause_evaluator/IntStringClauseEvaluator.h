@@ -24,6 +24,14 @@ class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string
 
     void handleRightWildcard() override;
 
+    int getLeftArg() override;
+
+    std::string getRightArg() override;
+
+    bool isLeftArgAmbiguous() override;
+
+    bool isRightArgAmbiguous() override;
+
     void evaluateSynonymSynonym(StoragePointer storage) override;
 
     void evaluateNumberSynonym(StoragePointer storage);

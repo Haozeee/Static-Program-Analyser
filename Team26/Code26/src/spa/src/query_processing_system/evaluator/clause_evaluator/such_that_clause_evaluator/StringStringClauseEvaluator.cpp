@@ -1,19 +1,22 @@
 #include "StringStringClauseEvaluator.h"
 
+StringStringClauseEvaluator::StringStringClauseEvaluator(Argument left, Argument right)
+    : SuchThatClauseEvaluator<std::string, std::string>(left, right) {}
+
 std::shared_ptr<ResultTable> StringStringClauseEvaluator::evaluateClause(StoragePointer storage) {
     auto argumentType = getClauseArgumentType(leftArg.getArgumentType(), rightArg.getArgumentType());
     if (argumentType == ClauseArgumentTypes::SYNONYM_SYNONYM) {
-        evaluateNumberNumber(storage);
-    } else if (argumentType == ClauseArgumentTypes::SYNONYM_STRING) {
-        evaluateSynonymNumber(storage);
+        evaluateSynonymSynonym(storage);
     } else if (argumentType == ClauseArgumentTypes::SYNONYM_WILDCARD) {
         evaluateSynonymWildcard(storage);
     } else if (argumentType == ClauseArgumentTypes::STRING_SYNONYM) {
         evaluateStringSynonym(storage);
     } else if (argumentType == ClauseArgumentTypes::STRING_WILDCARD) {
-        evaluateStringWildCard(storage);
+        evaluateValueWildcard(storage);
     } else if (argumentType == ClauseArgumentTypes::STRING_STRING) {
-        evaluateStringString(storage);
+        evaluateValueValue(storage);
+    } else if (argumentType == ClauseArgumentTypes::WILDCARD_STRING) {
+        evaluateWildcardValue(storage);
     } else {
         throw std::exception();
     }
@@ -73,4 +76,20 @@ std::unordered_set<std::string> StringStringClauseEvaluator::getLeftArgEntities(
 
 std::unordered_set<std::string> StringStringClauseEvaluator::getRightArgEntities(StoragePointer storage) {
     return PkbUtil::getStringEntitiesFromPkb(storage, rightArg.getDesignEntity());
-}\
+}
+
+std::string StringStringClauseEvaluator::getLeftArg() {
+    return leftArg.getValue();
+}
+
+std::string StringStringClauseEvaluator::getRightArg() {
+    return rightArg.getValue();
+}
+
+bool StringStringClauseEvaluator::isLeftArgAmbiguous() {
+    return false;
+}
+
+bool StringStringClauseEvaluator::isRightArgAmbiguous() {
+    return false;
+}

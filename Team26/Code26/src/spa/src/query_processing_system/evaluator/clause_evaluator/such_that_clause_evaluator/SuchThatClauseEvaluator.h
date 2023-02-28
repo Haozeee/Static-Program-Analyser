@@ -109,7 +109,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     void evaluateValueWildcard(StoragePointer storage) {
         auto relationshipStore = getRelationshipManager(storage);
         auto iterator = relationshipStore.find(getLeftArg());
-        if (iterator == relationshipStore.end() || !iterator->second.empty()) {
+        if (iterator == relationshipStore.end() || iterator->second.empty()) {
             clauseResultTable->setNoResults();
         }
     }
@@ -117,11 +117,10 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     void evaluateWildcardValue(StoragePointer storage) {
         auto relationshipStore = getOppositeRelationshipManager(storage);
         auto iterator = relationshipStore.find(getRightArg());
-        if (iterator == relationshipStore.end() || !iterator->second.empty()) {
+        if (iterator == relationshipStore.end() || iterator->second.empty()) {
             clauseResultTable->setNoResults();
         }
     }
-
 
     /**
      * Checks if the result of this such that clause equates to false. The such that clause

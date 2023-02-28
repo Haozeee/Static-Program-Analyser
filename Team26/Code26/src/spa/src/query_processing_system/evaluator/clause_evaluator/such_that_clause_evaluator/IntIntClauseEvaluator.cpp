@@ -17,9 +17,10 @@ std::shared_ptr<ResultTable> IntIntClauseEvaluator::evaluateClause(StoragePointe
         evaluateSynonymWildcard(storage);
     } else if (argumentType == ClauseArgumentTypes::WILDCARD_SYNONYM) {
         evaluateWildcardSynonym(storage);
-    } else if (argumentType == ClauseArgumentTypes::NUMBER_WILDCARD ||
-                argumentType == ClauseArgumentTypes::WILDCARD_NUMBER) {
-        evaluateNumberWithWildcard(storage);
+    } else if (argumentType == ClauseArgumentTypes::NUMBER_WILDCARD) {
+        evaluateValueWildcard(storage);
+    } else if (argumentType == ClauseArgumentTypes::WILDCARD_NUMBER) {
+        evaluateWildcardValue(storage);
     } else if (argumentType == ClauseArgumentTypes::WILDCARD_WILDCARD) {
         evaluateWildcardWildcard(storage);
     } else {
@@ -122,4 +123,20 @@ std::unordered_set<int> IntIntClauseEvaluator::getLeftArgEntities(StoragePointer
 
 std::unordered_set<int> IntIntClauseEvaluator::getRightArgEntities(StoragePointer storage) {
     return PkbUtil::getIntEntitiesFromPkb(storage, rightArg.getDesignEntity());
+}
+
+int IntIntClauseEvaluator::getLeftArg() {
+    return stoi(leftArg.getValue());
+}
+
+int IntIntClauseEvaluator::getRightArg() {
+    return stoi(rightArg.getValue());
+}
+
+bool IntIntClauseEvaluator::isLeftArgAmbiguous() {
+    return true;
+}
+
+bool IntIntClauseEvaluator::isRightArgAmbiguous() {
+    return true;
 }
