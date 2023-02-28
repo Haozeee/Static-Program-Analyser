@@ -17,6 +17,15 @@ PkbUtil::intMapTostringMap(std::unordered_map<int, std::unordered_set<int>> intM
     return res;
 }
 
+std::unordered_map<std::string, std::unordered_set<std::string>>
+PkbUtil::intStringMapTostringMap(std::unordered_map<int, std::unordered_set<std::string>> intMap) {
+    std::unordered_map<std::string, std::unordered_set<std::string>> res;
+    for (auto const& [k, v] : intMap) {
+        res.insert({std::to_string(k), v});
+    }
+    return res;
+}
+
 std::unordered_set<std::string> PkbUtil::getEntitiesFromPkb(std::shared_ptr<ReadStorage> storage,
                                                             DesignEntity entity) {
     if (entity == DesignEntity::VARIABLE || entity == DesignEntity::PROCEDURE) {

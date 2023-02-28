@@ -1,21 +1,21 @@
 #pragma once
 #include "SuchThatClauseEvaluator.h"
 #include <string>
-#include <unordered_set>
 #include <unordered_map>
+#include <unordered_set>
 #include <memory>
 
-class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string> {
+class StringStringClauseEvaluator : public SuchThatClauseEvaluator<std::string, std::string> {
  protected:
-    IntStringClauseEvaluator(Argument left, Argument right);
+    StringStringClauseEvaluator(Argument left, Argument right);
 
-    void setLeftArgResult(std::unordered_set<int> result) override;
+    void setLeftArgResult(std::unordered_set<std::string> result) override;
 
     void setRightArgResult(std::unordered_set<std::string> result) override;
 
-    void setLeftAndRightArgResult(std::unordered_map<int, std::unordered_set<std::string>> results) override;
+    void setLeftAndRightArgResult(std::unordered_map<std::string , std::unordered_set<std::string>> results) override;
 
-    std::unordered_set<int> getLeftArgEntities(StoragePointer storage) override;
+    std::unordered_set<std::string> getLeftArgEntities(StoragePointer storage) override;
 
     std::unordered_set<std::string> getRightArgEntities(StoragePointer storage) override;
 
@@ -23,7 +23,7 @@ class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string
 
     void handleRightWildcard() override;
 
-    int getLeftArg() override;
+    std::string getLeftArg() override;
 
     std::string getRightArg() override;
 

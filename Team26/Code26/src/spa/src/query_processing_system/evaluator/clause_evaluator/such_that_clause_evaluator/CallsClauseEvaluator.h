@@ -6,9 +6,9 @@
 #include <string>
 #include "StringStringClauseEvaluator.h"
 
-class ModifiesPClauseEvaluator : public StringStringClauseEvaluator {
+class CallsClauseEvaluator : public StringStringClauseEvaluator {
  public:
-    ModifiesPClauseEvaluator(Argument left, Argument right);
+    CallsClauseEvaluator(Argument left, Argument right);
 
     std::unordered_map<std::string , std::unordered_set<std::string>>
     getRelationshipManager(StoragePointer storage) override;
