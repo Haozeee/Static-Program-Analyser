@@ -43,7 +43,9 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
      * Should only be used when the right argument is a synonym.
      * @param result The result to be projected.
      */
-    virtual void setLeftAndRightArgResult(std::unordered_map<std::string, std::unordered_set<std::string>> results) = 0;
+    void setLeftAndRightArgResult(std::unordered_map<std::string, std::unordered_set<std::string>> results) {
+        clauseResultTable = ResultTable::createTableFromMap(results, leftArg.getValue(), rightArg.getValue());
+    }
 
     /**
      * Get all the entities that have the same design entity as that of the left argument.
@@ -54,6 +56,20 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
      * Get all the entities that have the same design entity as that of the right argument.
      */
     virtual std::unordered_set<U> getRightArgEntities(StoragePointer storage) = 0;
+
+    virtual T getLeftArg() = 0;
+
+    virtual U getRightArg() = 0;
+
+    /**
+     * An argument is ambiguous if it can refer to multiple design entities. For instance, in Follows(2, s),
+     * the right arg "s" can refer to a read, print, call or assign statement, hence it is ambiguous.
+     * Whereas, in Modifies(5, v), the right arg "v" can only refer to variables and nothing else. Hence,
+     * it is not ambiguous.
+     */
+    virtual bool isLeftArgAmbiguous() = 0;
+
+    virtual bool isRightArgAmbiguous() = 0;
 
     virtual void handleLeftWildcard() = 0;
 
@@ -81,6 +97,31 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         clauseResultTable = ResultTable::createSingleColumnTable(
                 leftArg.getValue(), clauseResultTable->getColumnValues(leftArg.getValue()));
     }
+
+    void evaluateValueValue(StoragePointer storage) {
+        auto relationshipStore = getRelationshipManager(storage);
+        auto iterator = relationshipStore.find(getLeftArg());
+        if (iterator == relationshipStore.end() || !iterator->second.count(getRightArg())) {
+            clauseResultTable->setNoResults();
+        }
+    }
+
+    void evaluateValueWildcard(StoragePointer storage) {
+        auto relationshipStore = getRelationshipManager(storage);
+        auto iterator = relationshipStore.find(getLeftArg());
+        if (iterator == relationshipStore.end() || !iterator->second.empty()) {
+            clauseResultTable->setNoResults();
+        }
+    }
+
+    void evaluateWildcardValue(StoragePointer storage) {
+        auto relationshipStore = getOppositeRelationshipManager(storage);
+        auto iterator = relationshipStore.find(getRightArg());
+        if (iterator == relationshipStore.end() || !iterator->second.empty()) {
+            clauseResultTable->setNoResults();
+        }
+    }
+
 
     /**
      * Checks if the result of this such that clause equates to false. The such that clause

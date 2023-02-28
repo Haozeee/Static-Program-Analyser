@@ -14,6 +14,9 @@ enum class ClauseArgumentTypes {
     WILDCARD_SYNONYM,
     WILDCARD_WILDCARD,
     WILDCARD_STRING,
+    STRING_STRING,
+    STRING_SYNONYM,
+    STRING_WILDCARD,
     NONE
 };
 

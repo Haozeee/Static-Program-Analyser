@@ -6,7 +6,7 @@ IntIntClauseEvaluator::IntIntClauseEvaluator(Argument left, Argument right)
 std::shared_ptr<ResultTable> IntIntClauseEvaluator::evaluateClause(StoragePointer storage) {
     auto argumentType = getClauseArgumentType(leftArg.getArgumentType(), rightArg.getArgumentType());
     if (argumentType == ClauseArgumentTypes::NUMBER_NUMBER) {
-        evaluateNumberNumber(storage);
+        evaluateValueValue(storage);
     } else if (argumentType == ClauseArgumentTypes::SYNONYM_NUMBER) {
         evaluateSynonymNumber(storage);
     } else if (argumentType == ClauseArgumentTypes::NUMBER_SYNONYM) {
@@ -114,11 +114,6 @@ void IntIntClauseEvaluator::setLeftArgResult(std::unordered_set<int> result) {
 void IntIntClauseEvaluator::setRightArgResult(std::unordered_set<int> result) {
     clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(),
                                                              PkbUtil::intSetToStringSet(result));
-}
-
-void IntIntClauseEvaluator::setLeftAndRightArgResult(
-        std::unordered_map<std::string, std::unordered_set<std::string>> results) {
-    clauseResultTable = ResultTable::createTableFromMap(results, leftArg.getValue(), rightArg.getValue());
 }
 
 std::unordered_set<int> IntIntClauseEvaluator::getLeftArgEntities(StoragePointer storage) {

@@ -25,6 +25,14 @@ ClauseArgumentTypes getClauseArgumentType(ArgumentType leftArg, ArgumentType rig
         return ClauseArgumentTypes::NUMBER_WILDCARD;
     } else if (leftArg == ArgumentType::WILDCARD && rightArg == ArgumentType::WILDCARD) {
         return ClauseArgumentTypes::WILDCARD_WILDCARD;
+    } else if (leftArg == ArgumentType::WILDCARD && rightArg == ArgumentType::WILDCARD) {
+        return ClauseArgumentTypes::WILDCARD_WILDCARD;
+    } else if (leftArg == ArgumentType::CHARACTERSTRING && rightArg == ArgumentType::WILDCARD) {
+        return ClauseArgumentTypes::STRING_WILDCARD;
+    } else if (leftArg == ArgumentType::CHARACTERSTRING && rightArg == ArgumentType::CHARACTERSTRING) {
+        return ClauseArgumentTypes::STRING_STRING;
+    } else if (leftArg == ArgumentType::CHARACTERSTRING && rightArg == ArgumentType::SYNONYM) {
+        return ClauseArgumentTypes::STRING_SYNONYM;
     } else {
         return ClauseArgumentTypes::NONE;
     }

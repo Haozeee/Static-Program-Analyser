@@ -13,8 +13,6 @@ class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
 
     void setRightArgResult(std::unordered_set<int> result) override;
 
-    void setLeftAndRightArgResult(std::unordered_map<std::string, std::unordered_set<std::string>> results) override;
-
     std::unordered_set<int> getLeftArgEntities(StoragePointer storage) override;
 
     std::unordered_set<int> getRightArgEntities(StoragePointer storage) override;
