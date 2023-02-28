@@ -7,7 +7,7 @@
 #include "StringStringClauseEvaluator.h"
 
 class CallsClauseEvaluator : public StringStringClauseEvaluator {
-public:
+ public:
     CallsClauseEvaluator(Argument left, Argument right);
 
     std::unordered_map<std::string , std::unordered_set<std::string>>

@@ -3,38 +3,6 @@
 IntStringClauseEvaluator::IntStringClauseEvaluator(Argument left, Argument right)
     : SuchThatClauseEvaluator<int, std::string>(left, right) {}
 
-std::shared_ptr<ResultTable> IntStringClauseEvaluator::evaluateClause(StoragePointer storage) {
-    auto argumentType = getClauseArgumentType(leftArg.getArgumentType(), rightArg.getArgumentType());
-    if (argumentType == ClauseArgumentTypes::NUMBER_STRING) {
-        evaluateValueValue(storage);
-    } else if (argumentType == ClauseArgumentTypes::NUMBER_SYNONYM) {
-        evaluateValueSynonym(storage);
-    } else if (argumentType == ClauseArgumentTypes::SYNONYM_SYNONYM) {
-        evaluateSynonymSynonym(storage);
-    } else if (argumentType == ClauseArgumentTypes::SYNONYM_STRING) {
-        evaluateSynonymValue(storage);
-    } else if (argumentType == ClauseArgumentTypes::SYNONYM_WILDCARD) {
-        evaluateSynonymWildcard(storage);
-    } else if (argumentType == ClauseArgumentTypes::NUMBER_WILDCARD) {
-        evaluateValueWildcard(storage);
-    } else {
-        throw std::exception();
-    }
-    optimiseResults();
-    return clauseResultTable;
-}
-
-std::unordered_set<std::string> IntStringClauseEvaluator::evaluateNumberSynonymHelper(StoragePointer storage,
-                                                                                      int stmtNumber) {
-    auto relationshipStore = getRelationshipManager(storage);
-    auto opposite = getOppositeRelationshipManager(storage);
-    std::unordered_set<std::string> res;
-    if (relationshipStore.count(stmtNumber)) {
-        res = relationshipStore.find(stmtNumber)->second;
-    }
-    return res;
-}
-
 void IntStringClauseEvaluator::handleLeftWildcard() {
     leftArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::STMT);
 }

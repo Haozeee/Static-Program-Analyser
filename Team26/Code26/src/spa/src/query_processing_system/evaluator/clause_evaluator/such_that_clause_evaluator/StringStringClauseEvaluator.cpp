@@ -3,31 +3,6 @@
 StringStringClauseEvaluator::StringStringClauseEvaluator(Argument left, Argument right)
     : SuchThatClauseEvaluator<std::string, std::string>(left, right) {}
 
-std::shared_ptr<ResultTable> StringStringClauseEvaluator::evaluateClause(StoragePointer storage) {
-    auto argumentType = getClauseArgumentType(leftArg.getArgumentType(), rightArg.getArgumentType());
-    if (argumentType == ClauseArgumentTypes::SYNONYM_SYNONYM) {
-        evaluateSynonymSynonym(storage);
-    } else if (argumentType == ClauseArgumentTypes::SYNONYM_STRING) {
-        evaluateSynonymValue(storage);
-    } else if (argumentType == ClauseArgumentTypes::SYNONYM_WILDCARD) {
-        evaluateSynonymWildcard(storage);
-    } else if (argumentType == ClauseArgumentTypes::STRING_SYNONYM) {
-        evaluateValueSynonym(storage);
-    } else if (argumentType == ClauseArgumentTypes::STRING_WILDCARD) {
-        evaluateValueWildcard(storage);
-    } else if (argumentType == ClauseArgumentTypes::STRING_STRING) {
-        evaluateValueValue(storage);
-    } else if (argumentType == ClauseArgumentTypes::WILDCARD_STRING) {
-        evaluateWildcardValue(storage);
-    } else if (argumentType == ClauseArgumentTypes::WILDCARD_WILDCARD) {
-        evaluateWildcardWildcard(storage);
-    } else {
-        throw std::exception();
-    }
-    optimiseResults();
-    return clauseResultTable;
-}
-
 void StringStringClauseEvaluator::handleLeftWildcard() {
     leftArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::PROCEDURE);
 }

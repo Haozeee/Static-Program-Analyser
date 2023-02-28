@@ -30,7 +30,4 @@ class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
     bool isLeftArgAmbiguous() override;
 
     bool isRightArgAmbiguous() override;
-
- public:
-    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage) override;
 };

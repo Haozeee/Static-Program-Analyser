@@ -3,33 +3,6 @@
 IntIntClauseEvaluator::IntIntClauseEvaluator(Argument left, Argument right)
     : SuchThatClauseEvaluator<int, int>(left, right) {}
 
-std::shared_ptr<ResultTable> IntIntClauseEvaluator::evaluateClause(StoragePointer storage) {
-    auto argumentType = getClauseArgumentType(leftArg.getArgumentType(), rightArg.getArgumentType());
-    if (argumentType == ClauseArgumentTypes::NUMBER_NUMBER) {
-        evaluateValueValue(storage);
-    } else if (argumentType == ClauseArgumentTypes::SYNONYM_NUMBER) {
-        evaluateSynonymValue(storage);
-    } else if (argumentType == ClauseArgumentTypes::NUMBER_SYNONYM) {
-        evaluateValueSynonym(storage);
-    } else if (argumentType == ClauseArgumentTypes::SYNONYM_SYNONYM) {
-        evaluateSynonymSynonym(storage);
-    } else if (argumentType == ClauseArgumentTypes::SYNONYM_WILDCARD) {
-        evaluateSynonymWildcard(storage);
-    } else if (argumentType == ClauseArgumentTypes::WILDCARD_SYNONYM) {
-        evaluateWildcardSynonym(storage);
-    } else if (argumentType == ClauseArgumentTypes::NUMBER_WILDCARD) {
-        evaluateValueWildcard(storage);
-    } else if (argumentType == ClauseArgumentTypes::WILDCARD_NUMBER) {
-        evaluateWildcardValue(storage);
-    } else if (argumentType == ClauseArgumentTypes::WILDCARD_WILDCARD) {
-        evaluateWildcardWildcard(storage);
-    } else {
-        throw std::exception();
-    }
-    optimiseResults();
-    return clauseResultTable;
-}
-
 void IntIntClauseEvaluator::handleLeftWildcard() {
     leftArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::STMT);
 }

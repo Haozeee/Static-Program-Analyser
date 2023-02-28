@@ -10,75 +10,7 @@
 
 template<typename T, typename U>
 class SuchThatClauseEvaluator : public ClauseEvaluator {
- protected:
-    Argument leftArg;
-
-    Argument rightArg;
-
-    SuchThatClauseEvaluator<T, U>(Argument left, Argument right)
-            : leftArg(left), rightArg(right) {}
-
-    virtual std::unordered_map<T, std::unordered_set<U>> getRelationshipManager(StoragePointer storage) = 0;
-
-    virtual std::unordered_map<U, std::unordered_set<T>> getOppositeRelationshipManager(StoragePointer storage) = 0;
-
-    /**
-     * Set the queryResults that are to be projected on to the left arguments in the clause result.
-     * Should only be used when the left argument is a synonym.
-     * @param result The result to be projected.
-     */
-    virtual void setLeftArgResult(std::unordered_set<T> result) = 0;
-
-    /**
-     * Set the queryResults that are to be projected on to the right arguments in the clause result.
-     * Should only be used when the right argument is a synonym.
-     * @param result The result to be projected.
-     */
-    virtual void setRightArgResult(std::unordered_set<U> result) = 0;
-
-    /**
-     * Set the queryResults that are to be projected on to the right arguments in the clause result.
-     * Should only be used when the right argument is a synonym.
-     * @param result The result to be projected.
-     */
-    virtual void setLeftAndRightArgResult(std::unordered_map<T, std::unordered_set<U>> results) = 0;
-
-    /**
-     * Get all the entities that have the same design entity as that of the left argument.
-     */
-    virtual std::unordered_set<T> getLeftArgEntities(StoragePointer storage) = 0;
-
-    /**
-     * Get all the entities that have the same design entity as that of the right argument.
-     */
-    virtual std::unordered_set<U> getRightArgEntities(StoragePointer storage) = 0;
-
-    virtual T getLeftArg() = 0;
-
-    virtual U getRightArg() = 0;
-
-    /**
-     * An argument is ambiguous if it can refer to multiple design entities. For instance, in Follows(2, s),
-     * the right arg "s" can refer to a read, print, call or assign statement, hence it is ambiguous.
-     * Whereas, in Modifies(5, v), the right arg "v" can only refer to variables and nothing else. Hence,
-     * it is not ambiguous.
-     */
-    virtual bool isLeftArgAmbiguous() = 0;
-
-    virtual bool isRightArgAmbiguous() = 0;
-
-    virtual void handleLeftWildcard() = 0;
-
-    virtual void handleRightWildcard() = 0;
-
-    void handleWildcards() {
-        if (leftArg.getArgumentType() == ArgumentType::WILDCARD) {
-            handleLeftWildcard();
-        } else if (rightArg.getArgumentType() == ArgumentType::WILDCARD) {
-            handleRightWildcard();
-        }
-    }
-
+ private:
     /**
      * Evaluate a such that clause in the form of clause(synonym, synonym).
      */
@@ -190,5 +122,102 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         if (!clauseResultTable->getColumnsNames().empty() && clauseResultTable->getNumberOfRows() == 0) {
             clauseResultTable->setNoResults();
         }
+    }
+
+ protected:
+    Argument leftArg;
+
+    Argument rightArg;
+
+    SuchThatClauseEvaluator<T, U>(Argument left, Argument right)
+            : leftArg(left), rightArg(right) {}
+
+    virtual std::unordered_map<T, std::unordered_set<U>> getRelationshipManager(StoragePointer storage) = 0;
+
+    virtual std::unordered_map<U, std::unordered_set<T>> getOppositeRelationshipManager(StoragePointer storage) = 0;
+
+    /**
+     * Set the queryResults that are to be projected on to the left arguments in the clause result.
+     * Should only be used when the left argument is a synonym.
+     * @param result The result to be projected.
+     */
+    virtual void setLeftArgResult(std::unordered_set<T> result) = 0;
+
+    /**
+     * Set the queryResults that are to be projected on to the right arguments in the clause result.
+     * Should only be used when the right argument is a synonym.
+     * @param result The result to be projected.
+     */
+    virtual void setRightArgResult(std::unordered_set<U> result) = 0;
+
+    /**
+     * Set the queryResults that are to be projected on to the right arguments in the clause result.
+     * Should only be used when the right argument is a synonym.
+     * @param result The result to be projected.
+     */
+    virtual void setLeftAndRightArgResult(std::unordered_map<T, std::unordered_set<U>> results) = 0;
+
+    /**
+     * Get all the entities that have the same design entity as that of the left argument.
+     */
+    virtual std::unordered_set<T> getLeftArgEntities(StoragePointer storage) = 0;
+
+    /**
+     * Get all the entities that have the same design entity as that of the right argument.
+     */
+    virtual std::unordered_set<U> getRightArgEntities(StoragePointer storage) = 0;
+
+    virtual T getLeftArg() = 0;
+
+    virtual U getRightArg() = 0;
+
+    /**
+     * An argument is ambiguous if it can refer to multiple design entities. For instance, in Follows(2, s),
+     * the right arg "s" can refer to a read, print, call or assign statement, hence it is ambiguous.
+     * Whereas, in Modifies(5, v), the right arg "v" can only refer to variables and nothing else. Hence,
+     * it is not ambiguous.
+     */
+    virtual bool isLeftArgAmbiguous() = 0;
+
+    virtual bool isRightArgAmbiguous() = 0;
+
+    virtual void handleLeftWildcard() = 0;
+
+    virtual void handleRightWildcard() = 0;
+
+    void handleWildcards() {
+        if (leftArg.getArgumentType() == ArgumentType::WILDCARD) {
+            handleLeftWildcard();
+        } else if (rightArg.getArgumentType() == ArgumentType::WILDCARD) {
+            handleRightWildcard();
+        }
+    }
+
+ public:
+    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage) override {
+        auto argumentType = getClauseArgumentType(leftArg.getArgumentType(), rightArg.getArgumentType());
+        if (argumentType == ClauseArgumentTypes::VALUE_VALUE) {
+            evaluateValueValue(storage);
+        } else if (argumentType == ClauseArgumentTypes::SYNONYM_VALUE) {
+            evaluateSynonymValue(storage);
+        } else if (argumentType == ClauseArgumentTypes::VALUE_SYNONYM) {
+            evaluateValueSynonym(storage);
+        } else if (argumentType == ClauseArgumentTypes::SYNONYM_SYNONYM) {
+            evaluateSynonymSynonym(storage);
+        } else if (argumentType == ClauseArgumentTypes::SYNONYM_WILDCARD) {
+            evaluateSynonymWildcard(storage);
+        } else if (argumentType == ClauseArgumentTypes::WILDCARD_SYNONYM) {
+            evaluateWildcardSynonym(storage);
+        } else if (argumentType == ClauseArgumentTypes::VALUE_WILDCARD) {
+            evaluateValueWildcard(storage);
+        } else if (argumentType == ClauseArgumentTypes::WILDCARD_VALUE) {
+            evaluateWildcardValue(storage);
+        } else if (argumentType == ClauseArgumentTypes::WILDCARD_WILDCARD) {
+            evaluateWildcardWildcard(storage);
+        } else {
+            throw std::exception();
+        }
+        optimiseResults();
+        return clauseResultTable;
     }
 };
