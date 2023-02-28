@@ -17,16 +17,13 @@ std::shared_ptr<ResultTable> StringStringClauseEvaluator::evaluateClause(Storage
         evaluateValueValue(storage);
     } else if (argumentType == ClauseArgumentTypes::WILDCARD_STRING) {
         evaluateWildcardValue(storage);
+    } else if (argumentType == ClauseArgumentTypes::WILDCARD_WILDCARD) {
+        evaluateWildcardWildcard(storage);
     } else {
         throw std::exception();
     }
     optimiseResults();
     return clauseResultTable;
-}
-
-void StringStringClauseEvaluator::evaluateSynonymSynonym(StoragePointer storage) {
-    auto relationshipStore = getRelationshipManager(storage);
-    setLeftAndRightArgResult(relationshipStore);
 }
 
 void StringStringClauseEvaluator::evaluateStringSynonym(StoragePointer storage) {
@@ -68,6 +65,11 @@ void StringStringClauseEvaluator::setLeftArgResult(std::unordered_set<std::strin
 
 void StringStringClauseEvaluator::setRightArgResult(std::unordered_set<std::string> result) {
     clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), result);
+}
+
+void StringStringClauseEvaluator::setLeftAndRightArgResult(std::unordered_map<std::string,
+                                                           std::unordered_set<std::string>> results) {
+    clauseResultTable = ResultTable::createTableFromMap(results, leftArg.getValue(), rightArg.getValue());
 }
 
 std::unordered_set<std::string> StringStringClauseEvaluator::getLeftArgEntities(StoragePointer storage) {

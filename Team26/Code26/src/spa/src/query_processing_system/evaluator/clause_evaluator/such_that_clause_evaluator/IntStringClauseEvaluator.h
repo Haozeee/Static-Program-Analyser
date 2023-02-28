@@ -16,6 +16,8 @@ class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string
 
     void setRightArgResult(std::unordered_set<std::string> result) override;
 
+    void setLeftAndRightArgResult(std::unordered_map<int, std::unordered_set<std::string>> results) override;
+
     std::unordered_set<int> getLeftArgEntities(StoragePointer storage) override;
 
     std::unordered_set<std::string> getRightArgEntities(StoragePointer storage) override;
@@ -31,8 +33,6 @@ class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string
     bool isLeftArgAmbiguous() override;
 
     bool isRightArgAmbiguous() override;
-
-    void evaluateSynonymSynonym(StoragePointer storage) override;
 
     void evaluateNumberSynonym(StoragePointer storage);
 

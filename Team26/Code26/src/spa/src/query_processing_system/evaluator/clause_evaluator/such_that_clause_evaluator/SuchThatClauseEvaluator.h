@@ -43,9 +43,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
      * Should only be used when the right argument is a synonym.
      * @param result The result to be projected.
      */
-    void setLeftAndRightArgResult(std::unordered_map<std::string, std::unordered_set<std::string>> results) {
-        clauseResultTable = ResultTable::createTableFromMap(results, leftArg.getValue(), rightArg.getValue());
-    }
+    virtual void setLeftAndRightArgResult(std::unordered_map<T, std::unordered_set<U>> results) = 0;
 
     /**
      * Get all the entities that have the same design entity as that of the left argument.
@@ -85,10 +83,37 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
 
     /**
      * Evaluate a such that clause in the form of clause(synonym, synonym).
-     * This is a valid evaluation parameter for all such that clauses,
-     * hence it exists in the parent class.
      */
-    virtual void evaluateSynonymSynonym(StoragePointer storage) = 0;
+    void evaluateSynonymSynonym(StoragePointer storage) {
+        if (leftArg == rightArg) {
+            clauseResultTable->setNoResults();
+            return;
+        }
+        // Set initial empty results
+        std::unordered_map<T, std::unordered_set<U>> res;
+        auto relationshipMap = getRelationshipManager(storage);
+        if (isLeftArgAmbiguous()) {
+            relationshipMap = PkbUtil::filterMap(relationshipMap, getLeftArgEntities(storage));
+        }
+        if (isRightArgAmbiguous()) {
+            relationshipMap = PkbUtil::mapSetIntersection(relationshipMap, getRightArgEntities(storage));
+        }
+        setLeftAndRightArgResult(relationshipMap);
+    }
+
+    void evaluateValueSynonym(StoragePointer storage) {
+        auto relationshipStore = getRelationshipManager(storage);
+        auto it = relationshipStore.find(stoi(leftArg.getValue()));
+        std::unordered_set<U> res {};
+        if (it != relationshipStore.end()) {
+            if (isRightArgAmbiguous()) {
+                PkbUtil::setIntersection(getRightArgEntities(storage), it->second, res);
+            } else {
+                res = it->second;
+            }
+        }
+        setRightArgResult(res);
+    }
 
     void evaluateSynonymWildcard(StoragePointer storage) {
         handleRightWildcard();
@@ -118,6 +143,13 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         auto relationshipStore = getOppositeRelationshipManager(storage);
         auto iterator = relationshipStore.find(getRightArg());
         if (iterator == relationshipStore.end() || iterator->second.empty()) {
+            clauseResultTable->setNoResults();
+        }
+    }
+
+    void evaluateWildcardWildcard(StoragePointer storage) {
+        auto relationshipStore = getRelationshipManager(storage);
+        if (relationshipStore.empty()) {
             clauseResultTable->setNoResults();
         }
     }

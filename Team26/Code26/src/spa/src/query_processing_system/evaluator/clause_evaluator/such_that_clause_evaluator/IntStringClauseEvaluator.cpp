@@ -8,7 +8,7 @@ std::shared_ptr<ResultTable> IntStringClauseEvaluator::evaluateClause(StoragePoi
     if (argumentType == ClauseArgumentTypes::NUMBER_STRING) {
         evaluateValueValue(storage);
     } else if (argumentType == ClauseArgumentTypes::NUMBER_SYNONYM) {
-        evaluateNumberSynonym(storage);
+        evaluateValueSynonym(storage);
     } else if (argumentType == ClauseArgumentTypes::SYNONYM_SYNONYM) {
         evaluateSynonymSynonym(storage);
     } else if (argumentType == ClauseArgumentTypes::SYNONYM_STRING) {
@@ -48,19 +48,6 @@ void IntStringClauseEvaluator::evaluateNumberSynonym(StoragePointer storage) {
     setRightArgResult(res);
 }
 
-void IntStringClauseEvaluator::evaluateSynonymSynonym(StoragePointer storage) {
-    // Set initial empty results
-    std::unordered_map<std::string, std::unordered_set<std::string>> res;
-    auto statementsToEvaluate = getLeftArgEntities(storage);
-    for (int statement : statementsToEvaluate) {
-        auto synonymResults = evaluateNumberSynonymHelper(storage, statement);
-        if (!synonymResults.empty()) {
-            res.insert({std::to_string(statement), synonymResults});
-        }
-    }
-    setLeftAndRightArgResult(res);
-}
-
 std::unordered_set<std::string> IntStringClauseEvaluator::evaluateNumberSynonymHelper(StoragePointer storage,
                                                                                       int stmtNumber) {
     auto relationshipStore = getRelationshipManager(storage);
@@ -97,6 +84,12 @@ void IntStringClauseEvaluator::setRightArgResult(std::unordered_set<std::string>
 
 std::unordered_set<int> IntStringClauseEvaluator::getLeftArgEntities(StoragePointer storage) {
     return PkbUtil::getIntEntitiesFromPkb(storage, leftArg.getDesignEntity());
+}
+
+void IntStringClauseEvaluator::setLeftAndRightArgResult(std::unordered_map<int,
+                                                        std::unordered_set<std::string>> results) {
+    auto res = PkbUtil::intStringMapTostringMap(results);
+    clauseResultTable = ResultTable::createTableFromMap(res, leftArg.getValue(), rightArg.getValue());
 }
 
 std::unordered_set<std::string> IntStringClauseEvaluator::getRightArgEntities(StoragePointer storage) {

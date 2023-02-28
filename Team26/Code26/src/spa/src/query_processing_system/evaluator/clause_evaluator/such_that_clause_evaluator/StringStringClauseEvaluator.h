@@ -10,6 +10,8 @@ class StringStringClauseEvaluator : public SuchThatClauseEvaluator<std::string, 
 
     void setRightArgResult(std::unordered_set<std::string> result) override;
 
+    void setLeftAndRightArgResult(std::unordered_map<std::string , std::unordered_set<std::string>> results) override;
+
     std::unordered_set<std::string> getLeftArgEntities(StoragePointer storage) override;
 
     std::unordered_set<std::string> getRightArgEntities(StoragePointer storage) override;
@@ -17,8 +19,6 @@ class StringStringClauseEvaluator : public SuchThatClauseEvaluator<std::string, 
     void handleLeftWildcard() override;
 
     void handleRightWildcard() override;
-
-    void evaluateSynonymSynonym(StoragePointer storage) override;
 
     std::string getLeftArg() override;
 

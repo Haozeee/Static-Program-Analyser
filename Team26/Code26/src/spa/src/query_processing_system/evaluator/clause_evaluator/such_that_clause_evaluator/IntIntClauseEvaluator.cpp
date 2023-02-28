@@ -10,7 +10,7 @@ std::shared_ptr<ResultTable> IntIntClauseEvaluator::evaluateClause(StoragePointe
     } else if (argumentType == ClauseArgumentTypes::SYNONYM_NUMBER) {
         evaluateSynonymNumber(storage);
     } else if (argumentType == ClauseArgumentTypes::NUMBER_SYNONYM) {
-        evaluateNumberSynonym(storage);
+        evaluateValueSynonym(storage);
     } else if (argumentType == ClauseArgumentTypes::SYNONYM_SYNONYM) {
         evaluateSynonymSynonym(storage);
     } else if (argumentType == ClauseArgumentTypes::SYNONYM_WILDCARD) {
@@ -61,18 +61,6 @@ void IntIntClauseEvaluator::evaluateSynonymNumber(StoragePointer storage) {
     setLeftArgResult(res);
 }
 
-void IntIntClauseEvaluator::evaluateSynonymSynonym(StoragePointer storage) {
-    if (leftArg == rightArg) {
-        clauseResultTable->setNoResults();
-        return;
-    }
-    // Maybe can make use of the opposite relationship map??
-    auto filteredMap = PkbUtil::filterMap(getRelationshipManager(storage), getLeftArgEntities(storage));
-    // Find intersection with all items of the right arg design entity
-    auto res = PkbUtil::mapSetIntersection(filteredMap, getRightArgEntities(storage));
-    setLeftAndRightArgResult(PkbUtil::intMapTostringMap(res));
-}
-
 void IntIntClauseEvaluator::evaluateNumberWithWildcard(StoragePointer storage) {
     handleWildcards();
     if (leftArg.getArgumentType() == ArgumentType::NUMBER) {
@@ -85,12 +73,6 @@ void IntIntClauseEvaluator::evaluateNumberWithWildcard(StoragePointer storage) {
     }
 }
 
-void IntIntClauseEvaluator::evaluateWildcardWildcard(StoragePointer storage) {
-    auto relationMap = getRelationshipManager(storage);
-    if (relationMap.empty()) {
-        clauseResultTable->setNoResults();
-    }
-}
 void IntIntClauseEvaluator::evaluateWildcardSynonym(StoragePointer storage) {
     handleLeftWildcard();
     evaluateSynonymSynonym(storage);
@@ -115,6 +97,11 @@ void IntIntClauseEvaluator::setLeftArgResult(std::unordered_set<int> result) {
 void IntIntClauseEvaluator::setRightArgResult(std::unordered_set<int> result) {
     clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(),
                                                              PkbUtil::intSetToStringSet(result));
+}
+
+void IntIntClauseEvaluator::setLeftAndRightArgResult(std::unordered_map<int, std::unordered_set<int>> results) {
+    auto res = PkbUtil::intMapTostringMap(results);
+    clauseResultTable = ResultTable::createTableFromMap(res, leftArg.getValue(), rightArg.getValue());
 }
 
 std::unordered_set<int> IntIntClauseEvaluator::getLeftArgEntities(StoragePointer storage) {

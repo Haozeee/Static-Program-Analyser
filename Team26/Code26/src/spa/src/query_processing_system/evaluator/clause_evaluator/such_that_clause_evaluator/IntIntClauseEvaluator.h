@@ -13,6 +13,8 @@ class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
 
     void setRightArgResult(std::unordered_set<int> result) override;
 
+    void setLeftAndRightArgResult(std::unordered_map<int, std::unordered_set<int>> results) override;
+
     std::unordered_set<int> getLeftArgEntities(StoragePointer storage) override;
 
     std::unordered_set<int> getRightArgEntities(StoragePointer storage) override;
@@ -28,8 +30,6 @@ class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
     bool isLeftArgAmbiguous() override;
 
     bool isRightArgAmbiguous() override;
-
-    void evaluateSynonymSynonym(StoragePointer storage) override;
 
     /**
     * Evaluate a such that clause in the form of clause(int, int).
@@ -55,11 +55,6 @@ class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
     * Evaluate a such that clause in the form of clause(_, synonym).
     */
     void evaluateWildcardSynonym(StoragePointer storage);
-
-    /**
-    * Evaluate a such that clause in the form of clause(_,_).
-    */
-    void evaluateWildcardWildcard(StoragePointer storage);
 
  public:
     std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage) override;
