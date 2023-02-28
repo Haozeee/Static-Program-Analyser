@@ -34,13 +34,7 @@ class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string
 
     bool isRightArgAmbiguous() override;
 
-    void evaluateNumberSynonym(StoragePointer storage);
-
     void evaluateSynonymString(StoragePointer storage);
-
-    void evaluateNumberString(StoragePointer storage);
-
-    void evaluateNumberWildcard(StoragePointer storage);
 
  public:
     std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage) override;

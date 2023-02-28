@@ -1,6 +1,9 @@
 #pragma once
 #include "SuchThatClauseEvaluator.h"
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <memory>
 
 class StringStringClauseEvaluator : public SuchThatClauseEvaluator<std::string, std::string> {
  protected:
@@ -27,12 +30,6 @@ class StringStringClauseEvaluator : public SuchThatClauseEvaluator<std::string, 
     bool isLeftArgAmbiguous() override;
 
     bool isRightArgAmbiguous() override;
-
-    void evaluateStringSynonym(StoragePointer storage);
-
-    void evaluateStringWildCard(StoragePointer storage);
-
-    void evaluateStringString(StoragePointer storage);
 
  public:
     std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage) override;

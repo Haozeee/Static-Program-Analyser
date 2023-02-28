@@ -103,7 +103,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
 
     void evaluateValueSynonym(StoragePointer storage) {
         auto relationshipStore = getRelationshipManager(storage);
-        auto it = relationshipStore.find(stoi(leftArg.getValue()));
+        auto it = relationshipStore.find(getLeftArg());
         std::unordered_set<U> res {};
         if (it != relationshipStore.end()) {
             if (isRightArgAmbiguous()) {
@@ -116,11 +116,25 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
     void evaluateSynonymWildcard(StoragePointer storage) {
-        handleRightWildcard();
+        auto relationshipMap = getRelationshipManager(storage);
+        if (isLeftArgAmbiguous()) {
+            relationshipMap = PkbUtil::filterMap(relationshipMap, getLeftArgEntities(storage));
+        }
+        std::unordered_set<T> res {};
+        for (auto const& [k, v] : relationshipMap) {
+            if (!v.empty()) {
+                res.insert(k);
+            }
+        }
+        setLeftArgResult(res);
+    }
+
+    void evaluateWildcardSynonym(StoragePointer storage) {
+        handleLeftWildcard();
         evaluateSynonymSynonym(storage);
         // Remove wildcard placeholder
         clauseResultTable = ResultTable::createSingleColumnTable(
-                leftArg.getValue(), clauseResultTable->getColumnValues(leftArg.getValue()));
+                rightArg.getValue(), clauseResultTable->getColumnValues(rightArg.getValue()));
     }
 
     void evaluateValueValue(StoragePointer storage) {

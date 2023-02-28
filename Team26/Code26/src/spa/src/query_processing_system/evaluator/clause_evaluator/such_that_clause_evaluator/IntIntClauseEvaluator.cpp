@@ -30,26 +30,6 @@ std::shared_ptr<ResultTable> IntIntClauseEvaluator::evaluateClause(StoragePointe
     return clauseResultTable;
 }
 
-void IntIntClauseEvaluator::evaluateNumberNumber(StoragePointer storage) {
-    auto relationshipStore = getRelationshipManager(storage);
-    auto iterator = relationshipStore.find(stoi(leftArg.getValue()));
-    auto rightValue = stoi(rightArg.getValue());
-    if (iterator == relationshipStore.end() || !iterator->second.count(rightValue)) {
-        clauseResultTable->setNoResults();
-    }
-}
-
-void IntIntClauseEvaluator::evaluateNumberSynonym(StoragePointer storage) {
-    auto synonymValues = getRightArgEntities(storage);
-    auto relationshipStore = getRelationshipManager(storage);
-    auto it = relationshipStore.find(stoi(leftArg.getValue()));
-    std::unordered_set<int> res = {};
-    if (it != relationshipStore.end()) {
-        PkbUtil::setIntersection(synonymValues, it->second, res);
-    }
-    setRightArgResult(res);
-}
-
 void IntIntClauseEvaluator::evaluateSynonymNumber(StoragePointer storage) {
     auto synonymValues = getLeftArgEntities(storage);
     auto relationshipStore = getOppositeRelationshipManager(storage);
@@ -61,25 +41,6 @@ void IntIntClauseEvaluator::evaluateSynonymNumber(StoragePointer storage) {
     setLeftArgResult(res);
 }
 
-void IntIntClauseEvaluator::evaluateNumberWithWildcard(StoragePointer storage) {
-    handleWildcards();
-    if (leftArg.getArgumentType() == ArgumentType::NUMBER) {
-        evaluateNumberSynonym(storage);
-    } else {
-        evaluateSynonymNumber(storage);
-    }
-    if (clauseResultTable->getNumberOfRows() == 0) {
-        clauseResultTable->setNoResults();
-    }
-}
-
-void IntIntClauseEvaluator::evaluateWildcardSynonym(StoragePointer storage) {
-    handleLeftWildcard();
-    evaluateSynonymSynonym(storage);
-    // Remove wildcard placeholder
-    clauseResultTable = ResultTable::createSingleColumnTable(
-            rightArg.getValue(), clauseResultTable->getColumnValues(rightArg.getValue()));
-}
 
 void IntIntClauseEvaluator::handleLeftWildcard() {
     leftArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::STMT);

@@ -10,7 +10,7 @@ std::shared_ptr<ResultTable> StringStringClauseEvaluator::evaluateClause(Storage
     } else if (argumentType == ClauseArgumentTypes::SYNONYM_WILDCARD) {
         evaluateSynonymWildcard(storage);
     } else if (argumentType == ClauseArgumentTypes::STRING_SYNONYM) {
-        evaluateStringSynonym(storage);
+        evaluateValueSynonym(storage);
     } else if (argumentType == ClauseArgumentTypes::STRING_WILDCARD) {
         evaluateValueWildcard(storage);
     } else if (argumentType == ClauseArgumentTypes::STRING_STRING) {
@@ -24,30 +24,6 @@ std::shared_ptr<ResultTable> StringStringClauseEvaluator::evaluateClause(Storage
     }
     optimiseResults();
     return clauseResultTable;
-}
-
-void StringStringClauseEvaluator::evaluateStringSynonym(StoragePointer storage) {
-    auto relationshipStore = getRelationshipManager(storage);
-    if (relationshipStore.count(leftArg.getValue())) {
-        setRightArgResult(relationshipStore.find(leftArg.getValue())->second);
-    } else {
-        clauseResultTable->setNoResults();
-    }
-}
-
-void StringStringClauseEvaluator::evaluateStringWildCard(StoragePointer storage) {
-    auto relationshipStore = getRelationshipManager(storage);
-    if (!relationshipStore.count(leftArg.getValue())) {
-        clauseResultTable->setNoResults();
-    }
-}
-
-void StringStringClauseEvaluator::evaluateStringString(StoragePointer storage) {
-    auto relationshipStore = getRelationshipManager(storage);
-    auto iterator = relationshipStore.find(leftArg.getValue());
-    if (iterator != relationshipStore.end() || !iterator->second.count(rightArg.getValue())) {
-        clauseResultTable->setNoResults();
-    }
 }
 
 void StringStringClauseEvaluator::handleLeftWildcard() {

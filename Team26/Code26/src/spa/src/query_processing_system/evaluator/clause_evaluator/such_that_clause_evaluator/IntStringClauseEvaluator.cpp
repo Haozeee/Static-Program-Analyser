@@ -36,17 +36,6 @@ void IntStringClauseEvaluator::evaluateSynonymString(StoragePointer storage) {
     setLeftArgResult(leftResults);
 }
 
-void IntStringClauseEvaluator::evaluateNumberString(StoragePointer storage) {
-    auto res = evaluateNumberSynonymHelper(storage, stoi(leftArg.getValue()));
-    if (!res.count(rightArg.getValue())) {
-        clauseResultTable->setNoResults();
-    }
-}
-
-void IntStringClauseEvaluator::evaluateNumberSynonym(StoragePointer storage) {
-    auto res = evaluateNumberSynonymHelper(storage, stoi(leftArg.getValue()));
-    setRightArgResult(res);
-}
 
 std::unordered_set<std::string> IntStringClauseEvaluator::evaluateNumberSynonymHelper(StoragePointer storage,
                                                                                       int stmtNumber) {
@@ -56,13 +45,6 @@ std::unordered_set<std::string> IntStringClauseEvaluator::evaluateNumberSynonymH
         res = relationshipStore.find(stmtNumber)->second;
     }
     return res;
-}
-
-void IntStringClauseEvaluator::evaluateNumberWildcard(StoragePointer storage) {
-    auto res = evaluateNumberSynonymHelper(storage, stoi(leftArg.getValue()));
-    if (res.empty()) {
-        clauseResultTable->setNoResults();
-    }
 }
 
 void IntStringClauseEvaluator::handleLeftWildcard() {
