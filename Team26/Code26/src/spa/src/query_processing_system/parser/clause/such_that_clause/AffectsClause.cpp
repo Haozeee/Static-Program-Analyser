@@ -16,7 +16,3 @@ std::unordered_set<DesignEntity> AffectsClause::getValidLeftDesignEntity() {
             DesignEntity::ASSIGN,
     };
 }
-
-std::unordered_set<DesignEntity> AffectsClause::getValidRightDesignEntity() {
-    return getValidLeftDesignEntity();
-}
