@@ -8,7 +8,7 @@ std::shared_ptr<ResultTable> IntIntClauseEvaluator::evaluateClause(StoragePointe
     if (argumentType == ClauseArgumentTypes::NUMBER_NUMBER) {
         evaluateValueValue(storage);
     } else if (argumentType == ClauseArgumentTypes::SYNONYM_NUMBER) {
-        evaluateSynonymNumber(storage);
+        evaluateSynonymValue(storage);
     } else if (argumentType == ClauseArgumentTypes::NUMBER_SYNONYM) {
         evaluateValueSynonym(storage);
     } else if (argumentType == ClauseArgumentTypes::SYNONYM_SYNONYM) {
@@ -29,18 +29,6 @@ std::shared_ptr<ResultTable> IntIntClauseEvaluator::evaluateClause(StoragePointe
     optimiseResults();
     return clauseResultTable;
 }
-
-void IntIntClauseEvaluator::evaluateSynonymNumber(StoragePointer storage) {
-    auto synonymValues = getLeftArgEntities(storage);
-    auto relationshipStore = getOppositeRelationshipManager(storage);
-    auto it = relationshipStore.find(stoi(rightArg.getValue()));
-    std::unordered_set<int> res = {};
-    if (it != relationshipStore.end()) {
-        PkbUtil::setIntersection(synonymValues, it->second, res);
-    }
-    setLeftArgResult(res);
-}
-
 
 void IntIntClauseEvaluator::handleLeftWildcard() {
     leftArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::STMT);

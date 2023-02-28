@@ -113,6 +113,20 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         setRightArgResult(res);
     }
 
+    void evaluateSynonymValue(StoragePointer storage) {
+        auto relationshipStore = getOppositeRelationshipManager(storage);
+        auto it = relationshipStore.find(getRightArg());
+        std::unordered_set<T> res {};
+        if (it != relationshipStore.end()) {
+            if (isLeftArgAmbiguous()) {
+                PkbUtil::setIntersection(getLeftArgEntities(storage), it->second, res);
+            } else {
+                res = it->second;
+            }
+        }
+        setLeftArgResult(res);
+    }
+
     void evaluateSynonymWildcard(StoragePointer storage) {
         auto relationshipMap = getRelationshipManager(storage);
         if (isLeftArgAmbiguous()) {

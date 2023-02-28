@@ -31,11 +31,6 @@ class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
 
     bool isRightArgAmbiguous() override;
 
-    /**
-    * Evaluate a such that clause in the form of clause(synonym, int).
-    */
-    void evaluateSynonymNumber(StoragePointer storage);
-
  public:
     std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage) override;
 };

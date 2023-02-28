@@ -7,6 +7,8 @@ std::shared_ptr<ResultTable> StringStringClauseEvaluator::evaluateClause(Storage
     auto argumentType = getClauseArgumentType(leftArg.getArgumentType(), rightArg.getArgumentType());
     if (argumentType == ClauseArgumentTypes::SYNONYM_SYNONYM) {
         evaluateSynonymSynonym(storage);
+    } else if (argumentType == ClauseArgumentTypes::SYNONYM_STRING) {
+        evaluateSynonymValue(storage);
     } else if (argumentType == ClauseArgumentTypes::SYNONYM_WILDCARD) {
         evaluateSynonymWildcard(storage);
     } else if (argumentType == ClauseArgumentTypes::STRING_SYNONYM) {
