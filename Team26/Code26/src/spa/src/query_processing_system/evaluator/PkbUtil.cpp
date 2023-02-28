@@ -42,6 +42,12 @@ std::unordered_set<std::string> PkbUtil::getStringEntitiesFromPkb(std::shared_pt
             return storage->getVariableManager()->getAllEntitiesEntries();
         case DesignEntity::PROCEDURE:
             return storage->getProcedureManager()->getAllEntitiesEntries();
+        case DesignEntity::CALL:
+            // Get all procedures called by call statements
+            return {};
+        case DesignEntity::READ:
+            // Get all procedures called by call statements
+            return {};
         default:
             return {};
     }
