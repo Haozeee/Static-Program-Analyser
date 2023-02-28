@@ -15,10 +15,8 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
 
     Argument rightArg;
 
-    std::shared_ptr<ResultTable> clauseResultTable;
-
     SuchThatClauseEvaluator<T, U>(Argument left, Argument right)
-            : leftArg(left), rightArg(right), clauseResultTable(std::make_shared<ResultTable>()) {}
+            : leftArg(left), rightArg(right) {}
 
     virtual std::unordered_map<T, std::unordered_set<U>> getRelationshipManager(StoragePointer storage) = 0;
 

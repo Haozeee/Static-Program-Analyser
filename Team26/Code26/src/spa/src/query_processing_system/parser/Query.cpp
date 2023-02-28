@@ -60,6 +60,15 @@ void Query::addPatternClause(PatternClause* clause) {
     patternClauses.push_back(clause);
 }
 
+/* With Clause */
+std::vector<WithClause*> Query::getWithClause() {
+    return withClauses;
+}
+
+void Query::addWithClause(WithClause* clause) {
+    withClauses.push_back(clause);
+}
+
 /* Synonym Design Entity */
 DesignEntity Query::getSynonymDesignEntity(std::shared_ptr<Synonym> synonym) {
     return getSynonymDesignEntity(synonym->getIdent());
