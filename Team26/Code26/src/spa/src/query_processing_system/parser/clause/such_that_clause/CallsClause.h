@@ -2,9 +2,9 @@
 #include <unordered_set>
 #include "StringStringClause.h"
 
-class UsesPClause : public StringStringClause {
+class CallsClause : public StringStringClause {
  public:
-    UsesPClause(Argument leftArg, Argument rightArg);
+    CallsClause(Argument leftArg, Argument rightArg);
 
     ClauseEvaluator* getClauseEvaluator() override;
 

@@ -38,6 +38,10 @@ void Query::addDeclaration(const Synonym& synonym, DesignEntity designEntity) {
     synonymToDesignEntityMap.insert({synonym.getIdent(), declaration->getDesignEntity()});
 }
 
+bool Query::containsSynonymInDeclaration(std::string string) {
+    return synonymToDesignEntityMap.find(string) != synonymToDesignEntityMap.end();
+}
+
 /* Such That Clause */
 std::vector<SuchThatClause*> Query::getSuchThatClauses() {
     return suchThatClauses;
