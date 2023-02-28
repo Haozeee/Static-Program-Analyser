@@ -17,3 +17,11 @@ bool AttributeReference::isIntAttributeReference() {
 bool AttributeReference::isValidAttributeReference() {
     return isStringAttributeReference() || isIntAttributeReference();
 }
+
+std::string AttributeReference::getSynonym() {
+    return synonym;
+}
+
+DesignEntity AttributeReference::getDesignEntity() {
+    return designEntity;
+}

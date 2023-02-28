@@ -22,13 +22,21 @@ class Reference {
     Reference(ReferenceType ref, std::variant<AttributeReference, int, std::string> value);
 
  public:
-    static Reference createIdentityReference(std::string identity);
+    /**
+     * Factory method to create a Reference.
+     */
+    static Reference createReference(std::variant<AttributeReference, int, std::string>);
 
-    static Reference createIntegerReference(int intRef);
-
-    static Reference createAttributeReference(AttributeReference attrRef);
+    /**
+    * If the reference is an attribute, get its identity. Else, the function throws an error.
+    */
+    std::string getAttributeIdentity();
 
     bool isStringReference();
 
     bool isIntReference();
+
+    ReferenceType getReferenceType();
+
+    std::variant<AttributeReference, int, std::string> getValue();
 };

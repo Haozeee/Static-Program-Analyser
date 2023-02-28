@@ -3,16 +3,18 @@
 Reference::Reference(ReferenceType ref, std::variant<AttributeReference, int, std::string> value)
     : referenceType(ref), value(std::move(value)) {}
 
-Reference Reference::createIntegerReference(int intRef) {
-    return {ReferenceType::INTEGER, intRef};
+Reference Reference::createReference(std::variant<AttributeReference, int, std::string> value) {
+    if (std::holds_alternative<int>(value)) {
+        return {ReferenceType::INTEGER, value};
+    } else if (std::holds_alternative<std::string>(value)) {
+        return {ReferenceType::IDENT, value};
+    } else {
+        return {ReferenceType::ATTR_REF, value};
+    }
 }
 
-Reference Reference::createIdentityReference(std::string identity) {
-    return {ReferenceType::IDENT, identity};
-}
-
-Reference Reference::createAttributeReference(AttributeReference attrRef) {
-    return {ReferenceType::ATTR_REF, attrRef};
+std::string Reference::getAttributeIdentity() {
+    return std::get<AttributeReference>(value).getSynonym();
 }
 
 bool Reference::isStringReference() {
@@ -23,4 +25,12 @@ bool Reference::isStringReference() {
 bool Reference::isIntReference() {
     return referenceType == ReferenceType::INTEGER || (referenceType == ReferenceType::ATTR_REF &&
         std::get<AttributeReference>(value).isIntAttributeReference());
+}
+
+ReferenceType Reference::getReferenceType() {
+    return referenceType;
+}
+
+std::variant<AttributeReference, int, std::string> Reference::getValue() {
+    return value;
 }
