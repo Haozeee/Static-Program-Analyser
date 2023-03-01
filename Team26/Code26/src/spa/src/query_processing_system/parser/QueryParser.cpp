@@ -104,7 +104,7 @@ void QueryParser::parseTupleSelectClause() {
 }
 
 void QueryParser::parseBooleanSelectClause() {
-    //std::shared_ptr<Token> booleanToken = getNext();
+    // std::shared_ptr<Token> booleanToken = getNext();
     parseNext("BOOLEAN");
     auto selectClauses = std::make_shared<SelectClause>(SelectClauseReturnType::BOOLEAN);
     query->setSelectClause(selectClauses);

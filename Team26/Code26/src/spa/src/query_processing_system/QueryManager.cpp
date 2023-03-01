@@ -35,7 +35,6 @@ void QueryManager::process(const std::string& query, std::list<std::string> &res
 
         // Add to qps result
         results.insert(results.end(), queryResults.begin(), queryResults.end());
-
     } catch (QuerySemanticException) {
         addSemanticError(results);
     } catch (QuerySyntaxException) {
