@@ -1,0 +1,47 @@
+@startuml
+
+!include style.puml
+@startuml
+
+!include style.puml
+box PKB (To QPS)
+participant "QPS" as QPS LOGIC_COLOR
+participant “:ReadStorage” as ReadStorage LOGIC_COLOR
+participant “:StmtManager" as StmtManager LOGIC_COLOR
+participant ":ParentManager" as ParentManager LOGIC_COLOR
+participant “:PatternManager” as PatternManager LOGIC_COLOR
+
+end box
+activate QPS
+
+QPS -> ReadStorage: getStmtManager()
+activate ReadStorage
+ReadStorage --> QPS: StmtManager
+deactivate ReadStorage
+
+QPS -> StmtManager: getAllEntitiesEntries()
+Activate StmtManager
+StmtManager --> QPS: unordered_set<int>: result
+deactivate StmtManager
+
+QPS -> ReadStorage: getParentManager()
+activate ReadStorage
+ReadStorage --> QPS: parentManager
+deactivate ReadStorage
+
+QPS -> ParentManager: getAllRelationshipEntries()
+Activate ParentManager
+ParentManager --> QPS: unordered_map<int,int>: result
+deactivate ParentManager
+
+QPS -> ReadStorage: getPatternManager()
+activate ReadStorage
+ReadStorage --> QPS: patternManager
+deactivate ReadStorage
+
+QPS -> PatternManager: getAllPatternEntries()
+Activate PatternManager
+PatternManager --> QPS: unordered_map<int,int>: result
+deactivate PatternManager
+
+@enduml

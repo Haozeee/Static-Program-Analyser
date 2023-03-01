@@ -160,6 +160,6 @@ fs.readdir(resultDirPath, { withFileTypes: true }, async (err, resultDir) => {
 
     console.log(`url=https://docs.google.com/spreadsheets/d/${spreadsheetId}/preview#gid=${sheet.data.replies[0].addSheet.properties.sheetId}`)
   } else {
-    console.log(`url=All passed`)
+    console.log(`url="All passed"`)
   }
 })
