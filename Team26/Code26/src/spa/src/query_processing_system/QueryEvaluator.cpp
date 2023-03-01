@@ -48,6 +48,6 @@ void QueryEvaluator::evaluateSelectClause() {
         // Add entities to query result
         auto resultTable = ResultTable::createSingleColumnTable(syn->getIdent(), entities);
         queryResults.addResult(resultTable);
-        queryResults.setSelectedColumn(syn->getIdent());
+        queryResults.addSelectedColumn(syn->getIdent());
     }
 }

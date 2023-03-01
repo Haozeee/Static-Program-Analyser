@@ -6,13 +6,12 @@ void QueryDb::addResult(std::shared_ptr<ResultTable> toAdd) {
     results.push_back(toAdd);
 }
 
-void QueryDb::setSelectedColumn(std::string col) {
-    selectedSynonyms = col;
-    interestedColumns.insert(col);
+void QueryDb::addSelectedColumn(std::string col) {
+    selectedSynonyms.push_back(col);
 }
 
-std::unordered_map<std::string, std::unordered_set<std::string>> QueryDb::getInterestedResults() {
-    std::unordered_map<std::string, std::unordered_set<std::string>> res;
+std::vector<std::string> QueryDb::getInterestedResults() {
+    std::vector<std::string> res;
     if (resultTablesHasFalse()) {
         return res;
     }
@@ -28,9 +27,8 @@ std::unordered_map<std::string, std::unordered_set<std::string>> QueryDb::getInt
         }
     }
 
-    // Store the result into an unordered map
-    res.insert({selectedSynonyms, interestedResults->getColumnValues(selectedSynonyms)});
-    return res;
+    // Filter selected columns
+    return interestedResults->getInterestedValues(selectedSynonyms);
 }
 
 bool QueryDb::resultTablesHasFalse() {
