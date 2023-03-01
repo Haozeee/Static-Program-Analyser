@@ -1,6 +1,7 @@
 #include "ResultTable.h"
 #include <map>
 #include <iostream>
+#include <algorithm>
 
 ResultTable::ResultTable() = default;
 
@@ -175,7 +176,7 @@ std::unordered_set<std::string> ResultTable::getColumnValues(std::string colName
     return res;
 }
 
-std::vector<std::string> ResultTable::hasMatchingColumns(std::unordered_set<std::string> columnNamesToMatch) {
+TableRow ResultTable::hasMatchingColumns(std::unordered_set<std::string> columnNamesToMatch) {
     std::vector<std::string> res;
     for (auto const& [k, v] : columnNameMap) {
         if (columnNamesToMatch.count(v)) {
@@ -193,12 +194,27 @@ std::string ResultTable::getValueAt(int rowNumber, int columnNumber) const {
     return relations.at(rowNumber).at(columnNumber);
 }
 
-std::vector<std::string> ResultTable::getValuesAt(int rowNumber, std::vector<int> columnNumbers) const {
+TableRow ResultTable::getValuesAt(int rowNumber, std::vector<int> columnNumbers) const {
     auto row = relations.at(rowNumber);
     std::vector<std::string> res;
     for (auto col : columnNumbers) {
         res.push_back(row.at(col));
     }
+    return res;
+}
+
+TableRow ResultTable::getInterestedValues(std::vector<std::string> interestedColumns) const {
+    auto colNum = getColumnNumbers(interestedColumns);
+    std::unordered_set<std::string> values;
+    for (int i = 0; i < relations.size(); i++) {
+        auto rowValue = getValuesAt(i, colNum);
+        std::string s;
+        std::for_each(rowValue.begin(), rowValue.end(), [&](const std::string &piece) { s += (" " + piece); });
+        s.erase(0, 1);
+        values.insert(s);
+    }
+    TableRow res;
+    res.insert(res.end(), values.begin(), values.end());
     return res;
 }
 

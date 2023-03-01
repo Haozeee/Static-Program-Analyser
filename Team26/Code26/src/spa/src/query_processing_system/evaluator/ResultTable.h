@@ -131,7 +131,7 @@ class ResultTable {
      * @return A set containing the names of the matching columns. If there are no matching columns,
      * an empty set is returned.
      */
-    std::vector<std::string> hasMatchingColumns(std::unordered_set<std::string> columnNamesToMatch);
+    TableRow hasMatchingColumns(std::unordered_set<std::string> columnNamesToMatch);
 
     /**
      * Insert a row into this table. An exception is thrown if the row added does not match the dimensions
@@ -157,7 +157,16 @@ class ResultTable {
      * Given a row number i and a list of interested column numbers,
      * return the ith row containing only the values in the interested columns.
      */
-    std::vector<std::string> getValuesAt(int rowNumber, std::vector<int> columnNumbers) const;
+    TableRow getValuesAt(int rowNumber, std::vector<int> columnNumbers) const;
+
+    /**
+     * Given a list of interested columns, get a table with only the interested columns.
+     * For each row, combine the results together by appending the entire row into a string.
+     * Return a vector of strings at the end.
+     * @param interestedColumns The columns of the table that we are interested in.
+     * @return The interested results in the form of a vector of strings. The results should be distinct.
+     */
+    TableRow getInterestedValues(std::vector<std::string> interestedColumns) const;
 
     /**
      * Given a column name, get all the values under this column.

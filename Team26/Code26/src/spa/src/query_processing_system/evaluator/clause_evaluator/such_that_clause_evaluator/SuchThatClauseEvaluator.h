@@ -173,7 +173,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
 
     /**
      * An argument is ambiguous if it can refer to multiple design entities. For instance, in Follows(2, s),
-     * the right arg "s" can refer to a read, print, call or assign statement, hence it is ambiguous.
+     * the right arg "s" can refer to a read, print, call, assign... etc statement, hence it is ambiguous.
      * Whereas, in Modifies(5, v), the right arg "v" can only refer to variables and nothing else. Hence,
      * it is not ambiguous.
      */
@@ -184,14 +184,6 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     virtual void handleLeftWildcard() = 0;
 
     virtual void handleRightWildcard() = 0;
-
-    void handleWildcards() {
-        if (leftArg.getArgumentType() == ArgumentType::WILDCARD) {
-            handleLeftWildcard();
-        } else if (rightArg.getArgumentType() == ArgumentType::WILDCARD) {
-            handleRightWildcard();
-        }
-    }
 
  public:
     std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage) override {

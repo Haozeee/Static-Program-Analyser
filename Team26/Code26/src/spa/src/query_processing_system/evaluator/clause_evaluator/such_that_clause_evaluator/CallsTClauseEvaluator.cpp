@@ -12,3 +12,7 @@ std::unordered_map<std::string, std::unordered_set<std::string>>
 CallsTClauseEvaluator::getOppositeRelationshipManager(StoragePointer storage) {
     return {};
 }
+
+void CallsTClauseEvaluator::handleRightWildcard() {
+    rightArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::PROCEDURE);
+}
