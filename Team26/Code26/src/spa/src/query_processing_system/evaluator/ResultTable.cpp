@@ -1,6 +1,7 @@
 #include "ResultTable.h"
 #include <map>
 #include <iostream>
+#include <algorithm>
 
 ResultTable::ResultTable() = default;
 
