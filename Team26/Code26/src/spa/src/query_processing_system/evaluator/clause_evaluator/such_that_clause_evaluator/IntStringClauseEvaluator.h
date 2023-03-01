@@ -6,9 +6,6 @@
 #include <memory>
 
 class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string> {
- private:
-    std::unordered_set<std::string> evaluateNumberSynonymHelper(StoragePointer storage, int stmtNumber);
-
  protected:
     IntStringClauseEvaluator(Argument left, Argument right);
 
@@ -16,7 +13,7 @@ class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string
 
     void setRightArgResult(std::unordered_set<std::string> result) override;
 
-    void setLeftAndRightArgResult(std::unordered_map<std::string, std::unordered_set<std::string>> results) override;
+    void setLeftAndRightArgResult(std::unordered_map<int, std::unordered_set<std::string>> results) override;
 
     std::unordered_set<int> getLeftArgEntities(StoragePointer storage) override;
 
@@ -26,16 +23,11 @@ class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string
 
     void handleRightWildcard() override;
 
-    void evaluateSynonymSynonym(StoragePointer storage) override;
+    int getLeftArg() override;
 
-    void evaluateNumberSynonym(StoragePointer storage);
+    std::string getRightArg() override;
 
-    void evaluateSynonymString(StoragePointer storage);
+    bool isLeftArgAmbiguous() override;
 
-    void evaluateNumberString(StoragePointer storage);
-
-    void evaluateNumberWildcard(StoragePointer storage);
-
- public:
-    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage) override;
+    bool isRightArgAmbiguous() override;
 };

@@ -1,7 +1,11 @@
 #include "SelectClause.h"
 
-SelectClause::SelectClause(std::shared_ptr<std::vector<SelectClauseItem>> selectClauseItems) :
-selectClauseItems(selectClauseItems) {}
+SelectClause::SelectClause(std::shared_ptr<std::vector<SelectClauseItem>> selectClauseItems,
+                           SelectClauseReturnType selectClauseReturnType) :
+        selectClauseItems(selectClauseItems), selectClauseReturnType(selectClauseReturnType) {}
+
+SelectClause::SelectClause(SelectClauseReturnType selectClauseReturnType) :
+        selectClauseReturnType(selectClauseReturnType) {}
 
 bool SelectClause::operator==(const SelectClause &other) const {
     for (int i = 0; i < this->selectClauseItems->size(); i++) {
@@ -31,4 +35,8 @@ std::shared_ptr<std::vector<SelectClauseItem>> SelectClause::getSelectClauseItem
 std::string SelectClause::getSynonym(SelectClauseItem selectClauseItem) {
     std::shared_ptr<Synonym> synonym = std::get<std::shared_ptr<Synonym>>(selectClauseItem);
     return synonym->ident;
+}
+
+SelectClauseReturnType SelectClause::getSelectClauseReturnType() {
+    return this->selectClauseReturnType;
 }

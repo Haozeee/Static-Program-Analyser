@@ -18,13 +18,13 @@ std::unordered_set<ArgumentType> IntIntClause::getValidRightArgumentType() {
 
 std::unordered_set<DesignEntity> IntIntClause::getValidLeftDesignEntity() {
     return std::unordered_set<DesignEntity> {
-        DesignEntity::STMT,
-        DesignEntity::ASSIGN,
-        DesignEntity::WHILE,
-        DesignEntity::CALL,
-        DesignEntity::PRINT,
-        DesignEntity::READ,
-        DesignEntity::IF,
+            DesignEntity::STMT,
+            DesignEntity::ASSIGN,
+            DesignEntity::WHILE,
+            DesignEntity::CALL,
+            DesignEntity::PRINT,
+            DesignEntity::READ,
+            DesignEntity::IF,
     };
 }
 
