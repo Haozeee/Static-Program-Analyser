@@ -61,12 +61,12 @@ bool QueryParser::parseDeclaration() {
 // Example: Select v; Select a; Select p; Select c; Select s;
 void QueryParser::parseSelectClause() {
     parseNext("Select");
-    if (isTypeOf(TokenType::TOKEN_NAME)) {
+    if (isValueOf("BOOLEAN") && !query->containsSynonymInDeclaration(getToken()->getValue())) {
+        parseBooleanSelectClause();
+    } else if (isTypeOf(TokenType::TOKEN_NAME)) {
         parseSingleSelectClause();
     } else if (isValueOf("<")) {
         parseTupleSelectClause();
-    } else if (isValueOf("BOOLEAN") && !query->containsSynonymInDeclaration(getToken()->getValue())) {
-        parseBooleanSelectClause();
     } else {
         throw QueryParserException(getNext()->getValue()
                                     + QueryParserInvalidSelectClause);
@@ -104,7 +104,7 @@ void QueryParser::parseTupleSelectClause() {
 }
 
 void QueryParser::parseBooleanSelectClause() {
-    std::shared_ptr<Token> booleanToken = getNext();
+    //std::shared_ptr<Token> booleanToken = getNext();
     parseNext("BOOLEAN");
     auto selectClauses = std::make_shared<SelectClause>(SelectClauseReturnType::BOOLEAN);
     query->setSelectClause(selectClauses);

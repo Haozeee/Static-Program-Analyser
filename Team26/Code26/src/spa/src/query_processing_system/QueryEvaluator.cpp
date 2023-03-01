@@ -39,6 +39,7 @@ void QueryEvaluator::evaluatePatternClause() {
 }
 
 void QueryEvaluator::evaluateSelectClause() {
+    auto a = query->getSelectClause();
     auto selectClauses = query->getSelectClause()->getSelectClauseItems();
     // Loop through select clauses
     for (SelectClauseItem item : *selectClauses) {

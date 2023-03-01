@@ -29,6 +29,8 @@ class QueryDb {
      */
     bool resultTablesHasFalse();
 
+    std::vector<std::string> getBooleanResults(std::shared_ptr<ResultTable> interestedResults);
+
  public:
     QueryDb();
 
