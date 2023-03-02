@@ -3,7 +3,7 @@
 #include "program_knowledge_base/relationship/RelationshipManager.h"
 
 class CallsTManager : public RelationshipManager<std::string, std::string> {
-public:
+ public:
     bool insertRelationship(std::string first, std::string second){
         bool flag = RelationshipManager::insertRelationship(first, second);
         if (reversed_relationships_map.count(first)) {
