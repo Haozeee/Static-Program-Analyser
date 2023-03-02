@@ -39,6 +39,7 @@ void QueryEvaluator::evaluatePatternClause() {
 }
 
 void QueryEvaluator::evaluateSelectClause() {
+    auto a = query->getSelectClause();
     auto selectClauses = query->getSelectClause()->getSelectClauseItems();
     // Loop through select clauses
     for (SelectClauseItem item : *selectClauses) {
@@ -48,6 +49,6 @@ void QueryEvaluator::evaluateSelectClause() {
         // Add entities to query result
         auto resultTable = ResultTable::createSingleColumnTable(syn->getIdent(), entities);
         queryResults.addResult(resultTable);
-        queryResults.setSelectedColumn(syn->getIdent());
+        queryResults.addSelectedColumn(syn->getIdent());
     }
 }

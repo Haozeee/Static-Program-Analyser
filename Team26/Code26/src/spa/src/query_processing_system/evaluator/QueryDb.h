@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <string>
 #include <deque>
+#include <vector>
 #include "ResultTable.h"
 
 class QueryDb {
@@ -11,7 +12,7 @@ class QueryDb {
     /**
      * Store the synonyms that the user has selected in the query.
      */
-    std::string selectedSynonyms;
+    std::vector<std::string> selectedSynonyms;
 
     /**
      * Store a list of result tables. The result tables can come from the select clause or
@@ -22,12 +23,6 @@ class QueryDb {
     std::deque<std::shared_ptr<ResultTable>> results;
 
     /**
-     * The columns whose results are relevant to the final results. Initially, we are only
-     * interested in the columns of the selected synonyms.
-     */
-    std::unordered_set<std::string> interestedColumns;
-
-    /**
      * Checks if the list of results contains a result table that equates to false. This means that
      * there would be no final results as False and anything equals false. Hence, no need to join any tables
      * and we can exit early.
@@ -35,16 +30,18 @@ class QueryDb {
      */
     bool resultTablesHasFalse();
 
+    std::vector<std::string> getBooleanResults(std::shared_ptr<ResultTable> interestedResults);
+
  public:
     QueryDb();
 
     void addResult(std::shared_ptr<ResultTable> toAdd);
 
-    void setSelectedColumn(std::string col);
+    void addSelectedColumn(std::string col);
 
     /**
      * Join the tables that we are interested in to get the final results.
      * @return The final results.
      */
-    std::unordered_map<std::string, std::unordered_set<std::string>> getInterestedResults();
+    std::vector<std::string> getInterestedResults();
 };

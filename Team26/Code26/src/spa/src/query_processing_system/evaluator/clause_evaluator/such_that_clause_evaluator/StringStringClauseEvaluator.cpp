@@ -8,7 +8,6 @@ void StringStringClauseEvaluator::handleLeftWildcard() {
 }
 
 void StringStringClauseEvaluator::handleRightWildcard() {
-    // Different for Calls/CallsT, need to override there
     rightArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::VARIABLE);
 }
 

@@ -16,7 +16,8 @@ enum class SelectClauseReturnType {
 
 class SelectClause {
  private:
-    std::shared_ptr<std::vector<SelectClauseItem>> selectClauseItems;
+    std::shared_ptr<std::vector<SelectClauseItem>> selectClauseItems =
+            std::make_shared<std::vector<SelectClauseItem>>();
     SelectClauseReturnType selectClauseReturnType;
 
  public:
