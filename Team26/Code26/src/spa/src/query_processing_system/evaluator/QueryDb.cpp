@@ -6,19 +6,24 @@ void QueryDb::addResult(std::shared_ptr<ResultTable> toAdd) {
     results.push_back(toAdd);
 }
 
-void QueryDb::setSelectedColumn(std::string col) {
-    selectedSynonyms = col;
-    interestedColumns.insert(col);
+void QueryDb::addSelectedColumn(std::string col) {
+    selectedSynonyms.push_back(col);
 }
 
-std::unordered_map<std::string, std::unordered_set<std::string>> QueryDb::getInterestedResults() {
-    std::unordered_map<std::string, std::unordered_set<std::string>> res;
+std::vector<std::string> QueryDb::getInterestedResults() {
+    std::vector<std::string> res;
     if (resultTablesHasFalse()) {
+        if (selectedSynonyms.empty()) {
+            res.emplace_back("FALSE");
+        }
         return res;
     }
 
-    auto interestedResults = results.front();
-    results.pop_front();
+    std::shared_ptr<ResultTable> interestedResults;
+    if (!results.empty()) {
+        interestedResults = results.front();
+        results.pop_front();
+    }
 
     while (!results.empty()) {
         auto table = results.front();
@@ -28,8 +33,21 @@ std::unordered_map<std::string, std::unordered_set<std::string>> QueryDb::getInt
         }
     }
 
-    // Store the result into an unordered map
-    res.insert({selectedSynonyms, interestedResults->getColumnValues(selectedSynonyms)});
+    if (selectedSynonyms.empty()) {
+        return getBooleanResults(interestedResults);
+    }
+
+    // Filter selected columns
+    return interestedResults->getInterestedValues(selectedSynonyms);
+}
+
+std::vector<std::string> QueryDb::getBooleanResults(std::shared_ptr<ResultTable> interestedResults) {
+    std::vector<std::string> res;
+    if (interestedResults == nullptr || interestedResults->getNumberOfRows() > 0) {
+        res.emplace_back("TRUE");
+    } else {
+        res.emplace_back("FALSE");
+    }
     return res;
 }
 
