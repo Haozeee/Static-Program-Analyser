@@ -30,7 +30,7 @@ TEST_CASE("Test reading relationships for all managers") {
     ifManager->insertEntity(3);
     ifManager->insertEntity(9);
 
-    auto printManager = writeStorage->getPrintManager();
+    auto printManager = writeStorage->getPrintStmtNoManager();
     printManager->insertEntity(5);
     printManager->insertEntity(10);
     printManager->insertEntity(12);
@@ -38,7 +38,7 @@ TEST_CASE("Test reading relationships for all managers") {
     auto procedureManager = writeStorage->getProcedureManager();
     procedureManager->insertEntity("test1");
     
-    auto readManager = writeStorage->getReadManager();
+    auto readManager = writeStorage->getReadStmtNoManager();
     readManager->insertEntity(1);
     
     auto stmtManager = writeStorage->getStmtManager();

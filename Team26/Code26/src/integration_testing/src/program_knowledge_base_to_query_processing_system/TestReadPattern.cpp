@@ -25,7 +25,7 @@ TEST_CASE("Test reading pattern") {
     auto procedureManager = writeStorage->getProcedureManager();
     procedureManager->insertEntity("test1");
 
-    auto readManager = writeStorage->getReadManager();
+    auto readManager = writeStorage->getReadStmtNoManager();
     readManager->insertEntity(3);
 
     auto stmtManager = writeStorage->getStmtManager();

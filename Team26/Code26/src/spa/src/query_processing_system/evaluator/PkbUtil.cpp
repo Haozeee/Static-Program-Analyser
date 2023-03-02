@@ -60,11 +60,11 @@ std::unordered_set<int> PkbUtil::getIntEntitiesFromPkb(std::shared_ptr<ReadStora
         case DesignEntity::STMT:
             return storage->getStmtManager()->getAllEntitiesEntries();
         case DesignEntity::READ:
-            return storage->getReadManager()->getAllEntitiesEntries();
+            return storage->getReadStmtNoManager()->getAllEntitiesEntries();
         case DesignEntity::CONSTANT:
             return storage->getConstantManager()->getAllEntitiesEntries();
         case DesignEntity::PRINT:
-            return storage->getPrintManager()->getAllEntitiesEntries();
+            return storage->getPrintStmtNoManager()->getAllEntitiesEntries();
         case DesignEntity::IF:
             return storage->getIfManager()->getAllEntitiesEntries();
         case DesignEntity::CALL:

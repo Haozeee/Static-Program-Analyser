@@ -5,8 +5,8 @@
 EntityStore::EntityStore(std::shared_ptr<WriteStorage> storage) {
     procedureManager = storage->getProcedureManager();
     statementManager = storage->getStmtManager();
-    readManager = storage->getReadManager();
-    printManager = storage->getPrintManager();
+    readManager = storage->getReadStmtNoManager();
+    printManager = storage->getPrintStmtNoManager();
     assignManager = storage->getAssignManager();
     callManager = storage->getCallManager();
     whileManager = storage->getWhileManager();
