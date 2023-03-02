@@ -31,14 +31,14 @@ TEST_CASE("Test reading entity for all manager") {
     auto ifManager = writeStorage->getIfManager();
     ifManager->insertEntity(3);
 
-    auto printManager = writeStorage->getPrintManager();
+    auto printManager = writeStorage->getPrintStmtNoManager();
     printManager->insertEntity(8);
 
     auto procedureManager = writeStorage->getProcedureManager();
     procedureManager->insertEntity("test1");
     procedureManager->insertEntity("test2");
 
-    auto readManager = writeStorage->getReadManager();
+    auto readManager = writeStorage->getReadStmtNoManager();
     readManager->insertEntity(10);
     readManager->insertEntity(11);
 
