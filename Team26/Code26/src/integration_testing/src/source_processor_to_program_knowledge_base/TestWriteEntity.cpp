@@ -79,7 +79,7 @@ TEST_CASE("Test insert entity for all managers") {
     REQUIRE(ifManager->getAllEntitiesEntries() == ifSet);
 
     // test PrintManager
-    auto printManager = readStorage->getPrintManager();
+    auto printManager = readStorage->getPrintStmtNoManager();
     std::unordered_set<int> printSet = {8};
 
     REQUIRE(printManager->contains(8));
@@ -94,7 +94,7 @@ TEST_CASE("Test insert entity for all managers") {
     REQUIRE(procedureManager->getAllEntitiesEntries() == procedureSet);
 
     // test ReadManager
-    auto readManager = readStorage->getReadManager();
+    auto readManager = readStorage->getReadStmtNoManager();
     std::unordered_set<int> readSet = {10, 11};
 
     REQUIRE(readManager->contains(10));
