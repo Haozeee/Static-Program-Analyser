@@ -38,6 +38,7 @@ class RelationshipExtractor : public BaseExtractor, IRelationshipExtractor {
     void extractIf(std::shared_ptr<IfNode> node) override;
     void extractExpr(std::shared_ptr<ExprNode> node) override;
     void extractCondExpr(std::shared_ptr<CondExprNode> node) override;
+
  public:
     explicit RelationshipExtractor(std::shared_ptr<IRelationshipStore> storage);
 };

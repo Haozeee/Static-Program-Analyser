@@ -57,7 +57,7 @@ void RelationshipExtractor::extractCall(std::shared_ptr<CallNode> node) {
 void RelationshipExtractor::extractWhile(std::shared_ptr<WhileNode> node) {
     extractCondExpr(node->condExprNode);
     parentIndexStack.emplace_back(node->stmtIndex);
-    whileStack.push_back(node->stmtIndex); // CFG
+    whileStack.push_back(node->stmtIndex);  // CFG
     extractStmtList(node->stmtListNode);
     parentIndexStack.pop_back();
     // CFG
