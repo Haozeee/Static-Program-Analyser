@@ -5,10 +5,10 @@ ModifiesPClauseEvaluator::ModifiesPClauseEvaluator(Argument left, Argument right
 
 std::unordered_map<std::string, std::unordered_set<std::string>>
 ModifiesPClauseEvaluator::getRelationshipManager(StoragePointer storage) {
-    return {};
+    return storage->getModifiesPManager()->getAllRelationshipEntries();
 }
 
 std::unordered_map<std::string, std::unordered_set<std::string>>
 ModifiesPClauseEvaluator::getOppositeRelationshipManager(StoragePointer storage) {
-    return {};
+    return storage->getModifiesPManager()->getAllReversedRelationshipEntries();
 }

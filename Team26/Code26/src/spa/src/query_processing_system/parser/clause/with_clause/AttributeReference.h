@@ -7,7 +7,7 @@
 #include "../../Synonym.h"
 
 const char statementNum[] = "stmt#";
-const char value[] = "value";
+const char constantValue[] = "value";
 const char varName[] = "varName";
 const char procName[] = "procName";
 
@@ -38,7 +38,7 @@ class AttributeReference {
      */
     bool isIntAttributeReference();
 
-    std::string getSynonym();
+    std::string getSynonym() const;
 
-    DesignEntity getDesignEntity();
+    DesignEntity getDesignEntity() const;
 };
