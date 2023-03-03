@@ -13,6 +13,16 @@ class RelationshipExtractor : public BaseExtractor, IRelationshipExtractor {
     std::vector<std::shared_ptr<std::vector<int>>> followsStack;
     std::vector<int> parentIndexStack;
 
+    std::vector<int> statementStack;
+    std::vector<int> whileStack;
+    std::vector<int> ifStack;
+
+    std::vector<int> ifThenStatementStack;
+    std::vector<int> ifElseStatementStack;
+
+    void insertFlow(int stmtIndex);
+    void resetFlow(int stmtIndex);
+
     void insertUsesGroup(const std::shared_ptr<VariableNameNode>& node);
     void insertModifiesGroup(const std::shared_ptr<VariableNameNode>& node);
     void insertExprUsesGroup();
