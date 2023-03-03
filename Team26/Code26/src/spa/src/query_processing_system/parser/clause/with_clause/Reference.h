@@ -32,6 +32,11 @@ class Reference {
     */
     std::string getAttributeIdentity();
 
+    /**
+    * If the reference is an attribute, get its design entity. Else, the function throws an error.
+    */
+    DesignEntity getAttributeDesignEntity();
+
     bool isStringReference();
 
     bool isIntReference();

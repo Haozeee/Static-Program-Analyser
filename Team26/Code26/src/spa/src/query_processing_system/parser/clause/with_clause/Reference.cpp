@@ -17,6 +17,10 @@ std::string Reference::getAttributeIdentity() {
     return std::get<AttributeReference>(value).getSynonym();
 }
 
+DesignEntity Reference::getAttributeDesignEntity() {
+    return std::get<AttributeReference>(value).getDesignEntity();
+}
+
 bool Reference::isStringReference() {
     return referenceType == ReferenceType::IDENT || (referenceType == ReferenceType::ATTR_REF &&
         std::get<AttributeReference>(value).isStringAttributeReference());
