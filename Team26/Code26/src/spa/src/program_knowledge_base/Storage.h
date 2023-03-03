@@ -89,7 +89,7 @@ class Storage {
         return storage->getPrintStmtNoManager();
     }
 
-    std::shared_ptr<Entity_Read_Or_Write<int>> getPrintVariableManager() {
+    std::shared_ptr<Entity_Read_Or_Write<std::string>> getPrintVariableManager() {
         return storage->getPrintVariableManager();
     }
 
@@ -101,7 +101,7 @@ class Storage {
         return storage->getReadStmtNoManager();
     }
 
-    std::shared_ptr<Entity_Read_Or_Write<int>> getReadVariableManager() {
+    std::shared_ptr<Entity_Read_Or_Write<std::string>> getReadVariableManager() {
         return storage->getReadVariableManager();
     }
 
