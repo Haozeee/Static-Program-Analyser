@@ -4,8 +4,8 @@
 #include <utility>
 #include <iostream>
 #include <fstream>
-#include "source_processor/storage/interface/IStore.h"
-#include "source_processor/storage/Store.h"
+#include "source_processor/storage_writer/interface/IStore.h"
+#include "source_processor/storage_writer/Store.h"
 #include "source_processor/SourceManager.h"
 
 TEST_CASE("Test insert pattern") {

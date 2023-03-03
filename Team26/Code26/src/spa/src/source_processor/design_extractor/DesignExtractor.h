@@ -2,7 +2,7 @@
 
 #include <memory>
 #include "source_processor/node/ProgramNode.h"
-#include "source_processor/storage/Store.h"
+#include "source_processor/storage_writer/Store.h"
 #include "program_knowledge_base/StorageManager.h"
 #include "source_processor/design_extractor/extractor/BaseExtractor.h"
 

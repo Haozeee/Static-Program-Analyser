@@ -2,7 +2,7 @@
 
 #include <memory>
 #include <string>
-#include "source_processor/storage/interface/IRelationshipStore.h"
+#include "source_processor/storage_writer/interface/IRelationshipStore.h"
 #include "program_knowledge_base/StorageManager.h"
 
 class RelationshipStore : public IRelationshipStore {
@@ -15,6 +15,7 @@ class RelationshipStore : public IRelationshipStore {
     std::shared_ptr<IWriteRelationshipManager<int, std::string>> modifiesSManager;
     std::shared_ptr<IWriteRelationshipManager<std::string, std::string>> usesPManager;
     std::shared_ptr<IWriteRelationshipManager<std::string, std::string>> modifiesPManager;
+    std::shared_ptr<IWriteRelationshipManager<int, int>> nextManager;
 
  public:
     explicit RelationshipStore(std::shared_ptr<WriteStorage> storage);
@@ -25,4 +26,5 @@ class RelationshipStore : public IRelationshipStore {
     void insertModifiesSRelationship(const int &stmtNo, const std::string &variableName) override;
     void insertUsesPRelationship(std::string  &procedureName, const std::string &variableName) override;
     void insertModifiesPRelationship(std::string  &procedureName, const std::string &variableName) override;
+    void insertNextRelationship(int previousStmtNo, int currStmtNo) override;
 };

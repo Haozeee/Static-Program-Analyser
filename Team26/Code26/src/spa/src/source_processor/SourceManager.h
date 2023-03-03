@@ -2,7 +2,7 @@
 
 #include <string>
 #include <memory>
-#include "source_processor/storage/interface/IStore.h"
+#include "source_processor/storage_writer/interface/IStore.h"
 
 class SourceManager {
  public:

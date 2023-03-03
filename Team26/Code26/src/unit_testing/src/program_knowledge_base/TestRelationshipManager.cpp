@@ -299,10 +299,11 @@ TEST_CASE("ParentManager _insert int,int,WriteOnlyRelationshipManager") {
     auto readStorage = storageManager->getReadStorage();
     auto parentManagerWrite = writeStorage->getParentManager();
     auto parentTManagerWrite = writeStorage->getParentTManager();
-    REQUIRE(parentManagerWrite->insertRelationship(1, 2,parentTManagerWrite));
-    REQUIRE(parentManagerWrite->insertRelationship(1, 3, parentTManagerWrite));
-    REQUIRE(parentManagerWrite->insertRelationship(3, 4, parentTManagerWrite));
     REQUIRE(parentManagerWrite->insertRelationship(4, 5, parentTManagerWrite));
+    REQUIRE(parentManagerWrite->insertRelationship(4, 6, parentTManagerWrite));
+    REQUIRE(parentManagerWrite->insertRelationship(3, 4, parentTManagerWrite));
+    REQUIRE(parentManagerWrite->insertRelationship(1, 3, parentTManagerWrite));
+    REQUIRE(parentManagerWrite->insertRelationship(1, 2,parentTManagerWrite));
 
     auto parentManagerRead = readStorage->getParentManager();
     auto parentTManagerRead = readStorage->getParentTManager();
@@ -310,7 +311,7 @@ TEST_CASE("ParentManager _insert int,int,WriteOnlyRelationshipManager") {
     auto map = parentManagerRead->getAllRelationshipEntries();
     auto reversedMap = parentManagerRead->getAllReversedRelationshipEntries();
     REQUIRE(map.size() == 3);
-    REQUIRE(reversedMap.size() == 4);
+    REQUIRE(reversedMap.size() == 5);
     auto set = parentManagerRead->getAllRelationshipEntries()[1];
     auto reversedSet = parentManagerRead->getAllReversedRelationshipEntries()[3];
     REQUIRE(set.size() == 2);
@@ -321,10 +322,10 @@ TEST_CASE("ParentManager _insert int,int,WriteOnlyRelationshipManager") {
     map = parentTManagerRead->getAllRelationshipEntries();
     reversedMap = parentTManagerRead->getAllReversedRelationshipEntries();
     REQUIRE(map.size() == 3);
-    REQUIRE(reversedMap.size() == 4);
+    REQUIRE(reversedMap.size() == 5);
     set = parentTManagerRead->getAllRelationshipEntries()[1];
     reversedSet = parentTManagerRead->getAllReversedRelationshipEntries()[4];
-    REQUIRE(set.size() == 4);
+    REQUIRE(set.size() == 5);
     REQUIRE(reversedSet.size() == 2);
     REQUIRE(set.find(2) != set.end());
     REQUIRE(reversedSet.find(3) != reversedSet.end());

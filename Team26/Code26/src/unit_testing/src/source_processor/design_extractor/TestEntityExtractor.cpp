@@ -3,7 +3,7 @@
 #include "MockStore.h"
 #include "TestUtil.h"
 #include "source_processor/design_extractor/extractor/EntityExtractor.h"
-#include "source_processor/storage/interface/IStore.h"
+#include "source_processor/storage_writer/interface/IStore.h"
 
 TEST_CASE("Test Entity Extractor") {
     SECTION("Single Procedure") {
