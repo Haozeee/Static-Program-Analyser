@@ -3,7 +3,7 @@
 #include <memory>
 #include "source_processor/design_extractor/interface/IPatternExtractor.h"
 #include "source_processor/design_extractor/extractor/BaseExtractor.h"
-#include "source_processor/storage/interface/IPatternStore.h"
+#include "source_processor/storage_writer/interface/IPatternStore.h"
 
 
 class PatternExtractor : public BaseExtractor, public IPatternExtractor {

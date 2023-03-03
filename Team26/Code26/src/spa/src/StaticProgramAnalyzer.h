@@ -4,7 +4,7 @@
 #include <memory>
 #include "source_processor/SourceManager.h"
 #include "query_processing_system/QueryManager.h"
-#include "source_processor/storage/Store.h"
+#include "source_processor/storage_writer/Store.h"
 #include "program_knowledge_base/StorageManager.h"
 
 class StaticProgramAnalyzer {

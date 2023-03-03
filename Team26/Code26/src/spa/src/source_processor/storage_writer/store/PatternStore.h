@@ -2,7 +2,7 @@
 
 #include <string>
 #include <memory>
-#include "source_processor/storage/interface/IPatternStore.h"
+#include "source_processor/storage_writer/interface/IPatternStore.h"
 #include "program_knowledge_base/StorageManager.h"
 
 class PatternStore : public IPatternStore {

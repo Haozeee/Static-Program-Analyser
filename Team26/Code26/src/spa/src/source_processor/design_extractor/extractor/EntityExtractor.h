@@ -4,7 +4,7 @@
 #include <string>
 #include "source_processor/design_extractor/extractor/BaseExtractor.h"
 #include "source_processor/design_extractor/interface/IEntityExtractor.h"
-#include "source_processor/storage/interface/IEntityStore.h"
+#include "source_processor/storage_writer/interface/IEntityStore.h"
 
 class EntityExtractor : public BaseExtractor, IEntityExtractor {
  private:
