@@ -691,3 +691,4 @@ Team26/Tests26/results/*
 .vscode/settings.json
 Team26/Tests26/testing_tools/keys.json
 
+*.Identifier

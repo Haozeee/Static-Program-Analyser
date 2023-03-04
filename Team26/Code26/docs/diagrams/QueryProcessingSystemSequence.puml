@@ -1,0 +1,129 @@
+@startuml
+
+!include style.puml
+box QPS
+participant ":UI" as UI LOGIC_COLOR
+participant ":QueryManager" as QueryManager LOGIC_COLOR
+participant ":QueryTokenizer" as QueryTokenizer LOGIC_COLOR
+participant ":QueryParser" as QueryParser LOGIC_COLOR
+participant ":Query" as Query LOGIC_COLOR
+participant ":QueryEvaluator" as QueryEvaluator LOGIC_COLOR
+participant ":QueryDb" as QueryDb LOGIC_COLOR
+participant ":Clause" as Clause LOGIC_COLOR
+participant ":ClauseEvaluator" as ClauseEvaluator LOGIC_COLOR
+participant ":ReadOnlyStorage" as ReadOnlyStorage LOGIC_COLOR
+end box
+activate UI
+
+UI -> QueryManager : processQuery(string: query, \n list<string>: results, ReadOnlyStorage: storage)
+activate QueryManager
+
+create QueryTokenizer
+QueryManager -> QueryTokenizer: QueryTokenizer(string: query)
+activate QueryTokenizer
+
+QueryTokenizer --> QueryManager: QueryTokenizer
+deactivate QueryTokenizer
+
+QueryManager -> QueryTokenizer: tokenize()
+activate QueryTokenizer
+
+QueryTokenizer --> QueryManager: list<Tokens>
+deactivate QueryTokenizer
+
+create QueryParser
+QueryManager -> QueryParser : QueryParser(list<Tokens>: query)
+activate QueryParser
+
+QueryParser --> QueryManager: QueryParser
+deactivate QueryParser
+
+QueryManager -> QueryParser: parse()
+activate QueryParser
+
+create Query
+QueryParser -> Query: Query()
+activate Query
+
+loop For each parsed clause
+    Create Clause
+    Query -> Clause: Clause()
+    activate Clause
+
+    Clause -> Query: clause
+    deactivate Clause
+end
+
+Query --> QueryParser: Query
+deactivate Query
+
+QueryParser --> QueryManager: Query
+deactivate QueryParser
+
+create QueryEvaluator
+QueryManager -> QueryEvaluator: QueryEvaluator(Query: query, ReadOnlyStorage: storage)
+activate QueryEvaluator
+
+create QueryDb
+QueryEvaluator -> QueryDb: QueryDb()
+activate QueryDb
+
+QueryDb -> QueryEvaluator: queryDb
+deactivate QueryDb
+
+QueryEvaluator -> QueryManager: evaluator
+deactivate QueryEvaluator
+
+QueryManager->QueryEvaluator: evaluate()
+activate QueryEvaluator
+
+Loop For each clause
+   QueryEvaluator-> Clause: getClauseEvaluator()
+   activate Clause
+
+   create ClauseEvaluator
+   Clause -> ClauseEvaluator: ClauseEvaluator()
+   activate ClauseEvaluator
+
+   ClauseEvaluator -> Clause: evaluator
+   deactivate ClauseEvaluator
+
+   Clause -> QueryEvaluator: evaluator
+   deactivate Clause
+
+   QueryEvaluator -> ClauseEvaluator: evaluateClause()
+   activate ClauseEvaluator
+
+   ClauseEvaluator -> ReadOnlyStorage: read from pkb
+   activate ReadOnlyStorage
+
+   ReadOnlyStorage -> ClauseEvaluator: pkbResults
+   deactivate ReadOnlyStorage
+
+   ClauseEvaluator -> QueryEvaluator: clauseResult
+   deactivate ClauseEvaluator
+
+   QueryEvaluator -> QueryDb: addClauseResult(clauseResult)
+   activate QueryDb
+
+   QueryDb->QueryEvaluator
+   deactivate QueryDb
+
+    destroy ClauseEvaluator
+  end
+
+QueryEvaluator --> QueryManager: queryDb
+deactivate QueryEvaluator
+
+QueryManager -> QueryDb: getInterestedResults()
+activate QueryDb
+
+QueryDb -> QueryManager: queryResults
+deactivate QueryDb
+
+QueryManager --> UI: queryResults
+deactivate QueryManager
+
+destroy Query
+
+@enduml

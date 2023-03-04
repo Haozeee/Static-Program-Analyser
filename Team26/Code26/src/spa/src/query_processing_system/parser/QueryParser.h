@@ -36,6 +36,14 @@ class QueryParser : public AbstractParser {
      */
     void parseSelectClause();
 
+    void parseSingleSelectClause();
+
+    void parseTupleSelectClause();
+
+    SelectClauseItem parseReturnValue();
+
+    void parseBooleanSelectClause();
+
     /**
      * Parses a Synonym.
      *
@@ -46,13 +54,15 @@ class QueryParser : public AbstractParser {
     /**
      * Parses Such That Clause if any.
      */
-    bool parseIfSuchThatClause();
+    bool hasSuchThatClause();
 
     /**
      * Handles parsing of relRef:
      * Follows | FollowsT | Parent | ParentT | UsesS | UsesP | ModifiesS | ModifiesP
      */
     void parseRelRef();
+
+    void parseMultipleRelRef();
 
     /**
      * Parse Arguments of any relRef relationships.
@@ -65,9 +75,11 @@ class QueryParser : public AbstractParser {
     /**
      * Parses Assign Pattern Clause if any.
      */
-    bool parseIfAssignPatternClause();
+    bool hasPatternClause();
 
-    void parseAssignPatternClause();
+    void parsePatternClause();
+
+    void parseMultiplePatternClause();
 
     StringExpression parseExpression();
 
@@ -76,6 +88,8 @@ class QueryParser : public AbstractParser {
      * Parses ending semicolon if any and throws exception.
      */
     void parseEndingUnexpectedToken();
+
+    void parseNextIfNextEqualsTo(std::string nextValue, std::string errorMessage);
 
  public:
     /**

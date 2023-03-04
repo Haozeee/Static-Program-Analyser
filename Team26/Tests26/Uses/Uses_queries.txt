@@ -1,17 +1,17 @@
 1 - Uses: stmt, _
 stmt s;
 Select s such that Uses(s, _)
-3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 20, 22, 23, 24, 25, 27, 28
+3, 4, 5, 6, 8, 9, 10, 11, 13, 14, 15, 17, 18, 20, 22, 23, 25, 27, 28
 5000
 2 - Uses: stmt, entRef
 stmt s;
 Select s such that Uses(s, "x")
-3, 4, 5, 6, 8, 9, 11, 12, 27
+3, 4, 5, 6, 8, 9, 11, 27
 5000
 3 - Uses: stmt, variable
 stmt s; variable v;
 Select s such that Uses(s, v)
-3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 20, 22, 23, 24, 25, 27, 28
+3, 4, 5, 6, 8, 9, 10, 11, 13, 14, 15, 17, 18, 20, 22, 23, 25, 27, 28
 5000
 4 - Uses: assign, _
 assign a;

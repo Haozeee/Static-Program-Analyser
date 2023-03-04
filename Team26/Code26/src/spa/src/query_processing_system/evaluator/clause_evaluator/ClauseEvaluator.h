@@ -7,6 +7,9 @@
 using StoragePointer = std::shared_ptr<ReadStorage>;
 
 class ClauseEvaluator {
+ protected:
+    std::shared_ptr<ResultTable> clauseResultTable = std::make_shared<ResultTable>();
+
  public:
     virtual ~ClauseEvaluator() = default;
     /**

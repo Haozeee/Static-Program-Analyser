@@ -1,0 +1,65 @@
+@startuml
+
+!include style.puml
+box Rental
+participant ":UI" as UI LOGIC_COLOR
+participant ":BookingManager" as Booking LOGIC_COLOR
+participant ":VehicleManager" as Vehicle LOGIC_COLOR
+participant ":FareManager" as Fare LOGIC_COLOR
+participant ":PaymentManager" as Payment LOGIC_COLOR
+end box
+activate UI
+
+create Booking
+UI -> Booking : BookingManager()
+activate Booking
+
+Booking -> UI : BookingManager
+deactivate Booking
+
+UI -> Booking : submitPreferences(Prefrences)
+activate Booking
+
+Booking -> UI
+deactivate Booking
+
+UI -> Booking : GetRentalOptions()
+activate Booking
+
+Booking -> Vehicle : getAvailableVehicles(VehiclePreferences)
+activate Vehicle
+Vehicle -> Booking : list<Vehicles> availableVehicles
+deactivate Vehicle
+
+loop For each available vehicles
+    Booking -> Fare : getFare(Vehicle, RoutingPreference)
+    activate Fare
+
+    Fare -> Booking : Fare
+    deactivate Fare
+end
+
+Booking -> UI : list<BookingOption>
+deactivate Booking
+
+UI -> Booking : makeBooking(BookingOption)
+activate Booking
+
+Booking -> Payment : makePayment(Amount)
+activate Payment
+
+Payment-> Booking : paymentResults
+deactivate Payment
+
+alt paymentResultsSuccess
+    Booking -> Vehicle : bookVehicle(Vehicle)
+    activate Vehicle
+
+    Vehicle -> Booking : bool
+    deactivate Vehicle
+end
+
+Booking -> UI : bool
+deactivate Booking
+
+@enduml

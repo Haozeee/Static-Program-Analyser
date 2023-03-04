@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include "source_processor/design_extractor/extractor/BaseExtractor.h"
-#include "source_processor/storage/interface/IRelationshipStore.h"
+#include "source_processor/storage_writer/interface/IRelationshipStore.h"
 #include "source_processor/design_extractor/interface/IRelationshipExtractor.h"
 #include "source_processor/storage/interface/IEntityStore.h"
 #include "program_knowledge_base/StorageManager.h"
@@ -23,6 +23,16 @@ class RelationshipExtractor : public BaseExtractor, IRelationshipExtractor {
 
     std::vector<std::shared_ptr<std::vector<int>>> followsStack;
     std::vector<int> parentIndexStack;
+
+    std::vector<int> statementStack;
+    std::vector<int> whileStack;
+    std::vector<int> ifStack;
+
+    std::vector<int> ifThenStatementStack;
+    std::vector<int> ifElseStatementStack;
+
+    void insertFlow(int stmtIndex);
+    void resetFlow(int stmtIndex);
 
     void insertUsesGroup(const std::shared_ptr<VariableNameNode>& node);
     void insertModifiesGroup(const std::shared_ptr<VariableNameNode>& node);

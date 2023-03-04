@@ -1,8 +1,7 @@
 #include "RelationshipExtractor.h"
 #include <utility>
 
-RelationshipExtractor::RelationshipExtractor(std::shared_ptr<IRelationshipStore> relationshipStore,
-        std::shared_ptr<ReadStorage> readStorage) : BaseExtractor() {
+RelationshipExtractor::RelationshipExtractor(std::shared_ptr<IRelationshipStore> relationshipStore) {
     this->relationshipStore = std::move(relationshipStore);
     procedureManager = readStorage->getProcedureManager();
 }
@@ -28,6 +27,11 @@ void RelationshipExtractor::extractStmtList(std::shared_ptr<StmtListNode> node) 
 
 void RelationshipExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
     BaseExtractor::extractStmt(node);
+
+    // CFG
+    insertFlow(node->stmtIndex);
+    resetFlow(node->stmtIndex);
+
     node->evaluate(*this);
 
     std::shared_ptr<std::vector<int>> currentFollowsNesting = followsStack.back();
@@ -57,15 +61,29 @@ void RelationshipExtractor::extractAssign(std::shared_ptr<AssignNode> node) {
 void RelationshipExtractor::extractWhile(std::shared_ptr<WhileNode> node) {
     extractCondExpr(node->condExprNode);
     parentIndexStack.emplace_back(node->stmtIndex);
+    whileStack.push_back(node->stmtIndex);  // CFG
     extractStmtList(node->stmtListNode);
     parentIndexStack.pop_back();
+    // CFG
+    insertFlow(whileStack.back());
+    resetFlow(whileStack.back());
+    whileStack.pop_back();
+    // CFG
 }
 
 void RelationshipExtractor::extractIf(std::shared_ptr<IfNode> node) {
     extractCondExpr(node->condExprNode);
     parentIndexStack.emplace_back(node->stmtIndex);
+    ifStack.emplace_back(node->stmtIndex);
     extractStmtList(node->thenStmtListNode);
+    ifThenStatementStack = statementStack;
+    resetFlow(ifStack.back());
     extractStmtList(node->elseStmtListNode);
+    ifElseStatementStack = statementStack;
+    statementStack.clear();
+    statementStack.insert(statementStack.end(), ifThenStatementStack.begin(), ifThenStatementStack.end());
+    statementStack.insert(statementStack.end(), ifElseStatementStack.begin(), ifElseStatementStack.end());
+    ifStack.pop_back();
     parentIndexStack.pop_back();
 }
 
@@ -132,4 +150,18 @@ void RelationshipExtractor::insertModifiesGroup(const std::shared_ptr<VariableNa
     }
 }
 
+void RelationshipExtractor::insertFlow(int stmtIndex) {
+    for (auto& prevStmtIndex : statementStack) {
+        relationshipStore->insertNextRelationship(prevStmtIndex, stmtIndex);
+    }
+}
 
+/**
+ * This function clears the statement stacks and sets the stmtIndex as the previous index (first in stack).
+ * @param stmtIndex The current index to be tracked as previous index after reset.
+ *
+ * */
+void RelationshipExtractor::resetFlow(int stmtIndex) {
+    statementStack.clear();
+    statementStack.emplace_back(stmtIndex);
+}
