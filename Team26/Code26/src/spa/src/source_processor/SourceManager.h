@@ -3,6 +3,7 @@
 #include <string>
 #include <memory>
 #include "source_processor/storage_writer/interface/IStore.h"
+#include "program_knowledge_base/StorageManager.h"
 
 class SourceManager {
  public:

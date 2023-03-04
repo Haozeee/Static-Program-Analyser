@@ -7,7 +7,6 @@
 #include "source_processor/design_extractor/extractor/BaseExtractor.h"
 #include "source_processor/storage_writer/interface/IRelationshipStore.h"
 #include "source_processor/design_extractor/interface/IRelationshipExtractor.h"
-#include "source_processor/storage/interface/IEntityStore.h"
 #include "program_knowledge_base/StorageManager.h"
 
 class RelationshipExtractor : public BaseExtractor, IRelationshipExtractor {
