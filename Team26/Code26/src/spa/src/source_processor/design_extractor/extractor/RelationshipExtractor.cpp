@@ -1,7 +1,8 @@
 #include "RelationshipExtractor.h"
 #include <utility>
 
-RelationshipExtractor::RelationshipExtractor(std::shared_ptr<IRelationshipStore> relationshipStore, std::shared_ptr<ReadStorage> readStorage) {
+RelationshipExtractor::RelationshipExtractor(std::shared_ptr<IRelationshipStore> relationshipStore,
+                                             std::shared_ptr<ReadStorage> readStorage) {
     this->relationshipStore = std::move(relationshipStore);
     procedureManager = readStorage->getProcedureManager();
 }

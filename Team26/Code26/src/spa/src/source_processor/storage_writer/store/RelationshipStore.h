@@ -26,6 +26,7 @@ class RelationshipStore : public IRelationshipStore {
     void insertModifiesSRelationship(const int &stmtNo, const std::string &variableName) override;
     void insertUsesPRelationship(std::string  &procedureName, const std::string &variableName) override;
     void insertModifiesPRelationship(std::string  &procedureName, const std::string &variableName) override;
-    void insertCallsRelationship(const int &stmtNo, const std::string &callerName, const std::string &calleeName) override;
+    void insertCallsRelationship(const int &stmtNo, const std::string &callerName,
+                                 const std::string &calleeName) override;
     void insertNextRelationship(int previousStmtNo, int currStmtNo) override;
 };
