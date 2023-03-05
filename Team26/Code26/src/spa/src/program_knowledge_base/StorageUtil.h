@@ -27,8 +27,6 @@
 #include "program_knowledge_base/relationship/relationship_child_managers/CallPManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/CallSManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/CallsTManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/CallsTManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/NextManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/IfCondManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/WhileCondManager.h"
 
