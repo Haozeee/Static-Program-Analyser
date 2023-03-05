@@ -25,9 +25,9 @@
 #include "program_knowledge_base/relationship/relationship_child_managers/ModifiesSManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/NextManager.h"
 
-#include "program_knowledge_base/relationship/relationship_child_managers/CallsManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/CallsPTManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/CallsPSManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/CallPManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/CallSManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/CallsTManager.h"
 
 class StorageUtil {
  private:
@@ -46,9 +46,10 @@ class StorageUtil {
 
     std::shared_ptr<NextManager> nextManager;
 
-    std::shared_ptr<CallsManager> callsManager;
-    std::shared_ptr<CallsPTManager> callsPTManager;
-    std::shared_ptr<CallsPSManager> callsPSManager;
+    std::shared_ptr<CallPManager> callPManager;
+    std::shared_ptr<CallSManager> callSManager;
+    std::shared_ptr<CallsTManager> callsTManager;
+
 
     // entity managers
     std::shared_ptr<AssignManager> assignManager;
@@ -78,9 +79,10 @@ class StorageUtil {
         modifiesPManager = std::make_shared<ModifiesPManager>();
         modifiesSManager = std::make_shared<ModifiesSManager>();
         nextManager = std::make_shared<NextManager>();
-        callsManager = std::make_shared<CallsManager>();
-        callsPTManager = std::make_shared<CallsPTManager>();
-        callsPSManager = std::make_shared<CallsPSManager>();
+        callPManager = std::make_shared<CallPManager>();
+        callSManager = std::make_shared<CallSManager>();
+        callsTManager = std::make_shared<CallsTManager>();
+
 
         assignManager = std::make_shared<AssignManager>();
         callManager = std::make_shared<CallManager>();
@@ -130,17 +132,18 @@ class StorageUtil {
     std::shared_ptr<NextManager> getNextManager() {
         return nextManager;
     }
-    std::shared_ptr<CallsManager> getCallsManager() {
-        return callsManager;
+    std::shared_ptr<CallPManager> getCallPManager() {
+        return callPManager;
     }
 
-    std::shared_ptr<CallsPTManager> getCallsPTManager() {
-        return callsPTManager;
+    std::shared_ptr<CallSManager> getCallSManager() {
+        return callSManager;
     }
 
-    std::shared_ptr<CallsPSManager> getCallsPSManager() {
-        return callsPSManager;
+    std::shared_ptr<CallsTManager> getCallsTManager() {
+        return callsTManager;
     }
+
     std::shared_ptr<AssignManager> getAssignManager() {
         return assignManager;
     }
