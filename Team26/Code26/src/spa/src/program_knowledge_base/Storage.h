@@ -72,8 +72,12 @@ class Storage {
         return storage->getCallsManager();
     }
 
-    std::shared_ptr<Relationship_Read_Or_Write<std::string, std::string>> getCallsTManager() {
-        return storage->getCallsTManager();
+    std::shared_ptr<Relationship_Read_Or_Write<std::string, std::string>> getCallsPTManager() {
+        return storage->getCallsPTManager();
+    }
+
+    std::shared_ptr<Relationship_Read_Or_Write<std::string, std::string>> getCallsPSManager() {
+        return storage->getCallsPSManager();
     }
 
     std::shared_ptr<Entity_Read_Or_Write<int>> getAssignManager() {

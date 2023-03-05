@@ -26,23 +26,29 @@
 #include "program_knowledge_base/relationship/relationship_child_managers/NextManager.h"
 
 #include "program_knowledge_base/relationship/relationship_child_managers/CallsManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/CallsTManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/CallsPTManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/CallsPSManager.h"
 
 class StorageUtil {
  private:
     // relationship managers
     std::shared_ptr<FollowsManager> followsManager;
     std::shared_ptr<FollowsTManager> followsTManager;
+
     std::shared_ptr<ParentManager> parentManager;
     std::shared_ptr<ParentTManager> parentTManager;
+
     std::shared_ptr<UsesPManager> usesPManager;
     std::shared_ptr<UsesSManager> usesSManager;
+
     std::shared_ptr<ModifiesPManager> modifiesPManager;
     std::shared_ptr<ModifiesSManager> modifiesSManager;
+
     std::shared_ptr<NextManager> nextManager;
 
     std::shared_ptr<CallsManager> callsManager;
-    std::shared_ptr<CallsTManager> callsTManager;
+    std::shared_ptr<CallsPTManager> callsPTManager;
+    std::shared_ptr<CallsPSManager> callsPSManager;
 
     // entity managers
     std::shared_ptr<AssignManager> assignManager;
@@ -73,7 +79,8 @@ class StorageUtil {
         modifiesSManager = std::make_shared<ModifiesSManager>();
         nextManager = std::make_shared<NextManager>();
         callsManager = std::make_shared<CallsManager>();
-        callsTManager = std::make_shared<CallsTManager>();
+        callsPTManager = std::make_shared<CallsPTManager>();
+        callsPSManager = std::make_shared<CallsPSManager>();
 
         assignManager = std::make_shared<AssignManager>();
         callManager = std::make_shared<CallManager>();
@@ -127,10 +134,13 @@ class StorageUtil {
         return callsManager;
     }
 
-    std::shared_ptr<CallsTManager> getCallsTManager() {
-        return callsTManager;
+    std::shared_ptr<CallsPTManager> getCallsPTManager() {
+        return callsPTManager;
     }
 
+    std::shared_ptr<CallsPSManager> getCallsPSManager() {
+        return callsPSManager;
+    }
     std::shared_ptr<AssignManager> getAssignManager() {
         return assignManager;
     }

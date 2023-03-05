@@ -2,7 +2,7 @@
 #include <string>
 #include "program_knowledge_base/relationship/RelationshipManager.h"
 
-class CallsTManager : public RelationshipManager<std::string, std::string> {
+class CallsPTManager : public RelationshipManager<std::string, std::string> {
  public:
     bool insertRelationship(std::string first, std::string second){
         bool flag = RelationshipManager::insertRelationship(first, second);
