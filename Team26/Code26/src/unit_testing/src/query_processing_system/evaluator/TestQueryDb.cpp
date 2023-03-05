@@ -34,4 +34,27 @@ TEST_CASE("Evaluate Boolean") {
 
     queryDB = QueryDb();
     REQUIRE(queryDB.getInterestedResults() == expectedTrue);
+
+    // Table with no results
+    auto table4 = std::make_shared<ResultTable>();
+    table4->setNoResults();
+    queryDB = QueryDb();
+    queryDB.addResult(table4);
+    REQUIRE(queryDB.getInterestedResults() == expectedFalse);
+
+    // Multiple tables
+    queryDB = QueryDb();
+    queryDB.addResult(table4);
+    queryDB.addResult(table1);
+    REQUIRE(queryDB.getInterestedResults() == expectedFalse);
+
+    queryDB = QueryDb();
+    queryDB.addResult(table1);
+    queryDB.addResult(table3);
+    REQUIRE(queryDB.getInterestedResults() == expectedTrue);
+
+    queryDB = QueryDb();
+    queryDB.addResult(table1);
+    queryDB.addResult(table2);
+    REQUIRE(queryDB.getInterestedResults() == expectedFalse);
 }
