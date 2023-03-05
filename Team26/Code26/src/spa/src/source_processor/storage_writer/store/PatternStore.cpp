@@ -13,9 +13,10 @@ void PatternStore::insertExpressionPattern(std::shared_ptr<AssignNode> node) {
 }
 
 void PatternStore::insertCondExpressionIfStatement(int stmtIndex, std::string variableName) {
-    whileCondManager->insertRelationship(stmtIndex, variableName);
+    ifCondManager->insertRelationship(stmtIndex, variableName);
 }
 
 void PatternStore::insertCondExpressionWhileStatement(int stmtIndex, std::string variableName) {
-    ifCondManager->insertRelationship(stmtIndex, variableName);
+    whileCondManager->insertRelationship(stmtIndex, variableName);
+
 }
