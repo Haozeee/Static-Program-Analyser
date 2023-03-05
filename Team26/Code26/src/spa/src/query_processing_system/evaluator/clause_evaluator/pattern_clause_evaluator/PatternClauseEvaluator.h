@@ -9,6 +9,8 @@
 
 class PatternClauseEvaluator : public ClauseEvaluator {
  protected:
+    PatternClauseEvaluator(Argument patternArg, Argument leftArg, StringExpression rightArg);
+
     Argument patternArg;
 
     Argument leftArg;
@@ -16,8 +18,6 @@ class PatternClauseEvaluator : public ClauseEvaluator {
     StringExpression rightArg;
 
  public:
-    PatternClauseEvaluator(Argument patternArg, Argument leftArg, StringExpression rightArg);
-
     Argument getLeftArg();
 
     StringExpression getRightArg();
