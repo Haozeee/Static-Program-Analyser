@@ -63,6 +63,7 @@ class StorageUtil {
     // pattern managers
     std::shared_ptr<PatternManager> patternManager;
 
+
  public:
     StorageUtil() {
         followsManager = std::make_shared<FollowsManager>();
@@ -88,6 +89,10 @@ class StorageUtil {
         variableManager = std::make_shared<VariableManager>();
         patternManager = std::make_shared<PatternManager>();
         whileManager = std::make_shared<WhileManager>();
+        ifCondManager = std::make_shared<IfCondManager>();
+        whileCondManager = std::make_shared<WhileCondManager>();
+        readVariableManager = std::make_shared<ReadVariableManager>();
+        printVariableManager = std::make_shared<PrintVariableManager>();
     }
 
     std::shared_ptr<FollowsManager> getFollowsManager() {
