@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include "StorageUtil.h"
 
 template<template<typename, typename> typename Relationship_Read_Or_Write,
@@ -12,7 +13,7 @@ class Storage {
     std::shared_ptr<StorageUtil> storage;
 
  public:
-    explicit Storage(std::shared_ptr<StorageUtil> storageUtil) : storage(storageUtil) {}
+    explicit Storage(std::shared_ptr<StorageUtil> storageUtil) : storage(std::move(storageUtil)) {}
 
     std::shared_ptr<Relationship_Read_Or_Write<int, int>> getFollowsManager() {
         return storage->getFollowsManager();
@@ -46,16 +47,20 @@ class Storage {
         return storage->getModifiesSManager();
     }
 
-    std::shared_ptr<Relationship_Read_Or_Write<std::string, std::string>> getCallsManager() {
-        return storage->getCallsManager();
+    std::shared_ptr<Relationship_Read_Or_Write<int, int>> getNextManager() {
+        return storage->getNextManager();
+    }
+
+    std::shared_ptr<Relationship_Read_Or_Write<std::string, std::string>> getCallPManager() {
+        return storage->getCallPManager();
+    }
+
+    std::shared_ptr<Relationship_Read_Or_Write<int, std::string>> getCallSManager() {
+        return storage->getCallSManager();
     }
 
     std::shared_ptr<Relationship_Read_Or_Write<std::string, std::string>> getCallsTManager() {
         return storage->getCallsTManager();
-    }
-
-    std::shared_ptr<Relationship_Read_Or_Write<int, int>> getNextManager() {
-        return storage->getNextManager();
     }
 
     std::shared_ptr<Relationship_Read_Or_Write<int, std::string>> getIfCondManager() {

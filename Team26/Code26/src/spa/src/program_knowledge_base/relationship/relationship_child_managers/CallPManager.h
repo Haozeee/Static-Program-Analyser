@@ -1,5 +1,6 @@
 #pragma once
+#include <memory>
 #include <string>
 #include "program_knowledge_base/relationship/RelationshipManager.h"
 
-class CallsTManager : public RelationshipManager<std::string, std::string> { };
+class CallPManager : public RelationshipManager<std::string, std::string> { };

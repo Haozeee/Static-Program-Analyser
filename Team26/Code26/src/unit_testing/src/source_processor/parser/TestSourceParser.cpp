@@ -529,7 +529,7 @@ TEST_CASE("Parser Call") {
 
         CallNode* callNode;
         REQUIRE_NOTHROW(callNode = dynamic_cast<CallNode*>(stmtNode.get()));
-        CHECK(callNode->processName == "xyz");
+        CHECK(callNode->procedureName == "xyz");
     }
 
     SECTION("double Call same Procedure") {
@@ -560,7 +560,7 @@ TEST_CASE("Parser Call") {
 
             CallNode* callNode;
             REQUIRE_NOTHROW(callNode = dynamic_cast<CallNode*>(stmtNode.get()));
-            CHECK(callNode->processName == "xyz");
+            CHECK(callNode->procedureName == "xyz");
         }
 
         SECTION("second Call") {
@@ -570,7 +570,7 @@ TEST_CASE("Parser Call") {
 
             CallNode* callNode;
             REQUIRE_NOTHROW(callNode = dynamic_cast<CallNode*>(stmtNode.get()));
-            CHECK(callNode->processName == "abc");
+            CHECK(callNode->procedureName == "abc");
         }
     }
 
@@ -606,7 +606,7 @@ TEST_CASE("Parser Call") {
 
             CallNode* callNode;
             REQUIRE_NOTHROW(callNode = dynamic_cast<CallNode*>(stmtNode.get()));
-            CHECK(callNode->processName == "xyz");
+            CHECK(callNode->procedureName == "xyz");
         }
 
         SECTION("second Procedure") {
@@ -617,7 +617,7 @@ TEST_CASE("Parser Call") {
 
             CallNode* callNode;
             REQUIRE_NOTHROW(callNode = dynamic_cast<CallNode*>(stmtNode.get()));
-            CHECK(callNode->processName == "abc");
+            CHECK(callNode->procedureName == "abc");
         }
     }
 }

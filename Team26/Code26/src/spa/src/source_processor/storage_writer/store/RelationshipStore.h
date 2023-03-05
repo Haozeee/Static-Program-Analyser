@@ -17,6 +17,10 @@ class RelationshipStore : public IRelationshipStore {
     std::shared_ptr<IWriteRelationshipManager<std::string, std::string>> modifiesPManager;
     std::shared_ptr<IWriteRelationshipManager<int, int>> nextManager;
 
+    std::shared_ptr<IWriteRelationshipManager<int, std::string>> callSManager;
+    std::shared_ptr<IWriteRelationshipManager<std::string, std::string>> callPManager;
+    std::shared_ptr<IWriteRelationshipManager<std::string, std::string>> callsTManager;
+
  public:
     explicit RelationshipStore(std::shared_ptr<WriteStorage> storage);
 
@@ -24,7 +28,10 @@ class RelationshipStore : public IRelationshipStore {
     void insertParentsRelationship(const int &parentStmtNo, const int &childStmtNo) override;
     void insertUsesSRelationship(const int &stmtNo, const std::string &variableName) override;
     void insertModifiesSRelationship(const int &stmtNo, const std::string &variableName) override;
-    void insertUsesPRelationship(std::string  &procedureName, const std::string &variableName) override;
-    void insertModifiesPRelationship(std::string  &procedureName, const std::string &variableName) override;
+    void insertUsesPRelationship(const std::string  &procedureName, const std::string &variableName) override;
+    void insertModifiesPRelationship(const std::string  &procedureName, const std::string &variableName) override;
+    void insertCallsRelationship(const int &stmtNo, const std::string &callerName,
+                                 const std::string &calleeName) override;
+    void insertCallsTRelationship(std::string caller, std::string callee) override;
     void insertNextRelationship(int previousStmtNo, int currStmtNo) override;
 };

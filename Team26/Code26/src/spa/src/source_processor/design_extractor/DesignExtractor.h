@@ -14,6 +14,6 @@ class DesignExtractor {
     std::unique_ptr<BaseExtractor> relationshipExtractor;
 
  public:
-    explicit DesignExtractor(const std::shared_ptr<IStore>& store);
+    explicit DesignExtractor(const std::shared_ptr<IStore>& store, const std::shared_ptr<ReadStorage>& storage);
     void extract(const std::shared_ptr<ProgramNode>& programNode);
 };

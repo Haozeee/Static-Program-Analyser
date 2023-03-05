@@ -41,7 +41,7 @@ TEST_CASE("Test insert relationship for all managers") {
     std::unique_ptr<StorageManager> storageManager = std::make_unique<StorageManager>();
     SourceManager sourceManager;
     std::shared_ptr<IStore> store = std::make_shared<Store>(storageManager->getWriteStorage());
-    sourceManager.process(testFileName, store);
+    sourceManager.process(testFileName, store, storageManager->getReadStorage());
     auto readStorage = storageManager->getReadStorage();
 
     // test FollowsManager
