@@ -86,10 +86,10 @@ class MockRelationshipStore : public IRelationshipStore {
         modifiesSStore[stmtNo].insert(variableName);
     };
 
-    void insertUsesPRelationship(std::string  &procedureName, const std::string &variableName) override {
+    void insertUsesPRelationship(const std::string  &procedureName, const std::string &variableName) override {
         //TODO(zt): Sprint 3
     };
-    void insertModifiesPRelationship(std::string  &procedureName, const std::string &variableName) override {
+    void insertModifiesPRelationship(const std::string  &procedureName, const std::string &variableName) override {
         //TODO(zt): Sprint 3
     }
 
@@ -99,6 +99,9 @@ class MockRelationshipStore : public IRelationshipStore {
     };
     void insertNextRelationship(int previousStmtNo, int currStmtNo) override {
         nextStore[previousStmtNo].insert(currStmtNo);
+    }
+    void insertCallsTRelationship(std::string caller, std::string callee) override {
+
     }
 
     bool findFollows(int x, int y) {
