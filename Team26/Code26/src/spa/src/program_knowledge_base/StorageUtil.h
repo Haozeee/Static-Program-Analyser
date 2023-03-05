@@ -26,7 +26,8 @@
 #include "program_knowledge_base/relationship/relationship_child_managers/CallsManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/CallsTManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/NextManager.h"
-
+#include "program_knowledge_base/relationship/relationship_child_managers/IfCondManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/WhileCondManager.h"
 
 class StorageUtil {
  private:
@@ -42,7 +43,8 @@ class StorageUtil {
     std::shared_ptr<CallsManager> callsManager;
     std::shared_ptr<CallsTManager> callsTManager;
     std::shared_ptr<NextManager> nextManager;
-
+    std::shared_ptr<IfCondManager> ifCondManager;
+    std::shared_ptr<WhileCondManager> whileCondManager;
 
     // entity managers
     std::shared_ptr<AssignManager> assignManager;
@@ -130,6 +132,14 @@ class StorageUtil {
 
     std::shared_ptr<NextManager> getNextManager() {
         return nextManager;
+    }
+
+    std::shared_ptr<IfCondManager> getIfCondManager() {
+        return ifCondManager;
+    }
+
+    std::shared_ptr<WhileCondManager> getWhileCondManager() {
+        return whileCondManager;
     }
 
     std::shared_ptr<AssignManager> getAssignManager() {
