@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include "StorageUtil.h"
 #include "program_knowledge_base/entity/entity_child_managers/AssignManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/PrintStmtNoManager.h"
@@ -31,7 +32,7 @@ class Storage {
     std::shared_ptr<StorageUtil> storage;
 
  public:
-    explicit Storage(std::shared_ptr<StorageUtil> storageUtil) : storage(storageUtil) {}
+    explicit Storage(std::shared_ptr<StorageUtil> storageUtil) : storage(std::move(storageUtil)) {}
 
     std::shared_ptr<Relationship_Read_Or_Write<int, int>> getFollowsManager() {
         return storage->getFollowsManager();
