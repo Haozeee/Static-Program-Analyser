@@ -69,6 +69,10 @@ class Storage {
         return storage->getNextManager();
     }
 
+    std::shared_ptr<Relationship_Read_Or_Write<int, std::string>> getIfCondManager() {
+        return storage->getIfCondManager();
+    }
+
     std::shared_ptr<Entity_Read_Or_Write<int>> getAssignManager() {
         return storage->getAssignManager();
     }

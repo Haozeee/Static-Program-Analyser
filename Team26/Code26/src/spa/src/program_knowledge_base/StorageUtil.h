@@ -24,6 +24,8 @@
 #include "program_knowledge_base/relationship/relationship_child_managers/ModifiesPManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/ModifiesSManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/NextManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/IfCondManager.h"
+
 
 
 class StorageUtil {
@@ -38,7 +40,7 @@ class StorageUtil {
     std::shared_ptr<ModifiesPManager> modifiesPManager;
     std::shared_ptr<ModifiesSManager> modifiesSManager;
     std::shared_ptr<NextManager> nextManager;
-
+    std::shared_ptr<IfCondManager> ifCondManager;
 
     // entity managers
     std::shared_ptr<AssignManager> assignManager;
@@ -115,6 +117,10 @@ class StorageUtil {
 
     std::shared_ptr<NextManager> getNextManager() {
         return nextManager;
+    }
+
+    std::shared_ptr<IfCondManager> getIfCondManager() {
+        return ifCondManager;
     }
 
     std::shared_ptr<AssignManager> getAssignManager() {
