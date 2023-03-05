@@ -27,7 +27,6 @@
 #include "program_knowledge_base/relationship/relationship_child_managers/CallPManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/CallSManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/CallsTManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/CallsManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/CallsTManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/NextManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/IfCondManager.h"
@@ -54,10 +53,6 @@ class StorageUtil {
     std::shared_ptr<CallSManager> callSManager;
     std::shared_ptr<CallsTManager> callsTManager;
 
-    std::shared_ptr<NextManager> nextManager;
-    std::shared_ptr<IfCondManager> ifCondManager;
-    std::shared_ptr<WhileCondManager> whileCondManager;
-
     // entity managers
     std::shared_ptr<AssignManager> assignManager;
     std::shared_ptr<CallManager> callManager;
@@ -74,6 +69,8 @@ class StorageUtil {
 
     // pattern managers
     std::shared_ptr<PatternManager> patternManager;
+    std::shared_ptr<IfCondManager> ifCondManager;
+    std::shared_ptr<WhileCondManager> whileCondManager;
 
 
  public:

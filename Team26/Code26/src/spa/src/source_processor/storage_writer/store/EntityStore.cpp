@@ -34,7 +34,6 @@ void EntityStore::insertReadStatement(std::shared_ptr<ReadNode> node) {
     readManager->insertEntity(node->stmtIndex);
     insertVariableName(node->varName);
     readVariableManager->insertEntity(node->varName);
-    insertName(node->varName);
 }
 
 void EntityStore::insertPrintStatement(std::shared_ptr<PrintNode> node) {
@@ -46,7 +45,6 @@ void EntityStore::insertPrintStatement(std::shared_ptr<PrintNode> node) {
     printManager->insertEntity(node->stmtIndex);
     insertVariableName(node->varName);
     printVariableManager->insertEntity(node->varName);
-    insertName(node->varName);
 }
 
 void EntityStore::insertAssignStatement(std::shared_ptr<AssignNode> node) {
