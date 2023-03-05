@@ -7,6 +7,7 @@ RelationshipExtractor::RelationshipExtractor(std::shared_ptr<IRelationshipStore>
 
 void RelationshipExtractor::extractProcedure(std::shared_ptr<ProcedureNode> node) {
     parentIndexStack.clear();
+    statementStack.clear();
     currProcedureName = node->procedureName;
     BaseExtractor::extractProcedure(node);
 }
