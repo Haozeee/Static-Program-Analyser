@@ -70,7 +70,7 @@ void RelationshipExtractor::extractWhile(std::shared_ptr<WhileNode> node) {
 void RelationshipExtractor::extractIf(std::shared_ptr<IfNode> node) {
     extractCondExpr(node->condExprNode);
     parentIndexStack.emplace_back(node->stmtIndex);
-    ifStack.emplace_back(node->stmtIndex); // CFGs
+    ifStack.emplace_back(node->stmtIndex);  // CFGs
     extractStmtList(node->thenStmtListNode);
     std::vector<int> ifThenStatementStack = statementStack;
     resetFlow(ifStack.back());
