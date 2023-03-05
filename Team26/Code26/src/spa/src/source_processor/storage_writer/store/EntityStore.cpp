@@ -13,6 +13,8 @@ EntityStore::EntityStore(std::shared_ptr<WriteStorage> storage) {
     ifManager = storage->getIfManager();
     variableManager = storage->getVariableManager();
     constantManager = storage->getConstantManager();
+    readVariableManager = storage->getReadVariableManager();
+    printVariableManager = storage->getPrintVariableManager();
 }
 
 void EntityStore::insertProcedure(std::shared_ptr<ProcedureNode> node) {
@@ -30,6 +32,7 @@ void EntityStore::insertReadStatement(std::shared_ptr<ReadNode> node) {
      *  2. Variable Name
      * */
     readManager->insertEntity(node->stmtIndex);
+    readVariableManager->insertEntity(node->varName);
     insertName(node->varName);
 }
 
@@ -40,6 +43,7 @@ void EntityStore::insertPrintStatement(std::shared_ptr<PrintNode> node) {
      *  2. Variable Name
      * */
     printManager->insertEntity(node->stmtIndex);
+    printVariableManager->insertEntity(node->varName);
     insertName(node->varName);
 }
 
