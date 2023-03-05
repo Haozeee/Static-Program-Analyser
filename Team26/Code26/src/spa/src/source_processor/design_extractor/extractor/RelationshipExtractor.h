@@ -36,10 +36,6 @@ class RelationshipExtractor : public BaseExtractor, IRelationshipExtractor {
     std::vector<int> whileStack;
     std::vector<int> ifStack;
 
-    std::vector<int> ifThenStatementStack;
-    std::vector<int> ifElseStatementStack;
-
-    // Next Statements
     void insertFlow(int stmtIndex);
     void resetFlow(int stmtIndex);
 

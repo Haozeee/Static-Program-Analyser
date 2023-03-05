@@ -92,7 +92,6 @@ void RelationshipExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
     // CFG
     insertFlow(node->stmtIndex);
     resetFlow(node->stmtIndex);
-
     node->evaluate(*this);
 
     std::shared_ptr<std::vector<int>> currentFollowsNesting = followsStack.back();
@@ -135,12 +134,12 @@ void RelationshipExtractor::extractWhile(std::shared_ptr<WhileNode> node) {
 void RelationshipExtractor::extractIf(std::shared_ptr<IfNode> node) {
     extractCondExpr(node->condExprNode);
     parentIndexStack.emplace_back(node->stmtIndex);
-    ifStack.emplace_back(node->stmtIndex);
+    ifStack.emplace_back(node->stmtIndex);  // CFGs
     extractStmtList(node->thenStmtListNode);
-    ifThenStatementStack = statementStack;
+    std::vector<int> ifThenStatementStack = statementStack;
     resetFlow(ifStack.back());
     extractStmtList(node->elseStmtListNode);
-    ifElseStatementStack = statementStack;
+    std::vector<int> ifElseStatementStack = statementStack;
     statementStack.clear();
     statementStack.insert(statementStack.end(), ifThenStatementStack.begin(), ifThenStatementStack.end());
     statementStack.insert(statementStack.end(), ifElseStatementStack.begin(), ifElseStatementStack.end());
