@@ -11,6 +11,7 @@ RelationshipStore::RelationshipStore(std::shared_ptr<WriteStorage> storage) {
     modifiesSManager = storage->getModifiesSManager();
     usesPManager = storage->getUsesPManager();
     modifiesPManager = storage->getModifiesPManager();
+    nextManager = storage->getNextManager();
 }
 
 
@@ -36,5 +37,9 @@ void RelationshipStore::insertUsesPRelationship(std::string &procedureName, cons
 
 void RelationshipStore::insertModifiesPRelationship(std::string &procedureName, const std::string &variableName) {
     modifiesPManager->insertRelationship(procedureName, variableName);
+}
+
+void RelationshipStore::insertNextRelationship(int previousStmtNo, int currStmtNo) {
+    nextManager->insertRelationship(previousStmtNo, currStmtNo);
 }
 

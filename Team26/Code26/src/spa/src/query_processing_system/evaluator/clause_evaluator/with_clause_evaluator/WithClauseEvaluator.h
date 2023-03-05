@@ -1,31 +1,86 @@
 #pragma once
 #include <string>
 #include <unordered_set>
+#include <unordered_map>
 #include <utility>
 #include "memory"
 #include "../ClauseEvaluator.h"
 #include "../../../parser/clause/with_clause/Reference.h"
 
-using ReferenceValues = std::unordered_set<std::string>;
-
 template<class... Ts> struct overload : Ts... { using Ts::operator()...; };
 template<class... Ts> overload(Ts...) -> overload<Ts...>;
 
+template<typename T>
 class WithClauseEvaluator : public ClauseEvaluator {
- private:
+ protected:
     Reference leftRef;
 
     Reference rightRef;
 
-    void evaluateAttributeAttribute(StoragePointer storage);
+    virtual std::unordered_set<T> getLeftRefValues(StoragePointer storage) = 0;
 
-    static ReferenceValues getReferenceValues(Reference ref, StoragePointer storage = nullptr);
+    virtual std::unordered_set<T> getRightRefValues(StoragePointer storage) = 0;
 
-    static ReferenceValues getAttributeReferenceValues(AttributeReference ref, StoragePointer storage);
+    virtual std::unordered_set<std::string> getTranslatedValues(StoragePointer storage, T value, DesignEntity de) = 0;
 
+    void evaluateValueAttribute(StoragePointer storage, std::unordered_set<T> values, DesignEntity de,
+                                std::string colName) {
+        std::unordered_set<std::string> res;
+        // Should only have one item in values
+        for (T value : values) {
+            auto translatedValues = getTranslatedValues(storage, value, de);
+            res.insert(translatedValues.begin(), translatedValues.end());
+        }
+        clauseResultTable = ResultTable::createSingleColumnTable(std::move(colName), res);
+    }
+
+    void evaluateAttributeAttribute(StoragePointer storage) {
+        // Initialise empty results
+        std::unordered_map<std::string, std::unordered_set<std::string>> res;
+
+        auto leftRes = getLeftRefValues(storage);
+        auto rightRes = getRightRefValues(storage);
+        std::unordered_set<T> intersection;
+        PkbUtil::setIntersection(leftRes, rightRes, intersection);
+
+        auto leftDE = leftRef.getAttributeDesignEntity();
+        auto rightDE = rightRef.getAttributeDesignEntity();
+
+        for (T value : intersection) {
+            auto leftTranslatedValues = getTranslatedValues(storage, value, leftDE);
+            auto rightTranslatedValues = getTranslatedValues(storage, value, rightDE);
+            for (std::string leftValue : leftTranslatedValues) {
+                res.insert({leftValue, rightTranslatedValues});
+            }
+        }
+
+        clauseResultTable = ResultTable::createTableFromMap(res, leftRef.getAttributeIdentity(),
+                                                            rightRef.getAttributeIdentity());
+    }
 
  public:
-    WithClauseEvaluator(Reference left, Reference right);
+    WithClauseEvaluator(Reference left, Reference right) : leftRef(std::move(left)), rightRef(std::move(right)) {}
 
-    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage) override;
+    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage) override {
+        auto leftType = leftRef.getReferenceType();
+        auto rightType = rightRef.getReferenceType();
+
+        if (leftType != ReferenceType::ATTR_REF && rightType == ReferenceType::ATTR_REF) {
+            evaluateValueAttribute(storage, getLeftRefValues(storage), rightRef.getAttributeDesignEntity(),
+                                   rightRef.getAttributeIdentity());
+        } else if (leftType == ReferenceType::ATTR_REF && rightType != ReferenceType::ATTR_REF) {
+            evaluateValueAttribute(storage, getRightRefValues(storage), leftRef.getAttributeDesignEntity(),
+                                   leftRef.getAttributeIdentity());
+        } else if (rightType == ReferenceType::ATTR_REF) {
+            evaluateAttributeAttribute(storage);
+        } else {
+            // Is either Ident = Ident or Integer = Integer
+            auto isEquals = getLeftRefValues(storage) == getRightRefValues(storage);
+            if (!isEquals) {
+                clauseResultTable->setNoResults();
+            }
+        }
+
+        return clauseResultTable;
+    }
 };

@@ -20,6 +20,11 @@ TEST_CASE("Test Int Set To String Set") {
     IntSet intSet {1, 2, 3};
     StringSet stringSet {"1", "2", "3"};
     REQUIRE(stringSet == PkbUtil::intSetToStringSet(intSet));
+
+    // Empty set
+    intSet = {};
+    stringSet = {};
+    REQUIRE(stringSet == PkbUtil::intSetToStringSet(intSet));
 }
 
 TEST_CASE("Test Int Map To String Map") {

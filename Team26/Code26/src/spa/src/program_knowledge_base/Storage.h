@@ -72,6 +72,10 @@ class Storage {
     std::shared_ptr<Relationship_Read_Or_Write<std::string, std::string>> getCallsTManager() {
         return storage->getCallsTManager();
     }
+    
+    std::shared_ptr<Relationship_Read_Or_Write<int, int>> getNextManager() {
+        return storage->getNextManager();
+    }
 
     std::shared_ptr<Entity_Read_Or_Write<int>> getAssignManager() {
         return storage->getAssignManager();
@@ -93,7 +97,7 @@ class Storage {
         return storage->getPrintStmtNoManager();
     }
 
-    std::shared_ptr<Entity_Read_Or_Write<int>> getPrintVariableManager() {
+    std::shared_ptr<Entity_Read_Or_Write<std::string>> getPrintVariableManager() {
         return storage->getPrintVariableManager();
     }
 
@@ -105,7 +109,7 @@ class Storage {
         return storage->getReadStmtNoManager();
     }
 
-    std::shared_ptr<Entity_Read_Or_Write<int>> getReadVariableManager() {
+    std::shared_ptr<Entity_Read_Or_Write<std::string>> getReadVariableManager() {
         return storage->getReadVariableManager();
     }
 

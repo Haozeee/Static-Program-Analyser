@@ -25,6 +25,8 @@
 #include "program_knowledge_base/relationship/relationship_child_managers/ModifiesSManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/CallsManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/CallsTManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/NextManager.h"
+
 
 class StorageUtil {
  private:
@@ -39,6 +41,8 @@ class StorageUtil {
     std::shared_ptr<ModifiesSManager> modifiesSManager;
     std::shared_ptr<CallsManager> callsManager;
     std::shared_ptr<CallsTManager> callsTManager;
+    std::shared_ptr<NextManager> nextManager;
+
 
     // entity managers
     std::shared_ptr<AssignManager> assignManager;
@@ -70,6 +74,7 @@ class StorageUtil {
         callsManager = std::make_shared<CallsManager>();
         callsTManager = std::make_shared<CallsTManager>();
 
+        nextManager = std::make_shared<NextManager>();
         assignManager = std::make_shared<AssignManager>();
         callManager = std::make_shared<CallManager>();
         constantManager = std::make_shared<ConstantManager>();
@@ -121,6 +126,10 @@ class StorageUtil {
 
     std::shared_ptr<CallsTManager> getCallsTManager() {
         return callsTManager;
+    }
+    
+    std::shared_ptr<NextManager> getNextManager() {
+        return nextManager;
     }
 
     std::shared_ptr<AssignManager> getAssignManager() {

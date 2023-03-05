@@ -8,7 +8,7 @@ std::unordered_map<DesignEntity, std::string> validIntAttributes {
         {DesignEntity::WHILE, statementNum},
         {DesignEntity::IF, statementNum},
         {DesignEntity::ASSIGN, statementNum},
-        {DesignEntity::CONSTANT, value}
+        {DesignEntity::CONSTANT, constantValue}
 };
 
 std::unordered_map<DesignEntity, std::string> validStringAttributes {
@@ -37,10 +37,10 @@ bool AttributeReference::isValidAttributeReference() {
     return isStringAttributeReference() || isIntAttributeReference();
 }
 
-std::string AttributeReference::getSynonym() {
+std::string AttributeReference::getSynonym() const {
     return synonym;
 }
 
-DesignEntity AttributeReference::getDesignEntity() {
+DesignEntity AttributeReference::getDesignEntity() const {
     return designEntity;
 }

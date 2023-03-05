@@ -1,9 +1,9 @@
 #pragma once
 
 #include <memory>
-#include "source_processor/storage/interface/IEntityStore.h"
-#include "source_processor/storage/interface/IPatternStore.h"
-#include "source_processor/storage/interface/IRelationshipStore.h"
+#include "source_processor/storage_writer/interface/IEntityStore.h"
+#include "source_processor/storage_writer/interface/IPatternStore.h"
+#include "source_processor/storage_writer/interface/IRelationshipStore.h"
 
 class IStore {
  public:

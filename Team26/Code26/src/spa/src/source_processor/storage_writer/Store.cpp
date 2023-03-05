@@ -1,7 +1,7 @@
 #include "Store.h"
-#include "source_processor/storage/store/PatternStore.h"
-#include "source_processor/storage/store/RelationshipStore.h"
-#include "source_processor/storage/store/EntityStore.h"
+#include "source_processor/storage_writer/store/PatternStore.h"
+#include "source_processor/storage_writer/store/RelationshipStore.h"
+#include "source_processor/storage_writer/store/EntityStore.h"
 
 Store::Store(const std::shared_ptr<WriteStorage>& storage) {
     entityStore = std::make_shared<EntityStore>(storage);
