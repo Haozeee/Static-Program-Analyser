@@ -72,6 +72,7 @@ void RelationshipExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
 
 void RelationshipExtractor::extractProcedure(std::shared_ptr<ProcedureNode> node) {
     parentIndexStack.clear();
+    statementStack.clear();
     currProcedureName = node->procedureName;
     if (procedureUniqueCallCount.count(node->procedureName) <= 0) {
         procedureUniqueCallCount.insert({node->procedureName, 0});
