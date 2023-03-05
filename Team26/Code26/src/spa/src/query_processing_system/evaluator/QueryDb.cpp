@@ -43,10 +43,13 @@ std::vector<std::string> QueryDb::getInterestedResults() {
 
 std::vector<std::string> QueryDb::getBooleanResults(std::shared_ptr<ResultTable> interestedResults) {
     std::vector<std::string> res;
-    if (interestedResults == nullptr || interestedResults->getNumberOfRows() > 0) {
-        res.emplace_back("TRUE");
-    } else {
+    // Interested results is not null, has columns but has no rows
+    auto isFalse = interestedResults != nullptr && !interestedResults->getColumnsNamesSet().empty()
+            && interestedResults->getNumberOfRows() == 0;
+    if (isFalse) {
         res.emplace_back("FALSE");
+    } else {
+        res.emplace_back("TRUE");
     }
     return res;
 }
