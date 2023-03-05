@@ -2,4 +2,4 @@
 #include <string>
 #include "program_knowledge_base/relationship/RelationshipManager.h"
 
-class IfCondManager : public RelationshipManager<int, std::string> {};
+class WhileCondManager : public RelationshipManager<int, std::string> {};
