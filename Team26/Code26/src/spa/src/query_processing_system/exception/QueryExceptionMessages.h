@@ -15,6 +15,8 @@ extern const char QueryValidatorInvalidSecondDesignEntityInRelation[];
 extern const char QueryValidatorInvalidModifiesOrUsesRelationshipInSelectClause[];
 extern const char QueryInvalidCreatePatternArgument[];
 extern const char QueryInvalidNumberOfPatternArguments[];
+extern const char QueryValidatorIncompatibleAttributeReference[];
+extern const char QueryValidatorInvalidAttributeReference[];
 
 /**
  * Syntax Errors
@@ -28,3 +30,6 @@ extern const char QueryParserUnbalancedStringExpression[];
 extern const char QueryParserPatternClauseNonWildcardArgument[];
 extern const char QueryValidatorIfWhilePatternRightArgWildcard[];
 extern const char QueryParserInvalidSelectClause[];
+extern const char QueryParserInvalidEqualSignInWithClause[];
+extern const char QueryParserInvalidReferenceInWithClause[];
+extern const char QueryParserInvalidAttributeRefInWithClause[];

@@ -17,6 +17,10 @@ const char QueryValidatorInvalidModifiesOrUsesRelationshipInSelectClause[] =
         " relationship was not created as the first argument cannot be identified. Note that wildcards are invalid.";
 const char QueryInvalidNumberOfPatternArguments[] =
         " pattern clause has the wrong number of arguments.";
+const char QueryValidatorIncompatibleAttributeReference[] =
+        "Incompatible attribute references in with clause.";
+const char QueryValidatorInvalidAttributeReference[] =
+        "Invalid attribute references in with clause.";
 
 /**
  * Syntax Errors
@@ -45,4 +49,9 @@ const char QueryValidatorIfWhilePatternRightArgWildcard[] =
         " should be a wildcard instead for if/while pattern clause.";
 const char QueryParserInvalidSelectClause[] =
         " is an invalid select clause return value.";
-
+const char QueryParserInvalidEqualSignInWithClause[] =
+        " needs to be = for with clause.";
+const char QueryParserInvalidReferenceInWithClause[] =
+        " is not a valid with clause reference type.";
+const char QueryParserInvalidAttributeRefInWithClause[] =
+        " is not a valid with clause attribute reference syntax.";
