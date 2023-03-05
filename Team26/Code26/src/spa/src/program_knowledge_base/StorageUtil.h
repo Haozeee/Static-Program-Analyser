@@ -24,10 +24,14 @@
 #include "program_knowledge_base/relationship/relationship_child_managers/ModifiesPManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/ModifiesSManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/NextManager.h"
-
 #include "program_knowledge_base/relationship/relationship_child_managers/CallPManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/CallSManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/CallsTManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/CallsManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/CallsTManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/NextManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/IfCondManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/WhileCondManager.h"
 
 class StorageUtil {
  private:
@@ -50,6 +54,9 @@ class StorageUtil {
     std::shared_ptr<CallSManager> callSManager;
     std::shared_ptr<CallsTManager> callsTManager;
 
+    std::shared_ptr<NextManager> nextManager;
+    std::shared_ptr<IfCondManager> ifCondManager;
+    std::shared_ptr<WhileCondManager> whileCondManager;
 
     // entity managers
     std::shared_ptr<AssignManager> assignManager;
@@ -68,6 +75,7 @@ class StorageUtil {
     // pattern managers
     std::shared_ptr<PatternManager> patternManager;
 
+
  public:
     StorageUtil() {
         followsManager = std::make_shared<FollowsManager>();
@@ -82,8 +90,7 @@ class StorageUtil {
         callPManager = std::make_shared<CallPManager>();
         callSManager = std::make_shared<CallSManager>();
         callsTManager = std::make_shared<CallsTManager>();
-
-
+        nextManager = std::make_shared<NextManager>();
         assignManager = std::make_shared<AssignManager>();
         callManager = std::make_shared<CallManager>();
         constantManager = std::make_shared<ConstantManager>();
@@ -95,6 +102,10 @@ class StorageUtil {
         variableManager = std::make_shared<VariableManager>();
         patternManager = std::make_shared<PatternManager>();
         whileManager = std::make_shared<WhileManager>();
+        ifCondManager = std::make_shared<IfCondManager>();
+        whileCondManager = std::make_shared<WhileCondManager>();
+        readVariableManager = std::make_shared<ReadVariableManager>();
+        printVariableManager = std::make_shared<PrintVariableManager>();
     }
 
     std::shared_ptr<FollowsManager> getFollowsManager() {
@@ -142,6 +153,14 @@ class StorageUtil {
 
     std::shared_ptr<CallsTManager> getCallsTManager() {
         return callsTManager;
+    }
+
+    std::shared_ptr<IfCondManager> getIfCondManager() {
+        return ifCondManager;
+    }
+
+    std::shared_ptr<WhileCondManager> getWhileCondManager() {
+        return whileCondManager;
     }
 
     std::shared_ptr<AssignManager> getAssignManager() {

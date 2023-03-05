@@ -5,10 +5,13 @@
 #include "source_processor/design_extractor/extractor/BaseExtractor.h"
 #include "source_processor/design_extractor/interface/IEntityExtractor.h"
 #include "source_processor/storage_writer/interface/IEntityStore.h"
+#include "source_processor/storage_writer/interface/IPatternStore.h"
 
 class EntityExtractor : public BaseExtractor, IEntityExtractor {
  private:
     std::shared_ptr<IEntityStore> entityStore;
+    std::shared_ptr<IPatternStore> patternStore;
+
     void insertExprEntities();
 
     void extractProcedure(std::shared_ptr<ProcedureNode> node) override;
@@ -22,6 +25,7 @@ class EntityExtractor : public BaseExtractor, IEntityExtractor {
 
     void extractExpr(std::shared_ptr<ExprNode> node) override;
     void extractCondExpr(std::shared_ptr<CondExprNode> node) override;
+
  public:
-    explicit EntityExtractor(std::shared_ptr<IEntityStore> entityStore);
+    explicit EntityExtractor(std::shared_ptr<IEntityStore> entityStore, std::shared_ptr<IPatternStore> patternStore);
 };

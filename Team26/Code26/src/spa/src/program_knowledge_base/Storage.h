@@ -4,25 +4,6 @@
 #include <string>
 #include <utility>
 #include "StorageUtil.h"
-#include "program_knowledge_base/entity/entity_child_managers/AssignManager.h"
-#include "program_knowledge_base/entity/entity_child_managers/PrintStmtNoManager.h"
-#include "program_knowledge_base/entity/entity_child_managers/ReadStmtNoManager.h"
-#include "program_knowledge_base/entity/entity_child_managers/StmtManager.h"
-#include "program_knowledge_base/entity/entity_child_managers/VariableManager.h"
-#include "program_knowledge_base/entity/entity_child_managers/IfManager.h"
-#include "program_knowledge_base/entity/entity_child_managers/ConstantManager.h"
-#include "program_knowledge_base/entity/entity_child_managers/CallManager.h"
-#include "program_knowledge_base/entity/entity_child_managers/ProcedureManager.h"
-#include "program_knowledge_base/entity/entity_child_managers/WhileManager.h"
-#include "program_knowledge_base/pattern/PatternManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/FollowsManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/FollowsTManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/ParentManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/ParentTManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/UsesPManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/UsesSManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/ModifiesPManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/ModifiesSManager.h"
 
 template<template<typename, typename> typename Relationship_Read_Or_Write,
          template<typename> typename Entity_Read_Or_Write,
@@ -69,6 +50,7 @@ class Storage {
     std::shared_ptr<Relationship_Read_Or_Write<int, int>> getNextManager() {
         return storage->getNextManager();
     }
+
     std::shared_ptr<Relationship_Read_Or_Write<std::string, std::string>> getCallPManager() {
         return storage->getCallPManager();
     }
@@ -77,8 +59,24 @@ class Storage {
         return storage->getCallSManager();
     }
 
+    std::shared_ptr<Relationship_Read_Or_Write<std::string, std::string>> getCallsManager() {
+        return storage->getCallsManager();
+    }
+
     std::shared_ptr<Relationship_Read_Or_Write<std::string, std::string>> getCallsTManager() {
         return storage->getCallsTManager();
+    }
+
+    std::shared_ptr<Relationship_Read_Or_Write<int, int>> getNextManager() {
+        return storage->getNextManager();
+    }
+
+    std::shared_ptr<Relationship_Read_Or_Write<int, std::string>> getIfCondManager() {
+        return storage->getIfCondManager();
+    }
+
+    std::shared_ptr<Relationship_Read_Or_Write<int, std::string>> getWhileCondManager() {
+        return storage->getWhileCondManager();
     }
 
     std::shared_ptr<Entity_Read_Or_Write<int>> getAssignManager() {

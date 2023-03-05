@@ -128,7 +128,17 @@ class MockRelationshipStore : public IRelationshipStore {
 class MockPatternStore : public IPatternStore {
  public:
     std::set<std::shared_ptr<AssignNode>> assignStore;
-    void insertExpressionPattern(std::shared_ptr<AssignNode> node) {
+    void insertExpressionPattern(std::shared_ptr<AssignNode> node) override {
         assignStore.insert(node);
     };
+
+    void insertCondExpressionIfStatement(int stmtIndex, std::string variableName) override {
+
+    };
+
+    void insertCondExpressionWhileStatement(int stmtIndex, std::string variableName) override {
+
+    };
 };
+
+
