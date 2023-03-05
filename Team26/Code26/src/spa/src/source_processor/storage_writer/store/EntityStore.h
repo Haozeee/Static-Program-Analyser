@@ -19,7 +19,6 @@ class EntityStore : public IEntityStore {
     std::shared_ptr<IWriteEntityManager<std::string>> variableManager;
     std::shared_ptr<IWriteEntityManager<int>> constantManager;
 
-
  public:
     explicit EntityStore(std::shared_ptr<WriteStorage> storage);
 
