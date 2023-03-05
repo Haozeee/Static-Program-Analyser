@@ -94,7 +94,7 @@ class MockRelationshipStore : public IRelationshipStore {
     }
 
     void insertCallsRelationship(const int &stmtNo, const std::string &callerName, const std::string
-    &calleeName) {
+    &calleeName) override {
 
     };
     void insertNextRelationship(int previousStmtNo, int currStmtNo) override {
