@@ -127,7 +127,7 @@ class StorageUtil {
     std::shared_ptr<CallsTManager> getCallsTManager() {
         return callsTManager;
     }
-    
+
     std::shared_ptr<NextManager> getNextManager() {
         return nextManager;
     }
