@@ -47,6 +47,10 @@ DesignEntity AttributeReference::getDesignEntity() const {
     return designEntity;
 }
 
+std::string AttributeReference::getAttributeName() const {
+    return attributeName;
+}
+
 bool AttributeReference::operator==(const AttributeReference &other) const {
     return this->synonym == other.synonym && this->attributeName == other.attributeName;
 }

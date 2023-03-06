@@ -54,8 +54,21 @@ std::string SelectClause::getSynonym(SelectClauseItem selectClauseItem) {
         return synonym->ident;
     } else {
         AttributeReference attributeReference = std::get<AttributeReference>(selectClauseItem);
-        std::string synonym = attributeReference.getSynonym();
-        return synonym;
+        return attributeReference.getSynonym();
+    }
+}
+
+bool SelectClause::isAttribute(SelectClauseItem selectClauseItem) {
+    return std::holds_alternative<AttributeReference>(selectClauseItem);
+}
+
+std::string SelectClause::getString(SelectClauseItem selectClauseItem) {
+    if (std::holds_alternative<std::shared_ptr<Synonym>>(selectClauseItem)) {
+        std::shared_ptr<Synonym> synonym = std::get<std::shared_ptr<Synonym>>(selectClauseItem);
+        return synonym->ident;
+    } else {
+        AttributeReference attributeReference = std::get<AttributeReference>(selectClauseItem);
+        return attributeReference.getSynonym() + "." + attributeReference.getAttributeName();
     }
 }
 

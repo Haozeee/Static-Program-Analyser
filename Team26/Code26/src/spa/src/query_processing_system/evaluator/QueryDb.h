@@ -6,13 +6,17 @@
 #include <deque>
 #include <vector>
 #include "ResultTable.h"
+#include "AttributeReferenceMap.h"
+#include "query_processing_system/parser/SelectClause.h"
+#include "program_knowledge_base/StorageUtil.h"
+#include "program_knowledge_base/StorageManager.h"
 
 class QueryDb {
  private:
     /**
      * Store the synonyms that the user has selected in the query.
      */
-    std::vector<std::string> selectedSynonyms;
+    std::vector<SelectClauseItem> selectedSynonyms;
 
     /**
      * Store a list of result tables. The result tables can come from the select clause or
@@ -21,6 +25,8 @@ class QueryDb {
      * results. Hence, joining them would be a waste of resources.
      */
     std::deque<std::shared_ptr<ResultTable>> results;
+
+    std::shared_ptr<ReadStorage> storage;
 
     /**
      * Checks if the list of results contains a result table that equates to false. This means that
@@ -32,12 +38,19 @@ class QueryDb {
 
     std::vector<std::string> getBooleanResults(std::shared_ptr<ResultTable> interestedResults);
 
+    void mapAttributeReferences(std::shared_ptr<ResultTable> interestedResults);
+
+    /**
+     * Get the column names of the final results.
+     */
+    std::vector<std::string> getInterestedColumns();
+
  public:
-    QueryDb();
+    explicit QueryDb(std::shared_ptr<ReadStorage> storage);
 
     void addResult(std::shared_ptr<ResultTable> toAdd);
 
-    void addSelectedColumn(std::string col);
+    void addSelectedColumn(SelectClauseItem selectClauseItem);
 
     /**
      * Join the tables that we are interested in to get the final results.

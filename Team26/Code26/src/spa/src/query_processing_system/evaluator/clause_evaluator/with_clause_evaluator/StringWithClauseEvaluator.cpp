@@ -56,6 +56,11 @@ StringSet StringWithClauseEvaluator::getPrintStatements(StoragePointer storage, 
 }
 
 StringSet StringWithClauseEvaluator::getCallStatements(StoragePointer storage, std::string value) {
-    // Not done
-    return {};
+    std::unordered_set<int> res;
+    auto relationshipStore = storage->getCallSManager()->getAllReversedRelationshipEntries();
+    auto it = relationshipStore.find(value);
+    if (it != relationshipStore.end()) {
+        res = it->second;
+    }
+    return PkbUtil::intSetToStringSet(res);
 }

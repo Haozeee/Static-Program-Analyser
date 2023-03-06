@@ -42,5 +42,7 @@ class AttributeReference {
 
     DesignEntity getDesignEntity() const;
 
+    std::string getAttributeName() const;
+
     bool operator==(const AttributeReference &other) const;
 };

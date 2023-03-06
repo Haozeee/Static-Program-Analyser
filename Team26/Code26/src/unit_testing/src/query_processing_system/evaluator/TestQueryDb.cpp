@@ -16,7 +16,7 @@ auto table2 = ResultTable::createSingleColumnTable(table2Col, table2Items);
 auto table3 = std::make_shared<ResultTable>();
 
 TEST_CASE("Evaluate Boolean") {
-    auto queryDB = QueryDb();
+    auto queryDB = QueryDb(nullptr);
 
     std::vector<std::string> expectedTrue {"TRUE"};
     std::vector<std::string> expectedFalse {"FALSE"};
@@ -24,36 +24,36 @@ TEST_CASE("Evaluate Boolean") {
     queryDB.addResult(table1);
     REQUIRE(queryDB.getInterestedResults() == expectedTrue);
 
-    queryDB = QueryDb();
+    queryDB = QueryDb(nullptr);
     queryDB.addResult(table2);
     REQUIRE(queryDB.getInterestedResults() == expectedFalse);
 
-    queryDB = QueryDb();
+    queryDB = QueryDb(nullptr);
     queryDB.addResult(table3);
     REQUIRE(queryDB.getInterestedResults() == expectedTrue);
 
-    queryDB = QueryDb();
+    queryDB = QueryDb(nullptr);
     REQUIRE(queryDB.getInterestedResults() == expectedTrue);
 
     // Table with no results
     auto table4 = std::make_shared<ResultTable>();
     table4->setNoResults();
-    queryDB = QueryDb();
+    queryDB = QueryDb(nullptr);
     queryDB.addResult(table4);
     REQUIRE(queryDB.getInterestedResults() == expectedFalse);
 
     // Multiple tables
-    queryDB = QueryDb();
+    queryDB = QueryDb(nullptr);
     queryDB.addResult(table4);
     queryDB.addResult(table1);
     REQUIRE(queryDB.getInterestedResults() == expectedFalse);
 
-    queryDB = QueryDb();
+    queryDB = QueryDb(nullptr);
     queryDB.addResult(table1);
     queryDB.addResult(table3);
     REQUIRE(queryDB.getInterestedResults() == expectedTrue);
 
-    queryDB = QueryDb();
+    queryDB = QueryDb(nullptr);
     queryDB.addResult(table1);
     queryDB.addResult(table2);
     REQUIRE(queryDB.getInterestedResults() == expectedFalse);
