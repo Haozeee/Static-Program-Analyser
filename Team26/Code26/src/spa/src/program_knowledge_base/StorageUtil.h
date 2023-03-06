@@ -11,7 +11,7 @@
 #include "program_knowledge_base/entity/entity_child_managers/VariableManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/IfManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/ConstantManager.h"
-#include "program_knowledge_base/entity/entity_child_managers/CallManager.h"
+#include "program_knowledge_base/entity/entity_child_managers/CallStmtNoManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/ProcedureManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/WhileManager.h"
 #include "program_knowledge_base/pattern/PatternManager.h"
@@ -53,7 +53,7 @@ class StorageUtil {
 
     // entity managers
     std::shared_ptr<AssignManager> assignManager;
-    std::shared_ptr<CallManager> callManager;
+    std::shared_ptr<CallStmtNoManager> callManager;
     std::shared_ptr<ConstantManager> constantManager;
     std::shared_ptr<IfManager> ifManager;
     std::shared_ptr<PrintStmtNoManager> printStmtNoManager;
@@ -87,7 +87,7 @@ class StorageUtil {
         callsTManager = std::make_shared<CallsTManager>();
         nextManager = std::make_shared<NextManager>();
         assignManager = std::make_shared<AssignManager>();
-        callManager = std::make_shared<CallManager>();
+        callManager = std::make_shared<CallStmtNoManager>();
         constantManager = std::make_shared<ConstantManager>();
         ifManager = std::make_shared<IfManager>();
         printStmtNoManager = std::make_shared<PrintStmtNoManager>();
@@ -162,7 +162,7 @@ class StorageUtil {
         return assignManager;
     }
 
-    std::shared_ptr<CallManager> getCallManager() {
+    std::shared_ptr<CallStmtNoManager> getCallManager() {
         return callManager;
     }
 
