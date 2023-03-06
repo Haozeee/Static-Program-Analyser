@@ -316,7 +316,7 @@ AttributeReference QueryParser::parseAttributeReference(std::shared_ptr<Token> t
         attrRefString += "#";
     }
 
-    AttributeReference attributeReference = *new AttributeReference(designEntity, synonym, attrRefString);
+    AttributeReference attributeReference = AttributeReference(designEntity, synonym, attrRefString);
     if (attributeReference.isValidAttributeReference()) {
         return attributeReference;
     } else {
