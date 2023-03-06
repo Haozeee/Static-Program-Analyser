@@ -1,4 +1,5 @@
 #include "RelationshipExtractor.h"
+#include <algorithm>
 #include <utility>
 #include <queue>
 
