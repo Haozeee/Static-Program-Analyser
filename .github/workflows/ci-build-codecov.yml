@@ -29,7 +29,7 @@ jobs:
           working-directory: ${{runner.workspace}}/22s2-cp-spa-team-26/Team26/Code26/build
           run: cmake --build . --target unit_testing --config Debug
 
-        - name: Generate Coverage data
+        - name: Generate Coverage Data
           env:
             CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
             COMMIT_SHA: ${{ github.sha }}
@@ -38,7 +38,7 @@ jobs:
           run: |
             ./unit_testing
 
-        - name: Get branch name
+        - name: Get Branch Name
           id: branch-name
           uses: tj-actions/branch-names@v6
 
