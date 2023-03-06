@@ -63,7 +63,6 @@ void RelationshipExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
     }
 
     for (auto& procedureName : procedureManager->getAllEntitiesEntries()) {
-
 //        if (std::find(topologicalSortedProcedures.begin(), topologicalSortedProcedures.end(), procedureName) ==
 //        topologicalSortedProcedures.end()) {
 //            throw SourceExtractorException(RelationshipExtractorCyclicCallsExceptionMessage);
