@@ -1,4 +1,4 @@
-name: CI for Cmake Project - Linux
+name: Codecov
 
 on:
 
@@ -19,14 +19,45 @@ jobs:
         - uses: actions/checkout@v3
 
         - name: Make Build folder
+          working-directory: ${{runner.workspace}}/22s2-cp-spa-team-26/Team26/Code26
           run: |
-            cd Team26/Code26
             mkdir build
             cd build
-            cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM="ninja" -DCMAKE_C_COMPILER=clang-15  -DCMAKE_CXX_COMPILER=clang++-15 -G Ninja ..
+            cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM="ninja" -DCMAKE_C_COMPILER=clang-15  -DCMAKE_CXX_COMPILER=clang++-15 "-DCMAKE_CXX_FLAGS=-fprofile-instr-generate -fcoverage-mapping" "-DCMAKE_C_FLAGS=-fprofile-instr-generate -fcoverage-mapping" -G Ninja ..
 
-        - name: Build Project
+        - name: Build Unit Test
+          working-directory: ${{runner.workspace}}/22s2-cp-spa-team-26/Team26/Code26/build
+          run: cmake --build . --target unit_testing --config Debug
+
+        - name: Generate Coverage data
+          env:
+            CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+            COMMIT_SHA: ${{ github.sha }}
+          working-directory: ${{runner.workspace}}/22s2-cp-spa-team-26/Team26/Code26/build/src/unit_testing
+          continue-on-error: true
           run: |
-            cd Team26/Code26/build
-            cmake --build . --config Debug
-            cd ../..
+            ./unit_testing
+
+        - name: Get branch name
+          id: branch-name
+          uses: tj-actions/branch-names@v6
+
+        - name: Generate Coverage
+          working-directory: ${{runner.workspace}}/22s2-cp-spa-team-26/Team26/Code26/build/src/unit_testing
+          run: |
+            llvm-profdata-15 merge -sparse default.profraw -o code_coverage.profdata
+            llvm-cov-15 export --format=lcov --ignore-filename-regex='(tests|external)'  --instr-profile=code_coverage.profdata ./unit_testing > coverage.info
+
+        - name: Upload Coverage
+          uses: codecov/codecov-action@v3
+          with:
+            token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+            files: ${{runner.workspace}}/22s2-cp-spa-team-26/Team26/Code26/build/src/unit_testing/coverage.info
+          # run: |
+          #   llvm-profdata-15 merge -sparse default.profraw -o code_coverage.profdata
+          #   llvm-cov-15 export --format=lcov --ignore-filename-regex='(tests|external)'  --instr-profile=code_coverage.profdata ./unit_testing > coverage.info
+          #   curl -Os https://uploader.codecov.io/latest/linux/codecov
+          #   chmod +x codecov
+          #   ./codecov -t $CODECOV_TOKEN --sha $COMMIT_SHA --B ${{ steps.branch-name.outputs.current_branch }} -b 
+
+        
