@@ -16,6 +16,9 @@ QueryDb QueryEvaluator::evaluateQuery() {
     // Evaluate pattern clauses
     evaluatePatternClause();
 
+    // Evaluate with clauses
+    evaluateWithClause();
+
     // Return QueryResult
     return queryResults;
 }
@@ -31,6 +34,15 @@ void QueryEvaluator::evaluateSuchThatClause() {
 
 void QueryEvaluator::evaluatePatternClause() {
     for (PatternClause* clause : query->getPatternClause()) {
+        auto clauseEvaluator = clause->getClauseEvaluator();
+        auto clauseResultTable = clauseEvaluator->evaluateClause(storage);
+        queryResults.addResult(clauseResultTable);
+        delete clauseEvaluator;
+    }
+}
+
+void QueryEvaluator::evaluateWithClause() {
+    for (WithClause* clause : query->getWithClause()) {
         auto clauseEvaluator = clause->getClauseEvaluator();
         auto clauseResultTable = clauseEvaluator->evaluateClause(storage);
         queryResults.addResult(clauseResultTable);

@@ -174,7 +174,9 @@ class ResultTable {
     std::unordered_set<std::string> getColumnValues(std::string colName);
 
     /**
-     * Returns the column numbers of the columns that exists in the vector colName.
+     * For each col name in colName, get the corresponding column number.
+     * The order of the results is in the order of colName.
+     * If the column name does not exist, the column number will be 0.
      */
     std::vector<int> getColumnNumbers(std::vector<std::string> colName) const;
 

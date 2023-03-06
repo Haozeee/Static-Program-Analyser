@@ -133,9 +133,11 @@ int ResultTable::getColumnNumber(std::string colName) const {
 std::vector<int> ResultTable::getColumnNumbers(std::vector<std::string> colName) const {
     std::vector<int> res(colName.size());
     for (auto const& [k, v] : columnNameMap) {
-        auto it = std::find(colName.begin(), colName.end(), v);
-        if (it != colName.end()) {
+        auto it = colName.begin();
+        auto col = v;
+        while ((it = std::find_if(it, colName.end(), [col](std::string x) { return x == col; })) != colName.end()) {
             res.at(it - colName.begin()) = k;
+            it++;
         }
     }
     return res;
