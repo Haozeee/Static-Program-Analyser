@@ -1,5 +1,6 @@
 #include "ResultTable.h"
 #include <algorithm>
+#include <utility>
 
 ResultTable::ResultTable() = default;
 
@@ -106,16 +107,6 @@ std::shared_ptr<ResultTable> ResultTable::joinOnColumns(std::shared_ptr<ResultTa
         }
     }
     return res;
-}
-
-void ResultTable::mapColumn(std::string colToMap, std::string mapCol, MapFunc f) {
-    if (getColumnNumber(colToMap) == -1) {
-        // Column to map does not exist
-        return;
-    }
-    auto mapValues = getColumnOrderedValues(colToMap);
-    auto mappedValues = f(mapValues);
-    insertCol(std::move(mapCol), mapValues);
 }
 
 int ResultTable::getColumnNumber(std::string colName) const {

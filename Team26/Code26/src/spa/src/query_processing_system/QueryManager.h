@@ -5,8 +5,6 @@
 #include "../program_knowledge_base/StorageUtil.h"
 #include "../program_knowledge_base/StorageManager.h"
 
-class ReadOnlyStorage;
-
 class QueryManager {
  private:
     void addSyntaxError(std::list<std::string>&);

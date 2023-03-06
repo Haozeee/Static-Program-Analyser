@@ -4,7 +4,7 @@
 #include "evaluator/ResultTable.h"
 
 QueryEvaluator::QueryEvaluator(Query* query, std::shared_ptr<ReadStorage> storage)
-    : query(query), storage(storage), queryResults(QueryDb()) {}
+    : query(query), storage(storage), queryResults(QueryDb(storage)) {}
 
 QueryDb QueryEvaluator::evaluateQuery() {
     // Evaluate select clauses
@@ -55,12 +55,12 @@ void QueryEvaluator::evaluateSelectClause() {
     auto selectClauses = query->getSelectClause()->getSelectClauseItems();
     // Loop through select clauses
     for (SelectClauseItem item : *selectClauses) {
-        std::shared_ptr<Synonym> syn = std::get<std::shared_ptr<Synonym>>(item);
+        std::string identity = SelectClause::getSynonym(item);
         // Get respective entities from pkb
-        auto entities = PkbUtil::getEntitiesFromPkb(storage, query->getSynonymDesignEntity(syn));
+        auto entities = PkbUtil::getEntitiesFromPkb(storage, query->getSynonymDesignEntity(identity));
         // Add entities to query result
-        auto resultTable = ResultTable::createSingleColumnTable(syn->getIdent(), entities);
+        auto resultTable = ResultTable::createSingleColumnTable(identity, entities);
         queryResults.addResult(resultTable);
-        queryResults.addSelectedColumn(syn->getIdent());
+        queryResults.addSelectedColumn(item);
     }
 }

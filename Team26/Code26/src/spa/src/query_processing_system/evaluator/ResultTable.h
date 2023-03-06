@@ -7,7 +7,6 @@
 #include <unordered_map>
 
 using TableRow = std::vector<std::string>;
-using MapFunc = std::function<std::vector<std::string>(std::vector<std::string>)>;
 
 /**
  * Hash function to hash a vector.
@@ -119,17 +118,6 @@ class ResultTable {
      */
     static std::shared_ptr<ResultTable> joinTable(std::shared_ptr<ResultTable> table1,
                                                   std::shared_ptr<ResultTable> table2);
-
-    /**
-     * Given a column name, get all the column values and apply a mapping function to it.
-     * Add the mapped values as a new column. The mapped value should take in a vector of values
-     * and output a vector of new values with the same size.
-     * If the output vector have an unequal size, an exception will be thrown.
-     * @param colToMap The column whose values are to be mapped.
-     * @param mapCol The name of the new column to be added.
-     * @param f The mapping function.
-     */
-    void mapColumn(std::string colToMap, std::string mapCol, MapFunc f);
 
     /**
      * Given a set of columnNamesToMatch, check if this table has any of these columns in it.
