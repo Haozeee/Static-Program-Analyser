@@ -16,7 +16,6 @@ RelationshipExtractor::RelationshipExtractor(std::shared_ptr<IRelationshipStore>
 }
 
 void RelationshipExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
-    auto callPReversed = callPManager->getAllReversedRelationshipEntries();
     std::queue<std::string> procedureQueue;
     std::vector<std::string> topologicalSortedProcedures;
 
