@@ -64,3 +64,12 @@ extern const char BaseExtractorEmptyProcedureListExceptionMessage[] =
         "Empty Procedure list detected.";
 extern const char BaseExtractorNotSupportedEvaluationExceptionMessage[] =
         "Evaluation of this node type using this extractor is not supported.";
+
+extern const char RelationshipExtractorCyclicCallsExceptionMessage[] =
+        "Cyclic call detected. It is not allowed in a SIMPLE program.";
+
+extern const char RelationshipExtractorSelfCallsExceptionMessage[] =
+        "Self call detected. It is not considered as a cyclic call and not allowed in SIMPLE program.";
+
+extern const char RelationshipExtractorNonExistentExceptionMessage[] =
+        "Call statement is calling a non-existent procedure.";

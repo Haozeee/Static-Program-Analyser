@@ -13,7 +13,8 @@ class EntityStore : public IEntityStore {
     std::shared_ptr<IWriteEntityManager<int>> readManager;
     std::shared_ptr<IWriteEntityManager<int>> printManager;
     std::shared_ptr<IWriteEntityManager<int>> assignManager;
-    std::shared_ptr<IWriteEntityManager<int>> callManager;
+    std::shared_ptr<IWriteEntityManager<int>> callStmtNoManager;
+    std::shared_ptr<IWriteEntityManager<std::string>> callProcedureManager;
     std::shared_ptr<IWriteEntityManager<int>> whileManager;
     std::shared_ptr<IWriteEntityManager<int>> ifManager;
     std::shared_ptr<IWriteEntityManager<std::string>> variableManager;

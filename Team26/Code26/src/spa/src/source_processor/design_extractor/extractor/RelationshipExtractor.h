@@ -19,10 +19,13 @@ class RelationshipExtractor : public BaseExtractor, IRelationshipExtractor {
     // Calls, UsesP, UsesS, ModifiesP, ModifiesP Interlinking
     std::shared_ptr<IReadEntityManager<std::string>> procedureManager;
     std::shared_ptr<IReadRelationshipManager<std::string, std::string>> callPManager;
-    std::unique_ptr<std::unordered_map<std::string, std::unordered_set<std::string>>> usesPRelationships;
-    std::unique_ptr<std::unordered_map<std::string, std::unordered_set<std::string>>> modifiesPRelationships;
-    std::unique_ptr<std::unordered_map<std::string, std::unordered_set<std::string>>> callPReversedRelationships;
-    std::unique_ptr<std::unordered_map<std::string, std::unordered_set<std::string>>> callsTRelationships;
+    std::shared_ptr<IReadRelationshipManager<std::string, std::string>> usesPManager;
+    std::shared_ptr<IReadRelationshipManager<std::string, std::string>> modifiesPManager;
+    std::shared_ptr<IReadRelationshipManager<std::string, std::string>> callsTManager;
+    std::unordered_map<std::string, std::unordered_set<std::string>> usesPRelationships;
+    std::unordered_map<std::string, std::unordered_set<std::string>> modifiesPRelationships;
+    std::unordered_map<std::string, std::unordered_set<std::string>> callPReversedRelationships;
+
 
     std::unordered_map<std::string, int> procedureUniqueCallCount;
     std::unordered_map<std::string, std::unique_ptr<std::unordered_set<int>>> procedureCalledList;

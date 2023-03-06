@@ -26,4 +26,8 @@ extern const char BaseExtractorEmptyStatementListExceptionMessage[];
 extern const char BaseExtractorEmptyProcedureListExceptionMessage[];
 extern const char BaseExtractorNotSupportedEvaluationExceptionMessage[];
 
+extern const char RelationshipExtractorCyclicCallsExceptionMessage[];
+extern const char RelationshipExtractorSelfCallsExceptionMessage[];
+extern const char RelationshipExtractorNonExistentExceptionMessage[];
+
 class SourceProcessorExceptionMessage {};
