@@ -9,7 +9,7 @@ on:
     branches: ["master", "ci-testing"]
 
 jobs:
-  build:
+  coverage:
       runs-on: [self-hosted, Linux, X64]
       timeout-minutes: 10
       strategy:
@@ -51,13 +51,5 @@ jobs:
         - name: Upload Coverage
           uses: codecov/codecov-action@v3
           with:
-            token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+            token: ${{ secrets.CODECOV_TOKEN }} 
             files: ${{runner.workspace}}/22s2-cp-spa-team-26/Team26/Code26/build/src/unit_testing/coverage.info
-          # run: |
-          #   llvm-profdata-15 merge -sparse default.profraw -o code_coverage.profdata
-          #   llvm-cov-15 export --format=lcov --ignore-filename-regex='(tests|external)'  --instr-profile=code_coverage.profdata ./unit_testing > coverage.info
-          #   curl -Os https://uploader.codecov.io/latest/linux/codecov
-          #   chmod +x codecov
-          #   ./codecov -t $CODECOV_TOKEN --sha $COMMIT_SHA --B ${{ steps.branch-name.outputs.current_branch }} -b 
-
-        
