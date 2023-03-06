@@ -10,7 +10,7 @@ void mapAttribute(const AttributeReference& attributeRef, StringVector &synonymV
         relationship = storage->getUsesSManager()->getAllRelationshipEntries();
         mapStatementToVariable(synonymValues, relationship);
     } else if (attributeRef.getDesignEntity() == DesignEntity::CALL && attributeRef.getAttributeName() == procName) {
-        relationship = storage->getCallSManager()->getAllRelationshipEntries();
+        relationship = storage->getCallsSManager()->getAllRelationshipEntries();
         mapStatementToVariable(synonymValues, relationship);
     }
 }

@@ -16,8 +16,8 @@ RelationshipStore::RelationshipStore(std::shared_ptr<WriteStorage> storage) {
 
     nextManager = storage->getNextManager();
 
-    callSManager = storage->getCallSManager();
-    callPManager = storage->getCallPManager();
+    callSManager = storage->getCallsSManager();
+    callPManager = storage->getCallsPManager();
     callsTManager = storage->getCallsTManager();
 }
 
