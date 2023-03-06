@@ -57,7 +57,7 @@ StringSet StringWithClauseEvaluator::getPrintStatements(StoragePointer storage, 
 
 StringSet StringWithClauseEvaluator::getCallStatements(StoragePointer storage, std::string value) {
     std::unordered_set<int> res;
-    auto relationshipStore = storage->getCallSManager()->getAllReversedRelationshipEntries();
+    auto relationshipStore = storage->getCallsSManager()->getAllReversedRelationshipEntries();
     auto it = relationshipStore.find(value);
     if (it != relationshipStore.end()) {
         res = it->second;
