@@ -86,7 +86,7 @@ void EntityExtractor::insertExprEntities() {
         entityStore->insertConstant(integer);
     }
     for (auto &variable : exprVariableList) {
-        entityStore->insertName(variable);
+        entityStore->insertVariableName(variable);
     }
 }
 

@@ -23,9 +23,10 @@
 #include "program_knowledge_base/relationship/relationship_child_managers/UsesSManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/ModifiesPManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/ModifiesSManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/CallsManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/CallsTManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/NextManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/CallPManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/CallSManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/CallsTManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/IfCondManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/WhileCondManager.h"
 
@@ -34,17 +35,21 @@ class StorageUtil {
     // relationship managers
     std::shared_ptr<FollowsManager> followsManager;
     std::shared_ptr<FollowsTManager> followsTManager;
+
     std::shared_ptr<ParentManager> parentManager;
     std::shared_ptr<ParentTManager> parentTManager;
+
     std::shared_ptr<UsesPManager> usesPManager;
     std::shared_ptr<UsesSManager> usesSManager;
+
     std::shared_ptr<ModifiesPManager> modifiesPManager;
     std::shared_ptr<ModifiesSManager> modifiesSManager;
-    std::shared_ptr<CallsManager> callsManager;
-    std::shared_ptr<CallsTManager> callsTManager;
+
     std::shared_ptr<NextManager> nextManager;
-    std::shared_ptr<IfCondManager> ifCondManager;
-    std::shared_ptr<WhileCondManager> whileCondManager;
+
+    std::shared_ptr<CallPManager> callPManager;
+    std::shared_ptr<CallSManager> callSManager;
+    std::shared_ptr<CallsTManager> callsTManager;
 
     // entity managers
     std::shared_ptr<AssignManager> assignManager;
@@ -62,6 +67,8 @@ class StorageUtil {
 
     // pattern managers
     std::shared_ptr<PatternManager> patternManager;
+    std::shared_ptr<IfCondManager> ifCondManager;
+    std::shared_ptr<WhileCondManager> whileCondManager;
 
 
  public:
@@ -74,9 +81,10 @@ class StorageUtil {
         usesSManager = std::make_shared<UsesSManager>();
         modifiesPManager = std::make_shared<ModifiesPManager>();
         modifiesSManager = std::make_shared<ModifiesSManager>();
-        callsManager = std::make_shared<CallsManager>();
+        nextManager = std::make_shared<NextManager>();
+        callPManager = std::make_shared<CallPManager>();
+        callSManager = std::make_shared<CallSManager>();
         callsTManager = std::make_shared<CallsTManager>();
-
         nextManager = std::make_shared<NextManager>();
         assignManager = std::make_shared<AssignManager>();
         callManager = std::make_shared<CallManager>();
@@ -127,16 +135,19 @@ class StorageUtil {
         return modifiesSManager;
     }
 
-    std::shared_ptr<CallsManager> getCallsManager() {
-        return callsManager;
+    std::shared_ptr<NextManager> getNextManager() {
+        return nextManager;
+    }
+    std::shared_ptr<CallPManager> getCallPManager() {
+        return callPManager;
+    }
+
+    std::shared_ptr<CallSManager> getCallSManager() {
+        return callSManager;
     }
 
     std::shared_ptr<CallsTManager> getCallsTManager() {
         return callsTManager;
-    }
-
-    std::shared_ptr<NextManager> getNextManager() {
-        return nextManager;
     }
 
     std::shared_ptr<IfCondManager> getIfCondManager() {
