@@ -12,7 +12,7 @@ procedure Example {
             print w9;
         }
         z10 = z + x + i;
-        call q11;
+        q11 = 999 - 888;
         i12 = i;
     }
     if (x13 > 10) then {
@@ -27,15 +27,7 @@ procedure Example {
         x21 = p / q;
     }
     a22 = 2 + 22 + 222 + c * b;
-    call p23;
+    p23 = 1010 + 3203;
     print a24;
     read c25;
-}
-
-procedure q11 {
-    print x;
-}
-
-procedure p23 {
-    print y;
 }

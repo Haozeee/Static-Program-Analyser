@@ -3,7 +3,7 @@
 
 class FollowsTManager : public RelationshipManager<int, int> {
  public:
-    bool insertRelationship(int first, int second){
+    bool insertRelationship(int first, int second) override {
         bool flag = RelationshipManager::insertRelationship(first, second);
         if (reversed_relationships_map.count(first)) {
             auto res = reversed_relationships_map[first];

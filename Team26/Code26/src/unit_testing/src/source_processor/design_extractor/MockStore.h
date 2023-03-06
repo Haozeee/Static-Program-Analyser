@@ -52,7 +52,7 @@ public:
         ifSet.insert(node);
     };
 
-    void insertName(const std::string &name) override {
+    void insertVariableName(const std::string &name) override {
         variableSet.insert(name);
     };
 
@@ -86,15 +86,22 @@ class MockRelationshipStore : public IRelationshipStore {
         modifiesSStore[stmtNo].insert(variableName);
     };
 
-    void insertUsesPRelationship(std::string  &procedureName, const std::string &variableName) override {
+    void insertUsesPRelationship(const std::string  &procedureName, const std::string &variableName) override {
         //TODO(zt): Sprint 3
     };
-    void insertModifiesPRelationship(std::string  &procedureName, const std::string &variableName) override {
+    void insertModifiesPRelationship(const std::string  &procedureName, const std::string &variableName) override {
         //TODO(zt): Sprint 3
     }
 
+    void insertCallsRelationship(const int &stmtNo, const std::string &callerName, const std::string
+    &calleeName) override {
+
+    };
     void insertNextRelationship(int previousStmtNo, int currStmtNo) override {
         nextStore[previousStmtNo].insert(currStmtNo);
+    }
+    void insertCallsTRelationship(std::string caller, std::string callee) override {
+
     }
 
     bool findFollows(int x, int y) {
@@ -121,7 +128,17 @@ class MockRelationshipStore : public IRelationshipStore {
 class MockPatternStore : public IPatternStore {
  public:
     std::set<std::shared_ptr<AssignNode>> assignStore;
-    void insertExpressionPattern(std::shared_ptr<AssignNode> node) {
+    void insertExpressionPattern(std::shared_ptr<AssignNode> node) override {
         assignStore.insert(node);
     };
+
+    void insertCondExpressionIfStatement(int stmtIndex, std::string variableName) override {
+
+    };
+
+    void insertCondExpressionWhileStatement(int stmtIndex, std::string variableName) override {
+
+    };
 };
+
+

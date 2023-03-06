@@ -18,7 +18,8 @@ class EntityStore : public IEntityStore {
     std::shared_ptr<IWriteEntityManager<int>> ifManager;
     std::shared_ptr<IWriteEntityManager<std::string>> variableManager;
     std::shared_ptr<IWriteEntityManager<int>> constantManager;
-
+    std::shared_ptr<IWriteEntityManager<std::string>> readVariableManager;
+    std::shared_ptr<IWriteEntityManager<std::string>> printVariableManager;
 
  public:
     explicit EntityStore(std::shared_ptr<WriteStorage> storage);
@@ -31,7 +32,7 @@ class EntityStore : public IEntityStore {
     void insertCallStatement(std::shared_ptr<CallNode> node) override;
     void insertWhileStatement(std::shared_ptr<WhileNode> node) override;
     void insertIfStatement(std::shared_ptr<IfNode> node) override;
-    void insertName(const std::string &name) override;
+    void insertVariableName(const std::string &name) override;
     void insertConstant(const int &integer) override;
 };
 
