@@ -7,7 +7,6 @@
 #include "parser/QueryParser.h"
 #include "parser/Query.h"
 #include "evaluator/QueryDb.h"
-#include "common/exception/TokenizerException.h"
 #include "QueryValidator.h"
 
 void QueryManager::process(const std::string& query, std::list<std::string> &results,
