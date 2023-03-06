@@ -84,6 +84,20 @@ class QueryParser : public AbstractParser {
     StringExpression parseExpression();
 
     std::string parseStringExpression();
+
+    /**
+     * Parses Assign Pattern Clause if any.
+     */
+    bool hasWithClause();
+
+    void parseWithClause();
+
+    void parseMultipleWithClause();
+
+    AttributeReference parseAttributeReference(std::shared_ptr<Token>);
+
+    Reference parseReference();
+
     /**
      * Parses ending semicolon if any and throws exception.
      */

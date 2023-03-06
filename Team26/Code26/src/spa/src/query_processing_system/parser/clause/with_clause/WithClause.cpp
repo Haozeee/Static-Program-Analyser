@@ -9,7 +9,7 @@ WithClause::WithClause(Reference left, Reference right)
 bool WithClause::validateClause() {
     // Check if int int or string string
     auto check = (leftRef.isStringReference() && rightRef.isStringReference())
-            || (leftRef.isIntReference() && rightRef.isStringReference());
+            || (leftRef.isIntReference() && rightRef.isIntReference());
     return check;
 }
 

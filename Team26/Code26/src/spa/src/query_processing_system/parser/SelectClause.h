@@ -6,8 +6,9 @@
 #include <ostream>
 #include <variant>
 #include "Synonym.h"
+#include "query_processing_system/parser/clause/with_clause/AttributeReference.h"
 
-using SelectClauseItem = std::variant<std::shared_ptr<Synonym>>;
+using SelectClauseItem = std::variant<std::shared_ptr<Synonym>, AttributeReference>;
 
 enum class SelectClauseReturnType {
     BOOLEAN,

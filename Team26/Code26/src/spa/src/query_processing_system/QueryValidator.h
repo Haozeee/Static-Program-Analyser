@@ -42,6 +42,8 @@ class QueryValidator {
 
     void validatePatternClause();
 
+    void validateWithClause();
+
     std::unordered_set<std::string> getDeclarationSynonyms();
 
     bool containsSelectClauseSynonymInDeclaration(const std::unordered_set<std::string>&,
