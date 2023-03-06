@@ -2,10 +2,12 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <functional>
 #include <unordered_set>
 #include <unordered_map>
 
 using TableRow = std::vector<std::string>;
+using MapFunc = std::function<std::vector<std::string>(std::vector<std::string>)>;
 
 /**
  * Hash function to hash a vector.
@@ -61,6 +63,7 @@ class ResultTable {
      * This function joins the two table on the common columns and return the newly joined table.
      * Suppose commonColumns = ["A", "B"]. This function joins table1 and table2 on
      * table1.A = table2.A and table1.B = table2.B.
+     * If there are cols in common cols that are not in both the tables, an exception is thrown.
      */
     static std::shared_ptr<ResultTable> joinOnColumns(std::shared_ptr<ResultTable> table1,
                                                       std::shared_ptr<ResultTable> table2,
@@ -89,8 +92,8 @@ class ResultTable {
     explicit ResultTable(std::string columnName);
 
     /**
-     * Create a table with multiple column.
-     * @param columnNames
+     * Create a table with multiple columns. Ideally, this should be private but std::make shared
+     * requires that the constructor be public. Use the factory method to construct the table.
      */
     explicit ResultTable(TableRow columnNames);
 
@@ -101,15 +104,6 @@ class ResultTable {
      */
     static std::shared_ptr<ResultTable>
     createSingleColumnTable(std::string column1, std::unordered_set<std::string> values);
-
-    /**
-     * Creates a table with two columns by doing a cartesian product of the two unordered sets.
-     * @param column1 The name of the first column.
-     * @param column2 the name of the second column.
-     */
-    static std::shared_ptr<ResultTable>
-    createDoubleColumnTable(std::string column1, std::unordered_set<std::string> values1,
-                            std::string column2, std::unordered_set<std::string> values2);
 
     /**
      * Given an unordered map, create a 2 column relational table with each (key, value) pair to
@@ -127,9 +121,20 @@ class ResultTable {
                                                   std::shared_ptr<ResultTable> table2);
 
     /**
+     * Given a column name, get all the column values and apply a mapping function to it.
+     * Add the mapped values as a new column. The mapped value should take in a vector of values
+     * and output a vector of new values with the same size.
+     * If the output vector have an unequal size, an exception will be thrown.
+     * @param colToMap The column whose values are to be mapped.
+     * @param mapCol The name of the new column to be added.
+     * @param f The mapping function.
+     */
+    void mapColumn(std::string colToMap, std::string mapCol, MapFunc f);
+
+    /**
      * Given a set of columnNamesToMatch, check if this table has any of these columns in it.
-     * @return A set containing the names of the matching columns. If there are no matching columns,
-     * an empty set is returned.
+     * @return A vector containing the names of the matching columns. If there are no matching columns,
+     * an empty vector is returned.
      */
     TableRow hasMatchingColumns(std::unordered_set<std::string> columnNamesToMatch);
 
@@ -139,6 +144,14 @@ class ResultTable {
      * @param row The row to be added.
      */
     void insertRow(TableRow row);
+
+    /**
+     * Insert a column into this table. An exception is thrown if the column added does not match the dimensions
+     * of the table.
+     * @param colName The name of the new column.
+     * @param colValues The values of the column to be added.
+     */
+    void insertCol(std::string colName, std::vector<std::string> colValues);
 
     /**
      * Get the entire row at rowNumber.
@@ -155,26 +168,34 @@ class ResultTable {
 
     /**
      * Given a row number i and a list of interested column numbers,
-     * return the ith row containing only the values in the interested columns.
+     * return the ith row containing only the values of the interested columns.
      */
     TableRow getValuesAt(int rowNumber, std::vector<int> columnNumbers) const;
 
     /**
-     * Given a list of interested columns, get a table with only the interested columns.
-     * For each row, combine the results together by appending the entire row into a string.
-     * Return a vector of strings at the end.
+     * Given a list of interested columns, return the values of only the interested columns
+     * in the form of a vector of strings.
+     * For each row, combine the results together by concatenating the entire row into a string.
      * @param interestedColumns The columns of the table that we are interested in.
      * @return The interested results in the form of a vector of strings. The results should be distinct.
      */
     TableRow getInterestedValues(std::vector<std::string> interestedColumns) const;
 
     /**
-     * Given a column name, get all the values under this column.
+     * Given a column name, get all the values under this column. This removes any duplicates
+     * in the column. The results are returned as a set, hence the ordering is undefined.
      */
     std::unordered_set<std::string> getColumnValues(std::string colName);
 
     /**
-     * For each col name in colName, get the corresponding column number.
+     * Given a column name, get all the values under this column. Duplicated are
+     * not removed from the results. The results are returned as a vector, and the order
+     * of the table is preserved in the results,
+     */
+    TableRow getColumnOrderedValues(std::string colName);
+
+    /**
+     * For each column name in colName, get the corresponding column number.
      * The order of the results is in the order of colName.
      * If the column name does not exist, the column number will be 0.
      */
@@ -192,8 +213,8 @@ class ResultTable {
     int getNumberOfRows() const;
 
     /**
-     * Get the column names of this table. The order of the column
-     * names matter.
+     * Get the column names of this table. The order of the results
+     * matches the way the columns of the table are ordered.
      */
     TableRow getColumnsNames() const;
 
