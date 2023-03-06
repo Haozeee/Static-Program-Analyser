@@ -7,7 +7,7 @@ RelationshipExtractor::RelationshipExtractor(std::shared_ptr<IRelationshipStore>
     this->relationshipStore = std::move(relationshipStore);
 
     procedureManager = readStorage->getProcedureManager();
-    callPManager = readStorage->getCallPManager();
+    callPManager = readStorage->getCallsPManager();
     usesPRelationships =
             std::make_unique<std::unordered_map<std::string, std::unordered_set<std::string>>>
             (readStorage->getUsesPManager()->getAllRelationshipEntries());

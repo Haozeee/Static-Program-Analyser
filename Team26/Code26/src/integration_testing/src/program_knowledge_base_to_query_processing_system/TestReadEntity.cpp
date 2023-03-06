@@ -19,7 +19,7 @@ TEST_CASE("Test reading entity for all manager") {
     assignManager->insertEntity(6);
     assignManager->insertEntity(9);
 
-    auto callManager = writeStorage->getCallManager();
+    auto callManager = writeStorage->getCallStmtNoManager();
     callManager->insertEntity(2);
 
     auto constantManager = writeStorage->getConstantManager();

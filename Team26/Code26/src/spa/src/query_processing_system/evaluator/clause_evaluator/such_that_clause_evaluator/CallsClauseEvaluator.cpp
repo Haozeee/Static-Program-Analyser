@@ -5,12 +5,12 @@ CallsClauseEvaluator::CallsClauseEvaluator(Argument left, Argument right)
 
 std::unordered_map<std::string, std::unordered_set<std::string>>
 CallsClauseEvaluator::getRelationshipManager(StoragePointer storage) {
-    return storage->getCallPManager()->getAllRelationshipEntries();
+    return storage->getCallsPManager()->getAllRelationshipEntries();
 }
 
 std::unordered_map<std::string, std::unordered_set<std::string>>
 CallsClauseEvaluator::getOppositeRelationshipManager(StoragePointer storage) {
-    return storage->getCallPManager()->getAllReversedRelationshipEntries();
+    return storage->getCallsPManager()->getAllReversedRelationshipEntries();
 }
 
 void CallsClauseEvaluator::handleRightWildcard() {

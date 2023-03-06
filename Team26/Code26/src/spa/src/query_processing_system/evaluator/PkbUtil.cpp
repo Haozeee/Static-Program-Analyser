@@ -71,7 +71,7 @@ std::unordered_set<int> PkbUtil::getIntEntitiesFromPkb(std::shared_ptr<ReadStora
         case DesignEntity::IF:
             return storage->getIfManager()->getAllEntitiesEntries();
         case DesignEntity::CALL:
-            return storage->getCallManager()->getAllEntitiesEntries();
+            return storage->getCallStmtNoManager()->getAllEntitiesEntries();
         case DesignEntity::WHILE:
             return storage->getWhileManager()->getAllEntitiesEntries();
         default:

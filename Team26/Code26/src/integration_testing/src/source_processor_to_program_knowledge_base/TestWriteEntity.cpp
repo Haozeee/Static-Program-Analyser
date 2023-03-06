@@ -55,7 +55,7 @@ TEST_CASE("Test insert entity for all managers") {
     REQUIRE(assignManager->getAllEntitiesEntries() == assignSet);
 
     // test CallStmtNoManager
-    auto callManager = readStorage->getCallManager();
+    auto callManager = readStorage->getCallStmtNoManager();
     std::unordered_set<int> callSet = {2};
 
     REQUIRE(callManager->contains(2));

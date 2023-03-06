@@ -24,11 +24,12 @@
 #include "program_knowledge_base/relationship/relationship_child_managers/ModifiesPManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/ModifiesSManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/NextManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/CallPManager.h"
-#include "program_knowledge_base/relationship/relationship_child_managers/CallSManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/CallsPManager.h"
+#include "program_knowledge_base/relationship/relationship_child_managers/CallsSManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/CallsTManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/IfCondManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/WhileCondManager.h"
+#include "program_knowledge_base/entity/entity_child_managers/CallProcedureManager.h"
 
 class StorageUtil {
  private:
@@ -47,13 +48,14 @@ class StorageUtil {
 
     std::shared_ptr<NextManager> nextManager;
 
-    std::shared_ptr<CallPManager> callPManager;
-    std::shared_ptr<CallSManager> callSManager;
+    std::shared_ptr<CallsPManager> callsPManager;
+    std::shared_ptr<CallsSManager> callsSManager;
     std::shared_ptr<CallsTManager> callsTManager;
 
     // entity managers
     std::shared_ptr<AssignManager> assignManager;
-    std::shared_ptr<CallStmtNoManager> callManager;
+    std::shared_ptr<CallStmtNoManager> callStmtNoManager;
+    std::shared_ptr<CallProcedureManager> callProcedureManager;
     std::shared_ptr<ConstantManager> constantManager;
     std::shared_ptr<IfManager> ifManager;
     std::shared_ptr<PrintStmtNoManager> printStmtNoManager;
@@ -82,12 +84,13 @@ class StorageUtil {
         modifiesPManager = std::make_shared<ModifiesPManager>();
         modifiesSManager = std::make_shared<ModifiesSManager>();
         nextManager = std::make_shared<NextManager>();
-        callPManager = std::make_shared<CallPManager>();
-        callSManager = std::make_shared<CallSManager>();
+        callsPManager = std::make_shared<CallsPManager>();
+        callsSManager = std::make_shared<CallsSManager>();
         callsTManager = std::make_shared<CallsTManager>();
         nextManager = std::make_shared<NextManager>();
         assignManager = std::make_shared<AssignManager>();
-        callManager = std::make_shared<CallStmtNoManager>();
+        callProcedureManager = std::make_shared<CallProcedureManager>();
+        callStmtNoManager = std::make_shared<CallStmtNoManager>();
         constantManager = std::make_shared<ConstantManager>();
         ifManager = std::make_shared<IfManager>();
         printStmtNoManager = std::make_shared<PrintStmtNoManager>();
@@ -138,12 +141,12 @@ class StorageUtil {
     std::shared_ptr<NextManager> getNextManager() {
         return nextManager;
     }
-    std::shared_ptr<CallPManager> getCallPManager() {
-        return callPManager;
+    std::shared_ptr<CallsPManager> getCallsPManager() {
+        return callsPManager;
     }
 
-    std::shared_ptr<CallSManager> getCallSManager() {
-        return callSManager;
+    std::shared_ptr<CallsSManager> getCallsSManager() {
+        return callsSManager;
     }
 
     std::shared_ptr<CallsTManager> getCallsTManager() {
@@ -162,8 +165,12 @@ class StorageUtil {
         return assignManager;
     }
 
-    std::shared_ptr<CallStmtNoManager> getCallManager() {
-        return callManager;
+    std::shared_ptr<CallProcedureManager> getCallProcedureManager() {
+        return callProcedureManager;
+    }
+
+    std::shared_ptr<CallStmtNoManager> getCallStmtNoManager() {
+        return callStmtNoManager;
     }
 
     std::shared_ptr<ConstantManager> getConstantManager() {
