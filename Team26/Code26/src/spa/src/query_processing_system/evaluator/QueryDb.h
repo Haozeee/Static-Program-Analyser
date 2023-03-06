@@ -4,14 +4,19 @@
 #include <unordered_map>
 #include <string>
 #include <deque>
+#include <vector>
 #include "ResultTable.h"
+#include "AttributeReferenceMap.h"
+#include "query_processing_system/parser/SelectClause.h"
+#include "program_knowledge_base/StorageUtil.h"
+#include "program_knowledge_base/StorageManager.h"
 
 class QueryDb {
  private:
     /**
      * Store the synonyms that the user has selected in the query.
      */
-    std::string selectedSynonyms;
+    std::vector<SelectClauseItem> selectedSynonyms;
 
     /**
      * Store a list of result tables. The result tables can come from the select clause or
@@ -21,11 +26,7 @@ class QueryDb {
      */
     std::deque<std::shared_ptr<ResultTable>> results;
 
-    /**
-     * The columns whose results are relevant to the final results. Initially, we are only
-     * interested in the columns of the selected synonyms.
-     */
-    std::unordered_set<std::string> interestedColumns;
+    std::shared_ptr<ReadStorage> storage;
 
     /**
      * Checks if the list of results contains a result table that equates to false. This means that
@@ -35,16 +36,25 @@ class QueryDb {
      */
     bool resultTablesHasFalse();
 
+    std::vector<std::string> getBooleanResults(std::shared_ptr<ResultTable> interestedResults);
+
+    void mapAttributeReferences(std::shared_ptr<ResultTable> interestedResults);
+
+    /**
+     * Get the column names of the final results.
+     */
+    std::vector<std::string> getInterestedColumns();
+
  public:
-    QueryDb();
+    explicit QueryDb(std::shared_ptr<ReadStorage> storage);
 
     void addResult(std::shared_ptr<ResultTable> toAdd);
 
-    void setSelectedColumn(std::string col);
+    void addSelectedColumn(SelectClauseItem selectClauseItem);
 
     /**
      * Join the tables that we are interested in to get the final results.
      * @return The final results.
      */
-    std::unordered_map<std::string, std::unordered_set<std::string>> getInterestedResults();
+    std::vector<std::string> getInterestedResults();
 };

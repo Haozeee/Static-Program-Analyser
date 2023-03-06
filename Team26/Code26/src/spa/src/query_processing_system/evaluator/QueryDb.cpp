@@ -1,24 +1,30 @@
 #include "QueryDb.h"
 #include <memory>
-QueryDb::QueryDb() {}
+
+QueryDb::QueryDb(std::shared_ptr<ReadStorage> storage) : storage(storage) {}
 
 void QueryDb::addResult(std::shared_ptr<ResultTable> toAdd) {
     results.push_back(toAdd);
 }
 
-void QueryDb::setSelectedColumn(std::string col) {
-    selectedSynonyms = col;
-    interestedColumns.insert(col);
+void QueryDb::addSelectedColumn(SelectClauseItem selectClauseItem) {
+    selectedSynonyms.push_back(selectClauseItem);
 }
 
-std::unordered_map<std::string, std::unordered_set<std::string>> QueryDb::getInterestedResults() {
-    std::unordered_map<std::string, std::unordered_set<std::string>> res;
+std::vector<std::string> QueryDb::getInterestedResults() {
+    std::vector<std::string> res;
     if (resultTablesHasFalse()) {
+        if (selectedSynonyms.empty()) {
+            res.emplace_back("FALSE");
+        }
         return res;
     }
 
-    auto interestedResults = results.front();
-    results.pop_front();
+    std::shared_ptr<ResultTable> interestedResults;
+    if (!results.empty()) {
+        interestedResults = results.front();
+        results.pop_front();
+    }
 
     while (!results.empty()) {
         auto table = results.front();
@@ -28,8 +34,48 @@ std::unordered_map<std::string, std::unordered_set<std::string>> QueryDb::getInt
         }
     }
 
-    // Store the result into an unordered map
-    res.insert({selectedSynonyms, interestedResults->getColumnValues(selectedSynonyms)});
+    if (selectedSynonyms.empty()) {
+        return getBooleanResults(interestedResults);
+    }
+
+    // Map attribute references
+    mapAttributeReferences(interestedResults);
+
+    // Filter selected columns
+    return interestedResults->getInterestedValues(getInterestedColumns());
+}
+
+void QueryDb::mapAttributeReferences(std::shared_ptr<ResultTable> interestedResults) {
+    for (SelectClauseItem item : selectedSynonyms) {
+        if (SelectClause::isAttribute(item)) {
+            auto attributeRef = std::get<AttributeReference>(item);
+            // E.g r.stmt#, get values of column r
+            auto synonymValues = interestedResults->getColumnOrderedValues(attributeRef.getSynonym());
+            // synonym values is transformed in place
+            mapAttribute(attributeRef, synonymValues, storage);
+            interestedResults->insertCol(SelectClause::getString(item), synonymValues);
+        }
+    }
+}
+
+std::vector<std::string> QueryDb::getInterestedColumns() {
+    std::vector<std::string> res;
+    for (SelectClauseItem i : selectedSynonyms) {
+        res.push_back(SelectClause::getString(i));
+    }
+    return res;
+}
+
+std::vector<std::string> QueryDb::getBooleanResults(std::shared_ptr<ResultTable> interestedResults) {
+    std::vector<std::string> res;
+    // Interested results is not null, has columns but has no rows
+    auto isFalse = interestedResults != nullptr && !interestedResults->getColumnsNamesSet().empty()
+            && interestedResults->getNumberOfRows() == 0;
+    if (isFalse) {
+        res.emplace_back("FALSE");
+    } else {
+        res.emplace_back("TRUE");
+    }
     return res;
 }
 

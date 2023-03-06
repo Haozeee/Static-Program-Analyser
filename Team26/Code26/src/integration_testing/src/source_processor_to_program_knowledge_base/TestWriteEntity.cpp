@@ -4,8 +4,8 @@
 #include <utility>
 #include <iostream>
 #include <fstream>
-#include "source_processor/storage/interface/IStore.h"
-#include "source_processor/storage/Store.h"
+#include "source_processor/storage_writer/interface/IStore.h"
+#include "source_processor/storage_writer/Store.h"
 #include "source_processor/SourceManager.h"
 
 TEST_CASE("Test insert entity for all managers") {
@@ -40,7 +40,7 @@ TEST_CASE("Test insert entity for all managers") {
     std::unique_ptr<StorageManager> storageManager = std::make_unique<StorageManager>();
     SourceManager sourceManager;
     std::shared_ptr<IStore> store = std::make_shared<Store>(storageManager->getWriteStorage());
-    sourceManager.process(testFileName, store);
+    sourceManager.process(testFileName, store, storageManager->getReadStorage());
     auto readStorage = storageManager->getReadStorage();
 
     // test AssignManager
@@ -54,8 +54,8 @@ TEST_CASE("Test insert entity for all managers") {
     REQUIRE(assignManager->contains(9));
     REQUIRE(assignManager->getAllEntitiesEntries() == assignSet);
 
-    // test CallManager
-    auto callManager = readStorage->getCallManager();
+    // test CallStmtNoManager
+    auto callManager = readStorage->getCallStmtNoManager();
     std::unordered_set<int> callSet = {2};
 
     REQUIRE(callManager->contains(2));
@@ -79,7 +79,7 @@ TEST_CASE("Test insert entity for all managers") {
     REQUIRE(ifManager->getAllEntitiesEntries() == ifSet);
 
     // test PrintManager
-    auto printManager = readStorage->getPrintManager();
+    auto printManager = readStorage->getPrintStmtNoManager();
     std::unordered_set<int> printSet = {8};
 
     REQUIRE(printManager->contains(8));
@@ -94,7 +94,7 @@ TEST_CASE("Test insert entity for all managers") {
     REQUIRE(procedureManager->getAllEntitiesEntries() == procedureSet);
 
     // test ReadManager
-    auto readManager = readStorage->getReadManager();
+    auto readManager = readStorage->getReadStmtNoManager();
     std::unordered_set<int> readSet = {10, 11};
 
     REQUIRE(readManager->contains(10));

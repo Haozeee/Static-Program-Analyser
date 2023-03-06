@@ -19,7 +19,6 @@ jobs:
         - uses: actions/checkout@v3
 
         - name: Make Build folder
-          shell: powershell
           run: |
             cd .\Team26\Code26
             mkdir build
@@ -27,14 +26,12 @@ jobs:
             cmake -G "Ninja" ..
 
         - name: Build Project
-          shell: powershell
           run: |
             cd Team26\Code26\build
             cmake --build . --config Release
             cd ../..
 
         - name: Copy Builds
-          shell: powershell
           run: |
             mkdir artifacts
             cp .\Team26\Code26\build\src\autotester\autotester.exe .\artifacts\autotester.exe
@@ -96,12 +93,10 @@ jobs:
             path: .\artifacts
 
         - name: Copy Autotester
-          shell: powershell
           run: |
             cp .\artifacts\autotester.exe .\Team26\Tests26
 
         - name: Run Autotester via script
-          shell: powershell
           run: |
             cd .\Team26\Tests26\testing_tools
             node tester.js
@@ -114,7 +109,6 @@ jobs:
             retention-days: 7
 
         - name: Install dependepncies
-          shell: powershell
           run: |
             cd .\Team26\Tests26\testing_tools
             npm i
@@ -126,10 +120,10 @@ jobs:
                 
         - name: Run uploader
           id: gsheet-uploader
-          shell: powershell
+          shell: pwsh
           run: |
             cd .\Team26\Tests26\testing_tools
-            node uploader.js ${{ vars.SPREADSHEET_ID }} >> %GITHUB_OUTPUT%
+            node uploader.js ${{ vars.SPREADSHEET_ID }} >> $env:GITHUB_OUTPUT
 
         - name: Comment PR
           uses: thollander/actions-comment-pull-request@v2

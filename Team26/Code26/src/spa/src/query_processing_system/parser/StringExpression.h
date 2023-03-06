@@ -34,4 +34,6 @@ class StringExpression {
     bool matchesString(std::string str);
 
     std::string getExpression();
+
+    bool isWildCard();
 };

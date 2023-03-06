@@ -3,7 +3,7 @@
 #include "MockStore.h"
 #include "TestUtil.h"
 #include "source_processor/design_extractor/extractor/EntityExtractor.h"
-#include "source_processor/storage/interface/IStore.h"
+#include "source_processor/storage_writer/interface/IStore.h"
 
 TEST_CASE("Test Entity Extractor") {
     SECTION("Single Procedure") {
@@ -17,8 +17,9 @@ TEST_CASE("Test Entity Extractor") {
         const std::string variable = "a";
 
         std::shared_ptr<MockEntityStore> entityStore = std::make_shared<MockEntityStore>();
+        std::shared_ptr<MockPatternStore> mockPatternStore = std::make_shared<MockPatternStore>();
 
-        std::unique_ptr<EntityExtractor> entityExtractor = std::make_unique<EntityExtractor>(entityStore);
+        std::unique_ptr<EntityExtractor> entityExtractor = std::make_unique<EntityExtractor>(entityStore, mockPatternStore);
         std::shared_ptr<ReadNode> readNode = std::make_shared<ReadNode>(nodeIndex++, readNodeName);
         std::shared_ptr<PrintNode> printNode = std::make_shared<PrintNode>(nodeIndex++, printNodeName);
         auto ifNode = TestExtractorUtil::makeSimpleIfNode(nodeIndex);
@@ -66,5 +67,6 @@ TEST_CASE("Test Entity Extractor") {
         REQUIRE(entityStore->procedureSet.begin()->get()->procedureName == procedureNode->procedureName);
         REQUIRE(entityStore->printSet.begin()->get()->varName == printNode->varName);
         REQUIRE(!entityStore->variableSet.begin()->find(variable));
+        REQUIRE(mockPatternStore->assignStore.size() == 2);
     }
 }

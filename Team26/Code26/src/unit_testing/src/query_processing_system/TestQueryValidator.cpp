@@ -276,6 +276,6 @@ TEST_CASE("Validate Pattern Clause") {
 
     Query *query = new Query();
     QueryParser parser = QueryParser(tokens, query);
-    REQUIRE_THROWS_AS(parser.parse(), QuerySemanticException);
+    REQUIRE_THROWS_AS(parser.parse(), QuerySyntaxException);
     delete query;
 }

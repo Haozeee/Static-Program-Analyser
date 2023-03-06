@@ -3,7 +3,7 @@
 
 class ParentTManager : public RelationshipManager<int, int> {
  public:
-    bool insertRelationship(int first, int second){
+    bool insertRelationship(int first, int second) override{
         bool flag = RelationshipManager::insertRelationship(first, second);
         if (relationships_map.count(second)) {
             auto res = relationships_map[second];

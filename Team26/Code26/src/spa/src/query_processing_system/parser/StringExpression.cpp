@@ -25,3 +25,7 @@ bool StringExpression::matchesString(std::string str) {
         return ShuntNode::isSubTree(statementTree, expressionTree);
     }
 }
+
+bool StringExpression::isWildCard() {
+    return isWildcard;
+}

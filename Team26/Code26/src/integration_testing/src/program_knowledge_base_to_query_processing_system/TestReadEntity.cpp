@@ -19,7 +19,7 @@ TEST_CASE("Test reading entity for all manager") {
     assignManager->insertEntity(6);
     assignManager->insertEntity(9);
 
-    auto callManager = writeStorage->getCallManager();
+    auto callManager = writeStorage->getCallStmtNoManager();
     callManager->insertEntity(2);
 
     auto constantManager = writeStorage->getConstantManager();
@@ -31,14 +31,14 @@ TEST_CASE("Test reading entity for all manager") {
     auto ifManager = writeStorage->getIfManager();
     ifManager->insertEntity(3);
 
-    auto printManager = writeStorage->getPrintManager();
+    auto printManager = writeStorage->getPrintStmtNoManager();
     printManager->insertEntity(8);
 
     auto procedureManager = writeStorage->getProcedureManager();
     procedureManager->insertEntity("test1");
     procedureManager->insertEntity("test2");
 
-    auto readManager = writeStorage->getReadManager();
+    auto readManager = writeStorage->getReadStmtNoManager();
     readManager->insertEntity(10);
     readManager->insertEntity(11);
 

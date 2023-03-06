@@ -10,6 +10,7 @@
 #include "Synonym.h"
 #include "clause/such_that_clause/SuchThatClause.h"
 #include "query_processing_system/parser/clause/pattern_clause/AssignPatternClause.h"
+#include "query_processing_system/parser/clause/with_clause/WithClause.h"
 
 class Query {
  private:
@@ -19,6 +20,8 @@ class Query {
     std::vector<std::shared_ptr<Declaration>> declarations;
     // List of such that clauses in the query
     std::vector<SuchThatClause*> suchThatClauses;
+    // List of with clauses in the query
+    std::vector<WithClause*> withClauses;
     // Map of synonyms to design entity
     std::unordered_map<std::string, DesignEntity> synonymToDesignEntityMap;
     // List of pattern clauses in the query
@@ -43,6 +46,10 @@ class Query {
 
     std::vector<PatternClause*> getPatternClause();
 
+    std::vector<WithClause*> getWithClause();
+
+    bool containsSynonymInDeclaration(std::string);
+
     /**
      * Add a new declaration to the Query object.
      *
@@ -59,6 +66,8 @@ class Query {
     void addSuchThatClause(SuchThatClause* clause);
 
     void addPatternClause(PatternClause* clause);
+
+    void addWithClause(WithClause* clause);
 
     bool operator==(const Query& other) const;
 

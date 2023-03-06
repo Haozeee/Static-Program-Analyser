@@ -38,6 +38,15 @@ class PkbUtil {
             std::unordered_map<int, std::unordered_set<int>> intMap);
 
     /**
+     * Takes in a map containing integer keys and string sets as values and
+     * converts all the integer values to strings.
+     * @param intMap The map to be converted.
+     * @return The converted string map.
+     */
+    static std::unordered_map<std::string, std::unordered_set<std::string>> intStringMapTostringMap(
+            std::unordered_map<int, std::unordered_set<std::string>> intMap);
+
+    /**
      * Given two sets containing elements of type T, get the intersection of the two sets.
      * @parsm res The set to store the intersection in.
      */

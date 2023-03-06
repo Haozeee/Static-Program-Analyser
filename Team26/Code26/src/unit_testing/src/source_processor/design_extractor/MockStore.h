@@ -1,8 +1,8 @@
 #pragma once
 
-#include "source_processor/storage/interface/IEntityStore.h"
-#include "source_processor/storage/interface/IRelationshipStore.h"
-#include "source_processor/storage/interface/IPatternStore.h"
+#include "source_processor/storage_writer/interface/IEntityStore.h"
+#include "source_processor/storage_writer/interface/IRelationshipStore.h"
+#include "source_processor/storage_writer/interface/IPatternStore.h"
 #include <unordered_set>
 #include <set>
 #include <unordered_map>
@@ -52,7 +52,7 @@ public:
         ifSet.insert(node);
     };
 
-    void insertName(const std::string &name) override {
+    void insertVariableName(const std::string &name) override {
         variableSet.insert(name);
     };
 
@@ -68,28 +68,40 @@ class MockRelationshipStore : public IRelationshipStore {
     std::unordered_map<int, std::unordered_set<int>> parentsStore;
     std::unordered_map<int, std::unordered_set<std::string>> usesSStore;
     std::unordered_map<int, std::unordered_set<std::string>> modifiesSStore;
+    std::unordered_map<int, std::unordered_set<int>> nextStore;
 
-    void insertFollowsRelationship(const int &previousStmtNo, const int &currentStmtNo) {
+    void insertFollowsRelationship(const int &previousStmtNo, const int &currentStmtNo) override {
         followsStore[previousStmtNo].insert(currentStmtNo);
     };
 
-    void insertParentsRelationship(const int &parentStmtNo, const int &childStmtNo) {
+    void insertParentsRelationship(const int &parentStmtNo, const int &childStmtNo) override {
         parentsStore[parentStmtNo].insert(childStmtNo);
     };
 
-    void insertUsesSRelationship(const int &stmtNo, const std::string &variableName) {
+    void insertUsesSRelationship(const int &stmtNo, const std::string &variableName) override {
         usesSStore[stmtNo].insert(variableName);
     };
 
-    void insertModifiesSRelationship(const int &stmtNo, const std::string &variableName) {
+    void insertModifiesSRelationship(const int &stmtNo, const std::string &variableName) override {
         modifiesSStore[stmtNo].insert(variableName);
     };
 
-    void insertUsesPRelationship(std::string  &procedureName, const std::string &variableName) {
+    void insertUsesPRelationship(const std::string  &procedureName, const std::string &variableName) override {
         //TODO(zt): Sprint 3
     };
-    void insertModifiesPRelationship(std::string  &procedureName, const std::string &variableName) {
+    void insertModifiesPRelationship(const std::string  &procedureName, const std::string &variableName) override {
         //TODO(zt): Sprint 3
+    }
+
+    void insertCallsRelationship(const int &stmtNo, const std::string &callerName, const std::string
+    &calleeName) override {
+
+    };
+    void insertNextRelationship(int previousStmtNo, int currStmtNo) override {
+        nextStore[previousStmtNo].insert(currStmtNo);
+    }
+    void insertCallsTRelationship(std::string caller, std::string callee) override {
+
     }
 
     bool findFollows(int x, int y) {
@@ -116,7 +128,17 @@ class MockRelationshipStore : public IRelationshipStore {
 class MockPatternStore : public IPatternStore {
  public:
     std::set<std::shared_ptr<AssignNode>> assignStore;
-    void insertExpressionPattern(std::shared_ptr<AssignNode> node) {
+    void insertExpressionPattern(std::shared_ptr<AssignNode> node) override {
         assignStore.insert(node);
     };
+
+    void insertCondExpressionIfStatement(int stmtIndex, std::string variableName) override {
+
+    };
+
+    void insertCondExpressionWhileStatement(int stmtIndex, std::string variableName) override {
+
+    };
 };
+
+

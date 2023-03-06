@@ -1,7 +1,6 @@
 #include "ResultTable.h"
-#include <map>
 #include <algorithm>
-#include <iostream>
+#include <utility>
 
 ResultTable::ResultTable() = default;
 
@@ -20,19 +19,6 @@ ResultTable::createSingleColumnTable(std::string column1, std::unordered_set<std
     auto res = std::make_shared<ResultTable>(column1);
     for (auto i : values) {
         res->insertRow({i});
-    }
-    return res;
-}
-
-std::shared_ptr<ResultTable>
-ResultTable::createDoubleColumnTable(std::string column1, std::unordered_set<std::string> values1,
-                                     std::string column2, std::unordered_set<std::string> values2) {
-    auto colNames = TableRow {column1, column2};
-    auto res = std::make_shared<ResultTable>(colNames);
-    for (auto i : values1) {
-        for (auto j : values2) {
-            res->insertRow({i, j});
-        }
     }
     return res;
 }
@@ -134,9 +120,11 @@ int ResultTable::getColumnNumber(std::string colName) const {
 std::vector<int> ResultTable::getColumnNumbers(std::vector<std::string> colName) const {
     std::vector<int> res(colName.size());
     for (auto const& [k, v] : columnNameMap) {
-        auto it = std::find(colName.begin(), colName.end(), v);
-        if (it != colName.end()) {
+        auto it = colName.begin();
+        auto col = v;
+        while ((it = std::find_if(it, colName.end(), [col](std::string x) { return x == col; })) != colName.end()) {
             res.at(it - colName.begin()) = k;
+            it++;
         }
     }
     return res;
@@ -144,11 +132,19 @@ std::vector<int> ResultTable::getColumnNumbers(std::vector<std::string> colName)
 
 void ResultTable::insertRow(TableRow row) {
     if (row.size() != columnNameMap.size()) {
-        std::cout << row.size() << "\n";
-        std::cout << "Adding row failed\n";
         throw std::exception();
     }
     relations.push_back(row);
+}
+
+void ResultTable::insertCol(std::string colName, std::vector<std::string> colValues) {
+    if (colValues.size() != relations.size()) {
+        throw std::exception();
+    }
+    columnNameMap.insert({columnNameMap.size(), colName});
+    for (int i = 0; i < relations.size(); ++i) {
+        relations.at(i).push_back(colValues.at(i));
+    }
 }
 
 TableRow ResultTable::getColumnsNames() const {
@@ -168,7 +164,7 @@ std::unordered_set<std::string> ResultTable::getColumnsNamesSet() const {
 }
 
 std::unordered_set<std::string> ResultTable::getColumnValues(std::string colName) {
-    int colInt = getColumnNumber(colName);
+    int colInt = getColumnNumber(std::move(colName));
     std::unordered_set<std::string> res;
     for (int i = 0; i < relations.size(); i++) {
         res.insert(getValueAt(i, colInt));
@@ -176,7 +172,16 @@ std::unordered_set<std::string> ResultTable::getColumnValues(std::string colName
     return res;
 }
 
-std::vector<std::string> ResultTable::hasMatchingColumns(std::unordered_set<std::string> columnNamesToMatch) {
+TableRow ResultTable::getColumnOrderedValues(std::string colName) {
+    int colInt = getColumnNumber(std::move(colName));
+    std::vector<std::string> res;
+    for (int i = 0; i < relations.size(); i++) {
+        res.push_back(getValueAt(i, colInt));
+    }
+    return res;
+}
+
+TableRow ResultTable::hasMatchingColumns(std::unordered_set<std::string> columnNamesToMatch) {
     std::vector<std::string> res;
     for (auto const& [k, v] : columnNameMap) {
         if (columnNamesToMatch.count(v)) {
@@ -194,12 +199,27 @@ std::string ResultTable::getValueAt(int rowNumber, int columnNumber) const {
     return relations.at(rowNumber).at(columnNumber);
 }
 
-std::vector<std::string> ResultTable::getValuesAt(int rowNumber, std::vector<int> columnNumbers) const {
+TableRow ResultTable::getValuesAt(int rowNumber, std::vector<int> columnNumbers) const {
     auto row = relations.at(rowNumber);
     std::vector<std::string> res;
     for (auto col : columnNumbers) {
         res.push_back(row.at(col));
     }
+    return res;
+}
+
+TableRow ResultTable::getInterestedValues(std::vector<std::string> interestedColumns) const {
+    auto colNum = getColumnNumbers(interestedColumns);
+    std::unordered_set<std::string> values;
+    for (int i = 0; i < relations.size(); i++) {
+        auto rowValue = getValuesAt(i, colNum);
+        std::string s;
+        std::for_each(rowValue.begin(), rowValue.end(), [&](const std::string &piece) { s += (" " + piece); });
+        s.erase(0, 1);
+        values.insert(s);
+    }
+    TableRow res;
+    res.insert(res.end(), values.begin(), values.end());
     return res;
 }
 

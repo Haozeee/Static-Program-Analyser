@@ -4,8 +4,8 @@
 #include <utility>
 #include <iostream>
 #include <fstream>
-#include "source_processor/storage/interface/IStore.h"
-#include "source_processor/storage/Store.h"
+#include "source_processor/storage_writer/interface/IStore.h"
+#include "source_processor/storage_writer/Store.h"
 #include "source_processor/SourceManager.h"
 
 TEST_CASE("Test insert pattern") {
@@ -26,7 +26,7 @@ TEST_CASE("Test insert pattern") {
     std::unique_ptr<StorageManager> storageManager = std::make_unique<StorageManager>();
     SourceManager sourceManager;
     std::shared_ptr<IStore> store = std::make_shared<Store>(storageManager->getWriteStorage());
-    sourceManager.process(testFileName, store);
+    sourceManager.process(testFileName, store, storageManager->getReadStorage());
     auto readStorage = storageManager->getReadStorage();
     auto patternManager = readStorage->getPatternManager();
 

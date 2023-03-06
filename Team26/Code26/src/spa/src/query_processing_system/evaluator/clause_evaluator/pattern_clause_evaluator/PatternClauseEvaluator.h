@@ -9,17 +9,15 @@
 
 class PatternClauseEvaluator : public ClauseEvaluator {
  protected:
+    PatternClauseEvaluator(Argument patternArg, Argument leftArg, StringExpression rightArg);
+
     Argument patternArg;
 
     Argument leftArg;
 
     StringExpression rightArg;
 
-    std::shared_ptr<ResultTable> clauseResultTable;
-
  public:
-    PatternClauseEvaluator(Argument patternArg, Argument leftArg, StringExpression rightArg);
-
     Argument getLeftArg();
 
     StringExpression getRightArg();

@@ -17,12 +17,6 @@ class QueryValidationException : public QuerySemanticException {
     explicit QueryValidationException(const std::string& errorMessage) : QuerySemanticException(errorMessage) {}
 };
 
-class QueryInvalidPatternArgument : public QuerySemanticException {
- public:
-    QueryInvalidPatternArgument() : QuerySemanticException(InvalidArgument) {}
-    explicit QueryInvalidPatternArgument(const std::string& errorMessage) : QuerySemanticException(errorMessage) {}
-};
-
 class QueryInvalidRelationshipArguments : public QuerySemanticException {
  public:
     QueryInvalidRelationshipArguments() : QuerySemanticException(InvalidArgument) {}
@@ -30,10 +24,22 @@ class QueryInvalidRelationshipArguments : public QuerySemanticException {
         : QuerySemanticException(errorMessage) {}
 };
 
+class QueryInvalidPatternArgument : public QuerySyntaxException {
+ public:
+    QueryInvalidPatternArgument() : QuerySyntaxException(InvalidArgument) {}
+    explicit QueryInvalidPatternArgument(const std::string& errorMessage) : QuerySyntaxException(errorMessage) {}
+};
+
 class QueryInvalidRelationship : public QuerySyntaxException {
  public:
     QueryInvalidRelationship() : QuerySyntaxException(InvalidRelationship) {}
     explicit QueryInvalidRelationship(const std::string& errorMessage) : QuerySyntaxException(errorMessage) {}
+};
+
+class QueryInvalidArgumentType : public QuerySemanticException {
+ public:
+    QueryInvalidArgumentType() : QuerySemanticException(InvalidRelationship) {}
+    explicit QueryInvalidArgumentType(const std::string& errorMessage) : QuerySemanticException(errorMessage) {}
 };
 
 class QueryParserException : public QuerySyntaxException {
