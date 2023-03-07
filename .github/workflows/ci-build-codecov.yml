@@ -9,20 +9,29 @@ on:
     branches: ["master", "ci-testing"]
 
 jobs:
+  check:
+      runs-on: [self-hosted, Linux, X64]
+      outputs:
+        continue: ${{ steps.early.status }}
+      steps:
+        - name: Author Check
+          id: early
+          run: |
+            if [ "$GITHUB_ACTOR" == "laughingkid-sg" ]; then
+              echo "status=true" >> "$GITHUB_OUTPUT"
+            else 
+              echo "status=false" >> "$GITHUB_OUTPUT"
+            fi
+
   coverage:
+      needs: check
+      if: needs.check.outputs.continue == 'true'
       runs-on: [self-hosted, Linux, X64]
       timeout-minutes: 10
       strategy:
         fail-fast: true
 
       steps:
-        - name: Author Check
-          run: |
-            if [ "$GITHUB_ACTOR" != "laughingkid-sg" ]; then
-              echo "Skipping Codecov"
-              exit 78
-            fi
-
         - uses: actions/checkout@v3
 
         - name: Make Build folder
