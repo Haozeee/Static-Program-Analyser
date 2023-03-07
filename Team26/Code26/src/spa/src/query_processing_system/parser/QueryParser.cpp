@@ -104,10 +104,21 @@ void QueryParser::parseTupleSelectClause() {
 }
 
 void QueryParser::parseBooleanSelectClause() {
-    // std::shared_ptr<Token> booleanToken = getNext();
+    std::shared_ptr<Token> booleanToken = getToken();
     parseNext("BOOLEAN");
-    auto selectClauses = std::make_shared<SelectClause>(SelectClauseReturnType::BOOLEAN);
-    query->setSelectClause(selectClauses);
+    std::shared_ptr<SelectClause> selectClause;
+
+    // Edge case: BOOLEAN in attribute reference
+    if (isValueOf(".")) {
+        AttributeReference attributeReference = parseAttributeReference(booleanToken);
+        std::shared_ptr<std::vector<SelectClauseItem>> item;
+        item->push_back(attributeReference);
+        selectClause = std::make_shared<SelectClause>(item, SelectClauseReturnType::SYNONYM);
+    } else {
+        selectClause = std::make_shared<SelectClause>(SelectClauseReturnType::BOOLEAN);
+    }
+
+    query->setSelectClause(selectClause);
 }
 
 SelectClauseItem QueryParser::parseReturnValue() {
@@ -265,6 +276,9 @@ std::string QueryParser::parseStringExpression() {
                             + QueryValidatorIfWhilePatternRightArgWildcard);
     std::shared_ptr<Token> stringExpressionToken = parseNext(TokenType::TOKEN_STRING_EXPRESSION);
     std::string str = stringExpressionToken->getValue();
+    if (!isValidIdent(str)) {
+        throw QueryParserException(QueryParserInvalidIdent);
+    }
     parseNext("'");
     str.erase(std::remove_if(str.begin(), str.end(), isspace), str.end());
     try {
@@ -330,6 +344,9 @@ Reference QueryParser::parseReference() {
         return Reference::createReference(std::stoi(integer));
     } else if (isValueOf("'")) {
         std::string string = parseStringExpression();
+        if (!isValidIdent(string)) {
+            throw QueryParserException(QueryParserInvalidIdent);
+        }
         return Reference::createReference(string);
     } else if (isTypeOf(TokenType::TOKEN_NAME)) {
         std::shared_ptr<Token> attrRefToken = getNext();
@@ -345,6 +362,28 @@ void QueryParser::parseEndingUnexpectedToken() {
     } else {
         throw QueryParserException(QueryParserUnexpectedToken + getToken()->getValue());
     }
+}
+
+bool QueryParser::isValidIdent(std::string str) {
+    // Ident cannot be empty
+    if (str.empty()) {
+        return false;
+    }
+
+    // Ident can only start with letter
+    if (!isalpha(str.at(0))) {
+        return false;
+    }
+
+    // Ident can only contain letters or digits
+    for (int i = 1; i < str.size(); i++) {
+        char c = str.at(i);
+        if (!isalnum(c)) {
+            return false;
+        }
+    }
+
+    return false;
 }
 
 void QueryParser::parseNextIfNextEqualsTo(std::string nextValue, std::string errorMessage) {

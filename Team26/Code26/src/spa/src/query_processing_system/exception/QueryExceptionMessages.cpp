@@ -55,3 +55,7 @@ const char QueryParserInvalidReferenceInWithClause[] =
         " is not a valid with clause reference type.";
 const char QueryParserInvalidAttributeRefInWithClause[] =
         " is not a valid with clause attribute reference syntax.";
+const char QueryTokenizerInvalidPunctuation[] =
+        " is an invalid punctuation.";
+const char QueryParserInvalidIdent[] =
+        " violates one or more IDENT grammar rules.";
