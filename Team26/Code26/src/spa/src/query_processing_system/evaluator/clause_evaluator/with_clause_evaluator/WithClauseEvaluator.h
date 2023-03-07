@@ -41,7 +41,7 @@ class WithClauseEvaluator : public ClauseEvaluator {
         auto leftRes = getLeftRefValues(storage);
         auto rightRes = getRightRefValues(storage);
         std::unordered_set<T> intersection;
-        PkbUtil::setIntersection(leftRes, rightRes, intersection);
+        Util::setIntersection(leftRes, rightRes, intersection);
 
         auto leftDE = leftRef.getAttributeDesignEntity();
         auto rightDE = rightRef.getAttributeDesignEntity();

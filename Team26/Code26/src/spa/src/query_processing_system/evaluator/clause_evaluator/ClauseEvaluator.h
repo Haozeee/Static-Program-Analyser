@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include "../PkbUtil.h"
+#include "../Util.h"
 #include "../../../program_knowledge_base/StorageManager.h"
 #include "../ResultTable.h"
 

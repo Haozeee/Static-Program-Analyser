@@ -23,10 +23,10 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         std::unordered_map<T, std::unordered_set<U>> res;
         auto relationshipMap = getRelationshipManager(storage);
         if (isLeftArgAmbiguous()) {
-            relationshipMap = PkbUtil::filterMap(relationshipMap, getLeftArgEntities(storage));
+            relationshipMap = Util::filterMap(relationshipMap, getLeftArgEntities(storage));
         }
         if (isRightArgAmbiguous()) {
-            relationshipMap = PkbUtil::mapSetIntersection(relationshipMap, getRightArgEntities(storage));
+            relationshipMap = Util::mapSetIntersection(relationshipMap, getRightArgEntities(storage));
         }
         setLeftAndRightArgResult(relationshipMap);
     }
@@ -37,7 +37,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         std::unordered_set<U> res {};
         if (it != relationshipStore.end()) {
             if (isRightArgAmbiguous()) {
-                PkbUtil::setIntersection(getRightArgEntities(storage), it->second, res);
+                Util::setIntersection(getRightArgEntities(storage), it->second, res);
             } else {
                 res = it->second;
             }
@@ -51,7 +51,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         std::unordered_set<T> res {};
         if (it != relationshipStore.end()) {
             if (isLeftArgAmbiguous()) {
-                PkbUtil::setIntersection(getLeftArgEntities(storage), it->second, res);
+                Util::setIntersection(getLeftArgEntities(storage), it->second, res);
             } else {
                 res = it->second;
             }
@@ -62,7 +62,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     void evaluateSynonymWildcard(StoragePointer storage) {
         auto relationshipMap = getRelationshipManager(storage);
         if (isLeftArgAmbiguous()) {
-            relationshipMap = PkbUtil::filterMap(relationshipMap, getLeftArgEntities(storage));
+            relationshipMap = Util::filterMap(relationshipMap, getLeftArgEntities(storage));
         }
         std::unordered_set<T> res {};
         for (auto const& [k, v] : relationshipMap) {

@@ -1,6 +1,7 @@
 #include "ResultTable.h"
 #include <algorithm>
 #include <utility>
+#include "Util.h"
 
 ResultTable::ResultTable() = default;
 
@@ -26,6 +27,10 @@ ResultTable::createSingleColumnTable(std::string column1, std::unordered_set<std
 std::shared_ptr<ResultTable>
 ResultTable::createTableFromMap(std::unordered_map<std::string, std::unordered_set<std::string>> map,
                                 std::string keysCol, std::string valuesCol) {
+    if (keysCol == valuesCol) {
+        return createSingleColumnTable(keysCol, Util::getAllKeys(map));
+    }
+
     auto colNames = TableRow {keysCol, valuesCol};
     auto res = std::make_shared<ResultTable>(colNames);
     for (auto const& [k, v] : map) {
