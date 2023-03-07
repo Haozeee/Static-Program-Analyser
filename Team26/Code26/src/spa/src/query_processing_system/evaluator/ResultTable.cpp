@@ -1,6 +1,5 @@
 #include "ResultTable.h"
 #include <algorithm>
-#include <utility>
 #include "Util.h"
 
 ResultTable::ResultTable() = default;
@@ -169,7 +168,7 @@ std::unordered_set<std::string> ResultTable::getColumnsNamesSet() const {
 }
 
 std::unordered_set<std::string> ResultTable::getColumnValues(std::string colName) {
-    int colInt = getColumnNumber(std::move(colName));
+    int colInt = getColumnNumber(colName);
     std::unordered_set<std::string> res;
     for (int i = 0; i < relations.size(); i++) {
         res.insert(getValueAt(i, colInt));
@@ -178,7 +177,7 @@ std::unordered_set<std::string> ResultTable::getColumnValues(std::string colName
 }
 
 TableRow ResultTable::getColumnOrderedValues(std::string colName) {
-    int colInt = getColumnNumber(std::move(colName));
+    int colInt = getColumnNumber(colName);
     std::vector<std::string> res;
     for (int i = 0; i < relations.size(); i++) {
         res.push_back(getValueAt(i, colInt));

@@ -110,7 +110,7 @@ class Util {
      * @return The converted string map.
      */
     static std::unordered_map<std::string, std::unordered_set<std::string>> intMapTostringMap(
-            std::unordered_map<int, std::unordered_set<int>> intMap);
+            std::unordered_map<int, std::unordered_set<int>> &intMap);
 
     /**
      * Takes in a map containing integer keys and string sets as values and
@@ -119,5 +119,5 @@ class Util {
      * @return The converted string map.
      */
     static std::unordered_map<std::string, std::unordered_set<std::string>> intStringMapTostringMap(
-            std::unordered_map<int, std::unordered_set<std::string>> intMap);
+            std::unordered_map<int, std::unordered_set<std::string>> &intMap);
 };
