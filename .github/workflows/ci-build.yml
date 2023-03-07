@@ -1,4 +1,4 @@
-name: CI for Cmake Project - Windows
+name: Windows
 
 on:
 

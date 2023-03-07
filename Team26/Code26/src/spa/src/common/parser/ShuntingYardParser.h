@@ -6,6 +6,7 @@
 #include <utility>
 #include <vector>
 #include <memory>
+#include <algorithm>
 #include <unordered_map>
 #include "common/parser/ShuntNode.h"
 #include "common/exception/ParserException.h"
