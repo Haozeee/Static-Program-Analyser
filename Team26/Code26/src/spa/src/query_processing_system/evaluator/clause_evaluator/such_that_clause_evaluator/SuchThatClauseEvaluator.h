@@ -112,18 +112,6 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         }
     }
 
-    /**
-     * Checks if the result of this such that clause equates to false. The such that clause
-     * is false when there are columns but no row in the ResultTable. If the such that clause is
-     * false, we can set the clause results as false and we do not evaluate any other clauses in
-     * the query.
-     */
-    void optimiseResults() {
-        if (!clauseResultTable->getColumnsNames().empty() && clauseResultTable->getNumberOfRows() == 0) {
-            clauseResultTable->setNoResults();
-        }
-    }
-
  protected:
     Argument leftArg;
 

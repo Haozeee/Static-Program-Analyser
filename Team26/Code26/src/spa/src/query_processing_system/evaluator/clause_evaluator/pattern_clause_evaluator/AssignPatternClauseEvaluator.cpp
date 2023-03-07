@@ -17,6 +17,7 @@ std::shared_ptr<ResultTable> AssignPatternClauseEvaluator::evaluateClause(std::s
         throw std::exception();
     }
 
+    optimiseResults();
     return clauseResultTable;
 }
 

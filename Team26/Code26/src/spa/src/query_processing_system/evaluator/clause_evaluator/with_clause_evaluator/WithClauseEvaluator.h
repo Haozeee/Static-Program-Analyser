@@ -23,11 +23,14 @@ class WithClauseEvaluator : public ClauseEvaluator {
 
     virtual std::unordered_set<std::string> getTranslatedValues(StoragePointer storage, T value, DesignEntity de) = 0;
 
-    void evaluateValueAttribute(StoragePointer storage, std::unordered_set<T> values, DesignEntity de,
-                                std::string colName) {
+    void evaluateValueAttribute(StoragePointer storage, std::unordered_set<T> values,
+                                std::unordered_set<T> attributes, DesignEntity de, std::string colName) {
+        std::unordered_set<T> intersect;
+        Util::setIntersection(values, attributes, intersect);
+
         std::unordered_set<std::string> res;
-        // Should only have one item in values
-        for (T value : values) {
+        // Should have less than one item in intersect
+        for (T value : intersect) {
             auto translatedValues = getTranslatedValues(storage, value, de);
             res.insert(translatedValues.begin(), translatedValues.end());
         }
@@ -66,11 +69,11 @@ class WithClauseEvaluator : public ClauseEvaluator {
         auto rightType = rightRef.getReferenceType();
 
         if (leftType != ReferenceType::ATTR_REF && rightType == ReferenceType::ATTR_REF) {
-            evaluateValueAttribute(storage, getLeftRefValues(storage), rightRef.getAttributeDesignEntity(),
-                                   rightRef.getAttributeIdentity());
+            evaluateValueAttribute(storage, getLeftRefValues(storage), getRightRefValues(storage),
+                                   rightRef.getAttributeDesignEntity(), rightRef.getAttributeIdentity());
         } else if (leftType == ReferenceType::ATTR_REF && rightType != ReferenceType::ATTR_REF) {
-            evaluateValueAttribute(storage, getRightRefValues(storage), leftRef.getAttributeDesignEntity(),
-                                   leftRef.getAttributeIdentity());
+            evaluateValueAttribute(storage, getRightRefValues(storage), getLeftRefValues(storage),
+                                   leftRef.getAttributeDesignEntity(), leftRef.getAttributeIdentity());
         } else if (rightType == ReferenceType::ATTR_REF) {
             evaluateAttributeAttribute(storage);
         } else {
@@ -80,7 +83,7 @@ class WithClauseEvaluator : public ClauseEvaluator {
                 clauseResultTable->setNoResults();
             }
         }
-
+        optimiseResults();
         return clauseResultTable;
     }
 };
