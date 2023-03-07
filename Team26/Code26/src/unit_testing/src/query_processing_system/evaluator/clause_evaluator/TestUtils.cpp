@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "query_processing_system/evaluator/PkbUtil.h"
+#include "query_processing_system/evaluator/Util.h"
 #include <unordered_set>
 #include <unordered_map>
 #include <string>
@@ -19,12 +19,12 @@ IntMapSet mapA = {
 TEST_CASE("Test Int Set To String Set") {
     IntSet intSet {1, 2, 3};
     StringSet stringSet {"1", "2", "3"};
-    REQUIRE(stringSet == PkbUtil::intSetToStringSet(intSet));
+    REQUIRE(stringSet == Util::intSetToStringSet(intSet));
 
     // Empty set
     intSet = {};
     stringSet = {};
-    REQUIRE(stringSet == PkbUtil::intSetToStringSet(intSet));
+    REQUIRE(stringSet == Util::intSetToStringSet(intSet));
 }
 
 TEST_CASE("Test Int Map To String Map") {
@@ -36,41 +36,44 @@ TEST_CASE("Test Int Map To String Map") {
             {"1", {"2", "4"}},
             {"5", {"6"}}
     };
-    REQUIRE(stringMap == PkbUtil::intMapTostringMap(intMap));
+    REQUIRE(stringMap == Util::intMapTostringMap(intMap));
 }
 
 TEST_CASE("Test Set Intersection") {
     IntSet res;
-    PkbUtil::setIntersection(setA, setB, res);
+    Util::setIntersection(setA, setB, res);
     IntSet expectedRes {3, 4, 5};
     REQUIRE(res == expectedRes);
 
     // Intersection with empty set
     res = {};
     expectedRes = {};
-    PkbUtil::setIntersection(setA, {}, res);
+    Util::setIntersection(setA, {}, res);
+    REQUIRE(res == expectedRes);
+    res = {};
+    Util::setIntersection({}, setA, res);
     REQUIRE(res == expectedRes);
 }
 
 TEST_CASE("Test Set Union") {
     IntSet set1 = setA;
     IntSet set2 = setB;
-    PkbUtil::setUnion(set1, set2);
+    Util::setUnion(set1, set2);
     IntSet expectedRes {1, 2, 3, 4, 5, 6, 7};
     REQUIRE(set1 == expectedRes);
 
     // Union with empty set
     set1 = setA;
-    PkbUtil::setUnion(set1, {});
+    Util::setUnion(set1, {});
     REQUIRE(set1 == setA);
     set1 = {};
-    PkbUtil::setUnion(set1, setB);
+    Util::setUnion(set1, setB);
     REQUIRE(set1 == setB);
 }
 
 TEST_CASE("Test Filter Map") {
     IntSet searchKeys {3, 8};
-    auto res = PkbUtil::filterMap(mapA, searchKeys);
+    auto res = Util::filterMap(mapA, searchKeys);
     IntMapSet expected {
             {3, {4, 6}},
             {8, {9}}
@@ -79,13 +82,13 @@ TEST_CASE("Test Filter Map") {
 
     // Empty search keys
     searchKeys = {};
-    res = PkbUtil::filterMap(mapA, searchKeys);
+    res = Util::filterMap(mapA, searchKeys);
     expected = {};
     REQUIRE(res == expected);
 }
 
 TEST_CASE("Test Map Set Intersection") {
-    auto res = PkbUtil::mapSetIntersection(mapA, setA);
+    auto res = Util::mapSetIntersection(mapA, setA);
     std::unordered_map<int, IntSet> expectedRes {
             {1, {2, 3, 4}},
             {3, {4}}

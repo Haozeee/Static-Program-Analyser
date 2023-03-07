@@ -51,6 +51,16 @@ TEST_CASE("Constructing Table From Map") {
     REQUIRE(mapTable->getRow(0) == row1);
     REQUIRE(mapTable->getRow(1) == row2);
     REQUIRE(mapTable->getRow(2) == row3);
+
+    // Creating a double column table with same name
+    map = {
+            {"1", {"1"}},
+            {"2", {"2"}}
+    };
+    mapTable = ResultTable::createTableFromMap(map, tableBCol1, tableBCol1);
+    REQUIRE(mapTable->getColumnsNamesSet().size() == 1);
+    std::unordered_set<std::string> res {"1", "2"};
+    REQUIRE(mapTable->getColumnValues(tableBCol1) == res);
 }
 
 TEST_CASE("Double Table") {
