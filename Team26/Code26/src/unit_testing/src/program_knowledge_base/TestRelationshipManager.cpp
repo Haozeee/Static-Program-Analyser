@@ -321,19 +321,19 @@ TEST_CASE("FollowsManager _insert int,int,WriteOnlyRelationshipManager") {
     REQUIRE(reversedSet.find(2) != reversedSet.end());
 
     // TODO: (ZH) Remove transitive
-//    map = followsTManagerRead->getAllRelationshipEntries();
-//    reversedMap = followsTManagerRead->getAllReversedRelationshipEntries();
-//    REQUIRE(map.size() == 3);
-//    REQUIRE(reversedMap.size() == 3);
-//    set = followsTManagerRead->getAllRelationshipEntries()[1];
-//    reversedSet = followsTManagerRead->getAllReversedRelationshipEntries()[4];
-//    REQUIRE(set.size() == 3);
-//    REQUIRE(reversedSet.size() == 3);
-//    REQUIRE(set.find(2) != set.end());
-//    REQUIRE(reversedSet.find(2) != reversedSet.end());
-//
-//    // invalid insertion
-//    REQUIRE_FALSE(followsManagerWrite->insertRelationship(1, 2,followsTManagerWrite));
+    map = followsTManagerRead->getAllRelationshipEntries();
+    reversedMap = followsTManagerRead->getAllReversedRelationshipEntries();
+    REQUIRE(map.size() == 3);
+    REQUIRE(reversedMap.size() == 3);
+    set = followsTManagerRead->getAllRelationshipEntries()[1];
+    reversedSet = followsTManagerRead->getAllReversedRelationshipEntries()[4];
+    REQUIRE(set.size() == 3);
+    REQUIRE(reversedSet.size() == 3);
+    REQUIRE(set.find(2) != set.end());
+    REQUIRE(reversedSet.find(2) != reversedSet.end());
+
+    // invalid insertion
+    REQUIRE_FALSE(followsManagerWrite->insertRelationship(1, 2,followsTManagerWrite));
 }
 
 TEST_CASE("ParentManager _insert int,int,WriteOnlyRelationshipManager") {
@@ -363,17 +363,17 @@ TEST_CASE("ParentManager _insert int,int,WriteOnlyRelationshipManager") {
     REQUIRE(reversedSet.find(1) != reversedSet.end());
 
     // TODO: (ZH) Remove transitive
-//    map = parentTManagerRead->getAllRelationshipEntries();
-//    reversedMap = parentTManagerRead->getAllReversedRelationshipEntries();
-//    REQUIRE(map.size() == 3);
-//    REQUIRE(reversedMap.size() == 5);
-//    set = parentTManagerRead->getAllRelationshipEntries()[1];
-//    reversedSet = parentTManagerRead->getAllReversedRelationshipEntries()[4];
-//    REQUIRE(set.size() == 5);
-//    REQUIRE(reversedSet.size() == 2);
-//    REQUIRE(set.find(2) != set.end());
-//    REQUIRE(reversedSet.find(3) != reversedSet.end());
-//
-//    // invalid insertion
-//    REQUIRE_FALSE(parentManagerWrite->insertRelationship(1, 2,parentTManagerWrite));
+    map = parentTManagerRead->getAllRelationshipEntries();
+    reversedMap = parentTManagerRead->getAllReversedRelationshipEntries();
+    REQUIRE(map.size() == 3);
+    REQUIRE(reversedMap.size() == 5);
+    set = parentTManagerRead->getAllRelationshipEntries()[1];
+    reversedSet = parentTManagerRead->getAllReversedRelationshipEntries()[4];
+    REQUIRE(set.size() == 5);
+    REQUIRE(reversedSet.size() == 2);
+    REQUIRE(set.find(2) != set.end());
+    REQUIRE(reversedSet.find(3) != reversedSet.end());
+
+    // invalid insertion
+    REQUIRE_FALSE(parentManagerWrite->insertRelationship(1, 2,parentTManagerWrite));
 }
