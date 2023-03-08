@@ -207,32 +207,35 @@ bool QueryParserUtil::isValidStringExpression(std::string expr) {
         return false;
     }
 
-    std::stack<std::shared_ptr<Token>> term;
+    std::stack<std::shared_ptr<Token>> var;
     std::stack<std::shared_ptr<Token>> op;
     bool isOperatorBefore = true;
-    bool hasTerm = false;
+    bool containsVariables = false;
 
     for (auto token : tokens) {
         if (token->getType() == TokenType::TOKEN_NAME || token->getType() == TokenType::TOKEN_INTEGER) {
-            if (!validateNameOrInteger(&isOperatorBefore, &term, token)) {
+            if (!validateNameOrInteger(&isOperatorBefore, &var, token)) {
                 return false;
             }
-            hasTerm = true;
-        } else if (operators.find(token->getValue().at(0)) != operators.end()
-                    && !validateOperator(token, &isOperatorBefore, &op)) {
-            return false;
+            containsVariables = true;
+        } else if (operators.find(token->getValue().at(0)) != operators.end()) {
+            if (!validateOperator(token, &isOperatorBefore, &op)) {
+                return false;
+            }
         } else if (token->getValue() == "(") {
             op.push(token);
-        } else if (token->getValue() == ")" && !validateCloseBracket(&term, &op)) {
-            return false;
+        } else if (token->getValue() == ")") {
+            if (!validateCloseBracket(&var, &op)) {
+                return false;
+            }
         } else {
             return false;
         }
     }
 
-    if (!hasTerm) {
+    if (!containsVariables) {
         return false;
     }
 
-    return handleRemainingTerms(&term, &op);
+    return handleRemainingTerms(&var, &op);
 }
