@@ -30,6 +30,11 @@ class QueryEvaluator {
      */
     void evaluatePatternClause();
 
+    /**
+     * Evaluate the with clauses in the query.
+     */
+    void evaluateWithClause();
+
  public:
     explicit QueryEvaluator(Query* query, std::shared_ptr<ReadStorage> storage);
 

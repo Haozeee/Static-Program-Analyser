@@ -8,7 +8,8 @@ EntityStore::EntityStore(std::shared_ptr<WriteStorage> storage) {
     readManager = storage->getReadStmtNoManager();
     printManager = storage->getPrintStmtNoManager();
     assignManager = storage->getAssignManager();
-    callManager = storage->getCallManager();
+    callStmtNoManager = storage->getCallStmtNoManager();
+    callProcedureManager = storage->getCallProcedureManager();
     whileManager = storage->getWhileManager();
     ifManager = storage->getIfManager();
     variableManager = storage->getVariableManager();
@@ -58,7 +59,8 @@ void EntityStore::insertAssignStatement(std::shared_ptr<AssignNode> node) {
 }
 
 void EntityStore::insertCallStatement(std::shared_ptr<CallNode> node) {
-    callManager->insertEntity(node->stmtIndex);
+    callStmtNoManager->insertEntity(node->stmtIndex);
+    callProcedureManager->insertEntity(node->procedureName);
 }
 
 void EntityStore::insertWhileStatement(std::shared_ptr<WhileNode> node) {

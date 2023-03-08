@@ -7,18 +7,37 @@ std::string tableACol = "col1";
 auto tableA = ResultTable::createSingleColumnTable(tableACol, tableAItems);
 
 // Create double columns table to be used for testing
+std::unordered_map<std::string, std::unordered_set<std::string>> tableBItems {
+        {"a", {"c", "d"}},
+        {"b", {"c", "d"}}
+};
 std::unordered_set<std::string> tableBItems1 {"a", "b"};
 std::unordered_set<std::string> tableBItems2 {"c", "d"};
 std::string tableBCol1 = "col1";
 std::string tableBCol2 = "col2";
-auto tableB = ResultTable::createDoubleColumnTable(tableBCol1, tableBItems1, tableBCol2, tableBItems2);
+auto tableB = ResultTable::createTableFromMap(tableBItems, tableBCol1, tableBCol2);
 
 // Create double columns table to be used for testing
 std::unordered_set<std::string> tableCItems1 {"b"};
 std::unordered_set<std::string> tableCItems2 {"c", "d"};
-auto tableC = ResultTable::createDoubleColumnTable(tableBCol1, tableCItems1, tableBCol2, tableCItems2);
+std::unordered_map<std::string, std::unordered_set<std::string>> tableCItems {
+        {"b", {"c", "d"}}
+};
+auto tableC = ResultTable::createTableFromMap(tableCItems, tableBCol1, tableBCol2);
 
-auto tableD = ResultTable::createDoubleColumnTable(tableBCol2, tableCItems2, tableBCol1, tableCItems1);
+std::unordered_map<std::string, std::unordered_set<std::string>> tableDItems {
+        {"c", {"b"}},
+        {"d", {"b"}}
+};
+auto tableD = ResultTable::createTableFromMap(tableDItems, tableBCol2, tableBCol1);
+
+std::unordered_set<std::string> vectorToSet(std::vector<std::string> v) {
+    std::unordered_set<std::string> res;
+    for (auto i : v) {
+        res.insert(i);
+    }
+    return res;
+}
 
 TEST_CASE("Constructing Table From Map") {
     std::unordered_map<std::string, std::unordered_set<std::string>> map {
@@ -32,6 +51,16 @@ TEST_CASE("Constructing Table From Map") {
     REQUIRE(mapTable->getRow(0) == row1);
     REQUIRE(mapTable->getRow(1) == row2);
     REQUIRE(mapTable->getRow(2) == row3);
+
+    // Creating a double column table with same name
+    map = {
+            {"1", {"1"}},
+            {"2", {"2"}}
+    };
+    mapTable = ResultTable::createTableFromMap(map, tableBCol1, tableBCol1);
+    REQUIRE(mapTable->getColumnsNamesSet().size() == 1);
+    std::unordered_set<std::string> res {"1", "2"};
+    REQUIRE(mapTable->getColumnValues(tableBCol1) == res);
 }
 
 TEST_CASE("Double Table") {
@@ -68,10 +97,11 @@ TEST_CASE("Double Table") {
     REQUIRE(tableB->hasMatchingColumns({"TEST"}) == res);
 
     // Test Insert row
+    auto tableBCopy = ResultTable::createTableFromMap(tableBItems, tableBCol1, tableBCol2);
     std::vector<std::string> rowToInsert = {"g", "h"};
-    tableB->insertRow(rowToInsert);
-    REQUIRE(tableB->getNumberOfRows() == (tableBItems1.size() * tableBItems2.size() + 1));
-    REQUIRE(tableB->getRow(tableB->getNumberOfRows() - 1) == rowToInsert);
+    tableBCopy->insertRow(rowToInsert);
+    REQUIRE(tableBCopy->getNumberOfRows() == (tableBItems1.size() * tableBItems2.size() + 1));
+    REQUIRE(tableBCopy->getRow(tableBCopy->getNumberOfRows() - 1) == rowToInsert);
 }
 
 TEST_CASE("Join One Matching Columns") {
@@ -119,4 +149,44 @@ TEST_CASE("Joining With Empty Table") {
     REQUIRE(res->getColumnsNames() == colNames);
     // Check Number of row
     REQUIRE(res->getNumberOfRows() == 0);
+}
+
+TEST_CASE("Get Interested Values") {
+    // Get One Column
+    auto values = tableB->getInterestedValues({tableBCol1});
+    REQUIRE(vectorToSet(values) == tableBItems1);
+
+    // Get Two different Column
+    values = tableB->getInterestedValues({tableBCol1, tableBCol2});
+    std::unordered_set<std::string> expectedValues {"a c", "a d", "b c", "b d"};
+    REQUIRE(vectorToSet(values) == expectedValues);
+
+    // Get Similar Column
+    values = tableB->getInterestedValues({tableBCol2, tableBCol2});
+    expectedValues = {"c c", "d d"};
+    // Duplicates are ignored
+    REQUIRE(values.size() == 2);
+    REQUIRE(vectorToSet(values) == expectedValues);
+}
+
+TEST_CASE("Insert Column") {
+    // test table with 1 col and 4 rows
+    auto testTable = ResultTable::createSingleColumnTable("col1", {"a", "b", "c", "d"});
+    auto tableValues = testTable->getColumnOrderedValues({"col1"});
+    std::vector<std::string> colToInsert {"1", "2", "3", "4"};
+    std::string colName = "col2";
+    testTable->insertCol(colName, colToInsert);
+    REQUIRE(testTable->getColumnsNames().size() == 2);
+
+    std::vector<std::string> expectedValue {tableValues.at(0), "1"};
+    REQUIRE(testTable->getRow(0) == expectedValue);
+    expectedValue = {tableValues.at(3), "4"};
+    REQUIRE(testTable->getRow(3) == expectedValue);
+
+    expectedValue = {"1", "2", "3", "4"};
+    REQUIRE(testTable->getColumnOrderedValues(colName) == expectedValue);
+    REQUIRE(testTable->getColumnOrderedValues("col1") == tableValues);
+
+    // Different dimensions
+    REQUIRE_THROWS(testTable->insertCol("col3", {"q", "w"}));
 }

@@ -1,5 +1,7 @@
 #include "AttributeReference.h"
 
+#include <utility>
+
 std::unordered_map<DesignEntity, std::string> validIntAttributes {
         {DesignEntity::STMT, statementNum},
         {DesignEntity::READ, statementNum},
@@ -20,7 +22,7 @@ std::unordered_map<DesignEntity, std::string> validStringAttributes {
 };
 
 AttributeReference::AttributeReference(DesignEntity designEntity, std::string synonym, std::string attributeName)
-    : designEntity(designEntity), synonym(synonym), attributeName(attributeName) {}
+    : designEntity(designEntity), synonym(std::move(synonym)), attributeName(std::move(attributeName)) {}
 
 bool AttributeReference::isStringAttributeReference() {
     auto it = validStringAttributes.find(designEntity);
@@ -43,4 +45,12 @@ std::string AttributeReference::getSynonym() const {
 
 DesignEntity AttributeReference::getDesignEntity() const {
     return designEntity;
+}
+
+std::string AttributeReference::getAttributeName() const {
+    return attributeName;
+}
+
+bool AttributeReference::operator==(const AttributeReference &other) const {
+    return this->synonym == other.synonym && this->attributeName == other.attributeName;
 }

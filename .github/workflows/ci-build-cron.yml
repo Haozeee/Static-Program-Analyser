@@ -1,4 +1,4 @@
-name: CI for Cmake Project - MacOS (Cron)
+name: MacOS (Cron)
 
 on:
   schedule:

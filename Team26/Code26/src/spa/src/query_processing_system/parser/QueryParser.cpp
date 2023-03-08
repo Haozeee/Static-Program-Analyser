@@ -115,7 +115,11 @@ SelectClauseItem QueryParser::parseReturnValue() {
     if (synonymToken->getValue() == "_") {
         throw QueryParserException(QueryParserInvalidWildcardInSelectClause);
     }
-    return parseSynonym(synonymToken);
+    if (isValueOf(".")) {
+        return parseAttributeReference(synonymToken);
+    } else {
+        return parseSynonym(synonymToken);
+    }
 }
 
 std::shared_ptr<Synonym> QueryParser::parseSynonym(std::shared_ptr<Token> token) {
@@ -271,6 +275,70 @@ std::string QueryParser::parseStringExpression() {
     return str;
 }
 
+bool QueryParser::hasWithClause() {
+    if (!isValueOf("with")) {
+        return false;
+    } else {
+        parseNext("with");
+        parseMultipleWithClause();
+        return true;
+    }
+}
+
+void QueryParser::parseWithClause() {
+    Reference leftRef = parseReference();
+    parseNextIfNextEqualsTo("=", getToken()->getValue()
+                                 + QueryParserInvalidEqualSignInWithClause);
+    Reference rightRef = parseReference();
+    auto withClause = new WithClause(leftRef, rightRef);
+    query->addWithClause(withClause);
+}
+
+void QueryParser::parseMultipleWithClause() {
+    parseWithClause();
+
+    while (hasNext() && isValueOf("and")) {
+        parseNext("and");
+        parseWithClause();
+    }
+}
+
+AttributeReference QueryParser::parseAttributeReference(std::shared_ptr<Token> token) {
+    parseNextIfNextEqualsTo(".", getToken()->getValue()
+                                 + QueryParserInvalidAttributeRefInWithClause);
+    std::string synonym = token->getValue();
+    DesignEntity designEntity = query->getSynonymDesignEntity(synonym);
+    std::shared_ptr<Token> attrRefToken = getNext();
+    std::string attrRefString = attrRefToken->getValue();
+
+    if (isValueOf("#")) {
+        parseNext("#");
+        attrRefString += "#";
+    }
+
+    AttributeReference attributeReference = AttributeReference(designEntity, synonym, attrRefString);
+    if (attributeReference.isValidAttributeReference()) {
+        return attributeReference;
+    } else {
+        throw QueryValidationException(QueryValidatorInvalidAttributeReference);
+    }
+}
+
+Reference QueryParser::parseReference() {
+    if (isTypeOf(TokenType::TOKEN_INTEGER)) {
+        std::string integer = getNext()->getValue();
+        return Reference::createReference(std::stoi(integer));
+    } else if (isValueOf("'")) {
+        std::string string = parseStringExpression();
+        return Reference::createReference(string);
+    } else if (isTypeOf(TokenType::TOKEN_NAME)) {
+        std::shared_ptr<Token> attrRefToken = getNext();
+        return Reference::createReference(parseAttributeReference(attrRefToken));
+    } else {
+        throw QueryParserException(getToken()->getValue() + QueryParserInvalidReferenceInWithClause);
+    }
+}
+
 void QueryParser::parseEndingUnexpectedToken() {
     if (isValueOf(";")) {
         throw QueryParserException(QueryParserInvalidEndingSemicolon);
@@ -300,6 +368,10 @@ void QueryParser::parse() {
         }
 
         if (hasPatternClause()) {
+            continue;
+        }
+
+        if (hasWithClause()) {
             continue;
         }
 

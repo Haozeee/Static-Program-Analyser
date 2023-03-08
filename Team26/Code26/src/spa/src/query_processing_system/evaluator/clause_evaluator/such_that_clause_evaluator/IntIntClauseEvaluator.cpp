@@ -12,17 +12,15 @@ void IntIntClauseEvaluator::handleRightWildcard() {
 }
 
 void IntIntClauseEvaluator::setLeftArgResult(std::unordered_set<int> result) {
-    clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(),
-                                                             PkbUtil::intSetToStringSet(result));
+    clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), Util::intSetToStringSet(result));
 }
 
 void IntIntClauseEvaluator::setRightArgResult(std::unordered_set<int> result) {
-    clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(),
-                                                             PkbUtil::intSetToStringSet(result));
+    clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), Util::intSetToStringSet(result));
 }
 
 void IntIntClauseEvaluator::setLeftAndRightArgResult(std::unordered_map<int, std::unordered_set<int>> results) {
-    auto res = PkbUtil::intMapTostringMap(results);
+    auto res = Util::intMapTostringMap(results);
     clauseResultTable = ResultTable::createTableFromMap(res, leftArg.getValue(), rightArg.getValue());
 }
 

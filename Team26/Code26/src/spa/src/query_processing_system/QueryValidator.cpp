@@ -108,6 +108,14 @@ void QueryValidator::validatePatternClause() {
     }
 }
 
+void QueryValidator::validateWithClause() {
+    for (auto clause : query->getWithClause()) {
+        if (!clause->validateClause()) {
+            throw QueryValidationException(QueryValidatorIncompatibleAttributeReference);
+        }
+    }
+}
+
 void QueryValidator::validateQuery() {
     validateNoDuplicateSynonymsInDeclaration();
 
@@ -116,4 +124,6 @@ void QueryValidator::validateQuery() {
     validateSuchThatClause();
 
     validatePatternClause();
+
+    validateWithClause();
 }

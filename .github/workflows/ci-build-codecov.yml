@@ -1,0 +1,73 @@
+name: Codecov
+
+on:
+
+  pull_request:
+    types: [ opened, synchronize, reopened, ready_for_review ]
+
+  push:
+    branches: ["master", "ci-testing"]
+
+jobs:
+  coverage:
+      runs-on: [self-hosted, Linux, X64]
+      timeout-minutes: 10
+      strategy:
+        fail-fast: true
+
+      steps:
+        - name: Author Check
+          run: |
+            if [ "$GITHUB_ACTOR" != "laughingkid-sg" ]; then
+              echo "Skipping Codecov"
+              exit 78
+            fi
+
+        - uses: actions/checkout@v3
+
+        - name: Make Build folder
+          working-directory: ${{runner.workspace}}/22s2-cp-spa-team-26/Team26/Code26
+          run: |
+            mkdir build
+            cd build
+            cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM="ninja" -DCMAKE_C_COMPILER=clang-15  -DCMAKE_CXX_COMPILER=clang++-15 "-DCMAKE_CXX_FLAGS=-fprofile-instr-generate -fcoverage-mapping" "-DCMAKE_C_FLAGS=-fprofile-instr-generate -fcoverage-mapping" -G Ninja ..
+
+        - name: Build Tests
+          working-directory: ${{runner.workspace}}/22s2-cp-spa-team-26/Team26/Code26/build
+          run: |
+            cmake --build . --target unit_testing --config Debug
+            cmake --build . --target integration_testing --config Debug
+
+        - name: Generate Unit Testing Coverage Data
+          working-directory: ${{runner.workspace}}/22s2-cp-spa-team-26/Team26/Code26/build/src/unit_testing
+          continue-on-error: true
+          run: |
+            ./unit_testing
+
+        - name: Generate Integration Testing Coverage Data
+          working-directory: ${{runner.workspace}}/22s2-cp-spa-team-26/Team26/Code26/build/src/integration_testing
+          continue-on-error: true
+          run: |
+            ./integration_testing
+
+        - name: Get Branch Name
+          id: branch-name
+          uses: tj-actions/branch-names@v6
+
+        - name: Export Unit Testng Coverage Data
+          working-directory: ${{runner.workspace}}/22s2-cp-spa-team-26/Team26/Code26/build/src/unit_testing
+          run: |
+            llvm-profdata-15 merge -sparse default.profraw -o code_coverage.profdata
+            llvm-cov-15 export --format=lcov --ignore-filename-regex='(tests|external)' --instr-profile=code_coverage.profdata ./unit_testing > coverage.info
+
+        - name: Export Integration Testng Coverage Data
+          working-directory: ${{runner.workspace}}/22s2-cp-spa-team-26/Team26/Code26/build/src/integration_testing
+          run: |
+            llvm-profdata-15 merge -sparse default.profraw -o code_coverage.profdata
+            llvm-cov-15 export --format=lcov --ignore-filename-regex='(tests|external)' --instr-profile=code_coverage.profdata ./integration_testing > coverage.info
+
+        - name: Upload Coverage
+          uses: codecov/codecov-action@v3
+          with:
+            token: ${{ secrets.CODECOV_TOKEN }} 
+            files: ${{runner.workspace}}/22s2-cp-spa-team-26/Team26/Code26/build/src/unit_testing/coverage.info,${{runner.workspace}}/22s2-cp-spa-team-26/Team26/Code26/build/src/integration_testing/coverage.info

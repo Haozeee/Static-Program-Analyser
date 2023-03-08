@@ -1,0 +1,13 @@
+coverage:
+  status:
+    project:
+      default:
+        informational: true
+    patch:
+      default:
+        informational: true
+ignore:
+  - Team26/Code26/src/unit_testing
+  - Team26/Code26/src/integration_testing
+  - Team26/Code26/src/autotester_gui
+  - Team26/Code26/src/autotester

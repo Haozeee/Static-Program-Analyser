@@ -1,37 +1,12 @@
 #include "PkbUtil.h"
-
-stringEntitySet PkbUtil::intSetToStringSet(std::unordered_set<int> intSet) {
-    stringEntitySet result;
-    std::transform(intSet.begin(), intSet.end(), std::inserter(result, result.begin()),
-                   [](int i) {return std::to_string(i);});
-    return result;
-}
-
-
-std::unordered_map<std::string, std::unordered_set<std::string>>
-PkbUtil::intMapTostringMap(std::unordered_map<int, std::unordered_set<int>> intMap) {
-    std::unordered_map<std::string, std::unordered_set<std::string>> res;
-    for (auto const& [k, v] : intMap) {
-        res.insert({std::to_string(k), PkbUtil::intSetToStringSet(v)});
-    }
-    return res;
-}
-
-std::unordered_map<std::string, std::unordered_set<std::string>>
-PkbUtil::intStringMapTostringMap(std::unordered_map<int, std::unordered_set<std::string>> intMap) {
-    std::unordered_map<std::string, std::unordered_set<std::string>> res;
-    for (auto const& [k, v] : intMap) {
-        res.insert({std::to_string(k), v});
-    }
-    return res;
-}
+#include "Util.h"
 
 std::unordered_set<std::string> PkbUtil::getEntitiesFromPkb(std::shared_ptr<ReadStorage> storage,
                                                             DesignEntity entity) {
     if (entity == DesignEntity::VARIABLE || entity == DesignEntity::PROCEDURE) {
         return PkbUtil::getStringEntitiesFromPkb(storage, entity);
     } else {
-        return PkbUtil::intSetToStringSet(PkbUtil::getIntEntitiesFromPkb(storage, entity));
+        return Util::intSetToStringSet(PkbUtil::getIntEntitiesFromPkb(storage, entity));
     }
 }
 
@@ -44,7 +19,7 @@ std::unordered_set<std::string> PkbUtil::getStringEntitiesFromPkb(std::shared_pt
             return storage->getProcedureManager()->getAllEntitiesEntries();
         case DesignEntity::CALL:
             // Get all procedures called by call statements
-            return {};
+            return storage->getCallProcedureManager()->getAllEntitiesEntries();
         case DesignEntity::READ:
             // Get all read variables statements
             return storage->getReadVariableManager()->getAllEntitiesEntries();
@@ -71,7 +46,7 @@ std::unordered_set<int> PkbUtil::getIntEntitiesFromPkb(std::shared_ptr<ReadStora
         case DesignEntity::IF:
             return storage->getIfManager()->getAllEntitiesEntries();
         case DesignEntity::CALL:
-            return storage->getCallManager()->getAllEntitiesEntries();
+            return storage->getCallStmtNoManager()->getAllEntitiesEntries();
         case DesignEntity::WHILE:
             return storage->getWhileManager()->getAllEntitiesEntries();
         default:

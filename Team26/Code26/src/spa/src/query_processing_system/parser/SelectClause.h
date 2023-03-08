@@ -6,8 +6,9 @@
 #include <ostream>
 #include <variant>
 #include "Synonym.h"
+#include "query_processing_system/parser/clause/with_clause/AttributeReference.h"
 
-using SelectClauseItem = std::variant<std::shared_ptr<Synonym>>;
+using SelectClauseItem = std::variant<std::shared_ptr<Synonym>, AttributeReference>;
 
 enum class SelectClauseReturnType {
     BOOLEAN,
@@ -51,6 +52,19 @@ class SelectClause {
      * @return Returns the Synonym in the passed Select Clause Item.
      */
     static std::string getSynonym(SelectClauseItem selectClauseItem);
+
+    /**
+     * Get the string value of the Select Clause Item. If select clause
+     * item is a synonym, simply get the identity of the synonym.
+     * If it is an attribute reference, get its synonym identity + "." + attribute name.
+     */
+    static std::string getString(SelectClauseItem selectClauseItem);
+
+    /**
+     * Given a select clause item, check if it refers to a attribute reference
+     * @return True if it is an attribute. Otherwise, return false.
+     */
+    static bool isAttribute(SelectClauseItem selectClauseItem);
 
     SelectClauseReturnType getSelectClauseReturnType();
 
