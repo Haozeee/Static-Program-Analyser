@@ -1,11 +1,10 @@
 #pragma once
 
-#include <queue>
 #include <stack>
-#include <unordered_map>
-#include <unordered_set>
 #include <string>
 #include <vector>
+#include <memory>
+#include <unordered_set>
 #include "common/exception/ExceptionMessage.h"
 #include "common/tokenizer/token/Token.h"
 
@@ -23,7 +22,7 @@ class QueryParserUtil {
 
     static std::vector<std::shared_ptr<Token>> tokenize(const std::string&);
 
-    static bool validateNameOrInteger(bool *isOperatorBefore, std::stack<std::shared_ptr<Token>> *term, std::shared_ptr<Token> token);
+    static bool validateNameOrInteger(bool*, std::stack<std::shared_ptr<Token>>*, std::shared_ptr<Token>);
 
     static bool validateOperator(std::shared_ptr<Token>, bool*, std::stack<std::shared_ptr<Token>>*);
 
