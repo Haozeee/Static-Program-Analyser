@@ -39,9 +39,9 @@ StringSet StringWithClauseEvaluator::getReadStatements(StoragePointer storage, s
     auto it = relationshipStore.find(value);
     if (it != relationshipStore.end()) {
         auto readStatements = storage->getReadStmtNoManager()->getAllEntitiesEntries();
-        PkbUtil::setIntersection(it->second, readStatements, res);
+        Util::setIntersection(it->second, readStatements, res);
     }
-    return PkbUtil::intSetToStringSet(res);
+    return Util::intSetToStringSet(res);
 }
 
 StringSet StringWithClauseEvaluator::getPrintStatements(StoragePointer storage, std::string value) {
@@ -50,9 +50,9 @@ StringSet StringWithClauseEvaluator::getPrintStatements(StoragePointer storage, 
     auto it = relationshipStore.find(value);
     if (it != relationshipStore.end()) {
         auto printStatements = storage->getPrintStmtNoManager()->getAllEntitiesEntries();
-        PkbUtil::setIntersection(it->second, printStatements, res);
+        Util::setIntersection(it->second, printStatements, res);
     }
-    return PkbUtil::intSetToStringSet(res);
+    return Util::intSetToStringSet(res);
 }
 
 StringSet StringWithClauseEvaluator::getCallStatements(StoragePointer storage, std::string value) {
@@ -62,5 +62,5 @@ StringSet StringWithClauseEvaluator::getCallStatements(StoragePointer storage, s
     if (it != relationshipStore.end()) {
         res = it->second;
     }
-    return PkbUtil::intSetToStringSet(res);
+    return Util::intSetToStringSet(res);
 }

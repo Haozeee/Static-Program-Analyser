@@ -12,8 +12,7 @@ void IntStringClauseEvaluator::handleRightWildcard() {
 }
 
 void IntStringClauseEvaluator::setLeftArgResult(std::unordered_set<int> result) {
-    clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(),
-                                                             PkbUtil::intSetToStringSet(result));
+    clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), Util::intSetToStringSet(result));
 }
 
 void IntStringClauseEvaluator::setRightArgResult(std::unordered_set<std::string> result) {
@@ -26,7 +25,7 @@ std::unordered_set<int> IntStringClauseEvaluator::getLeftArgEntities(StoragePoin
 
 void IntStringClauseEvaluator::setLeftAndRightArgResult(std::unordered_map<int,
                                                         std::unordered_set<std::string>> results) {
-    auto res = PkbUtil::intStringMapTostringMap(results);
+    auto res = Util::intStringMapTostringMap(results);
     clauseResultTable = ResultTable::createTableFromMap(res, leftArg.getValue(), rightArg.getValue());
 }
 
