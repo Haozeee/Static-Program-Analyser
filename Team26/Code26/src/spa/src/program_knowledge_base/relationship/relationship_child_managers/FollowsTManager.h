@@ -1,10 +1,11 @@
 #pragma once
+#include <unordered_set>
 #include "program_knowledge_base/relationship/RelationshipManager.h"
 
 class FollowsTManager : public RelationshipManager<int, int> {
  public:
     bool insertRelationship(int first, int second) override {
-        // TODO: (ZH) Remove added temporary fix for transitive
+        // TODO(ZH): Remove added temporary fix for transitive
         bool flag = RelationshipManager::insertRelationship(first, second);
         if (!reversed_relationships_map.count(second)) {
             std::unordered_set<int> new_set;

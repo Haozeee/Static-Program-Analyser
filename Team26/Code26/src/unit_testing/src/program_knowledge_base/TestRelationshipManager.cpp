@@ -320,7 +320,7 @@ TEST_CASE("FollowsManager _insert int,int,WriteOnlyRelationshipManager") {
     REQUIRE(set.find(2) != set.end());
     REQUIRE(reversedSet.find(2) != reversedSet.end());
 
-    // TODO: (ZH) Remove transitive
+    // TODO(ZH): Remove transitive
     map = followsTManagerRead->getAllRelationshipEntries();
     reversedMap = followsTManagerRead->getAllReversedRelationshipEntries();
     REQUIRE(map.size() == 3);
@@ -362,7 +362,7 @@ TEST_CASE("ParentManager _insert int,int,WriteOnlyRelationshipManager") {
     REQUIRE(set.find(2) != set.end());
     REQUIRE(reversedSet.find(1) != reversedSet.end());
 
-    // TODO: (ZH) Remove transitive
+    // TODO(ZH): Remove transitive
     map = parentTManagerRead->getAllRelationshipEntries();
     reversedMap = parentTManagerRead->getAllReversedRelationshipEntries();
     REQUIRE(map.size() == 3);
