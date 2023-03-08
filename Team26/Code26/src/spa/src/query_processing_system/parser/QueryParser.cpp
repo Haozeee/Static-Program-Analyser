@@ -414,7 +414,7 @@ void QueryParser::parseNextIfNextEqualsTo(std::string nextValue, std::string err
 }
 
 void QueryParser::parse() {
-    // First, parse Declaration.
+    // Firstly, parse Declaration.
     parseAllDeclarations();
 
     // Next, handle the Select Clause.
