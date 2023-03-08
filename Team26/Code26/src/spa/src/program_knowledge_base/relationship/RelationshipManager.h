@@ -49,7 +49,6 @@ class RelationshipManager: public IReadRelationshipManager<T, U>,
 
     bool insertRelationship(T first_param, U second_param) {
         bool flag = false;
-        bool flag1 = false;
         // the key is not a key in the map
         if (!relationships_map.count(first_param)) {
             std::unordered_set<U> new_set;
@@ -60,7 +59,7 @@ class RelationshipManager: public IReadRelationshipManager<T, U>,
             auto res = relationships_map[first_param].insert(second_param);
             flag = res.second;
         }
-        return flag && flag1;
+        return flag;
     }
 
     bool insertRelationship(T first_param, U second_param,
