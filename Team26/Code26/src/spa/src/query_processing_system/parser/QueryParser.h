@@ -107,6 +107,8 @@ class QueryParser : public AbstractParser {
 
     bool isValidIdent(std::string);
 
+    std::string trim(std::string);
+
  public:
     /**
      * Constructor for the query parser.

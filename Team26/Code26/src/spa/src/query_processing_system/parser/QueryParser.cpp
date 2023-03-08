@@ -276,9 +276,6 @@ std::string QueryParser::parseStringExpression() {
                             + QueryValidatorIfWhilePatternRightArgWildcard);
     std::shared_ptr<Token> stringExpressionToken = parseNext(TokenType::TOKEN_STRING_EXPRESSION);
     std::string str = stringExpressionToken->getValue();
-    if (!isValidIdent(str)) {
-        throw QueryParserException(QueryParserInvalidIdent);
-    }
     parseNext("'");
     str.erase(std::remove_if(str.begin(), str.end(), isspace), str.end());
     try {
@@ -344,7 +341,8 @@ Reference QueryParser::parseReference() {
         return Reference::createReference(std::stoi(integer));
     } else if (isValueOf("'")) {
         std::string string = parseStringExpression();
-        if (!isValidIdent(string)) {
+        std::string trimmedString = trim(string);
+        if (!isValidIdent(trimmedString)) {
             throw QueryParserException(QueryParserInvalidIdent);
         }
         return Reference::createReference(string);
@@ -384,6 +382,27 @@ bool QueryParser::isValidIdent(std::string str) {
     }
 
     return false;
+}
+
+std::string QueryParser::trim(std::string value) {
+    auto len = value.size();
+    int left = 0;
+    int right = len - 1;
+
+    while (left < len && value.at(left) == ' ') {
+        left++;
+    }
+
+    if (left == len) {
+        return "";
+    }
+
+    while (right >= 0 && value.at(right) == ' ') {
+        right--;
+    }
+    int subStrLen = right - left + 1;
+
+    return value.substr(left, subStrLen);
 }
 
 void QueryParser::parseNextIfNextEqualsTo(std::string nextValue, std::string errorMessage) {
