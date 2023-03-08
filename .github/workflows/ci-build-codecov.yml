@@ -16,13 +16,6 @@ jobs:
         fail-fast: true
 
       steps:
-        - name: Author Check
-          run: |
-            if [ "$GITHUB_ACTOR" != "laughingkid-sg" ]; then
-              echo "Skipping Codecov"
-              exit 78
-            fi
-
         - uses: actions/checkout@v3
 
         - name: Make Build folder
