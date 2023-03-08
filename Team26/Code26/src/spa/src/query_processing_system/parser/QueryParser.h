@@ -73,7 +73,7 @@ class QueryParser : public AbstractParser {
     Argument parseArgument();
 
     /**
-     * Parses Assign Pattern Clause if any.
+     * Parses Pattern Clause if any.
      */
     bool hasPatternClause();
 
@@ -86,7 +86,7 @@ class QueryParser : public AbstractParser {
     std::string parseStringExpression();
 
     /**
-     * Parses Assign Pattern Clause if any.
+     * Parses With Clause if any.
      */
     bool hasWithClause();
 
@@ -105,9 +105,11 @@ class QueryParser : public AbstractParser {
 
     void parseNextIfNextEqualsTo(std::string nextValue, std::string errorMessage);
 
+    std::string parseShuntingYard(std::string);
+
     bool isValidIdent(std::string);
 
-    std::string trim(std::string);
+    bool isValidStringExpression(std::string);
 
  public:
     /**

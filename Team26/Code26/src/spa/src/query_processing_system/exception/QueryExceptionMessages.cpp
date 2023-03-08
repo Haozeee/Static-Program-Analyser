@@ -59,3 +59,7 @@ const char QueryTokenizerInvalidPunctuation[] =
         " is an invalid punctuation.";
 const char QueryParserInvalidIdent[] =
         " violates one or more IDENT grammar rules.";
+const char QueryParserInvalidStringExpression[] =
+        " violates one or more expr grammar rules.";
+const char QueryParserInvalidLanguageRules[] =
+        "One or more PQL grammar rules violated.";

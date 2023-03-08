@@ -6,6 +6,7 @@
 #include "QueryParser.h"
 #include "common/parser/ShuntingYardParser.h"
 #include "query_processing_system/parser/clause/pattern_clause/PatternClauseFactory.h"
+#include "QueryParserUtil.h"
 
 QueryParser::QueryParser(std::vector<std::shared_ptr<Token>> tokens, Query* query) :
 query(query), AbstractParser(tokens) {}
@@ -196,8 +197,12 @@ Argument QueryParser::parseArgument() {
         return wildcardArgument;
     } else if (isValueOf("'")) {
         // Character String
-        std::string stringExpression = parseStringExpression();
-        Argument stringExpressionArgument(ArgumentType::CHARACTERSTRING, stringExpression, DesignEntity::NONE);
+        std::string ident = parseStringExpression();
+        if (!QueryParserUtil::isValidIdent(ident)) {
+            throw QueryParserException(ident + QueryParserInvalidIdent);
+        }
+        ident = parseShuntingYard(ident);
+        Argument stringExpressionArgument(ArgumentType::CHARACTERSTRING, ident, DesignEntity::NONE);
         return stringExpressionArgument;
     } else {
         throw QueryParserException(getToken()->getValue() + QueryParserInvalidTokenForRelationshipArgument);
@@ -258,6 +263,10 @@ StringExpression QueryParser::parseExpression() {
         if (isValueOf("'")) {
             // String Expression
             std::string stringExpression = parseStringExpression();
+            if (!QueryParserUtil::isValidStringExpression(stringExpression)) {
+                throw QueryParserException(stringExpression + QueryParserInvalidStringExpression);
+            }
+            stringExpression = parseShuntingYard(stringExpression);
             parseNext("_");
             return StringExpression(isExactMatch, stringExpression);
         } else {
@@ -267,6 +276,10 @@ StringExpression QueryParser::parseExpression() {
     } else {
         // Exact match
         std::string stringExpression = parseStringExpression();
+        if (!QueryParserUtil::isValidStringExpression(stringExpression)) {
+            throw QueryParserException(stringExpression + QueryParserInvalidStringExpression);
+        }
+        stringExpression = parseShuntingYard(stringExpression);
         return StringExpression(isExactMatch, stringExpression);
     }
 }
@@ -277,12 +290,9 @@ std::string QueryParser::parseStringExpression() {
     std::shared_ptr<Token> stringExpressionToken = parseNext(TokenType::TOKEN_STRING_EXPRESSION);
     std::string str = stringExpressionToken->getValue();
     parseNext("'");
-    str.erase(std::remove_if(str.begin(), str.end(), isspace), str.end());
-    try {
-       ShuntingYardParser::parse(str);
-    } catch (ShuntingYardParserException& e) {
-        throw QueryParserException(QueryParserUnbalancedStringExpression);
-    }
+
+//    str = parseShuntingYard(str);
+
     return str;
 }
 
@@ -340,12 +350,12 @@ Reference QueryParser::parseReference() {
         std::string integer = getNext()->getValue();
         return Reference::createReference(std::stoi(integer));
     } else if (isValueOf("'")) {
-        std::string string = parseStringExpression();
-        std::string trimmedString = trim(string);
-        if (!isValidIdent(trimmedString)) {
-            throw QueryParserException(QueryParserInvalidIdent);
+        std::string ident = parseStringExpression();
+        if (!QueryParserUtil::isValidIdent(ident)) {
+            throw QueryParserException(ident + QueryParserInvalidIdent);
         }
-        return Reference::createReference(string);
+        ident = parseShuntingYard(ident);
+        return Reference::createReference(ident);
     } else if (isTypeOf(TokenType::TOKEN_NAME)) {
         std::shared_ptr<Token> attrRefToken = getNext();
         return Reference::createReference(parseAttributeReference(attrRefToken));
@@ -362,55 +372,22 @@ void QueryParser::parseEndingUnexpectedToken() {
     }
 }
 
-bool QueryParser::isValidIdent(std::string str) {
-    // Ident cannot be empty
-    if (str.empty()) {
-        return false;
-    }
-
-    // Ident can only start with letter
-    if (!isalpha(str.at(0))) {
-        return false;
-    }
-
-    // Ident can only contain letters or digits
-    for (int i = 1; i < str.size(); i++) {
-        char c = str.at(i);
-        if (!isalnum(c)) {
-            return false;
-        }
-    }
-
-    return false;
-}
-
-std::string QueryParser::trim(std::string value) {
-    auto len = value.size();
-    int left = 0;
-    int right = len - 1;
-
-    while (left < len && value.at(left) == ' ') {
-        left++;
-    }
-
-    if (left == len) {
-        return "";
-    }
-
-    while (right >= 0 && value.at(right) == ' ') {
-        right--;
-    }
-    int subStrLen = right - left + 1;
-
-    return value.substr(left, subStrLen);
-}
-
 void QueryParser::parseNextIfNextEqualsTo(std::string nextValue, std::string errorMessage) {
     if (isValueOf(nextValue)) {
         parseNext(nextValue);
     } else {
         throw QueryInvalidPatternArgument(errorMessage);
     }
+}
+
+std::string QueryParser::parseShuntingYard(std::string str) {
+    str.erase(std::remove_if(str.begin(), str.end(), isspace), str.end());
+    try {
+        ShuntingYardParser::parse(str);
+    } catch (ShuntingYardParserException& e) {
+        throw QueryParserException(QueryParserUnbalancedStringExpression);
+    }
+    return str;
 }
 
 void QueryParser::parse() {
