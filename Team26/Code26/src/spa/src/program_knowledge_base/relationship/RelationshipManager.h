@@ -60,16 +60,6 @@ class RelationshipManager: public IReadRelationshipManager<T, U>,
             auto res = relationships_map[first_param].insert(second_param);
             flag = res.second;
         }
-
-        if (!reversed_relationships_map.count(second_param)) {
-            std::unordered_set<T> new_set;
-            new_set.insert(first_param);
-            auto res = reversed_relationships_map.emplace(second_param, new_set);
-            flag1 = res.second;
-        } else {
-            auto res = reversed_relationships_map[second_param].insert(first_param);
-            flag1 = res.second;
-        }
         return flag && flag1;
     }
 
@@ -77,5 +67,21 @@ class RelationshipManager: public IReadRelationshipManager<T, U>,
                             std::shared_ptr<IWriteRelationshipManager<T, U>> manager) {
         return false;
         // TODO(hz): Throw error or refactor
+    }
+
+    void setReverse() {
+        for (auto pair : relationships_map) {
+            auto key = pair.first;
+            auto value = pair.second;
+            for (auto element : value) {
+                if (!reversed_relationships_map.count(value)) {
+                    std::unordered_set<T> new_set;
+                    new_set.insert(key);
+                    auto res = reversed_relationships_map.emplace(value, new_set);
+                } else {
+                    auto res = reversed_relationships_map[value].insert(key);
+                }
+            }
+        }
     }
 };
