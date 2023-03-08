@@ -183,3 +183,38 @@ stmt s;
 Select s such that Follows*(10, 9)
 none
 5000
+38 - BOOLEAN: Always True
+
+Select BOOLEAN with 12 = 12
+TRUE
+5000
+39 - BOOLEAN: Always False
+
+Select BOOLEAN with 1 = 2
+FALSE
+5000
+40 - BOOLEAN: check assignment
+assign a;
+Select BOOLEAN with a.stmt# = 2
+TRUE
+5000
+41 - BOOLEAN: Select all assignment when True
+assign a, a1;
+Select a1 with a.stmt# = 2
+1, 2, 3, 5, 7, 8, 10, 13, 14, 15, 16, 17, 19, 20, 21, 22, 28, 29
+5000
+42 - BOOLEAN: True query
+
+Select BOOLEAN such that Parent(4, 5)
+TRUE
+5000
+43 - BOOLEAN: False query
+
+Select BOOLEAN such that Parent(4, 5) and Parent(4, 1)
+FALSE
+5000
+44 - BOOLEAN: True query
+
+Select BOOLEAN such that Calls (_,_)
+TRUE
+5000
