@@ -218,3 +218,18 @@ FALSE
 Select BOOLEAN such that Calls (_,_)
 TRUE
 5000
+45 - Select Variable
+variable v;
+Select v;
+SyntaxError
+5000
+46 - Edge Case
+assign pattern; variable Select, assign;
+Select Select pattern pattern(assign, _)
+a, assign, b, boooo, bye, c, call, cs3203, d, e, end, i, if, p, print, q, read, the, var, while, world, x, y, z
+5000
+46 - Invalid attribute name
+variable v;
+Select v.invalid;
+SyntaxError
+5000
