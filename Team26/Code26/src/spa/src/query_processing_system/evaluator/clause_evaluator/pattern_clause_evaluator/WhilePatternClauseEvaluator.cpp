@@ -1,6 +1,8 @@
 #include "WhilePatternClauseEvaluator.h"
 
 #include <utility>
+#include <unordered_set>
+#include <unordered_map>
 
 WhilePatternClauseEvaluator::WhilePatternClauseEvaluator(Argument patternArg, Argument leftArg,
                                                          StringExpression rightArg)
