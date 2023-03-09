@@ -263,3 +263,28 @@ assign a; variable v;
 Select <a.stmt#, v> pattern a(v, _"(1 * 2 * 3)"_)
 19 c, 20 a
 5000
+54 - Pattern: entRef, expression
+assign a;
+Select a pattern a("x", "1 y")
+SyntaxError
+5000
+55 - Pattern: entRef, expression
+assign a;
+Select a pattern a("x", _"1 y"_)
+SyntaxError
+5000
+56 - Pattern: entRef, expression
+assign a;
+Select BOOLEAN pattern a("x", "1 y")
+SyntaxError
+5000
+57 - Pattern: entRef, expression
+assign a;
+Select BOOLEAN pattern a("x", _"1 y"_)
+SyntaxError
+5000
+58 - Pattern: variable, expression
+assign a; variable v;
+Select <a.stmt#, v> pattern a(v, _"(1 2 * 3)"_)
+SyntaxError
+5000
