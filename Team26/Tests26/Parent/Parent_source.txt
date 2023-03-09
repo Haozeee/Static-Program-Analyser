@@ -44,9 +44,9 @@ procedure parent {
                 }
             }
         }
-            read y32;
-            print x33;
-            call child;
+        read y32;
+        print x33;
+        call child;
     }
     a35 = x * y + b;
     print a36;

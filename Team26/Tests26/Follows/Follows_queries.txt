@@ -305,8 +305,8 @@ FALSE
 5000
 62 - Follows: stmt number, stmt number
 
-Select BOOLEAN such that Follows(1, 77)
-FALSE
+Select BOOLEAN such that Follows(4, 5)
+TRUE
 5000
 63 - Follows: stmt number, stmt number
 
