@@ -8,6 +8,10 @@ on:
 
   push:
     branches: ["master", "ci-testing"]
+  
+  workflow_dispatch:
+    branches:     
+      - "*"
 
 jobs:
   build:

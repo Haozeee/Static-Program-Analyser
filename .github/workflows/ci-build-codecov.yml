@@ -9,6 +9,10 @@ on:
   push:
     branches: ["master", "ci-testing"]
 
+  workflow_dispatch:
+    branches:     
+      - "*"
+
 jobs:
   coverage:
       runs-on: [self-hosted, Linux, X64]
