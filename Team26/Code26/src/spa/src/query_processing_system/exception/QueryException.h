@@ -47,3 +47,8 @@ class QueryParserException : public QuerySyntaxException {
     QueryParserException() : QuerySyntaxException(ParserExceptionMessage) {}
     explicit QueryParserException(const std::string& errorMessage) : QuerySyntaxException(errorMessage) {}
 };
+
+class QueryTokenizerException : public QuerySyntaxException {
+ public:
+    explicit QueryTokenizerException(const std::string& errorMessage) : QuerySyntaxException(errorMessage) {}
+};

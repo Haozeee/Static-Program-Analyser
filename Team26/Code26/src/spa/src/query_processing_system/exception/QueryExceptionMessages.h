@@ -33,3 +33,7 @@ extern const char QueryParserInvalidSelectClause[];
 extern const char QueryParserInvalidEqualSignInWithClause[];
 extern const char QueryParserInvalidReferenceInWithClause[];
 extern const char QueryParserInvalidAttributeRefInWithClause[];
+extern const char QueryTokenizerInvalidPunctuation[];
+extern const char QueryParserInvalidIdent[];
+extern const char QueryParserInvalidStringExpression[];
+extern const char QueryParserInvalidLanguageRules[];

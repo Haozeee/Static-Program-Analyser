@@ -16,12 +16,22 @@ void QueryValidator::validateNoDuplicateSynonymsInDeclaration() {
 void QueryValidator::validateSynonymInSelectClauseWasDeclared() {
     std::unordered_set<std::string> declarationSynonyms = getDeclarationSynonyms();
 
+    auto selectClauseItem = query->getSelectClause();
+    if (selectClauseItem->getSelectClauseReturnType() == SelectClauseReturnType::BOOLEAN) {
+        return;
+    }
+
     auto selectClauseItems = query->getSelectClause()->getSelectClauseItems();
     std::unordered_set<std::string> selectClauseSynonyms;
     for (auto item : *selectClauseItems) {
-        std::string selectClauseSynonym = SelectClause::getSynonym(item);
-        if (selectClauseSynonym == "BOOLEAN") return;
-        selectClauseSynonyms.insert(selectClauseSynonym);
+        if (std::holds_alternative<std::shared_ptr<Synonym>>(item)) {
+            std::string selectClauseSynonym = SelectClause::getSynonym(item);
+            selectClauseSynonyms.insert(selectClauseSynonym);
+        } else {
+            AttributeReference attributeReference = std::get<AttributeReference>(item);
+            std::string attributeReferenceSynonym = attributeReference.getSynonym();
+            selectClauseSynonyms.insert(attributeReferenceSynonym);
+        }
     }
 
     if (!containsSelectClauseSynonymInDeclaration(declarationSynonyms, selectClauseSynonyms)) {

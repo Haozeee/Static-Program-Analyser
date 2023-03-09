@@ -7,6 +7,8 @@
 #include "common/tokenizer/token/SpecialCharToken.h"
 #include "common/tokenizer/token/EndOfFileToken.h"
 #include "common/tokenizer/token/StringExpressionToken.h"
+#include "query_processing_system/exception/QueryException.h"
+#include "query_processing_system/exception/QueryExceptionMessages.h"
 
 std::unordered_set<std::string> specialChars({";", ",", "_", "=", "*", "(", ")", "<", ">", "#", "."});
 
@@ -15,8 +17,7 @@ QueryTokenizer::QueryTokenizer(const std::string& query) : AbstractTokenizer(que
 void QueryTokenizer::readSpecialChar() {
     if (specialChars.find(getCurrentToken()) == specialChars.end()) {
         // Invalid punctuation
-        // TODO(haoze): Throw custom exception
-        throw std::invalid_argument(getCurrentToken() + " is an invalid punctuation.");
+        throw QueryTokenizerException(getCurrentToken() + QueryTokenizerInvalidPunctuation);
     }
 }
 
