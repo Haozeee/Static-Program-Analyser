@@ -12,6 +12,7 @@ on:
 jobs:
   coverage:
       runs-on: [self-hosted, Linux, X64]
+      needs: Windows
       timeout-minutes: 10
       strategy:
         fail-fast: true
