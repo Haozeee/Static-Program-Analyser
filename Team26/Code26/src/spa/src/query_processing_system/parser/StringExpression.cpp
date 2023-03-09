@@ -29,3 +29,7 @@ bool StringExpression::matchesString(std::string str) {
 bool StringExpression::isWildCard() {
     return isWildcard;
 }
+
+void StringExpression::setIsWildCard() {
+    this->isWildcard = true;
+}

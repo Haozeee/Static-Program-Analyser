@@ -36,4 +36,6 @@ class StringExpression {
     std::string getExpression();
 
     bool isWildCard();
+
+    void setIsWildCard();
 };

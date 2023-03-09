@@ -6,8 +6,15 @@
 
 
 class WhilePatternClauseEvaluator : public PatternClauseEvaluator {
- public:
-    WhilePatternClauseEvaluator(Argument patternArg, Argument leftArg);
+ protected:
+    void evaluateSynonym(std::shared_ptr<ReadStorage>) override;
+
+    void evaluateString(std::shared_ptr<ReadStorage>) override;
+
+    void evaluateWildcard(std::shared_ptr<ReadStorage>) override;
+
+public:
+    WhilePatternClauseEvaluator(Argument patternArg, Argument leftArg, StringExpression rightArg);
 
     std::shared_ptr<ResultTable> evaluateClause(std::shared_ptr<ReadStorage> storage) override;
 };

@@ -5,8 +5,15 @@
 #include "PatternClauseEvaluator.h"
 
 class IfPatternClauseEvaluator : public PatternClauseEvaluator {
+ protected:
+    void evaluateSynonym(std::shared_ptr<ReadStorage>) override;
+
+    void evaluateString(std::shared_ptr<ReadStorage>) override;
+
+    void evaluateWildcard(std::shared_ptr<ReadStorage>) override;
+
  public:
-    IfPatternClauseEvaluator(Argument patternArg, Argument leftArg);
+    IfPatternClauseEvaluator(Argument patternArg, Argument leftArg, StringExpression rightArg);
 
     std::shared_ptr<ResultTable> evaluateClause(std::shared_ptr<ReadStorage> storage) override;
 };

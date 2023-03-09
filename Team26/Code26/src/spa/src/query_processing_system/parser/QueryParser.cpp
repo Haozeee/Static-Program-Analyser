@@ -236,15 +236,14 @@ void QueryParser::parsePatternClause() {
     parseNext(",");
     // Second argument can be wildcard or expression for exact/partial match
     StringExpression rightArgument = parseExpression();
+    // Third argument must be wildcard for if pattern clause, otherwise should be )
     if (patternArg.getDesignEntity() == DesignEntity::ASSIGN || patternArg.getDesignEntity() == DesignEntity::WHILE) {
-        parseNextIfNextEqualsTo(")", toString(patternArg.getDesignEntity())
-                                     + QueryInvalidNumberOfPatternArguments);
+        parseNextIfElseSemanticError(")", toString(patternArg.getDesignEntity())
+                                          + QueryInvalidNumberOfPatternArguments);
     } else if (patternArg.getDesignEntity() == DesignEntity::IF) {
-        parseNextIfNextEqualsTo(",", toString(patternArg.getDesignEntity())
-                                     + QueryInvalidNumberOfPatternArguments);
-        parseNextIfNextEqualsTo("_", toString(patternArg.getDesignEntity())
-                                     + QueryParserPatternClauseNonWildcardArgument
-                                     + getNext()->getValue());
+        parseNextIfElseSemanticError(",", toString(patternArg.getDesignEntity())
+                                          + QueryInvalidNumberOfPatternArguments);
+        parseNext("_");
         parseNext(")");
     }
     PatternClause* patternClause =
@@ -271,6 +270,8 @@ StringExpression QueryParser::parseExpression() {
             return StringExpression(isExactMatch, stringExpression);
         } else {
             // Wildcard
+            StringExpression str = StringExpression(true);
+            str.setIsWildCard();
             return StringExpression(true);
         }
     } else {
@@ -280,13 +281,16 @@ StringExpression QueryParser::parseExpression() {
             throw QueryParserException(stringExpression + QueryParserInvalidStringExpression);
         }
         stringExpression = parseShuntingYard(stringExpression);
+        if (isValueOf("_")) {
+            throw QueryParserException(QueryParserUnexpectedToken);
+        }
         return StringExpression(isExactMatch, stringExpression);
     }
 }
 
 std::string QueryParser::parseStringExpression() {
-    parseNextIfNextEqualsTo("'", getToken()->getValue()
-                            + QueryValidatorIfWhilePatternRightArgWildcard);
+    parseNextIfElseSyntaxError("'", getToken()->getValue()
+                                    + QueryValidatorIfWhilePatternRightArgWildcard);
     std::shared_ptr<Token> stringExpressionToken = parseNext(TokenType::TOKEN_STRING_EXPRESSION);
     std::string str = stringExpressionToken->getValue();
     parseNext("'");
@@ -308,8 +312,8 @@ bool QueryParser::hasWithClause() {
 
 void QueryParser::parseWithClause() {
     Reference leftRef = parseReference();
-    parseNextIfNextEqualsTo("=", getToken()->getValue()
-                                 + QueryParserInvalidEqualSignInWithClause);
+    parseNextIfElseSyntaxError("=", getToken()->getValue()
+                                    + QueryParserInvalidEqualSignInWithClause);
     Reference rightRef = parseReference();
     auto withClause = new WithClause(leftRef, rightRef);
     query->addWithClause(withClause);
@@ -325,8 +329,8 @@ void QueryParser::parseMultipleWithClause() {
 }
 
 AttributeReference QueryParser::parseAttributeReference(std::shared_ptr<Token> token) {
-    parseNextIfNextEqualsTo(".", getToken()->getValue()
-                                 + QueryParserInvalidAttributeRefInWithClause);
+    parseNextIfElseSyntaxError(".", getToken()->getValue()
+                                    + QueryParserInvalidAttributeRefInWithClause);
     std::string synonym = token->getValue();
     DesignEntity designEntity = query->getSynonymDesignEntity(synonym);
     std::shared_ptr<Token> attrRefToken = getNext();
@@ -372,11 +376,20 @@ void QueryParser::parseEndingUnexpectedToken() {
     }
 }
 
-void QueryParser::parseNextIfNextEqualsTo(std::string nextValue, std::string errorMessage) {
+void QueryParser::parseNextIfElseSyntaxError(std::string nextValue, std::string errorMessage) {
     if (isValueOf(nextValue)) {
         parseNext(nextValue);
     } else {
-        throw QueryInvalidPatternArgument(errorMessage);
+        throw QueryParserException(errorMessage);
+    }
+}
+
+void QueryParser::parseNextIfElseSemanticError(std::string nextValue, std::string errorMessage) {
+    if (isValueOf(nextValue)) {
+        parseNext(nextValue);
+    } else {
+        std::cout << nextValue << std::endl;
+        throw QueryInvalidRelationshipArguments(errorMessage);
     }
 }
 
