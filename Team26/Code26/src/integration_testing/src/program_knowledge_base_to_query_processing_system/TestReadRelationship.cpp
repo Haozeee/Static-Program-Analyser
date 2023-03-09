@@ -74,6 +74,7 @@ TEST_CASE("Test reading relationships for all managers") {
     followsManager->insertRelationship(8, 14);
     followsManager->insertRelationship(9, 13);
     followsManager->insertRelationship(11, 12);
+    followsManager->setReverse();
 
     auto followsTManager = writeStorage->getFollowsTManager();
     followsTManager->insertRelationship(1, 2);
@@ -94,11 +95,13 @@ TEST_CASE("Test reading relationships for all managers") {
     followsTManager->insertRelationship(8, 14);
     followsTManager->insertRelationship(9, 13);
     followsTManager->insertRelationship(11, 12);
+    followsTManager->setReverse();
     
     auto modifiesPManager = writeStorage->getModifiesPManager();
     modifiesPManager->insertRelationship("test1", "a");
     modifiesPManager->insertRelationship("test1", "x");
     modifiesPManager->insertRelationship("test1", "y");
+    modifiesPManager->setReverse();
     
     auto modifiesSManager = writeStorage->getModifiesSManager();
     modifiesSManager->insertRelationship(1,"a");
@@ -113,6 +116,7 @@ TEST_CASE("Test reading relationships for all managers") {
     modifiesSManager->insertRelationship(11,"x");
     modifiesSManager->insertRelationship(13,"y");
     modifiesSManager->insertRelationship(14,"y");
+    modifiesSManager->setReverse();
     
     auto parentManager = writeStorage->getParentManager();
     parentManager->insertRelationship(3, 4);
@@ -123,6 +127,7 @@ TEST_CASE("Test reading relationships for all managers") {
     parentManager->insertRelationship(9, 10);
     parentManager->insertRelationship(9, 11);
     parentManager->insertRelationship(9, 12);
+    parentManager->setReverse();
     
     auto parentTManager = writeStorage->getParentTManager();
     parentTManager->insertRelationship(3, 4);
@@ -136,11 +141,13 @@ TEST_CASE("Test reading relationships for all managers") {
     parentTManager->insertRelationship(9, 10);
     parentTManager->insertRelationship(9, 11);
     parentTManager->insertRelationship(9, 12);
+    parentTManager->setReverse();
     
     auto usesPManager = writeStorage->getUsesPManager();
     usesPManager->insertRelationship("test1", "a");
     usesPManager->insertRelationship("test1", "x");
     usesPManager->insertRelationship("test1", "y");
+    usesPManager->setReverse();
     
     auto usesSManager = writeStorage->getUsesSManager();
     usesSManager->insertRelationship(3, "a");
@@ -154,6 +161,7 @@ TEST_CASE("Test reading relationships for all managers") {
     usesSManager->insertRelationship(12, "x");
     usesSManager->insertRelationship(13, "y");
     usesSManager->insertRelationship(14, "x");
+    usesSManager->setReverse();
 
     // test Follows
     std::list<std::string> q1a_results;

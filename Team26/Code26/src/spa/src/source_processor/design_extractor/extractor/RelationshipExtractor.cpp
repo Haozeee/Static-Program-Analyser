@@ -22,6 +22,7 @@ void RelationshipExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
 
     BaseExtractor::extractProgram(node);
 
+    relationshipStore->invokeReverseRelationship();
 
     // Interlink ProceduresRelationships
     // Step 1: Toposort Procedures to get DAG (in a vector)
