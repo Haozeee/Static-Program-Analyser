@@ -4,6 +4,7 @@ on:
 
   pull_request:
     types: [ opened, synchronize, reopened, ready_for_review ]
+    paths: ['Team26/Code26/src/integration_testing/**', 'Team26/Code26/src/unit_testing/**']
 
   push:
     branches: ["master", "ci-testing"]
