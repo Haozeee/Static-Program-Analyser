@@ -1,11 +1,12 @@
 #include "catch.hpp"
 #include "program_knowledge_base/pattern/PatternManager.h"
+#include "common/parser/ShuntingYardParser.h"
 
 
 // test isEmpty methods
 TEST_CASE("PatternManager isEmptyLhsVector") {
     PatternManager patternManager;
-    auto node = std::make_shared<ShuntNode>("x+y");
+    auto node = ShuntingYardParser::parse("x+y");
     REQUIRE(patternManager.isEmptyLhsVector());
     patternManager.insertPattern(1, "left", node);
     auto lhs = patternManager.getAllLhsPatternEntries();
@@ -15,7 +16,7 @@ TEST_CASE("PatternManager isEmptyLhsVector") {
 
 TEST_CASE("PatternManager isEmptyRhsVector") {
     PatternManager patternManager;
-    auto node = std::make_shared<ShuntNode>("x+y");
+    auto node = ShuntingYardParser::parse("x+y");
     REQUIRE(patternManager.isEmptyRhsVector());
     patternManager.insertPattern(1, "left", node);
     auto rhs = patternManager.getAllLhsPatternEntries();
@@ -25,7 +26,7 @@ TEST_CASE("PatternManager isEmptyRhsVector") {
 
 TEST_CASE("PatternManager isEmptyIndexStmtMap") {
     PatternManager patternManager;
-    auto node = std::make_shared<ShuntNode>("x+y");
+    auto node = ShuntingYardParser::parse("x+y");
     REQUIRE(patternManager.isEmptyIndexStmtMap());
     patternManager.insertPattern(1, "left", node);
     auto map = patternManager.getAllPatternEntries();
@@ -35,7 +36,7 @@ TEST_CASE("PatternManager isEmptyIndexStmtMap") {
 
 TEST_CASE("PatternManager isEmptyReversedIndexStmtMap") {
     PatternManager patternManager;
-    auto node = std::make_shared<ShuntNode>("x+y");
+    auto node = ShuntingYardParser::parse("x+y");
     REQUIRE(patternManager.isEmptyReversedIndexStmtMap());
     patternManager.insertPattern(1, "left", node);
     auto reversedMap = patternManager.getAllReversedPatternEntries();
@@ -46,7 +47,7 @@ TEST_CASE("PatternManager isEmptyReversedIndexStmtMap") {
 // test contains methods
 TEST_CASE("PatternManager containsLhsVector") {
     PatternManager patternManager;
-    auto node = std::make_shared<ShuntNode>("x+y");
+    auto node = ShuntingYardParser::parse("x+y");
     REQUIRE_FALSE(patternManager.containsLhsVector("left"));
     patternManager.insertPattern(1, "left", node);
     auto lhs = patternManager.getAllLhsPatternEntries();
@@ -56,7 +57,7 @@ TEST_CASE("PatternManager containsLhsVector") {
 
 TEST_CASE("PatternManager containsRhsVector") {
     PatternManager patternManager;
-    auto node = std::make_shared<ShuntNode>("x+y");
+    auto node = ShuntingYardParser::parse("x+y");
     REQUIRE_FALSE(patternManager.containsRhsVector(node));
     patternManager.insertPattern(1, "left", node);
     auto rhs = patternManager.getAllRhsPatternEntries();
@@ -66,7 +67,7 @@ TEST_CASE("PatternManager containsRhsVector") {
 
 TEST_CASE("PatternManager containsIndexStmtMap") {
     PatternManager patternManager;
-    auto node = std::make_shared<ShuntNode>("x+y");
+    auto node = ShuntingYardParser::parse("x+y");
     REQUIRE_FALSE(patternManager.containsIndexStmtMap(0, 1));
     patternManager.insertPattern(1, "left", node);
     auto map = patternManager.getAllPatternEntries();
@@ -76,7 +77,7 @@ TEST_CASE("PatternManager containsIndexStmtMap") {
 
 TEST_CASE("PatternManager containsReversedIndexStmtMap") {
     PatternManager patternManager;
-    auto node = std::make_shared<ShuntNode>("x+y");
+    auto node = ShuntingYardParser::parse("x+y");
     REQUIRE_FALSE(patternManager.containsReversedIndexStmtMap(1, 0));
     patternManager.insertPattern(1, "left", node);
     auto reversedMap = patternManager.getAllReversedPatternEntries();
@@ -87,8 +88,8 @@ TEST_CASE("PatternManager containsReversedIndexStmtMap") {
 // testing getAll methods
 TEST_CASE("PatternManager getAllLhsPatternEntries") {
     PatternManager patternManager;
-    auto node1 = std::make_shared<ShuntNode>("x+y");
-    auto node2 = std::make_shared<ShuntNode>("a+b");
+    auto node1 = ShuntingYardParser::parse("x+y");
+    auto node2  = ShuntingYardParser::parse("a+b");
     auto set = patternManager.getAllLhsPatternEntries();
     REQUIRE(set.empty());
     std::vector<std::string> test_vector = {"left1", "left2"};
@@ -101,8 +102,8 @@ TEST_CASE("PatternManager getAllLhsPatternEntries") {
 
 TEST_CASE("PatternManager getAllRhsPatternEntries") {
     PatternManager patternManager;
-    auto node1 = std::make_shared<ShuntNode>("x+y");
-    auto node2 = std::make_shared<ShuntNode>("a+b");
+    auto node1 = ShuntingYardParser::parse("x+y");
+    auto node2  = ShuntingYardParser::parse("a+b");
     auto set = patternManager.getAllRhsPatternEntries();
     REQUIRE(set.empty());
     std::vector<std::shared_ptr<ShuntNode>> test_vector = {node1, node2};
@@ -116,8 +117,8 @@ TEST_CASE("PatternManager getAllRhsPatternEntries") {
 
 TEST_CASE("PatternManager getAllPatternEntries") {
     PatternManager patternManager;
-    auto node1 = std::make_shared<ShuntNode>("x+y");
-    auto node2 = std::make_shared<ShuntNode>("a+b");
+    auto node1 = ShuntingYardParser::parse("x+y");
+    auto node2  = ShuntingYardParser::parse("a+b");
     auto map = patternManager.getAllPatternEntries();
     REQUIRE(map.empty());
     std::unordered_map<int, int> test_map = {{0, 1}, {1, 2}};
@@ -130,8 +131,8 @@ TEST_CASE("PatternManager getAllPatternEntries") {
 
 TEST_CASE("PatternManager getAllReversedPatternEntries") {
     PatternManager patternManager;
-    auto node1 = std::make_shared<ShuntNode>("x+y");
-    auto node2 = std::make_shared<ShuntNode>("a+b");
+    auto node1 = ShuntingYardParser::parse("x+y");
+    auto node2  = ShuntingYardParser::parse("a+b");
     auto map = patternManager.getAllReversedPatternEntries();
     REQUIRE(map.empty());
     std::unordered_map<int, int> test_map = {{1, 0}, {2, 1}};
@@ -145,9 +146,9 @@ TEST_CASE("PatternManager getAllReversedPatternEntries") {
 // testing insert method
 TEST_CASE("PatternManager insertPattern") {
     PatternManager patternManager;
-    auto node1 = std::make_shared<ShuntNode>("x+y");
-    auto node2 = std::make_shared<ShuntNode>("a+b");
-    auto node3 = std::make_shared<ShuntNode>("c");
+    auto node1 = ShuntingYardParser::parse("x+y");
+    auto node2  = ShuntingYardParser::parse("a+b");
+    auto node3  = ShuntingYardParser::parse("c");
     REQUIRE(patternManager.isEmptyLhsVector());
     REQUIRE(patternManager.isEmptyRhsVector());
     REQUIRE(patternManager.isEmptyIndexStmtMap());
