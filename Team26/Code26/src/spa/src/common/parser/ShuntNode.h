@@ -3,6 +3,7 @@
 #include <memory>
 #include <utility>
 #include <vector>
+#include <unordered_set>
 
 class ShuntNode;
 
@@ -36,4 +37,10 @@ class ShuntNode {
      * @return True, if it is a sub tree. Otherwise, false.
      */
     static bool isSubTree(const std::shared_ptr<ShuntNode>& fullTree, const std::shared_ptr<ShuntNode>& partialTree);
+
+    /**
+     * Given another node, compares if it is equal to this node using InOrder and PreOrder.
+     * @return True if InOrder AND PreOrder are identical for both nodes. Otherwise, false.
+     */
+    bool operator==(const ShuntNode& other) const;
 };

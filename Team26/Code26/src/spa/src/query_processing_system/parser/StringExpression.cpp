@@ -11,6 +11,7 @@ std::string StringExpression::getExpression() {
     return expression;
 }
 
+// this needs to be updated to compare the node instead of string
 bool StringExpression::matchesString(std::string str) {
     if (isWildcard) {
         // A wildcard matches anything

@@ -31,6 +31,7 @@ class StringExpression {
 
     StringExpression(bool isExactMatch, std::string expression);
 
+    // this needs to be updated to compare node instead of string
     bool matchesString(std::string str);
 
     std::string getExpression();

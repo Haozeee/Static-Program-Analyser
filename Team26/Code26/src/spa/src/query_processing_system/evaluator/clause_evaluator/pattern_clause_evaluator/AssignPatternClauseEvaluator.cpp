@@ -58,6 +58,8 @@ AssignPatternClauseEvaluator::evaluateStringHelper(std::shared_ptr<ReadStorage> 
         // v actual position of assign statements in the source code
         std::string lhs = lhsStatements.at(k);
         std::string rhs = rhsStatements.at(k);
+        // proposed change:
+        // std::shared_ptr<ShuntNode> rhs = rhsStatements.at(k);
         if (lhsValues.count(lhs) && rightArg.matchesString(rhs)) {
             res.insert({std::to_string(v), {lhs}});
         }

@@ -75,3 +75,12 @@ bool ShuntNode::isSubTree(const std::shared_ptr<ShuntNode>& fullTree, const std:
     bool preOrderSubstring = isSubVector(preOrder, partialPreOrder);
     return inOrderSubstring && preOrderSubstring;
 }
+
+bool ShuntNode::operator==(const ShuntNode& other) const {
+    auto thisInOrder = getInOrderTraversal(std::make_shared<ShuntNode>(*this));
+    auto thisPreOrder = getPreOrderTraversal(std::make_shared<ShuntNode>(*this));
+    auto otherInOrder = getInOrderTraversal(std::make_shared<ShuntNode>(other));
+    auto otherPreOrder = getPreOrderTraversal(std::make_shared<ShuntNode>(other));
+
+    return (thisInOrder == otherInOrder) && (thisPreOrder == otherPreOrder);
+}
