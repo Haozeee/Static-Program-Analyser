@@ -8,6 +8,7 @@ using StringList = std::vector<std::string>;
 std::string simpleTestExpression = "x+y";
 std::string testExpression = "v+x*y+z*t";
 std::string invalidTestExpression = "v+x*y(+z*t";
+std::string invalidConsecutiveFactorExpression = " a b + c";
 std::string invalidOperatorTestExpression = "v+^x*y(+z*t";
 
 TEST_CASE("Test Parse Correctly") {
@@ -47,6 +48,7 @@ TEST_CASE("Test Is Match") {
 TEST_CASE("Test Invalid Expression") {
     REQUIRE_THROWS(ShuntingYardParser::parse(invalidTestExpression));
     REQUIRE_THROWS(ShuntingYardParser::parse(invalidOperatorTestExpression));
+    REQUIRE_THROWS(ShuntingYardParser::parse(invalidConsecutiveFactorExpression));
 }
 
 TEST_CASE("Test String Produces Same Tree") {
