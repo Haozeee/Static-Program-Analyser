@@ -1,6 +1,9 @@
 #pragma once
 
 #include <string>
+#include <memory>
+#include "common/parser/ShuntNode.h"
+#include "common/parser/ShuntingYardParser.h"
 
 /**
  * This is for the second argument of the Assign Pattern Clause.
@@ -31,8 +34,11 @@ class StringExpression {
 
     StringExpression(bool isExactMatch, std::string expression);
 
-    // this needs to be updated to compare node instead of string
-    bool matchesString(std::string str);
+    /**
+     * Checks if this string expression matches a statement tree produced by the
+     * shunting yard parser.
+     */
+    bool matchesStatementTree(std::shared_ptr<ShuntNode> statementTree);
 
     std::string getExpression();
 

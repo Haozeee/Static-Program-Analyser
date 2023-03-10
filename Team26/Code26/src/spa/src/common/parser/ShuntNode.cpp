@@ -44,16 +44,6 @@ bool ShuntNode::isSubVector(std::vector<std::string> stringVector, std::vector<s
     return j == subVector.size();
 }
 
-bool ShuntNode::stringsProducesEqualTrees(std::string stringA, std::string stringB) {
-    auto a = ShuntingYardParser::parse(stringA);
-    auto b = ShuntingYardParser::parse(stringB);
-    auto aInOrder = ShuntNode::getInOrderTraversal(a);
-    auto aPreOrder = ShuntNode::getPreOrderTraversal(a);
-    auto bInOrder = ShuntNode::getInOrderTraversal(b);
-    auto bPreOrder = ShuntNode::getPreOrderTraversal(b);
-    return aInOrder == bInOrder && aPreOrder == bPreOrder;
-}
-
 bool ShuntNode::isSubTree(const std::shared_ptr<ShuntNode>& fullTree, const std::shared_ptr<ShuntNode>& partialTree) {
     /**
      * Given 2 trees A and B. Tree B is a subtree of A if the pre-order
