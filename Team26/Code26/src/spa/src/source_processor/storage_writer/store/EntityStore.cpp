@@ -22,8 +22,8 @@ void EntityStore::insertProcedure(std::shared_ptr<ProcedureNode> node) {
     procedureManager->insertEntity(node->procedureName);
 }
 
-void EntityStore::insertStatement(std::shared_ptr<StmtNode> node) {
-    statementManager->insertEntity(node->stmtIndex);
+void EntityStore::insertStatement(int stmtIndex) {
+    statementManager->insertEntity(stmtIndex);
 }
 
 void EntityStore::insertReadStatement(std::shared_ptr<ReadNode> node) {
@@ -86,4 +86,3 @@ void EntityStore::insertVariableName(const std::string &name) {
 void EntityStore::insertConstant(const int &integer) {
     constantManager->insertEntity(integer);
 }
-
