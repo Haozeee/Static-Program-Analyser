@@ -11,6 +11,30 @@ std::string invalidTestExpression = "v+x*y(+z*t";
 std::string invalidConsecutiveFactorExpression = " a b + c";
 std::string invalidOperatorTestExpression = "v+^x*y(+z*t";
 
+std::vector<std::string> invalidTestExpressions {
+    "3 + * 4",
+    "5 - (6 * 7))",
+    "2 ^ 3 ^ 4",
+    "2 + (3 * )",
+    "(())",
+    "(7 + 2) /",
+    "(+)",
+    "10 % 3.5",
+    "(7 - 4)(5 + 2)",
+    "2 ++ 3",
+    "(5 + 2)(4 - 3) 2",
+    "3 + * a",
+    "c - (b * 7))",
+    "2 ^ d ^ 4",
+    "2 + (e * )",
+    "(7 + d) /",
+    "(+)",
+    "f % 3.5",
+    "(7 - q)(5 + 2)",
+    "2 ++ q",
+    "(5 + 2)(4 - q) 2",
+};
+
 TEST_CASE("Test Parse Correctly") {
     // Simple expression
     auto simpleExpressionTree = ShuntingYardParser::parse(simpleTestExpression);
@@ -49,6 +73,10 @@ TEST_CASE("Test Invalid Expression") {
     REQUIRE_THROWS(ShuntingYardParser::parse(invalidTestExpression));
     REQUIRE_THROWS(ShuntingYardParser::parse(invalidOperatorTestExpression));
     REQUIRE_THROWS(ShuntingYardParser::parse(invalidConsecutiveFactorExpression));
+
+    for (const auto & expression : invalidTestExpressions) {
+        REQUIRE_THROWS(ShuntingYardParser::parse(expression));
+    }
 }
 
 TEST_CASE("Test String Produces Same Tree") {
