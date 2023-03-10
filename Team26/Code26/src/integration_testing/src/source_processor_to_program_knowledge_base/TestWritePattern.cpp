@@ -38,7 +38,7 @@ TEST_CASE("Test insert pattern") {
     auto node2 = ShuntingYardParser::parse("x*3");
     auto node3 = ShuntingYardParser::parse("x*y+x/y");
     auto node4 = ShuntingYardParser::parse("z");
-    std::vector<std::shared_ptr<ShuntNode>> rhs_vector = {node1, node2, node3, node4};
+    std::vector<ShuntNode> rhs_vector = {*node1, *node2, *node3, *node4};
 
     std::unordered_map<int, int> index_stmt_map = {{0, 1}, {1, 2}, {2, 4}, {3, 5}};
     std::unordered_map<int, int> reversed_index_stmt_map = {{1, 0}, {2, 1}, {4, 2}, {5, 3}};;
@@ -48,11 +48,10 @@ TEST_CASE("Test insert pattern") {
     REQUIRE(patternManager->containsLhsVector("z"));
     REQUIRE(patternManager->getAllLhsPatternEntries() == lhs_vector);
 
-    //REQUIRE(patternManager->containsRhsVector(node1));
-    //REQUIRE(patternManager->containsRhsVector(node2));
-    //REQUIRE(patternManager->containsRhsVector(node3));
-    //REQUIRE(patternManager->containsRhsVector(node4));
-    // failing due to different mem address
+    REQUIRE(patternManager->containsRhsVector(node1));
+    REQUIRE(patternManager->containsRhsVector(node2));
+    REQUIRE(patternManager->containsRhsVector(node3));
+    REQUIRE(patternManager->containsRhsVector(node4));
     REQUIRE(patternManager->getAllRhsPatternEntries() == rhs_vector);
 
     REQUIRE(patternManager->containsIndexStmtMap(0, 1));
