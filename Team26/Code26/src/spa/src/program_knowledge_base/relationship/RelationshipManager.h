@@ -62,12 +62,6 @@ class RelationshipManager: public IReadRelationshipManager<T, U>,
         return flag;
     }
 
-    bool insertRelationship(T first_param, U second_param,
-                            std::shared_ptr<IWriteRelationshipManager<T, U>> manager) {
-        return false;
-        // TODO(hz): Throw error or refactor
-    }
-
     void setReverse() {
         for (auto pair : relationships_map) {
             auto key = pair.first;
