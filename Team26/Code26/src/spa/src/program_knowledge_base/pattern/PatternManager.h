@@ -1,8 +1,11 @@
 #pragma once
+
+#include <algorithm>
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <algorithm>
+
 #include "IReadPatternManager.h"
 #include "IWritePatternManager.h"
 #include "common/parser/ShuntNode.h"

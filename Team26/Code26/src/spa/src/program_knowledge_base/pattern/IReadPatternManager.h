@@ -1,8 +1,10 @@
 #pragma once
 
+#include <memory>
 #include <string>
 #include <vector>
 #include <unordered_map>
+
 #include "common/parser/ShuntNode.h"
 
 class IReadPatternManager {
