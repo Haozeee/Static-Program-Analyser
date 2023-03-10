@@ -49,7 +49,7 @@ class QueryParser : public AbstractParser {
      *
      * @return Returns a smart pointer managing a Synonym.
      */
-    std::shared_ptr<Synonym> parseSynonym(std::shared_ptr<Token>);
+    static std::shared_ptr<Synonym> parseSynonym(std::shared_ptr<Token>);
 
     /**
      * Parses Such That Clause if any.
@@ -73,7 +73,7 @@ class QueryParser : public AbstractParser {
     Argument parseArgument();
 
     /**
-     * Parses Assign Pattern Clause if any.
+     * Parses Pattern Clause if any.
      */
     bool hasPatternClause();
 
@@ -86,7 +86,7 @@ class QueryParser : public AbstractParser {
     std::string parseStringExpression();
 
     /**
-     * Parses Assign Pattern Clause if any.
+     * Parses With Clause if any.
      */
     bool hasWithClause();
 
@@ -104,6 +104,12 @@ class QueryParser : public AbstractParser {
     void parseEndingUnexpectedToken();
 
     void parseNextIfNextEqualsTo(std::string nextValue, std::string errorMessage);
+
+    std::string parseShuntingYard(std::string);
+
+    bool isValidIdent(std::string);
+
+    bool isValidStringExpression(std::string);
 
  public:
     /**

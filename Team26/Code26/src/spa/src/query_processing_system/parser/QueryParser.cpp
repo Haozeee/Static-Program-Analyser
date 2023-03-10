@@ -6,6 +6,7 @@
 #include "QueryParser.h"
 #include "common/parser/ShuntingYardParser.h"
 #include "query_processing_system/parser/clause/pattern_clause/PatternClauseFactory.h"
+#include "QueryParserUtil.h"
 
 QueryParser::QueryParser(std::vector<std::shared_ptr<Token>> tokens, Query* query) :
 query(query), AbstractParser(tokens) {}
@@ -104,10 +105,21 @@ void QueryParser::parseTupleSelectClause() {
 }
 
 void QueryParser::parseBooleanSelectClause() {
-    // std::shared_ptr<Token> booleanToken = getNext();
+    std::shared_ptr<Token> booleanToken = getToken();
     parseNext("BOOLEAN");
-    auto selectClauses = std::make_shared<SelectClause>(SelectClauseReturnType::BOOLEAN);
-    query->setSelectClause(selectClauses);
+    std::shared_ptr<SelectClause> selectClause;
+
+    // Edge case: BOOLEAN in attribute reference
+    if (isValueOf(".")) {
+        AttributeReference attributeReference = parseAttributeReference(booleanToken);
+        std::shared_ptr<std::vector<SelectClauseItem>> item;
+        item->push_back(attributeReference);
+        selectClause = std::make_shared<SelectClause>(item, SelectClauseReturnType::SYNONYM);
+    } else {
+        selectClause = std::make_shared<SelectClause>(SelectClauseReturnType::BOOLEAN);
+    }
+
+    query->setSelectClause(selectClause);
 }
 
 SelectClauseItem QueryParser::parseReturnValue() {
@@ -185,8 +197,12 @@ Argument QueryParser::parseArgument() {
         return wildcardArgument;
     } else if (isValueOf("'")) {
         // Character String
-        std::string stringExpression = parseStringExpression();
-        Argument stringExpressionArgument(ArgumentType::CHARACTERSTRING, stringExpression, DesignEntity::NONE);
+        std::string ident = parseStringExpression();
+        if (!QueryParserUtil::isValidIdent(ident)) {
+            throw QueryParserException(ident + QueryParserInvalidIdent);
+        }
+        ident = parseShuntingYard(ident);
+        Argument stringExpressionArgument(ArgumentType::CHARACTERSTRING, ident, DesignEntity::NONE);
         return stringExpressionArgument;
     } else {
         throw QueryParserException(getToken()->getValue() + QueryParserInvalidTokenForRelationshipArgument);
@@ -247,6 +263,10 @@ StringExpression QueryParser::parseExpression() {
         if (isValueOf("'")) {
             // String Expression
             std::string stringExpression = parseStringExpression();
+            if (!QueryParserUtil::isValidStringExpression(stringExpression)) {
+                throw QueryParserException(stringExpression + QueryParserInvalidStringExpression);
+            }
+            stringExpression = parseShuntingYard(stringExpression);
             parseNext("_");
             return StringExpression(isExactMatch, stringExpression);
         } else {
@@ -256,6 +276,10 @@ StringExpression QueryParser::parseExpression() {
     } else {
         // Exact match
         std::string stringExpression = parseStringExpression();
+        if (!QueryParserUtil::isValidStringExpression(stringExpression)) {
+            throw QueryParserException(stringExpression + QueryParserInvalidStringExpression);
+        }
+        stringExpression = parseShuntingYard(stringExpression);
         return StringExpression(isExactMatch, stringExpression);
     }
 }
@@ -266,12 +290,9 @@ std::string QueryParser::parseStringExpression() {
     std::shared_ptr<Token> stringExpressionToken = parseNext(TokenType::TOKEN_STRING_EXPRESSION);
     std::string str = stringExpressionToken->getValue();
     parseNext("'");
-    str.erase(std::remove_if(str.begin(), str.end(), isspace), str.end());
-    try {
-       ShuntingYardParser::parse(str);
-    } catch (ShuntingYardParserException& e) {
-        throw QueryParserException(QueryParserUnbalancedStringExpression);
-    }
+
+//    str = parseShuntingYard(str);
+
     return str;
 }
 
@@ -329,8 +350,12 @@ Reference QueryParser::parseReference() {
         std::string integer = getNext()->getValue();
         return Reference::createReference(std::stoi(integer));
     } else if (isValueOf("'")) {
-        std::string string = parseStringExpression();
-        return Reference::createReference(string);
+        std::string ident = parseStringExpression();
+        if (!QueryParserUtil::isValidIdent(ident)) {
+            throw QueryParserException(ident + QueryParserInvalidIdent);
+        }
+        ident = parseShuntingYard(ident);
+        return Reference::createReference(ident);
     } else if (isTypeOf(TokenType::TOKEN_NAME)) {
         std::shared_ptr<Token> attrRefToken = getNext();
         return Reference::createReference(parseAttributeReference(attrRefToken));
@@ -355,8 +380,18 @@ void QueryParser::parseNextIfNextEqualsTo(std::string nextValue, std::string err
     }
 }
 
+std::string QueryParser::parseShuntingYard(std::string str) {
+    str.erase(std::remove_if(str.begin(), str.end(), isspace), str.end());
+    try {
+        ShuntingYardParser::parse(str);
+    } catch (ShuntingYardParserException& e) {
+        throw QueryParserException(QueryParserUnbalancedStringExpression);
+    }
+    return str;
+}
+
 void QueryParser::parse() {
-    // First, parse Declaration.
+    // Firstly, parse Declaration.
     parseAllDeclarations();
 
     // Next, handle the Select Clause.

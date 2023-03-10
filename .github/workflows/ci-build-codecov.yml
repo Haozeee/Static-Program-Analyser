@@ -4,25 +4,24 @@ on:
 
   pull_request:
     types: [ opened, synchronize, reopened, ready_for_review ]
+    paths: ['Team26/Code26/src/integration_testing/**', 'Team26/Code26/src/unit_testing/**']
 
   push:
     branches: ["master", "ci-testing"]
 
+  workflow_dispatch:
+    branches:     
+      - "*"
+
 jobs:
   coverage:
       runs-on: [self-hosted, Linux, X64]
+      needs: Windows
       timeout-minutes: 10
       strategy:
         fail-fast: true
 
       steps:
-        - name: Author Check
-          run: |
-            if [ "$GITHUB_ACTOR" != "laughingkid-sg" ]; then
-              echo "Skipping Codecov"
-              exit 78
-            fi
-
         - uses: actions/checkout@v3
 
         - name: Make Build folder
