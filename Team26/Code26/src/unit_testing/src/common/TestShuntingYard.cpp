@@ -11,6 +11,23 @@ std::string invalidTestExpression = "v+x*y(+z*t";
 std::string invalidConsecutiveFactorExpression = " a b + c";
 std::string invalidOperatorTestExpression = "v+^x*y(+z*t";
 
+//  expr: expr '+' term | expr '-' term | term
+//  term: term '*' factor | term '/' factor | term '%' factor | factor
+//  factor: var_name | const_value | '(' expr ')'
+
+std::vector<std::string> validTestExpressions {
+    "1",
+    "a",
+    "( a    )",
+    "  ( 1 )",
+    " ( (1))",
+    "(      ( a ) )",
+    "4 + 3 * 4",
+    "a - 4 * a",
+    "4 * 4 - 3",
+    "1 / 5"
+};
+
 std::vector<std::string> invalidTestExpressions {
     "3 + * 4",
     "5 - (6 * 7))",
@@ -34,6 +51,12 @@ std::vector<std::string> invalidTestExpressions {
     "2 ++ q",
     "(5 + 2)(4 - q) 2",
 };
+
+TEST_CASE("Valid Expression") {
+    for (const auto & expression : validTestExpressions) {
+        REQUIRE_NOTHROW(ShuntingYardParser::parse(expression));
+    }
+}
 
 TEST_CASE("Test Parse Correctly") {
     // Simple expression
