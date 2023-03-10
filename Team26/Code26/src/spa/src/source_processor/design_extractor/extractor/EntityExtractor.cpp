@@ -21,13 +21,19 @@ EntityExtractor::EntityExtractor(std::shared_ptr<IEntityStore> entityStore, std:
  * evaluate() base on individual statement implementation
  * */
 
+void EntityExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
+    BaseExtractor::extractProgram(node);
+    for (int i = 1; i <= currentStmtNo; i++) {
+        entityStore->insertStatement(i);  // Store Statement Index
+    }
+}
+
 void EntityExtractor::extractProcedure(std::shared_ptr<ProcedureNode> node) {
     entityStore->insertProcedure(node);
     BaseExtractor::extractProcedure(node);
 }
 
 void EntityExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
-    entityStore->insertStatement(node);  // Store Statement Index
     BaseExtractor::extractStmt(node);  // Update Extractor Current Index
     node->evaluate(*this);
 }

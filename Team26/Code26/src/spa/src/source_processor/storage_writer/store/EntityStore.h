@@ -26,13 +26,13 @@ class EntityStore : public IEntityStore {
     explicit EntityStore(std::shared_ptr<WriteStorage> storage);
 
     void insertProcedure(std::shared_ptr<ProcedureNode> node) override;
-    void insertStatement(std::shared_ptr<StmtNode> node)  override;
     void insertReadStatement(std::shared_ptr<ReadNode> node) override;
     void insertPrintStatement(std::shared_ptr<PrintNode> node) override;
     void insertAssignStatement(std::shared_ptr<AssignNode> node) override;
     void insertCallStatement(std::shared_ptr<CallNode> node) override;
     void insertWhileStatement(std::shared_ptr<WhileNode> node) override;
     void insertIfStatement(std::shared_ptr<IfNode> node) override;
+    void insertStatement(int stmtIndex) override;
     void insertVariableName(const std::string &name) override;
     void insertConstant(const int &integer) override;
 };
