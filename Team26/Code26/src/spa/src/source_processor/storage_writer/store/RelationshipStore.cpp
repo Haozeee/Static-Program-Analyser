@@ -5,8 +5,8 @@ RelationshipStore::RelationshipStore(std::shared_ptr<WriteStorage> storage) {
     followsManager = storage->getFollowsManager();
     followsTManager = storage->getFollowsTManager();
 
-    parentManager = storage->getParentManager();
-    parentTManager = storage->getParentTManager();
+    parentsManager = storage->getParentManager();
+    parentsTManager = storage->getParentTManager();
 
     usesSManager = storage->getUsesSManager();
     usesPManager = storage->getUsesPManager();
@@ -27,7 +27,15 @@ void RelationshipStore::insertFollowsRelationship(const int &previousStmtNo, con
 }
 
 void RelationshipStore::insertParentsRelationship(const int &parentStmtNo, const int &childStmtNo) {
-    parentManager->insertRelationship(parentStmtNo, childStmtNo, parentTManager);
+    parentsManager->insertRelationship(parentStmtNo, childStmtNo, parentTManager);
+}
+
+void RelationshipStore::insertFollowsTRelationship(const int &previousTStmtNo, const int &currentStmtNo) {
+    followsTManager->insertRelationship(previousTStmtNo, currentStmtNo);
+}
+
+void RelationshipStore::insertParentsTRelationship(const int &parentTStmtNo, const int &childStmtNo) {
+    parentsTManager->insertRelationship(parentTStmtNo, childStmtNo);
 }
 
 void RelationshipStore::insertUsesSRelationship(const int &stmtNo, const std::string &variableName) {
@@ -62,8 +70,10 @@ void RelationshipStore::insertCallsTRelationship(std::string caller, std::string
 
 void RelationshipStore::invokeReverseRelationship() {
     followsManager->setReverse();
+    followsTManager->setReverse();
 
-    parentManager->setReverse();
+    parentsManager->setReverse();
+    parentsTManager->setReverse();
 
     usesSManager->setReverse();
     usesPManager->setReverse();
@@ -77,4 +87,5 @@ void RelationshipStore::invokeReverseRelationship() {
     callPManager->setReverse();
     callsTManager->setReverse();
 }
+
 
