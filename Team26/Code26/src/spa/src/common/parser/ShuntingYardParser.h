@@ -13,7 +13,6 @@
 
 class ShuntingYardParser {
  public:
-
     /**
      * Shunting-Yard Algorithm adapt from multiple online sources.
      *
@@ -37,8 +36,7 @@ class ShuntingYardParser {
             const char c = expr[i];
             if (isspace(c)) {
                 continue;
-            }
-            else if (std::isdigit(c)) /* constant */ {
+            } else if (std::isdigit(c)) /* constant */ {
                 if (isPrevFactor) {
                     throw ShuntingYardParserException(ParserShuntingYardParserInvalidExpressionExceptionMessage);
                 }
@@ -70,7 +68,8 @@ class ShuntingYardParser {
                 } else if (c == ')') {
                     while (!opStack.empty() && opStack.top() != '(') {
                         if (result.size() < 2) {
-                            throw ShuntingYardParserException(ParserShuntingYardParserInvalidExpressionExceptionMessage);
+                            throw ShuntingYardParserException(
+                                    ParserShuntingYardParserInvalidExpressionExceptionMessage);
                         }
 
                         std::shared_ptr<ShuntNode> node = std::make_shared<ShuntNode>(std::string(1, opStack.top()));
