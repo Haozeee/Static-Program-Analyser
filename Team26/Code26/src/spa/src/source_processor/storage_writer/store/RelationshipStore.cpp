@@ -5,8 +5,8 @@ RelationshipStore::RelationshipStore(std::shared_ptr<WriteStorage> storage) {
     followsManager = storage->getFollowsManager();
     followsTManager = storage->getFollowsTManager();
 
-    parentManager = storage->getParentManager();
-    parentTManager = storage->getParentTManager();
+    parentsManager = storage->getParentManager();
+    parentsTManager = storage->getParentTManager();
 
     usesSManager = storage->getUsesSManager();
     usesPManager = storage->getUsesPManager();
@@ -23,11 +23,19 @@ RelationshipStore::RelationshipStore(std::shared_ptr<WriteStorage> storage) {
 
 
 void RelationshipStore::insertFollowsRelationship(const int &previousStmtNo, const int &currentStmtNo) {
-    followsManager->insertRelationship(previousStmtNo, currentStmtNo, followsTManager);
+    followsManager->insertRelationship(previousStmtNo, currentStmtNo);
 }
 
 void RelationshipStore::insertParentsRelationship(const int &parentStmtNo, const int &childStmtNo) {
-    parentManager->insertRelationship(parentStmtNo, childStmtNo, parentTManager);
+    parentsManager->insertRelationship(parentStmtNo, childStmtNo);
+}
+
+void RelationshipStore::insertFollowsTRelationship(const int &previousTStmtNo, const int &currentStmtNo) {
+    followsTManager->insertRelationship(previousTStmtNo, currentStmtNo);
+}
+
+void RelationshipStore::insertParentsTRelationship(const int &parentTStmtNo, const int &childStmtNo) {
+    parentsTManager->insertRelationship(parentTStmtNo, childStmtNo);
 }
 
 void RelationshipStore::insertUsesSRelationship(const int &stmtNo, const std::string &variableName) {
@@ -59,4 +67,25 @@ void RelationshipStore::insertNextRelationship(int previousStmtNo, int currStmtN
 void RelationshipStore::insertCallsTRelationship(std::string caller, std::string callee) {
     callsTManager->insertRelationship(caller, callee);
 }
+
+void RelationshipStore::invokeReverseRelationship() {
+    followsManager->setReverse();
+    followsTManager->setReverse();
+
+    parentsManager->setReverse();
+    parentsTManager->setReverse();
+
+    usesSManager->setReverse();
+    usesPManager->setReverse();
+
+    modifiesSManager->setReverse();
+    modifiesPManager->setReverse();
+
+    nextManager->setReverse();
+
+    callSManager->setReverse();
+    callPManager->setReverse();
+    callsTManager->setReverse();
+}
+
 
