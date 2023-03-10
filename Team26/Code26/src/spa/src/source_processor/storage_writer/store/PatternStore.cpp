@@ -1,9 +1,8 @@
 #include "PatternStore.h"
+#include <utility>
 #include "common/parser/ShuntingYardParser.h"
 
-#include <utility>
-
-PatternStore::PatternStore(std::shared_ptr<WriteStorage> storage) {
+PatternStore::PatternStore(const std::shared_ptr<WriteStorage>& storage) {
     patternManager = storage->getPatternManager();
     whileCondManager = storage->getWhileCondManager();
     ifCondManager = storage->getIfCondManager();
