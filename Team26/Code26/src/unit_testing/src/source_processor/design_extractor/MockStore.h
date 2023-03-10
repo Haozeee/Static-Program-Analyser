@@ -11,7 +11,7 @@
 class MockEntityStore : public IEntityStore {
 public:
     std::unordered_set<std::shared_ptr<ProcedureNode>> procedureSet;
-    std::set<std::shared_ptr<StmtNode>> stmtSet;
+    std::set<int> stmtSet;
     std::unordered_set<std::shared_ptr<ReadNode>> readSet;
     std::unordered_set<std::shared_ptr<PrintNode>> printSet;
     std::unordered_set<std::shared_ptr<AssignNode>> assignSet;
@@ -23,10 +23,6 @@ public:
 
     void insertProcedure(std::shared_ptr<ProcedureNode> node) override {
         procedureSet.insert(node);
-    };
-
-    void insertStatement(std::shared_ptr<StmtNode> node) override {
-        stmtSet.insert(node);
     };
 
     void insertReadStatement(std::shared_ptr<ReadNode> node) override {
@@ -58,6 +54,10 @@ public:
 
     void insertConstant(const int &integer) override {
         constantSet.insert(integer);
+    };
+
+    void insertStatement(int stmtIndex) override {
+        stmtSet.insert(stmtIndex);
     };
 
 };

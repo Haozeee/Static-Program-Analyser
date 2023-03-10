@@ -22,6 +22,7 @@ void RelationshipExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
 
     BaseExtractor::extractProgram(node);
 
+    relationshipStore->invokeReverseRelationship();
 
     // Interlink ProceduresRelationships
     // Step 1: Toposort Procedures to get DAG (in a vector)
@@ -91,10 +92,17 @@ void RelationshipExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
     if (!currentFollowsNesting->empty()) {
         relationshipStore->insertFollowsRelationship(currentFollowsNesting->back(), (node->stmtIndex));
     }
-    currentFollowsNesting->push_back(node->stmtIndex);
+    for (auto &previousTStmtNo : *currentFollowsNesting) {
+        relationshipStore->insertFollowsTRelationship(previousTStmtNo, node->stmtIndex);
+    }
+    currentFollowsNesting->emplace_back(node->stmtIndex);
 
     if (!parentIndexStack.empty()) {
         relationshipStore->insertParentsRelationship(parentIndexStack.back(), node->stmtIndex);
+    }
+
+    for (auto &previousTStmtNo : parentIndexStack) {
+        relationshipStore->insertParentsTRelationship(previousTStmtNo, node->stmtIndex);
     }
 }
 

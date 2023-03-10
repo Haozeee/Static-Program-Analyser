@@ -4,9 +4,12 @@ on:
 
   pull_request:
     types: [ opened, synchronize, reopened, ready_for_review ]
-
   push:
     branches: ["master", "ci-testing"]
+  
+  workflow_dispatch:
+    branches:     
+      - "*"
 
 jobs:
   build:
