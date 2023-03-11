@@ -18,13 +18,11 @@ void ExpressionlessPatternClauseEvaluator::evaluateSynonym(std::shared_ptr<ReadS
 }
 
 void ExpressionlessPatternClauseEvaluator::evaluateString(std::shared_ptr<ReadStorage> storage) {
-    auto statements = getReverseRelationshipEntries(storage);
+    auto relationshipStore = getReverseRelationshipEntries(storage);
+    auto it = relationshipStore.find(leftArg.getValue());
     std::unordered_set<std::string> interestedResults;
-    for (auto const& [k, v] : statements) {
-        if (k == leftArg.getValue()) {
-            interestedResults.insert(Util::intSetToStringSet(v).begin(),
-                                     Util::intSetToStringSet(v).end());
-        }
+    if (it != relationshipStore.end()) {
+        interestedResults = Util::intSetToStringSet(it->second);
     }
     clauseResultTable = ResultTable::createSingleColumnTable(patternArg.getValue(), interestedResults);
 }
