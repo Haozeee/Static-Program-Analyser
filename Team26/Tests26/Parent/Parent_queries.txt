@@ -248,3 +248,93 @@ stmt s; read r
 select s such that Parent(s, r)
 SyntaxError
 5000
+51 - Parent: stmt, _
+stmt s;
+Select BOOLEAN such that Parent(s, _)
+TRUE
+5000
+52 - Parent: _, stmt
+stmt s;
+Select BOOLEAN such that Parent(_, s)
+TRUE
+5000
+53 - Parent: _, _
+
+Select BOOLEAN such that Parent(_, _)
+TRUE
+5000
+54 - Parent: stmt number, _
+
+Select BOOLEAN such that Parent(3, _)
+TRUE
+5000
+55 - Parent: stmt number, _
+
+Select BOOLEAN such that Parent(1, _)
+FALSE
+5000
+56 - Parent: _, stmt number
+
+Select BOOLEAN such that Parent(_, 5)
+TRUE
+5000
+57 - Parent: _, stmt number
+
+Select BOOLEAN such that Parent(_, 38)
+FALSE
+5000
+58 - Parent: stmt number, stmt number
+
+Select BOOLEAN such that Parent(23, 25)
+TRUE
+5000
+59 - Parent: stmt number, stmt number
+
+Select BOOLEAN such that Parent(4, 6)
+FALSE
+5000
+60 - Parent: if, stmt number
+if ifs;
+Select BOOLEAN such that Parent(ifs, 10)
+TRUE
+5000
+61 - Parent: stmt number, while
+while w;
+Select BOOLEAN such that Parent(7, w)
+FALSE
+5000
+62 - Parent: stmt number, stmt number same level
+
+Select BOOLEAN such that Parent(1, 2)
+FALSE
+5000
+63 - Parent: stmt, assign
+stmt s; assign a;
+Select BOOLEAN such that Parent(s, a)
+TRUE
+5000
+64 - Parent: if, print
+if ifs; print p;
+Select <p.stmt#, p.varName> such that Parent(ifs, p)
+10 z10, 27 x27, 29 x29
+5000
+65 - Parent: while, call
+while w; call c;
+Select <w, c.procName, c.stmt#> such that Parent(w, c)
+3 child 34
+5000
+66 - Parent: if, while
+if ifs; while w;
+Select <ifs, w> such that Parent(ifs, w)
+5 11, 5 23
+5000
+67 - Parent: read, print
+read r; print p;
+Select <r.stmt#, r.varName, p.stmt#, p.varName> such that Parent(r, p)
+none
+5000
+68 - Parent: while, assign
+while w; assign a;
+Select <w, a> such that Parent(w, a)
+3 4, 11 12, 13 18, 23 24, 23 25
+5000
