@@ -59,7 +59,6 @@ void EntityExtractor::extractAssign(std::shared_ptr<AssignNode> node) {
     for (auto &variable : node->exprVariables) {
         entityStore->insertVariableName(variable);
     }
-
 }
 
 void EntityExtractor::extractIf(std::shared_ptr<IfNode> node) {

@@ -116,7 +116,6 @@ std::tuple<
         std::shared_ptr<ShuntNode>,
         std::unordered_set<std::string>,
         std::unordered_set<int>> ShuntingYardParser::parsePlus(std::string expr) {
-
     std::stack<std::shared_ptr<ShuntNode>> result;
     std::stack<char> opStack;
     std::unordered_map<char, int> ranking;

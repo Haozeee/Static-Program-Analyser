@@ -122,7 +122,6 @@ void RelationshipExtractor::extractAssign(std::shared_ptr<AssignNode> node) {
         exprVariableList.emplace_back(x);
     }
     insertExprUsesGroup();
-
 }
 
 void RelationshipExtractor::extractWhile(std::shared_ptr<WhileNode> node) {

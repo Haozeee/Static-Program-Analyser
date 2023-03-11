@@ -8,6 +8,8 @@
 #include <memory>
 #include <algorithm>
 #include <unordered_map>
+#include <unordered_set>
+#include <tuple>
 #include "common/parser/ShuntNode.h"
 #include "common/exception/ParserException.h"
 
