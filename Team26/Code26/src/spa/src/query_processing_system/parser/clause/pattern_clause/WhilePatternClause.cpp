@@ -7,5 +7,5 @@ WhilePatternClause::WhilePatternClause(Argument pattern, Argument left, StringEx
         : PatternClause(std::move(pattern), std::move(left), std::move(right)) {}
 
 ClauseEvaluator* WhilePatternClause::getClauseEvaluator() {
-    return new WhilePatternClauseEvaluator(getPatternArg(), getLeftArg(), getRightArg());
+    return new WhilePatternClauseEvaluator(getPatternArg(), getLeftArg());
 }

@@ -7,5 +7,5 @@ IfPatternClause::IfPatternClause(Argument pattern, Argument left, StringExpressi
         : PatternClause(std::move(pattern), std::move(left), std::move(right)) {}
 
 ClauseEvaluator* IfPatternClause::getClauseEvaluator() {
-    return new IfPatternClauseEvaluator(getPatternArg(), getLeftArg(), getRightArg());
+    return new IfPatternClauseEvaluator(getPatternArg(), getLeftArg());
 }

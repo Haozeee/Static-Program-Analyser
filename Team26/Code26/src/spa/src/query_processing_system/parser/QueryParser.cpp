@@ -270,8 +270,6 @@ StringExpression QueryParser::parseExpression() {
             return StringExpression(isExactMatch, stringExpression);
         } else {
             // Wildcard
-            StringExpression str = StringExpression(true);
-            str.setIsWildCard();
             return StringExpression(true);
         }
     } else {
