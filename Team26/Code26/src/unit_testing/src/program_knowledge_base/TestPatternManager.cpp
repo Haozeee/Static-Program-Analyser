@@ -10,7 +10,7 @@ TEST_CASE("PatternManager isEmptyLhsVector") {
     REQUIRE(patternManager.isEmptyLhsVector());
     patternManager.insertPattern(1, "left", node);
     auto lhs = patternManager.getAllLhsPatternEntries();
-    REQUIRE(lhs.size() == 1);
+    REQUIRE(lhs->size() == 1);
     REQUIRE_FALSE(patternManager.isEmptyLhsVector());
 }
 
@@ -20,7 +20,7 @@ TEST_CASE("PatternManager isEmptyRhsVector") {
     REQUIRE(patternManager.isEmptyRhsVector());
     patternManager.insertPattern(1, "left", node);
     auto rhs = patternManager.getAllLhsPatternEntries();
-    REQUIRE(rhs.size() == 1);
+    REQUIRE(rhs->size() == 1);
     REQUIRE_FALSE(patternManager.isEmptyRhsVector());
 }
 
@@ -51,7 +51,7 @@ TEST_CASE("PatternManager containsLhsVector") {
     REQUIRE_FALSE(patternManager.containsLhsVector("left"));
     patternManager.insertPattern(1, "left", node);
     auto lhs = patternManager.getAllLhsPatternEntries();
-    REQUIRE(lhs.size() == 1);
+    REQUIRE(lhs->size() == 1);
     REQUIRE(patternManager.containsLhsVector("left"));
 }
 
@@ -61,7 +61,7 @@ TEST_CASE("PatternManager containsRhsVector") {
     REQUIRE_FALSE(patternManager.containsRhsVector(node));
     patternManager.insertPattern(1, "left", node);
     auto rhs = patternManager.getAllRhsPatternEntries();
-    REQUIRE(rhs.size() == 1);
+    REQUIRE(rhs->size() == 1);
     REQUIRE(patternManager.containsRhsVector(node));
 }
 
@@ -91,13 +91,13 @@ TEST_CASE("PatternManager getAllLhsPatternEntries") {
     auto node1 = ShuntingYardParser::parse("x+y");
     auto node2  = ShuntingYardParser::parse("a+b");
     auto set = patternManager.getAllLhsPatternEntries();
-    REQUIRE(set.empty());
+    REQUIRE(set->empty());
     std::vector<std::string> test_vector = {"left1", "left2"};
     patternManager.insertPattern(1, "left1", node1);
     patternManager.insertPattern(2, "left2", node2);
     set = patternManager.getAllLhsPatternEntries();
-    REQUIRE(set.size() == 2);
-    REQUIRE(patternManager.getAllLhsPatternEntries() == test_vector);
+    REQUIRE(set->size() == 2);
+    REQUIRE(*(patternManager.getAllLhsPatternEntries()) == test_vector);
 }
 
 TEST_CASE("PatternManager getAllRhsPatternEntries") {
@@ -105,13 +105,13 @@ TEST_CASE("PatternManager getAllRhsPatternEntries") {
     auto node1 = ShuntingYardParser::parse("x+y");
     auto node2  = ShuntingYardParser::parse("a+b");
     auto set = patternManager.getAllRhsPatternEntries();
-    REQUIRE(set.empty());
-    std::vector<ShuntNode> test_vector = {*node1, *node2};
+    REQUIRE(set->empty());
+    std::vector<std::shared_ptr<ShuntNode>> test_vector = {node1, node2};
     patternManager.insertPattern(1, "left1", node1);
     patternManager.insertPattern(2, "left2", node2);
     set = patternManager.getAllRhsPatternEntries();
-    REQUIRE(set.size() == 2);
-    REQUIRE(patternManager.getAllRhsPatternEntries() == test_vector);
+    REQUIRE(set->size() == 2);
+    REQUIRE(*(patternManager.getAllRhsPatternEntries()) == test_vector);
 }
 
 
@@ -162,17 +162,17 @@ TEST_CASE("PatternManager insertPattern") {
     REQUIRE_FALSE(patternManager.isEmptyReversedIndexStmtMap());
 
     std::vector<std::string> lhs_vector = {"left1", "left2", "left3"};
-    std::vector<ShuntNode> rhs_vector = {*node1, *node2, *node3};
+    std::vector<std::shared_ptr<ShuntNode>> rhs_vector = {node1, node2, node3};
     std::unordered_map<int, int> test_map = {{0, 1}, {1, 2}, {2, 3}};
     std::unordered_map<int, int> reversed_test_map = {{1, 0}, {2, 1}, {3, 2}};
     auto lhs = patternManager.getAllLhsPatternEntries();
     auto rhs = patternManager.getAllRhsPatternEntries();
     auto map = patternManager.getAllPatternEntries();
     auto reversedMap = patternManager.getAllReversedPatternEntries();
-    REQUIRE(lhs.size() == 3);
-    REQUIRE(lhs == lhs_vector);
-    REQUIRE(rhs.size() == 3);
-    REQUIRE(rhs == rhs_vector);
+    REQUIRE(lhs->size() == 3);
+    REQUIRE(*lhs == lhs_vector);
+    REQUIRE(rhs->size() == 3);
+    REQUIRE(*rhs == rhs_vector);
     REQUIRE(map.size() == 3);
     REQUIRE(map == test_map);
     REQUIRE(reversedMap.size() == 3);
