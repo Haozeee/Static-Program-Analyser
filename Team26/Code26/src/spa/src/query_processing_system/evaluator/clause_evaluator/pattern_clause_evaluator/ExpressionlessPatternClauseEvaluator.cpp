@@ -1,4 +1,4 @@
-#include "IfAndWhilePatternClauseEvaluator.h"
+#include "ExpressionlessPatternClauseEvaluator.h"
 
 #include <memory>
 #include <utility>
@@ -6,10 +6,10 @@
 #include <unordered_set>
 #include <unordered_map>
 
-IfAndWhilePatternClauseEvaluator::IfAndWhilePatternClauseEvaluator(Argument patternArg, Argument leftArg)
+ExpressionlessPatternClauseEvaluator::ExpressionlessPatternClauseEvaluator(Argument patternArg, Argument leftArg)
         : PatternClauseEvaluator(std::move(patternArg), std::move(leftArg)) {}
 
-void IfAndWhilePatternClauseEvaluator::evaluateSynonym(std::shared_ptr<ReadStorage> storage) {
+void ExpressionlessPatternClauseEvaluator::evaluateSynonym(std::shared_ptr<ReadStorage> storage) {
     auto ifOrWhileStatements = getRelationshipEntries(storage);
     std::unordered_map<std::string, std::unordered_set<std::string>> interestedResults
         = Util::intStringMapTostringMap(ifOrWhileStatements);
@@ -17,7 +17,7 @@ void IfAndWhilePatternClauseEvaluator::evaluateSynonym(std::shared_ptr<ReadStora
                                                         patternArg.getValue(), leftArg.getValue());
 }
 
-void IfAndWhilePatternClauseEvaluator::evaluateString(std::shared_ptr<ReadStorage> storage) {
+void ExpressionlessPatternClauseEvaluator::evaluateString(std::shared_ptr<ReadStorage> storage) {
     auto ifOrWhileStatements = getReverseRelationshipEntries(storage);
     std::unordered_set<std::string> interestedResults;
     for (auto const& [k, v] : ifOrWhileStatements) {
@@ -29,7 +29,7 @@ void IfAndWhilePatternClauseEvaluator::evaluateString(std::shared_ptr<ReadStorag
     clauseResultTable = ResultTable::createSingleColumnTable(patternArg.getValue(), interestedResults);
 }
 
-void IfAndWhilePatternClauseEvaluator::evaluateWildcard(std::shared_ptr<ReadStorage> storage) {
+void ExpressionlessPatternClauseEvaluator::evaluateWildcard(std::shared_ptr<ReadStorage> storage) {
     auto ifOrWhileStatements = getRelationshipEntries(storage);
     std::unordered_set<std::string> interestedResults
         = Util::intSetToStringSet(Util::getAllKeys(ifOrWhileStatements));

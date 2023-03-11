@@ -5,9 +5,9 @@
 #include <unordered_set>
 #include <unordered_map>
 #include "PatternClauseEvaluator.h"
-#include "IfAndWhilePatternClauseEvaluator.h"
+#include "ExpressionlessPatternClauseEvaluator.h"
 
-class IfPatternClauseEvaluator : public IfAndWhilePatternClauseEvaluator {
+class IfPatternClauseEvaluator : public ExpressionlessPatternClauseEvaluator {
  protected:
     std::unordered_map<int, std::unordered_set<std::string>>
         getRelationshipEntries(std::shared_ptr<ReadStorage>) override;

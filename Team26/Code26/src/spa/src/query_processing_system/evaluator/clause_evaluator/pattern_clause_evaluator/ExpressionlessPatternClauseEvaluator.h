@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include "PatternClauseEvaluator.h"
 
-class IfAndWhilePatternClauseEvaluator : public PatternClauseEvaluator {
+class ExpressionlessPatternClauseEvaluator : public PatternClauseEvaluator {
  protected:
     void evaluateSynonym(std::shared_ptr<ReadStorage>) override;
 
@@ -21,5 +21,5 @@ class IfAndWhilePatternClauseEvaluator : public PatternClauseEvaluator {
         getReverseRelationshipEntries(std::shared_ptr<ReadStorage>) = 0;
 
  public:
-    IfAndWhilePatternClauseEvaluator(Argument patternArg, Argument leftArg);
+    ExpressionlessPatternClauseEvaluator(Argument patternArg, Argument leftArg);
 };

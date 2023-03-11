@@ -5,7 +5,7 @@
 #include <unordered_map>
 
 WhilePatternClauseEvaluator::WhilePatternClauseEvaluator(Argument patternArg, Argument leftArg)
-    : IfAndWhilePatternClauseEvaluator(std::move(patternArg), std::move(leftArg)) {}
+    : ExpressionlessPatternClauseEvaluator(std::move(patternArg), std::move(leftArg)) {}
 
 std::unordered_map<int, std::unordered_set<std::string>>
 WhilePatternClauseEvaluator::getRelationshipEntries(std::shared_ptr<ReadStorage> storage) {
