@@ -17,5 +17,6 @@ class IRelationshipStore {
     virtual void insertCallsTRelationship(std::string caller, std::string callee) = 0;
     virtual void insertNextRelationship(int previousStmtNo, int currStmtNo) = 0;
 
-    virtual void invokeReverseRelationship() = 0;
+    virtual void invokePostReverseRelationship() = 0;
+    virtual void invokePreReverseRelationship() = 0;
 };
