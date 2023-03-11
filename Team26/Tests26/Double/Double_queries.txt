@@ -1,0 +1,100 @@
+1 - Follows + Pattern: stmt,assign and _,expression
+stmt s; assign a;
+Select s such that Follows(s, a) pattern a(_, "q")
+14
+5000
+2 - Follows + Pattern: assign,call and _,_
+stmt s; call c; assign a;
+Select <s, c.procName> such that Follows(s, c) pattern a(_, _)
+9 single, 13 single, 34 child2, 38 child, 40 single, 57 child2
+5000
+3 - Follows + Pattern: assign,while and variable,_
+assign a; while w; variable v;
+Select <a, v, w> such that Follows(a, w) pattern a(v, _)
+2 z 3, 12 a 13, 15 p 16
+5000
+4 - Follows + Pattern: stmt,if and entRef,expression
+stmt s; if ifs; assign a;
+Select s such that Follows(s, ifs) pattern a("x", _"x + y"_)
+3, 4, 6, 29, 45, 55
+5000
+5 - Follows + Pattern: stmt,assign and _,expression
+stmt s; assign a; assign a1;
+Select s such that Follows(s, a) pattern a1(_, "q")
+1, 11, 14, 20, 25, 28, 31, 35, 41, 46, 48, 50, 52, 54
+5000
+6 - Follows + Pattern: assign,stmt and variable,expression
+assign a; stmt s; variable v;
+Select <a, v> such that Follows(a, s) pattern a(v, _"a"_)
+1 x, 28 x, 29 x, 41 a, 42 var
+5000
+7 - Follows + Pattern: assign,stmt and variable,expression
+assign a; stmt s; variable v;
+Select BOOLEAN such that Follows(a, s) pattern a(v, "a")
+FALSE
+5000
+8 - Follows + Pattern: stmt number,assign and variable,expression
+assign a; variable v;
+Select BOOLEAN such that Follows(14, a) pattern a(v, "q")
+TRUE
+5000
+9 - Follows + With: stmt, call and call
+stmt s; call c;
+Select s such that Follows(s, c) with c.procName = "child2"
+34, 57
+5000
+10 - Follows + With: print, read and print,read
+print p; read r;
+Select p such that Follows(p, r) with p.varName = r.varName
+none
+5000
+1 - Follows* + Pattern: stmt,assign and _,expression
+stmt s; assign a;
+Select s such that Follows*(s, a) pattern a(_, "q")
+14
+5000
+2 - Follows* + Pattern: assign,call and _,_
+stmt s; call c; assign a;
+Select <s, c.procName> such that Follows*(s, c) pattern a(_, _)
+1 single, 2 single, 3 single, 4 child, 5 child, 6 single, 7 single, 9 single, 11 single, 12 single, 13 single, 34 child2, 33 child2, 37 child, 38 child, 40 single, 57 child2
+5000
+3 - Follows* + Pattern: assign,while and variable,_
+assign a; while w; variable v;
+Select <a, v, w> such that Follows*(a, w) pattern a(v, _)
+1 x 3, 2 z 3, 6 z 13, 12 a 13, 14 a 16, 15 p 16
+5000
+4 - Follows* + Pattern: stmt,if and entRef,expression
+stmt s; if ifs; assign a;
+Select s such that Follows*(s, ifs) pattern a("x", _"x + y"_)
+1, 2, 3, 4, 6, 28, 29, 44, 45, 54, 55
+5000
+5 - Follows* + Pattern: stmt,assign and _,expression
+stmt s; assign a; assign a1;
+Select s such that Follows*(s, a) pattern a1(_, "q")
+1, 2, 3, 6, 7, 11, 12, 13, 14, 17, 20, 24, 25, 28, 31, 33, 34, 35, 40, 41, 44, 45, 46, 48, 50, 52, 54
+5000
+6 - Follows* + Pattern: assign,stmt and variable,expression
+assign a; stmt s; variable v;
+Select <a, v> such that Follows*(a, s) pattern a(v, _"a"_)
+1 x, 28 x, 29 x, 41 a, 42 var
+5000
+7 - Follows* + Pattern: assign,stmt and variable,expression
+assign a; stmt s; variable v;
+Select BOOLEAN such that Follows*(a, s) pattern a(v, "a")
+FALSE
+5000
+8 - Follows* + Pattern: stmt number,assign and variable,expression
+assign a; variable v;
+Select BOOLEAN such that Follows*(14, a) pattern a(v, "q")
+TRUE
+5000
+9 - Follows* + With: stmt, call and call
+stmt s; call c;
+Select s such that Follows*(s, c) with c.procName = "child2"
+33, 34, 57
+5000
+10 - Follows* + With: print, read and print,read
+print p; read r;
+Select p such that Follows*(p, r) with p.varName = r.varName
+11
+5000
