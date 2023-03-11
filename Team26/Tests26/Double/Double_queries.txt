@@ -198,3 +198,28 @@ print p; if ifs;
 Select p such that Parent*(ifs, p) with ifs.stmt# = 5
 11, 23, 31, 33
 5000
+1 - Pattern + With: variable,expression and variable
+assign a; variable v;
+Select a pattern a(v, _"x + y"_) with v.varName = "var"
+42
+5000
+2 - Pattern + With: variable,_ and variable
+assign a; variable v;
+Select a pattern a(v, _) with v.varName = "x"
+1, 4, 28, 29, 32, 50, 55
+5000
+3 - Pattern + With: variable,_ and variable
+assign a; variable v;
+Select a pattern a(v, _) with v.varName = "invalid"
+none
+5000
+4 - Pattern + With: entRef,expression and stmt number,stmt number
+assign a; assign a1;
+Select a pattern a1("x", "p + q") with a.stmt# = a1.stmt#
+4
+5000
+5 - Pattern + With: variable,expression and stmt number
+assign a; variable v;
+Select v pattern a(v, _"(1 * 2 * 3)"_) with a.stmt# = 36
+a
+5000
