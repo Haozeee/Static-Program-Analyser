@@ -22,7 +22,7 @@ void RelationshipExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
 
     BaseExtractor::extractProgram(node);
 
-    relationshipStore->invokeReverseRelationship();
+    relationshipStore->invokePreReverseRelationship();
 
     // Interlink ProceduresRelationships
     // Step 1: Toposort Procedures to get DAG (in a vector)
@@ -35,6 +35,7 @@ void RelationshipExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
             procedureQueue.push(noCallProcedure.first);
         }
     }
+
     callPReversedRelationships = callPManager->getAllReversedRelationshipEntries();
     while (!procedureQueue.empty()) {
         currProcedureName = procedureQueue.front();
@@ -62,6 +63,8 @@ void RelationshipExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
             throw SourceExtractorException(RelationshipExtractorCyclicCallsExceptionMessage);
         }
     }
+
+    relationshipStore->invokePostReverseRelationship();
 }
 
 void RelationshipExtractor::extractProcedure(std::shared_ptr<ProcedureNode> node) {

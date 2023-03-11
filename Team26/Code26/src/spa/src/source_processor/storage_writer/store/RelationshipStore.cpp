@@ -68,7 +68,7 @@ void RelationshipStore::insertCallsTRelationship(std::string caller, std::string
     callsTManager->insertRelationship(caller, callee);
 }
 
-void RelationshipStore::invokeReverseRelationship() {
+void RelationshipStore::invokePostReverseRelationship() {
     followsManager->setReverse();
     followsTManager->setReverse();
 
@@ -86,6 +86,10 @@ void RelationshipStore::invokeReverseRelationship() {
     callSManager->setReverse();
     callPManager->setReverse();
     callsTManager->setReverse();
+}
+
+void RelationshipStore::invokePreReverseRelationship() {
+    callPManager->setReverse();
 }
 
 
