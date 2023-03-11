@@ -139,6 +139,10 @@ class MockPatternStore : public IPatternStore {
     void insertCondExpressionWhileStatement(int stmtIndex, std::string variableName) override {
 
     };
+
+    void invokePostReverseRelationship() override {
+
+    }
 };
 
 

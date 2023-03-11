@@ -4,12 +4,14 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <string>
-#include "SuchThatClauseEvaluator.h"
+#include "IntIntClauseEvaluator.h"
 #include "cache.h"
 
-class CacheableSuchThatClauseEvaluator : SuchThatClauseEvaluator<int, int> {
- private:
+class CacheableSuchThatClauseEvaluator : IntIntClauseEvaluator {
+ protected:
     CachePointer cache;
+
+    CacheableSuchThatClauseEvaluator(Argument left, Argument right);
 
     void evaluateValueValue() override;
 
@@ -29,12 +31,18 @@ class CacheableSuchThatClauseEvaluator : SuchThatClauseEvaluator<int, int> {
 
     void evaluateWildcardWildcard() override;
 
-    virtual CacheableGraph getRelationshipCache() = 0;
+    std::unordered_set<int> getLeftArgEntities() override;
 
-    virtual CacheableGraph getReverseRelationshipCache() = 0;
+    std::unordered_set<int> getRightArgEntities() override;
 
- protected:
-    CacheableSuchThatClauseEvaluator(Argument left, Argument right);
+    int getLeftArg() override;
+
+    int getRightArg() override;
+
+
+    virtual std::unordered_set<int> getValueFromRelationshipCache(int value) = 0;
+
+    virtual std::unordered_set<int> getValueFromReverseRelationshipCache(int value) = 0;
 
     void setStorageLocation(StoragePointer storage_, CachePointer cache_) override;
 };

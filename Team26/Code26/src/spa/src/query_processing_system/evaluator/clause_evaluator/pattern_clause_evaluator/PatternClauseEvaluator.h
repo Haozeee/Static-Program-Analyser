@@ -11,16 +11,24 @@ class PatternClauseEvaluator : public ClauseEvaluator {
  protected:
     PatternClauseEvaluator(Argument patternArg, Argument leftArg, StringExpression rightArg);
 
+    PatternClauseEvaluator(Argument patternArg, Argument leftArg);
+
     Argument patternArg;
 
     Argument leftArg;
 
-    StringExpression rightArg;
+    StringExpression rightArg = StringExpression(false);
 
-    void setStorageLocation(StoragePointer storage_, CachePointer cache_) override;
+    virtual void evaluateSynonym() = 0;
+
+    virtual void evaluateString() = 0;
+
+    virtual void evaluateWildcard() = 0;
 
  public:
     Argument getLeftArg();
 
     StringExpression getRightArg();
+
+    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage, CachePointer cache) override;
 };
