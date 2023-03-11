@@ -14,30 +14,30 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     /**
      * Evaluate a such that clause in the form of clause(synonym, synonym).
      */
-    void evaluateSynonymSynonym(StoragePointer storage) {
+    virtual void evaluateSynonymSynonym() {
         if (leftArg == rightArg) {
             clauseResultTable->setNoResults();
             return;
         }
         // Set initial empty results
         std::unordered_map<T, std::unordered_set<U>> res;
-        auto relationshipMap = getRelationshipManager(storage);
+        auto relationshipMap = getRelationshipManager();
         if (isLeftArgAmbiguous()) {
-            relationshipMap = Util::filterMap(relationshipMap, getLeftArgEntities(storage));
+            relationshipMap = Util::filterMap(relationshipMap, getLeftArgEntities());
         }
         if (isRightArgAmbiguous()) {
-            relationshipMap = Util::mapSetIntersection(relationshipMap, getRightArgEntities(storage));
+            relationshipMap = Util::mapSetIntersection(relationshipMap, getRightArgEntities());
         }
         setLeftAndRightArgResult(relationshipMap);
     }
 
-    void evaluateValueSynonym(StoragePointer storage) {
-        auto relationshipStore = getRelationshipManager(storage);
+    virtual void evaluateValueSynonym() {
+        auto relationshipStore = getRelationshipManager();
         auto it = relationshipStore.find(getLeftArg());
         std::unordered_set<U> res {};
         if (it != relationshipStore.end()) {
             if (isRightArgAmbiguous()) {
-                Util::setIntersection(getRightArgEntities(storage), it->second, res);
+                Util::setIntersection(getRightArgEntities(), it->second, res);
             } else {
                 res = it->second;
             }
@@ -45,13 +45,13 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         setRightArgResult(res);
     }
 
-    void evaluateSynonymValue(StoragePointer storage) {
-        auto relationshipStore = getOppositeRelationshipManager(storage);
+    virtual void evaluateSynonymValue() {
+        auto relationshipStore = getOppositeRelationshipManager();
         auto it = relationshipStore.find(getRightArg());
         std::unordered_set<T> res {};
         if (it != relationshipStore.end()) {
             if (isLeftArgAmbiguous()) {
-                Util::setIntersection(getLeftArgEntities(storage), it->second, res);
+                Util::setIntersection(getLeftArgEntities(), it->second, res);
             } else {
                 res = it->second;
             }
@@ -59,10 +59,10 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         setLeftArgResult(res);
     }
 
-    void evaluateSynonymWildcard(StoragePointer storage) {
-        auto relationshipMap = getRelationshipManager(storage);
+    virtual void evaluateSynonymWildcard() {
+        auto relationshipMap = getRelationshipManager();
         if (isLeftArgAmbiguous()) {
-            relationshipMap = Util::filterMap(relationshipMap, getLeftArgEntities(storage));
+            relationshipMap = Util::filterMap(relationshipMap, getLeftArgEntities());
         }
         std::unordered_set<T> res {};
         for (auto const& [k, v] : relationshipMap) {
@@ -73,40 +73,40 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         setLeftArgResult(res);
     }
 
-    void evaluateWildcardSynonym(StoragePointer storage) {
+    virtual void evaluateWildcardSynonym() {
         handleLeftWildcard();
-        evaluateSynonymSynonym(storage);
+        evaluateSynonymSynonym();
         // Remove wildcard placeholder
         clauseResultTable = ResultTable::createSingleColumnTable(
                 rightArg.getValue(), clauseResultTable->getColumnValues(rightArg.getValue()));
     }
 
-    void evaluateValueValue(StoragePointer storage) {
-        auto relationshipStore = getRelationshipManager(storage);
+    virtual void evaluateValueValue() {
+        auto relationshipStore = getRelationshipManager();
         auto iterator = relationshipStore.find(getLeftArg());
         if (iterator == relationshipStore.end() || !iterator->second.count(getRightArg())) {
             clauseResultTable->setNoResults();
         }
     }
 
-    void evaluateValueWildcard(StoragePointer storage) {
-        auto relationshipStore = getRelationshipManager(storage);
+    virtual void evaluateValueWildcard() {
+        auto relationshipStore = getRelationshipManager();
         auto iterator = relationshipStore.find(getLeftArg());
         if (iterator == relationshipStore.end() || iterator->second.empty()) {
             clauseResultTable->setNoResults();
         }
     }
 
-    void evaluateWildcardValue(StoragePointer storage) {
-        auto relationshipStore = getOppositeRelationshipManager(storage);
+    virtual void evaluateWildcardValue() {
+        auto relationshipStore = getOppositeRelationshipManager();
         auto iterator = relationshipStore.find(getRightArg());
         if (iterator == relationshipStore.end() || iterator->second.empty()) {
             clauseResultTable->setNoResults();
         }
     }
 
-    void evaluateWildcardWildcard(StoragePointer storage) {
-        auto relationshipStore = getRelationshipManager(storage);
+    virtual void evaluateWildcardWildcard() {
+        auto relationshipStore = getRelationshipManager();
         if (relationshipStore.empty()) {
             clauseResultTable->setNoResults();
         }
@@ -117,12 +117,11 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
 
     Argument rightArg;
 
-    SuchThatClauseEvaluator<T, U>(Argument left, Argument right)
-            : leftArg(left), rightArg(right) {}
+    SuchThatClauseEvaluator<T, U>(Argument left, Argument right) : leftArg(left), rightArg(right) {}
 
-    virtual std::unordered_map<T, std::unordered_set<U>> getRelationshipManager(StoragePointer storage) = 0;
+    virtual std::unordered_map<T, std::unordered_set<U>> getRelationshipManager() = 0;
 
-    virtual std::unordered_map<U, std::unordered_set<T>> getOppositeRelationshipManager(StoragePointer storage) = 0;
+    virtual std::unordered_map<U, std::unordered_set<T>> getOppositeRelationshipManager() = 0;
 
     /**
      * Set the queryResults that are to be projected on to the left arguments in the clause result.
@@ -148,12 +147,12 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     /**
      * Get all the entities that have the same design entity as that of the left argument.
      */
-    virtual std::unordered_set<T> getLeftArgEntities(StoragePointer storage) = 0;
+    virtual std::unordered_set<T> getLeftArgEntities() = 0;
 
     /**
      * Get all the entities that have the same design entity as that of the right argument.
      */
-    virtual std::unordered_set<U> getRightArgEntities(StoragePointer storage) = 0;
+    virtual std::unordered_set<U> getRightArgEntities() = 0;
 
     virtual T getLeftArg() = 0;
 
@@ -174,26 +173,28 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     virtual void handleRightWildcard() = 0;
 
  public:
-    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage) override {
+    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage_, CachePointer cache_) override {
+        setStorageLocation(storage_, cache_);
+
         auto argumentType = getClauseArgumentType(leftArg.getArgumentType(), rightArg.getArgumentType());
         if (argumentType == ClauseArgumentTypes::VALUE_VALUE) {
-            evaluateValueValue(storage);
+            evaluateValueValue();
         } else if (argumentType == ClauseArgumentTypes::SYNONYM_VALUE) {
-            evaluateSynonymValue(storage);
+            evaluateSynonymValue();
         } else if (argumentType == ClauseArgumentTypes::VALUE_SYNONYM) {
-            evaluateValueSynonym(storage);
+            evaluateValueSynonym();
         } else if (argumentType == ClauseArgumentTypes::SYNONYM_SYNONYM) {
-            evaluateSynonymSynonym(storage);
+            evaluateSynonymSynonym();
         } else if (argumentType == ClauseArgumentTypes::SYNONYM_WILDCARD) {
-            evaluateSynonymWildcard(storage);
+            evaluateSynonymWildcard();
         } else if (argumentType == ClauseArgumentTypes::WILDCARD_SYNONYM) {
-            evaluateWildcardSynonym(storage);
+            evaluateWildcardSynonym();
         } else if (argumentType == ClauseArgumentTypes::VALUE_WILDCARD) {
-            evaluateValueWildcard(storage);
+            evaluateValueWildcard();
         } else if (argumentType == ClauseArgumentTypes::WILDCARD_VALUE) {
-            evaluateWildcardValue(storage);
+            evaluateWildcardValue();
         } else if (argumentType == ClauseArgumentTypes::WILDCARD_WILDCARD) {
-            evaluateWildcardWildcard(storage);
+            evaluateWildcardWildcard();
         } else {
             throw std::exception();
         }

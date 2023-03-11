@@ -17,6 +17,8 @@ class PatternClauseEvaluator : public ClauseEvaluator {
 
     StringExpression rightArg;
 
+    void setStorageLocation(StoragePointer storage_, CachePointer cache_) override;
+
  public:
     Argument getLeftArg();
 

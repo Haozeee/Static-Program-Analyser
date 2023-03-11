@@ -4,7 +4,9 @@ AssignPatternClauseEvaluator::AssignPatternClauseEvaluator(Argument patternArg, 
                                 StringExpression rightArg)
     : PatternClauseEvaluator(std::move(patternArg), std::move(leftArg), std::move(rightArg)) {}
 
-std::shared_ptr<ResultTable> AssignPatternClauseEvaluator::evaluateClause(std::shared_ptr<ReadStorage> storage) {
+std::shared_ptr<ResultTable> AssignPatternClauseEvaluator::evaluateClause(StoragePointer storage_,
+                                                                          CachePointer cache_) {
+    setStorageLocation(storage_, cache_);
     auto leftArgType = leftArg.getArgumentType();
     if (leftArgType == ArgumentType::SYNONYM) {
         evaluateSynonym(storage);

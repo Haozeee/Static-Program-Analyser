@@ -10,11 +10,11 @@ class IntWithClauseEvaluator : public WithClauseEvaluator<int> {
     static IntSet getRefValue(StoragePointer storage, Reference ref);
 
  protected:
-    std::unordered_set<std::string> getTranslatedValues(StoragePointer storage, int value, DesignEntity de) override;
+    std::unordered_set<std::string> getTranslatedValues(int value, DesignEntity de) override;
 
-    IntSet getLeftRefValues(StoragePointer storage) override;
+    IntSet getLeftRefValues() override;
 
-    IntSet getRightRefValues(StoragePointer storage) override;
+    IntSet getRightRefValues() override;
 
  public:
     IntWithClauseEvaluator(Reference left, Reference right);

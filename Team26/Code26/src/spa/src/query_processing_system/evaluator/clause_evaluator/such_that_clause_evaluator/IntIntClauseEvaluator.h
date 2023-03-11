@@ -15,9 +15,9 @@ class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
 
     void setLeftAndRightArgResult(std::unordered_map<int, std::unordered_set<int>> results) override;
 
-    std::unordered_set<int> getLeftArgEntities(StoragePointer storage) override;
+    std::unordered_set<int> getLeftArgEntities() override;
 
-    std::unordered_set<int> getRightArgEntities(StoragePointer storage) override;
+    std::unordered_set<int> getRightArgEntities() override;
 
     void handleLeftWildcard() override;
 

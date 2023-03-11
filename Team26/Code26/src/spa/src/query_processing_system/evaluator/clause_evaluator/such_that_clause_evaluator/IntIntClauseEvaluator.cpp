@@ -24,11 +24,11 @@ void IntIntClauseEvaluator::setLeftAndRightArgResult(std::unordered_map<int, std
     clauseResultTable = ResultTable::createTableFromMap(res, leftArg.getValue(), rightArg.getValue());
 }
 
-std::unordered_set<int> IntIntClauseEvaluator::getLeftArgEntities(StoragePointer storage) {
+std::unordered_set<int> IntIntClauseEvaluator::getLeftArgEntities() {
     return PkbUtil::getIntEntitiesFromPkb(storage, leftArg.getDesignEntity());
 }
 
-std::unordered_set<int> IntIntClauseEvaluator::getRightArgEntities(StoragePointer storage) {
+std::unordered_set<int> IntIntClauseEvaluator::getRightArgEntities() {
     return PkbUtil::getIntEntitiesFromPkb(storage, rightArg.getDesignEntity());
 }
 

@@ -6,6 +6,7 @@
 #include "evaluator/QueryDb.h"
 #include "parser/DesignEntity.h"
 #include "evaluator/PkbUtil.h"
+#include "evaluator/clause_evaluator/Cache.h"
 
 class QueryEvaluator {
  private:
@@ -14,6 +15,8 @@ class QueryEvaluator {
     QueryDb queryResults;
 
     std::shared_ptr<ReadStorage> storage;
+
+    std::shared_ptr<Cache> cache;
 
     /**
      * Evaluate the select clauses in the query.

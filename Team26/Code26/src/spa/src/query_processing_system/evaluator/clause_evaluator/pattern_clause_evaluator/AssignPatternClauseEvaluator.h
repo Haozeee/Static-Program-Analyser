@@ -36,5 +36,5 @@ class AssignPatternClauseEvaluator : public PatternClauseEvaluator {
  public:
     AssignPatternClauseEvaluator(Argument patternArg, Argument leftArg, StringExpression rightArg);
 
-    std::shared_ptr<ResultTable> evaluateClause(std::shared_ptr<ReadStorage> storage) override;
+    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage_, CachePointer cache_) override;
 };

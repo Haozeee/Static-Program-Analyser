@@ -17,32 +17,32 @@ class WithClauseEvaluator : public ClauseEvaluator {
 
     Reference rightRef;
 
-    virtual std::unordered_set<T> getLeftRefValues(StoragePointer storage) = 0;
+    virtual std::unordered_set<T> getLeftRefValues() = 0;
 
-    virtual std::unordered_set<T> getRightRefValues(StoragePointer storage) = 0;
+    virtual std::unordered_set<T> getRightRefValues() = 0;
 
-    virtual std::unordered_set<std::string> getTranslatedValues(StoragePointer storage, T value, DesignEntity de) = 0;
+    virtual std::unordered_set<std::string> getTranslatedValues(T value, DesignEntity de) = 0;
 
-    void evaluateValueAttribute(StoragePointer storage, std::unordered_set<T> values,
-                                std::unordered_set<T> attributes, DesignEntity de, std::string colName) {
+    void evaluateValueAttribute(std::unordered_set<T> values, std::unordered_set<T> attributes,
+                                DesignEntity de, std::string colName) {
         std::unordered_set<T> intersect;
         Util::setIntersection(values, attributes, intersect);
 
         std::unordered_set<std::string> res;
         // Should have less than one item in intersect
         for (T value : intersect) {
-            auto translatedValues = getTranslatedValues(storage, value, de);
+            auto translatedValues = getTranslatedValues(value, de);
             res.insert(translatedValues.begin(), translatedValues.end());
         }
         clauseResultTable = ResultTable::createSingleColumnTable(std::move(colName), res);
     }
 
-    void evaluateAttributeAttribute(StoragePointer storage) {
+    void evaluateAttributeAttribute() {
         // Initialise empty results
         std::unordered_map<std::string, std::unordered_set<std::string>> res;
 
-        auto leftRes = getLeftRefValues(storage);
-        auto rightRes = getRightRefValues(storage);
+        auto leftRes = getLeftRefValues();
+        auto rightRes = getRightRefValues();
         std::unordered_set<T> intersection;
         Util::setIntersection(leftRes, rightRes, intersection);
 
@@ -50,8 +50,8 @@ class WithClauseEvaluator : public ClauseEvaluator {
         auto rightDE = rightRef.getAttributeDesignEntity();
 
         for (T value : intersection) {
-            auto leftTranslatedValues = getTranslatedValues(storage, value, leftDE);
-            auto rightTranslatedValues = getTranslatedValues(storage, value, rightDE);
+            auto leftTranslatedValues = getTranslatedValues(value, leftDE);
+            auto rightTranslatedValues = getTranslatedValues(value, rightDE);
             for (std::string leftValue : leftTranslatedValues) {
                 res.insert({leftValue, rightTranslatedValues});
             }
@@ -62,23 +62,26 @@ class WithClauseEvaluator : public ClauseEvaluator {
     }
 
  public:
-    WithClauseEvaluator(Reference left, Reference right) : leftRef(std::move(left)), rightRef(std::move(right)) {}
+    WithClauseEvaluator(Reference left, Reference right)
+        : leftRef(std::move(left)), rightRef(std::move(right)) {}
 
-    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage) override {
+    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage_, CachePointer cache_) override {
+        setStorageLocation(storage_, cache_);
+
         auto leftType = leftRef.getReferenceType();
         auto rightType = rightRef.getReferenceType();
 
         if (leftType != ReferenceType::ATTR_REF && rightType == ReferenceType::ATTR_REF) {
-            evaluateValueAttribute(storage, getLeftRefValues(storage), getRightRefValues(storage),
-                                   rightRef.getAttributeDesignEntity(), rightRef.getAttributeIdentity());
+            evaluateValueAttribute(getLeftRefValues(), getRightRefValues(), rightRef.getAttributeDesignEntity(),
+                                   rightRef.getAttributeIdentity());
         } else if (leftType == ReferenceType::ATTR_REF && rightType != ReferenceType::ATTR_REF) {
-            evaluateValueAttribute(storage, getRightRefValues(storage), getLeftRefValues(storage),
-                                   leftRef.getAttributeDesignEntity(), leftRef.getAttributeIdentity());
+            evaluateValueAttribute(getRightRefValues(), getLeftRefValues(), leftRef.getAttributeDesignEntity(),
+                                   leftRef.getAttributeIdentity());
         } else if (rightType == ReferenceType::ATTR_REF) {
-            evaluateAttributeAttribute(storage);
+            evaluateAttributeAttribute();
         } else {
             // Is either Ident = Ident or Integer = Integer
-            auto isEquals = getLeftRefValues(storage) == getRightRefValues(storage);
+            auto isEquals = getLeftRefValues() == getRightRefValues();
             if (!isEquals) {
                 clauseResultTable->setNoResults();
             }

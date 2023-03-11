@@ -11,10 +11,10 @@ class CallsTClauseEvaluator : public StringStringClauseEvaluator {
     CallsTClauseEvaluator(Argument left, Argument right);
 
     std::unordered_map<std::string , std::unordered_set<std::string>>
-    getRelationshipManager(StoragePointer storage) override;
+    getRelationshipManager() override;
 
     std::unordered_map<std::string, std::unordered_set<std::string>>
-    getOppositeRelationshipManager(StoragePointer storage) override;
+    getOppositeRelationshipManager() override;
 
     void handleRightWildcard() override;
 };
