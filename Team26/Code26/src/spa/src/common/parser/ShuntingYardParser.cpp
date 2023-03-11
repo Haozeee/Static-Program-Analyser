@@ -113,8 +113,8 @@ std::shared_ptr<ShuntNode> ShuntingYardParser::parse(std::string expr) {
 }
 
 std::shared_ptr<ShuntNode> ShuntingYardParser::parse(std::string expr,
-                                                     const std::shared_ptr<std::unordered_set<std::string>>& exprVariables,
-                                                     const std::shared_ptr<std::unordered_set<int>>& exprConstants) {
+                                                 const std::shared_ptr<std::unordered_set<std::string>>& exprVariables,
+                                                 const std::shared_ptr<std::unordered_set<int>>& exprConstants) {
     std::stack<std::shared_ptr<ShuntNode>> result;
     std::stack<char> opStack;
     std::unordered_map<char, int> ranking;

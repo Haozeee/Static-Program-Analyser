@@ -501,7 +501,7 @@ std::shared_ptr<AssignNode> Parser::parseAssign(std::shared_ptr<Token> nameToken
     std::shared_ptr<std::unordered_set<std::string>> variables = std::make_shared<std::unordered_set<std::string>>();
     std::shared_ptr<std::unordered_set<int>> constants = std::make_shared<std::unordered_set<int>>();
 
-    auto node= ShuntingYardParser::parse(expr, variables, constants);
+    auto node = ShuntingYardParser::parse(expr, variables, constants);
 
     index = newIndex + 1;
     parseNext(STMT_END);
