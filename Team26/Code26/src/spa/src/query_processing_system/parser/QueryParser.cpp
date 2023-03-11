@@ -381,7 +381,6 @@ void QueryParser::parseNextIfNextEqualsTo(std::string nextValue, std::string err
 }
 
 std::string QueryParser::parseShuntingYard(std::string str) {
-    str.erase(std::remove_if(str.begin(), str.end(), isspace), str.end());
     try {
         ShuntingYardParser::parse(str);
     } catch (ShuntingYardParserException& e) {
