@@ -223,3 +223,78 @@ assign a; variable v;
 Select v pattern a(v, _"(1 * 2 * 3)"_) with a.stmt# = 36
 a
 5000
+1 - Uses + Pattern: assign,entRef and entRef,_
+assign a;
+Select a such that Uses(a, "x") pattern a("x", _)
+29, 55
+5000
+2 - Uses + Pattern: assign,entRef and variable,_
+assign a; variable v;
+Select <a, v.varName> such that Uses(a, v) pattern a(v, _)
+19 b, 29 x, 36 a, 41 a, 42 var, 47 b, 55 x
+5000
+3 - Uses + Pattern: if,_ and _,expression
+if ifs; assign a;
+Select a such that Uses(ifs, _) pattern a(_, _"(1 * 2 * 3)"_)
+21, 28, 36
+5000
+4 - Uses + Pattern: while,variable and variable,expression
+while w; assign a; variable v;
+Select <w, v> such that Uses(w, v) pattern a(v, _"x + y"_)
+3 x, 3 z, 13 x, 16 x, 27 x
+5000
+5 - Uses + Pattern: assign,variable and _,expression
+assign a; variable v;
+Select a such that Uses(a, v) pattern a(_, "q")
+15
+5000
+6 - Uses + Pattern: call,variable and variable,expression
+assign a; call c; variable v;
+Select <c, c.procName, a, v> such that Uses(c, v) pattern a(v, _"a + b"_)
+10 single 1 x, 24 single 1 x, 52 single 1 x
+5000
+7 - Uses + Pattern: assign,variable and entref,_
+assign a; variable v;
+Select v such that Uses(a, v) pattern a("a", _)
+a, b, c, e, r, x, y
+5000
+8 - Uses + Pattern: assign,variable and _,expression
+assign a; variable v;
+Select a such that Uses(a, v) pattern a(_, "q + x")
+none
+5000
+9 - Uses + Pattern: assign,variable and _,expression
+assign a; variable v;
+Select BOOLEAN such that Uses(a, v) pattern a(_, "(1 * 2 * 3)")
+FALSE
+5000
+10 - Uses + Pattern: assign,entRef and variable,_
+assign a; variable v;
+Select BOOLEAN such that Uses(a, v) pattern a(v, _)
+TRUE
+5000
+11 - Uses + With: call,variable and call name
+call c; variable v;
+Select v such that Uses(c, v) with c.procName = "single"
+c, p, q, x, y, z
+5000
+12 - Uses + With: print,variable and variable name
+print p; variable v;
+Select p such that Uses(p, v) with v.varName = "y"
+61
+5000
+13 - Uses + With: if,variable and stmt number
+if ifs; variable v;
+Select v such that Uses(ifs, v) with ifs.stmt# = 40
+a, assign, b, c, call, if, p, print, q, read, var, while, x, y, z
+5000
+14 - Uses + With: print,variable and variable name
+if ifs; variable v;
+Select BOOLEAN such that Uses("child2", v) with v.varName = "y"
+TRUE
+5000
+15 - Uses + With: stmt,variable and variable name
+stmt s; variable v;
+Select s such that Uses(s, v) with v.varName = "c"
+3, 5, 7, 10, 12, 13, 16, 21, 24, 26, 27, 29, 40, 44, 52, 56, 59
+5000
