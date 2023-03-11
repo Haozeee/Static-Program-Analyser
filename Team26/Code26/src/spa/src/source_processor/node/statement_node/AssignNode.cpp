@@ -13,4 +13,3 @@ AssignNode::AssignNode(int stmtIndex, std::string varName,
 void AssignNode::evaluate(IStmtExtractor &extractor) {
     extractor.extractAssign(this->shared_from_this());
 }
-

@@ -229,6 +229,5 @@ std::tuple<
         throw ShuntingYardParserException(ParserShuntingYardParserInvalidExpressionExceptionMessage);
     }
 
-
     return std::make_tuple(result.top(), exprVariables, exprConstants);
 }

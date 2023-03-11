@@ -498,12 +498,12 @@ std::shared_ptr<AssignNode> Parser::parseAssign(std::shared_ptr<Token> nameToken
         expr += tokens[i]->getValue();
     }
 
-    auto x = ShuntingYardParser::parsePlus(expr);
+    auto [node, variables, constants] = ShuntingYardParser::parsePlus(expr);
 
     index = newIndex + 1;
     parseNext(STMT_END);
 
-    return std::make_shared<AssignNode>(stmtIndex, nameToken->getValue(), get<0>(x), get<1>(x), get<2>(x));
+    return std::make_shared<AssignNode>(stmtIndex, nameToken->getValue(), node, variables, constants);
 }
 
 std::shared_ptr<ReadNode> Parser::parseRead() {
