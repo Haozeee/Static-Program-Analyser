@@ -17,8 +17,8 @@ class IReadPatternManager {
     virtual bool containsRhsVector(std::shared_ptr<ShuntNode>) = 0;
     virtual bool containsIndexStmtMap(int, int) = 0;
     virtual bool containsReversedIndexStmtMap(int, int) = 0;
-    virtual std::vector<std::string> getAllLhsPatternEntries() = 0;
-    virtual std::vector<std::shared_ptr<ShuntNode>> getAllRhsPatternEntries() = 0;
+    virtual std::unique_ptr<std::vector<std::string>> getAllLhsPatternEntries() = 0;
+    virtual std::unique_ptr<std::vector<std::shared_ptr<ShuntNode>>> getAllRhsPatternEntries() = 0;
     virtual std::unordered_map<int, int> getAllPatternEntries() = 0;
     virtual std::unordered_map<int, int> getAllReversedPatternEntries() = 0;
 };

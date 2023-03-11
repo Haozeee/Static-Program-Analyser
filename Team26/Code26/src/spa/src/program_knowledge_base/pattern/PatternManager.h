@@ -65,12 +65,12 @@ class PatternManager: public IReadPatternManager, public IWritePatternManager {
         return false;
     }
 
-    std::vector<std::string> getAllLhsPatternEntries() override {
-        return lhs_vector;
+    std::unique_ptr<std::vector<std::string>> getAllLhsPatternEntries() override {
+        return std::make_unique<std::vector<std::string>>(lhs_vector);
     }
 
-    std::vector<std::shared_ptr<ShuntNode>> getAllRhsPatternEntries() override {
-        return rhs_vector;
+    std::unique_ptr<std::vector<std::shared_ptr<ShuntNode>>> getAllRhsPatternEntries() override {
+        return std::make_unique<std::vector<std::shared_ptr<ShuntNode>>>(rhs_vector);
     }
 
     std::unordered_map<int, int> getAllPatternEntries() override {

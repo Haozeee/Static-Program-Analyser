@@ -47,7 +47,7 @@ TEST_CASE("Test insert pattern") {
     REQUIRE(patternManager->containsLhsVector("x"));
     REQUIRE(patternManager->containsLhsVector("y"));
     REQUIRE(patternManager->containsLhsVector("z"));
-    REQUIRE(patternManager->getAllLhsPatternEntries() == lhs_vector);
+    REQUIRE(*(patternManager->getAllLhsPatternEntries()) == lhs_vector);
 
     REQUIRE(patternManager->containsRhsVector(node1));
     REQUIRE(patternManager->containsRhsVector(node2));
@@ -55,8 +55,8 @@ TEST_CASE("Test insert pattern") {
     REQUIRE(patternManager->containsRhsVector(node4));
     auto temp = patternManager->getAllRhsPatternEntries();
     REQUIRE(std::equal(
-            temp.begin(),
-            temp.end(),
+            temp->begin(),
+            temp->end(),
             rhs_vector.begin(),
             rhs_vector.end(),
             SharedPointerComparator<ShuntNode>()
