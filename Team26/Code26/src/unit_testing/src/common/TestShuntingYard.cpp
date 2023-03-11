@@ -8,7 +8,8 @@ using StringList = std::vector<std::string>;
 std::string simpleTestExpression = "x+y";
 std::string testExpression = "v+x*y+z*t";
 std::string invalidTestExpression = "v+x*y(+z*t";
-std::string invalidConsecutiveFactorExpression = " a b + c";
+std::string invalidConsecutiveFactorExpression = "a b + c";
+std::string invalidVariableExpression = "g z t";
 std::string invalidOperatorTestExpression = "v+^x*y(+z*t";
 
 //  expr: expr '+' term | expr '-' term | term
@@ -96,6 +97,7 @@ TEST_CASE("Test Invalid Expression") {
     REQUIRE_THROWS(ShuntingYardParser::parse(invalidTestExpression));
     REQUIRE_THROWS(ShuntingYardParser::parse(invalidOperatorTestExpression));
     REQUIRE_THROWS(ShuntingYardParser::parse(invalidConsecutiveFactorExpression));
+    REQUIRE_THROWS(ShuntingYardParser::parse(invalidVariableExpression));
 
     for (const auto & expression : invalidTestExpressions) {
         REQUIRE_THROWS(ShuntingYardParser::parse(expression));
@@ -105,8 +107,10 @@ TEST_CASE("Test Invalid Expression") {
 TEST_CASE("Test String Produces Same Tree") {
     std::string stringA = "a+b";
     std::string stringB = "(a+b)";
+    std::string stringC = "a + b";
     // The 2 strings are not equals but should produce the same tree
     REQUIRE(*(ShuntingYardParser::parse(stringA)) == *(ShuntingYardParser::parse(stringB)));
+    REQUIRE(*(ShuntingYardParser::parse(stringA)) == *(ShuntingYardParser::parse(stringC)));
 
     stringA = "(whileA+2-whileC)*(4/whileE)%whileF";
     stringB = "((whileA+2)-whileC)*(4/whileE)%whileF";
