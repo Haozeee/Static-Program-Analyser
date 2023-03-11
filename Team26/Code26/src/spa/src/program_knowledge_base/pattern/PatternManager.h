@@ -1,16 +1,20 @@
 #pragma once
+
+#include <algorithm>
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <algorithm>
+
 #include "IReadPatternManager.h"
 #include "IWritePatternManager.h"
+#include "common/parser/ShuntNode.h"
 
 
 class PatternManager: public IReadPatternManager, public IWritePatternManager {
  private:
     std::vector<std::string> lhs_vector;
-    std::vector<std::string> rhs_vector;
+    std::vector<ShuntNode> rhs_vector;
     std::unordered_map<int, int> index_stmt_map;
     std::unordered_map<int, int> reversed_index_stmt_map;
 
@@ -39,8 +43,8 @@ class PatternManager: public IReadPatternManager, public IWritePatternManager {
         return false;
     }
 
-    bool containsRhsVector(const std::string& right) override {
-        auto it = std::find(rhs_vector.begin(), rhs_vector.end(), right);
+    bool containsRhsVector(std::shared_ptr<ShuntNode> right) override {
+        auto it = std::find(rhs_vector.begin(), rhs_vector.end(), *right);
         if (it != rhs_vector.end()) {
             return true;
         }
@@ -67,7 +71,7 @@ class PatternManager: public IReadPatternManager, public IWritePatternManager {
         return lhs_vector;
     }
 
-    std::vector<std::string> getAllRhsPatternEntries() override {
+    std::vector<ShuntNode> getAllRhsPatternEntries() override {
         return rhs_vector;
     }
 
@@ -79,10 +83,10 @@ class PatternManager: public IReadPatternManager, public IWritePatternManager {
         return reversed_index_stmt_map;
     }
 
-    bool insertPattern(int stmt_no, std::string left, std::string right) override {
+    bool insertPattern(int stmt_no, std::string left, std::shared_ptr<ShuntNode> right) override {
         int index = static_cast<int>(lhs_vector.size());
         lhs_vector.push_back(left);
-        rhs_vector.push_back(right);
+        rhs_vector.push_back(*right);
         auto x = index_stmt_map.insert({index, stmt_no});
         auto y = reversed_index_stmt_map.insert({stmt_no, index});
         return x.second && y.second;

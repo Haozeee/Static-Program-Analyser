@@ -1,6 +1,8 @@
 #include "catch.hpp"
 #include <string>
 #include <utility>
+
+#include "common/parser/ShuntingYardParser.h"
 #include "program_knowledge_base/StorageManager.h"
 #include "query_processing_system/QueryManager.h"
 #include "../test_helpers/compare_int_string.h"
@@ -41,10 +43,14 @@ TEST_CASE("Test reading pattern") {
     variableManager->insertEntity("z");
 
     auto patternManager = writeStorage->getPatternManager();
-    patternManager->insertPattern(1, "x", "5");
-    patternManager->insertPattern(2, "y", "x*3");
-    patternManager->insertPattern(4, "z", "x*y+x/y");
-    patternManager->insertPattern(5, "x", "z");
+    auto node1 = ShuntingYardParser::parse("5");
+    auto node2 = ShuntingYardParser::parse("x*3");
+    auto node3 = ShuntingYardParser::parse("x*y+x/y");
+    auto node4 = ShuntingYardParser::parse("z");
+    patternManager->insertPattern(1, "x", node1);
+    patternManager->insertPattern(2, "y", node2);
+    patternManager->insertPattern(4, "z", node3);
+    patternManager->insertPattern(5, "x", node4);
 
     // test Pattern
     std::list<std::string> q1_results;

@@ -4,6 +4,8 @@
 #include <utility>
 #include <iostream>
 #include <fstream>
+
+#include "common/parser/ShuntingYardParser.h"
 #include "source_processor/storage_writer/interface/IStore.h"
 #include "source_processor/storage_writer/Store.h"
 #include "source_processor/SourceManager.h"
@@ -31,7 +33,13 @@ TEST_CASE("Test insert pattern") {
     auto patternManager = readStorage->getPatternManager();
 
     std::vector<std::string> lhs_vector = {"x", "y", "z", "x"};
-    std::vector<std::string> rhs_vector = {"5", "x*3", "x*y+x/y", "z"};
+
+    auto node1 = ShuntingYardParser::parse("5");
+    auto node2 = ShuntingYardParser::parse("x*3");
+    auto node3 = ShuntingYardParser::parse("x*y+x/y");
+    auto node4 = ShuntingYardParser::parse("z");
+    std::vector<ShuntNode> rhs_vector = {*node1, *node2, *node3, *node4};
+
     std::unordered_map<int, int> index_stmt_map = {{0, 1}, {1, 2}, {2, 4}, {3, 5}};
     std::unordered_map<int, int> reversed_index_stmt_map = {{1, 0}, {2, 1}, {4, 2}, {5, 3}};;
 
@@ -40,10 +48,10 @@ TEST_CASE("Test insert pattern") {
     REQUIRE(patternManager->containsLhsVector("z"));
     REQUIRE(patternManager->getAllLhsPatternEntries() == lhs_vector);
 
-    REQUIRE(patternManager->containsRhsVector("5"));
-    REQUIRE(patternManager->containsRhsVector("x*3"));
-    REQUIRE(patternManager->containsRhsVector("x*y+x/y"));
-    REQUIRE(patternManager->containsRhsVector("z"));
+    REQUIRE(patternManager->containsRhsVector(node1));
+    REQUIRE(patternManager->containsRhsVector(node2));
+    REQUIRE(patternManager->containsRhsVector(node3));
+    REQUIRE(patternManager->containsRhsVector(node4));
     REQUIRE(patternManager->getAllRhsPatternEntries() == rhs_vector);
 
     REQUIRE(patternManager->containsIndexStmtMap(0, 1));
