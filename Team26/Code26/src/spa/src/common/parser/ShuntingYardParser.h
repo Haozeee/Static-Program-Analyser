@@ -30,11 +30,16 @@ class ShuntingYardParser {
         ranking['/'] = 2;
         ranking['%'] = 2;
 
+        bool isPrevFactor = false;
 
         for (int i = 0; i < expr.size(); ++i) {
             const char c = expr[i];
-
-            if (std::isdigit(c)) /* constant */ {
+            if (isspace(c)) {
+                continue;
+            } else if (std::isdigit(c)) /* constant */ {
+                if (isPrevFactor) {
+                    throw ShuntingYardParserException(ParserShuntingYardParserInvalidExpressionExceptionMessage);
+                }
                 int k = i;
                 while (k < expr.size() && std::isdigit(expr[k])) {
                     ++k;
@@ -42,7 +47,11 @@ class ShuntingYardParser {
                 std::shared_ptr<ShuntNode> node = std::make_shared<ShuntNode>(expr.substr(i, k -i));
                 result.push(node);
                 i = k - 1;
+                isPrevFactor = true;
             } else if (std::isalpha(c)) /* variable */ {
+                if (isPrevFactor) {
+                    throw ShuntingYardParserException(ParserShuntingYardParserInvalidExpressionExceptionMessage);
+                }
                 int k = i;
                 while (k < expr.size() && std::isalnum(expr[k])) {
                     ++k;
@@ -50,6 +59,7 @@ class ShuntingYardParser {
                 std::shared_ptr<ShuntNode> node = std::make_shared<ShuntNode>(expr.substr(i, k -i));
                 result.push(node);
                 i = k - 1;
+                isPrevFactor = true;
             } else if (std::find(ops.begin(),
                                  ops.end(),
                                  std::string(1, c)) != ops.end()) /* operator or bracket */ {
@@ -70,7 +80,11 @@ class ShuntingYardParser {
                         result.pop();
                         result.push(node);
                     }
+                    if (opStack.empty()) {
+                        throw ShuntingYardParserException(ParserShuntingYardParserInvalidExpressionExceptionMessage);
+                    }
                     opStack.pop();
+
                 } else {
                     while (!opStack.empty() && ranking[opStack.top()] >= ranking[c]) {
                         if (result.size() < 2) {
@@ -88,6 +102,7 @@ class ShuntingYardParser {
                     }
                     opStack.push(c);
                 }
+                isPrevFactor = false;
             } else {
                 throw ShuntingYardParserException(
                         ParserShuntingYardParserUnknownOperatorExceptionMessage);
@@ -116,4 +131,3 @@ class ShuntingYardParser {
         return result.top();
     }
 };
-
