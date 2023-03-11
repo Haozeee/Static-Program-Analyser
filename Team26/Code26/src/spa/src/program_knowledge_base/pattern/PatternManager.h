@@ -5,6 +5,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <iterator>
 
 #include "IReadPatternManager.h"
 #include "IWritePatternManager.h"
@@ -83,7 +84,7 @@ class PatternManager: public IReadPatternManager, public IWritePatternManager {
     bool insertPattern(int stmt_no, std::string left, std::shared_ptr<ShuntNode> right) override {
         int index = static_cast<int>(lhs_vector.size());
         lhs_vector.push_back(left);
-        rhs_vector.push_back(*right);
+        rhs_vector.push_back(right);
         auto x = index_stmt_map.insert({index, stmt_no});
         auto y = reversed_index_stmt_map.insert({stmt_no, index});
         return x.second && y.second;

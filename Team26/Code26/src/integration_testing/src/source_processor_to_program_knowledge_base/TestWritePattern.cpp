@@ -9,7 +9,7 @@
 #include "source_processor/storage_writer/interface/IStore.h"
 #include "source_processor/storage_writer/Store.h"
 #include "source_processor/SourceManager.h"
-#include "common/utils/SharedPointerEquality.h"
+#include "common/utils/SharedPointerComparator.h"
 
 TEST_CASE("Test insert pattern") {
     std::string testInput = "procedure test1 {\n"
@@ -59,7 +59,7 @@ TEST_CASE("Test insert pattern") {
             temp.end(),
             rhs_vector.begin(),
             rhs_vector.end(),
-            SharedPointerEquality<ShuntNode>()
+            SharedPointerComparator<ShuntNode>()
     ));
     REQUIRE(patternManager->containsIndexStmtMap(0, 1));
     REQUIRE(patternManager->containsIndexStmtMap(1, 2));
