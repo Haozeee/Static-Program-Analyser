@@ -9,6 +9,7 @@
 #include "source_processor/storage_writer/interface/IStore.h"
 #include "source_processor/storage_writer/Store.h"
 #include "source_processor/SourceManager.h"
+#include "common/utils/SharedPointerEquality.h"
 
 TEST_CASE("Test insert pattern") {
     std::string testInput = "procedure test1 {\n"
@@ -38,10 +39,10 @@ TEST_CASE("Test insert pattern") {
     auto node2 = ShuntingYardParser::parse("x*3");
     auto node3 = ShuntingYardParser::parse("x*y+x/y");
     auto node4 = ShuntingYardParser::parse("z");
-    std::vector<ShuntNode> rhs_vector = {*node1, *node2, *node3, *node4};
+    std::vector<const std::shared_ptr<ShuntNode>> rhs_vector = {node1, node2, node3, node4};
 
     std::unordered_map<int, int> index_stmt_map = {{0, 1}, {1, 2}, {2, 4}, {3, 5}};
-    std::unordered_map<int, int> reversed_index_stmt_map = {{1, 0}, {2, 1}, {4, 2}, {5, 3}};;
+    std::unordered_map<int, int> reversed_index_stmt_map = {{1, 0}, {2, 1}, {4, 2}, {5, 3}};
 
     REQUIRE(patternManager->containsLhsVector("x"));
     REQUIRE(patternManager->containsLhsVector("y"));
@@ -52,8 +53,14 @@ TEST_CASE("Test insert pattern") {
     REQUIRE(patternManager->containsRhsVector(node2));
     REQUIRE(patternManager->containsRhsVector(node3));
     REQUIRE(patternManager->containsRhsVector(node4));
-    REQUIRE(patternManager->getAllRhsPatternEntries() == rhs_vector);
-
+    auto temp = patternManager->getAllRhsPatternEntries();
+    REQUIRE(std::equal(
+            temp.begin(),
+            temp.end(),
+            rhs_vector.begin(),
+            rhs_vector.end(),
+            SharedPointerEquality<ShuntNode>()
+    ));
     REQUIRE(patternManager->containsIndexStmtMap(0, 1));
     REQUIRE(patternManager->containsIndexStmtMap(1, 2));
     REQUIRE(patternManager->containsIndexStmtMap(2, 4));

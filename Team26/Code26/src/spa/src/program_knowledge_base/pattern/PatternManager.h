@@ -14,7 +14,7 @@
 class PatternManager: public IReadPatternManager, public IWritePatternManager {
  private:
     std::vector<std::string> lhs_vector;
-    std::vector<ShuntNode> rhs_vector;
+    std::vector<const std::shared_ptr<ShuntNode>> rhs_vector;
     std::unordered_map<int, int> index_stmt_map;
     std::unordered_map<int, int> reversed_index_stmt_map;
 
@@ -44,11 +44,8 @@ class PatternManager: public IReadPatternManager, public IWritePatternManager {
     }
 
     bool containsRhsVector(std::shared_ptr<ShuntNode> right) override {
-        auto it = std::find(rhs_vector.begin(), rhs_vector.end(), *right);
-        if (it != rhs_vector.end()) {
-            return true;
-        }
-        return false;
+        return std::any_of(rhs_vector.begin(), rhs_vector.end(),
+                           [&](const auto& node) { return *right == *node; });
     }
 
     bool containsIndexStmtMap(int index, int stmt_no) override {
@@ -71,7 +68,7 @@ class PatternManager: public IReadPatternManager, public IWritePatternManager {
         return lhs_vector;
     }
 
-    std::vector<ShuntNode> getAllRhsPatternEntries() override {
+    std::vector<const std::shared_ptr<ShuntNode>> getAllRhsPatternEntries() override {
         return rhs_vector;
     }
 

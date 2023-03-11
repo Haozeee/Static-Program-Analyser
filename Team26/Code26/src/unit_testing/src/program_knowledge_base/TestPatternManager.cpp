@@ -106,7 +106,7 @@ TEST_CASE("PatternManager getAllRhsPatternEntries") {
     auto node2  = ShuntingYardParser::parse("a+b");
     auto set = patternManager.getAllRhsPatternEntries();
     REQUIRE(set.empty());
-    std::vector<ShuntNode> test_vector = {*node1, *node2};
+    std::vector<const std::shared_ptr<ShuntNode>> test_vector = {node1, node2};
     patternManager.insertPattern(1, "left1", node1);
     patternManager.insertPattern(2, "left2", node2);
     set = patternManager.getAllRhsPatternEntries();
@@ -162,7 +162,7 @@ TEST_CASE("PatternManager insertPattern") {
     REQUIRE_FALSE(patternManager.isEmptyReversedIndexStmtMap());
 
     std::vector<std::string> lhs_vector = {"left1", "left2", "left3"};
-    std::vector<ShuntNode> rhs_vector = {*node1, *node2, *node3};
+    std::vector<const std::shared_ptr<ShuntNode>> rhs_vector = {node1, node2, node3};
     std::unordered_map<int, int> test_map = {{0, 1}, {1, 2}, {2, 3}};
     std::unordered_map<int, int> reversed_test_map = {{1, 0}, {2, 1}, {3, 2}};
     auto lhs = patternManager.getAllLhsPatternEntries();

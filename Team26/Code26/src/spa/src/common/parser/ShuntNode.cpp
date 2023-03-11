@@ -1,5 +1,4 @@
 #include "ShuntNode.h"
-#include "ShuntingYardParser.h"
 
 std::vector<std::string> ShuntNode::getPreOrderTraversal(std::shared_ptr<ShuntNode> node) {
     std::vector<std::string> res;
