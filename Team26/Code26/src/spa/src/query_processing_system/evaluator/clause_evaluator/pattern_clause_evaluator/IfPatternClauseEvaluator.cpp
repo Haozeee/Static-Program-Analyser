@@ -1,6 +1,8 @@
 #include "IfPatternClauseEvaluator.h"
 
 #include <utility>
+#include <unordered_set>
+#include <unordered_map>
 
 IfPatternClauseEvaluator::IfPatternClauseEvaluator(Argument patternArg, Argument leftArg)
     : IfAndWhilePatternClauseEvaluator(std::move(patternArg), std::move(leftArg)) {}
