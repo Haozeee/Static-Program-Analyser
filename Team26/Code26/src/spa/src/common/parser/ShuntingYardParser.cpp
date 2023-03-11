@@ -112,10 +112,9 @@ std::shared_ptr<ShuntNode> ShuntingYardParser::parse(std::string expr) {
     return result.top();
 }
 
-std::tuple<
-        std::shared_ptr<ShuntNode>,
-        std::unordered_set<std::string>,
-        std::unordered_set<int>> ShuntingYardParser::parsePlus(std::string expr) {
+std::shared_ptr<ShuntNode> ShuntingYardParser::parse(std::string expr,
+                                                     const std::shared_ptr<std::unordered_set<std::string>>& exprVariables,
+                                                     const std::shared_ptr<std::unordered_set<int>>& exprConstants) {
     std::stack<std::shared_ptr<ShuntNode>> result;
     std::stack<char> opStack;
     std::unordered_map<char, int> ranking;
@@ -125,9 +124,6 @@ std::tuple<
     ranking['*'] = 2;
     ranking['/'] = 2;
     ranking['%'] = 2;
-
-    std::unordered_set<std::string> exprVariables;
-    std::unordered_set<int> exprConstants;
 
     bool isPrevFactor = false;
 
@@ -143,7 +139,7 @@ std::tuple<
             while (k < expr.size() && std::isdigit(expr[k])) {
                 ++k;
             }
-            exprConstants.insert(std::stoi(expr.substr(i, k -i)));
+            exprConstants->insert(std::stoi(expr.substr(i, k -i)));
             std::shared_ptr<ShuntNode> node = std::make_shared<ShuntNode>(expr.substr(i, k -i));
             result.push(node);
             i = k - 1;
@@ -156,7 +152,7 @@ std::tuple<
             while (k < expr.size() && std::isalnum(expr[k])) {
                 ++k;
             }
-            exprVariables.insert(expr.substr(i, k -i));
+            exprVariables->insert(expr.substr(i, k -i));
             std::shared_ptr<ShuntNode> node = std::make_shared<ShuntNode>(expr.substr(i, k -i));
             result.push(node);
             i = k - 1;
@@ -229,5 +225,5 @@ std::tuple<
         throw ShuntingYardParserException(ParserShuntingYardParserInvalidExpressionExceptionMessage);
     }
 
-    return std::make_tuple(result.top(), exprVariables, exprConstants);
+    return result.top();
 }

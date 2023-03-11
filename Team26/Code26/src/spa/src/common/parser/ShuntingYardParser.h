@@ -23,8 +23,6 @@ class ShuntingYardParser {
      * */
     static std::shared_ptr<ShuntNode> parse(std::string expr);
 
-    static std::tuple<
-            std::shared_ptr<ShuntNode>,
-            std::unordered_set<std::string>,
-            std::unordered_set<int>> parsePlus(std::string expr);
+    static std::shared_ptr<ShuntNode> parse(std::string expr, const std::shared_ptr<std::unordered_set<std::string>>&
+    exprVariables, const std::shared_ptr<std::unordered_set<int>>& exprConstants);
 };
