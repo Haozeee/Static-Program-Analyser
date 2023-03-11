@@ -392,7 +392,6 @@ void QueryParser::parseNextIfElseSemanticError(std::string nextValue, std::strin
 }
 
 std::string QueryParser::parseShuntingYard(std::string str) {
-    str.erase(std::remove_if(str.begin(), str.end(), isspace), str.end());
     try {
         ShuntingYardParser::parse(str);
     } catch (ShuntingYardParserException& e) {

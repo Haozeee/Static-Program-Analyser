@@ -1,5 +1,4 @@
 #include "ShuntNode.h"
-#include "ShuntingYardParser.h"
 
 std::vector<std::string> ShuntNode::getPreOrderTraversal(std::shared_ptr<ShuntNode> node) {
     std::vector<std::string> res;
@@ -44,16 +43,6 @@ bool ShuntNode::isSubVector(std::vector<std::string> stringVector, std::vector<s
     return j == subVector.size();
 }
 
-bool ShuntNode::stringsProducesEqualTrees(std::string stringA, std::string stringB) {
-    auto a = ShuntingYardParser::parse(stringA);
-    auto b = ShuntingYardParser::parse(stringB);
-    auto aInOrder = ShuntNode::getInOrderTraversal(a);
-    auto aPreOrder = ShuntNode::getPreOrderTraversal(a);
-    auto bInOrder = ShuntNode::getInOrderTraversal(b);
-    auto bPreOrder = ShuntNode::getPreOrderTraversal(b);
-    return aInOrder == bInOrder && aPreOrder == bPreOrder;
-}
-
 bool ShuntNode::isSubTree(const std::shared_ptr<ShuntNode>& fullTree, const std::shared_ptr<ShuntNode>& partialTree) {
     /**
      * Given 2 trees A and B. Tree B is a subtree of A if the pre-order
@@ -74,4 +63,13 @@ bool ShuntNode::isSubTree(const std::shared_ptr<ShuntNode>& fullTree, const std:
     bool inOrderSubstring = isSubVector(inOrder, partialInOrder);
     bool preOrderSubstring = isSubVector(preOrder, partialPreOrder);
     return inOrderSubstring && preOrderSubstring;
+}
+
+bool ShuntNode::operator==(const ShuntNode& other) const {
+    auto thisInOrder = getInOrderTraversal(std::make_shared<ShuntNode>(*this));
+    auto thisPreOrder = getPreOrderTraversal(std::make_shared<ShuntNode>(*this));
+    auto otherInOrder = getInOrderTraversal(std::make_shared<ShuntNode>(other));
+    auto otherPreOrder = getPreOrderTraversal(std::make_shared<ShuntNode>(other));
+
+    return (thisInOrder == otherInOrder) && (thisPreOrder == otherPreOrder);
 }
