@@ -37,5 +37,6 @@ class RelationshipStore : public IRelationshipStore {
     void insertCallsTRelationship(std::string caller, std::string callee) override;
     void insertNextRelationship(int previousStmtNo, int currStmtNo) override;
 
-    void invokeReverseRelationship() override;
+    void invokePostReverseRelationship() override;
+    void invokePreReverseRelationship() override;
 };
