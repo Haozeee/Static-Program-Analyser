@@ -13,8 +13,6 @@ void IfAndWhilePatternClauseEvaluator::evaluateSynonym(std::shared_ptr<ReadStora
 }
 
 void IfAndWhilePatternClauseEvaluator::evaluateString(std::shared_ptr<ReadStorage> storage) {
-    auto statements = storage->getWhileCondManager()->getAllRelationshipEntries();
-    auto reverseStatements = storage->getWhileCondManager()->getAllReversedRelationshipEntries();
     auto ifOrWhileStatements = getReverseRelationshipEntries(storage);
     std::unordered_set<std::string> interestedResults;
     for (auto const& [k, v] : ifOrWhileStatements) {
