@@ -12,7 +12,7 @@ class PatternStore : public IPatternStore {
     std::shared_ptr<IWriteRelationshipManager<int, std::string>> ifCondManager;
 
  public:
-    explicit PatternStore(std::shared_ptr<WriteStorage> storage);
+    explicit PatternStore(const std::shared_ptr<WriteStorage>& storage);
 
     void insertExpressionPattern(std::shared_ptr<AssignNode> node) override;
     void insertCondExpressionIfStatement(int stmtIndex, std::string variableName) override;
