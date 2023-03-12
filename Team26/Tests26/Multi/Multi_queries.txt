@@ -103,3 +103,48 @@ assign a1, a2; while w1, w2;
 Select a2 pattern a1("x", _) and a2(_, _"x"_) such that Affects(a1, a2) and Parent*(w2, a2) and Parent*(w1, w2)
 14, 29
 5000
+2 - Multi-clauses(Pattern and No With): Uses, Modifies, Parent
+assign a; variable v; if ifs;
+Select a such that Uses(a, v) and Modifies(a, v) and Parent(ifs, a) pattern a(v, _)
+19, 36, 41, 42, 47
+5000
+3 - Multi-clauses(Pattern and No With): Next, Next*, Follows
+assign a; variable v; while w; stmt s, s1; print p;
+Select s such that Next(s, w) and Next*(w, a) and Follows(a, p) pattern a(v, _"x + y"_)
+2, 5, 12, 15, 21, 23, 32, 36, 39
+5000
+4 - Multi-clauses(Pattern and No With): Uses, Modifies, Parent*, Follows*
+assign a; read r; print p; variable v; stmt s, s1;
+Select a such that Uses(p, v) and Modifies(r, v) and Follows*(s, a) and Parent*(s1, a) pattern a(v, "x + y + (a + b * c) * 29 * 29")
+29
+5000
+5 - Multi-clauses(Pattern and No With): Next*, Modifies, Uses, Follows*
+assign a; variable v; while w; stmt s, s1; call c;
+Select <s, v> such that Next*(s, s1) and Modifies(s1, v) and Uses(a, v) and Uses(c, v) and Follows*(a, s) pattern a(_, _"1"_)
+15 x, 16 x, 22 x, 23 x
+5000
+6 - Multi-clauses(Pattern and No With): Next*, Modifies, Uses, Follows*
+assign a; variable v; while w; stmt s, s1; call c;
+Select <s, v> such that Next*(s, s1) and Uses(s1, v) and Modifies(c, v) and Parent*(s, a) pattern a(_, _"2"_)
+3 x, 5 x, 7 x, 13 x, 16 x, 27 x, 30 x, 40 x, 46 x
+5000
+7 - Multi-clauses(Pattern and No With): Calls*, Modifies, Uses
+procedure p, p1; variable v; assign a;
+Select v.varName such that Calls*(p, p1) and Modifies(p1, v) and Uses(a, v) pattern a(v, _)
+x
+5000
+8 - Multi-clauses(Pattern and No With): Parent, Modifies, Follows*
+stmt s, s1; variable v; assign a, a1;
+Select s such that Parent(s, s1) such that Modifies(s1, v) pattern a(v, _) such that Follows*(s1, a1) pattern a1("a", _)
+5, 16, 30
+5000
+9 - Multi-clauses(Pattern and No With): Parent, Modifies, Follows*
+stmt s, s1; variable v; assign a, a1;
+Select s such that Parent(s, s1) and Modifies(s1, v) pattern a(v, "invalid") such that Follows*(s1, a1) pattern a1("a", _)
+none
+5000
+10 - Multi-clauses(Pattern and No With): Parent*, Modifies, Follows*, Uses
+stmt s, s1; variable v, v1; assign a, a1; read r;
+Select s such that Parent*(s, r) and Modifies(r, v) pattern a(v, _) such that Follows*(r, a1) and Uses(a1, v1) pattern a1("a", _)
+3, 5, 27, 30
+5000
