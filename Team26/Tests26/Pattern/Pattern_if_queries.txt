@@ -1,0 +1,50 @@
+1 - variable syn
+if i; variable v;
+Select v pattern i(v, _, _)
+a, b, c, x, y, z
+5000
+2 - _
+if i;
+Select i pattern i(_, _, _)
+3, 8, 9, 16
+5000
+3 - variable name
+if i;
+Select v pattern i("x", _, _)
+3, 8, 16
+5000
+4 - variable syn (tuple)
+if i; variable v;
+Select <i, v> pattern i(v, _, _)
+3 x, 3 y, 3 z, 8 a, 8 x, 9 y, 9 z, 9 b, 9 c, 16 x, 16 b
+5000
+5 - variable syn (2nd arg, invalid)
+if i; variable v;
+Select i pattern i(_, v, _)
+SyntaxError
+5000
+6 - variable syn (3rd arg, invalid)
+if i; variable v;
+Select i pattern i(_, _, v)
+SyntaxError
+5000
+7 - variable name (2nd arg, invalid)
+if i;
+Select i pattern i(_, "x", _)
+SyntaxError
+5000
+8 - variable name (3rd arg, invalid)
+if i;
+Select i pattern i(_, _, "x")
+SyntaxError
+5000
+9 - variable name (2 args)
+if i;
+Select i pattern i(_, _)
+SyntaxError
+5000
+10 - variable name (4 args)
+if i;
+Select i pattern i(_, _, _, _)
+SyntaxError
+5000
