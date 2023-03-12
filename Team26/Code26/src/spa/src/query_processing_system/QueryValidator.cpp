@@ -96,9 +96,15 @@ void QueryValidator::validatePatternClause() {
         auto patternArg = clause->getPatternArg();
         auto leftArg = clause->getLeftArg();
         auto rightArg = clause->getRightArg();
-        if (patternArg.getDesignEntity() == DesignEntity::IF || patternArg.getDesignEntity() == DesignEntity::WHILE) {
+        if (patternArg.getDesignEntity() == DesignEntity::WHILE) {
             if (!rightArg.isWildCard()) {
-                throw QueryValidationException(rightArg.getExpression()
+                throw QueryInvalidArgumentType(rightArg.getExpression()
+                                                  + QueryValidatorIfWhilePatternRightArgWildcard);
+            }
+        }
+        if (patternArg.getDesignEntity() == DesignEntity::IF) {
+            if (!rightArg.isWildCard()) {
+                throw QueryInvalidPatternArgument(rightArg.getExpression()
                                                     + QueryValidatorIfWhilePatternRightArgWildcard);
             }
         }

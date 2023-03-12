@@ -13,17 +13,17 @@ class AssignPatternClauseEvaluator : public PatternClauseEvaluator {
     /**
      * Evaluates pattern clauses of the form pattern a(v, "x")
      */
-    void evaluateSynonym(std::shared_ptr<ReadStorage> storage);
+    void evaluateSynonym(std::shared_ptr<ReadStorage> storage) override;
 
     /**
      * Evaluates pattern clauses of the form pattern a("y", "x")
      */
-    void evaluateString(std::shared_ptr<ReadStorage> storage);
+    void evaluateString(std::shared_ptr<ReadStorage> storage) override;
 
     /**
      * Evaluates pattern clauses of the form pattern a(_, "x")
      */
-    void evaluateWildcard(std::shared_ptr<ReadStorage> storage);
+    void evaluateWildcard(std::shared_ptr<ReadStorage> storage) override;
 
     /**
      * Given a set of lhs values, find all the assign statements that have any of the lhs values
@@ -35,6 +35,4 @@ class AssignPatternClauseEvaluator : public PatternClauseEvaluator {
 
  public:
     AssignPatternClauseEvaluator(Argument patternArg, Argument leftArg, StringExpression rightArg);
-
-    std::shared_ptr<ResultTable> evaluateClause(std::shared_ptr<ReadStorage> storage) override;
 };

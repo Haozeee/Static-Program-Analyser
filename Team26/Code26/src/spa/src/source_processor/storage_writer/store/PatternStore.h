@@ -18,4 +18,6 @@ class PatternStore : public IPatternStore {
     void insertExpressionPattern(std::shared_ptr<AssignNode> node) override;
     void insertCondExpressionIfStatement(int stmtIndex, std::string variableName) override;
     void insertCondExpressionWhileStatement(int stmtIndex, std::string variableName) override;
+
+    void invokePostReverseRelationship() override;
 };

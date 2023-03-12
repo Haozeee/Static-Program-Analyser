@@ -18,3 +18,8 @@ void PatternStore::insertCondExpressionIfStatement(int stmtIndex, std::string va
 void PatternStore::insertCondExpressionWhileStatement(int stmtIndex, std::string variableName) {
     whileCondManager->insertRelationship(stmtIndex, variableName);
 }
+
+void PatternStore::invokePostReverseRelationship() {
+    whileCondManager->setReverse();
+    ifCondManager->setReverse();
+}
