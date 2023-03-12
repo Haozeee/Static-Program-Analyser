@@ -1,8 +1,7 @@
 #include "TransitiveCacheableGraph.h"
 
-TransitiveCacheableGraph::TransitiveCacheableGraph(StoragePointer storage) : CacheableGraph(storage) {}
+TransitiveCacheableGraph::TransitiveCacheableGraph(StoragePointer storage) : CacheableGraph<int, int>(storage) {}
 
-
-std::unordered_set<int> TransitiveCacheableGraph::onCacheMiss(int query) {
-
+void TransitiveCacheableGraph::onCacheMiss(int query) {
+    cache.insert({1, {2}});
 }

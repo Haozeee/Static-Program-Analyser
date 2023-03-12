@@ -7,7 +7,7 @@
 
 class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
  protected:
-    IntIntClauseEvaluator(Argument left, Argument right);
+    IntIntClauseEvaluator(Argument left, Argument right, bool cacheable = false);
 
     void setLeftArgResult(std::unordered_set<int> result) override;
 
@@ -21,13 +21,7 @@ class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
 
     void handleLeftWildcard() override;
 
-    void handleRightWildcard() override;
-
     int getLeftArg() override;
 
     int getRightArg() override;
-
-    bool isLeftArgAmbiguous() override;
-
-    bool isRightArgAmbiguous() override;
 };

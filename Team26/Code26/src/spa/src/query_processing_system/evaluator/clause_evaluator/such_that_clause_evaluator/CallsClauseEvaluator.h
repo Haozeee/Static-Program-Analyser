@@ -13,6 +13,4 @@ class CallsClauseEvaluator : public StringStringClauseEvaluator {
     std::unordered_map<std::string , std::unordered_set<std::string>> getRelationshipManager() override;
 
     std::unordered_map<std::string, std::unordered_set<std::string>> getOppositeRelationshipManager() override;
-
-    void handleRightWildcard() override;
 };

@@ -1,14 +1,10 @@
 #include "IntIntClauseEvaluator.h"
 
-IntIntClauseEvaluator::IntIntClauseEvaluator(Argument left, Argument right)
-    : SuchThatClauseEvaluator<int, int>(left, right) {}
+IntIntClauseEvaluator::IntIntClauseEvaluator(Argument left, Argument right, bool cacheable)
+    : SuchThatClauseEvaluator<int, int>(left, right, cacheable) {}
 
 void IntIntClauseEvaluator::handleLeftWildcard() {
     leftArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::STMT);
-}
-
-void IntIntClauseEvaluator::handleRightWildcard() {
-    rightArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::STMT);
 }
 
 void IntIntClauseEvaluator::setLeftArgResult(std::unordered_set<int> result) {
@@ -38,12 +34,4 @@ int IntIntClauseEvaluator::getLeftArg() {
 
 int IntIntClauseEvaluator::getRightArg() {
     return stoi(rightArg.getValue());
-}
-
-bool IntIntClauseEvaluator::isLeftArgAmbiguous() {
-    return true;
-}
-
-bool IntIntClauseEvaluator::isRightArgAmbiguous() {
-    return true;
 }

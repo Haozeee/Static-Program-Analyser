@@ -21,13 +21,9 @@ class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string
 
     void handleLeftWildcard() override;
 
-    void handleRightWildcard() override;
-
     int getLeftArg() override;
 
     std::string getRightArg() override;
-
-    bool isLeftArgAmbiguous() override;
 
     bool isRightArgAmbiguous() override;
 };

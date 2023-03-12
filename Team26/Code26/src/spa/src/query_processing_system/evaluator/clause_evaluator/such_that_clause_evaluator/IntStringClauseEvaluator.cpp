@@ -7,10 +7,6 @@ void IntStringClauseEvaluator::handleLeftWildcard() {
     leftArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::STMT);
 }
 
-void IntStringClauseEvaluator::handleRightWildcard() {
-    rightArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::VARIABLE);
-}
-
 void IntStringClauseEvaluator::setLeftArgResult(std::unordered_set<int> result) {
     clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), Util::intSetToStringSet(result));
 }
@@ -39,10 +35,6 @@ int IntStringClauseEvaluator::getLeftArg() {
 
 std::string IntStringClauseEvaluator::getRightArg() {
     return rightArg.getValue();
-}
-
-bool IntStringClauseEvaluator::isLeftArgAmbiguous() {
-    return true;
 }
 
 bool IntStringClauseEvaluator::isRightArgAmbiguous() {

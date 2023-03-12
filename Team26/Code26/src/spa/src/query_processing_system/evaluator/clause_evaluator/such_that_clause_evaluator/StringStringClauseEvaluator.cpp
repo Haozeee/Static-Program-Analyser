@@ -7,10 +7,6 @@ void StringStringClauseEvaluator::handleLeftWildcard() {
     leftArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::PROCEDURE);
 }
 
-void StringStringClauseEvaluator::handleRightWildcard() {
-    rightArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::VARIABLE);
-}
-
 void StringStringClauseEvaluator::setLeftArgResult(std::unordered_set<std::string> result) {
     clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), result);
 }

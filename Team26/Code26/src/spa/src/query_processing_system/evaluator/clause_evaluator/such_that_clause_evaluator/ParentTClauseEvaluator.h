@@ -7,7 +7,7 @@
 
 class ParentTClauseEvaluator : public IntIntClauseEvaluator {
  public:
-    ParentTClauseEvaluator(Argument left, Argument right, StoragePointer storage);
+    ParentTClauseEvaluator(Argument left, Argument right);
 
     std::unordered_map<int , std::unordered_set<int>> getRelationshipManager() override;
 

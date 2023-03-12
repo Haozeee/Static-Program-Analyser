@@ -6,7 +6,7 @@
 #include "evaluator/QueryDb.h"
 #include "parser/DesignEntity.h"
 #include "evaluator/PkbUtil.h"
-#include "evaluator/clause_evaluator/Cache.h"
+#include "evaluator/clause_evaluator/cache/Cache.h"
 
 class QueryEvaluator {
  private:

@@ -1,44 +1,62 @@
 #pragma once
 #include <unordered_map>
 #include <unordered_set>
+#include <memory>
 #include "program_knowledge_base/StorageManager.h"
 
 using StoragePointer = std::shared_ptr<ReadStorage>;
 
-using GraphType = std::unordered_map<int, std::unordered_set<int>>;
-
+template<typename T, typename U>
 class CacheableGraph {
  protected:
     /**
      * Stores the cached data.
      */
-    GraphType cache;
+    std::unordered_map<T, std::unordered_set<U>> cache;
 
     /**
      * Location to get data from in the event of a cache miss.
      */
-    GraphType base;
+    std::unordered_map<T, std::unordered_set<U>> base;
 
     StoragePointer storage;
 
-    explicit CacheableGraph(StoragePointer storage);
+    explicit CacheableGraph(StoragePointer storage) : storage(storage) {}
 
     /**
-     * In the event of a cache miss, get the data from base.
+     * In the event of a cache miss, get the data from base and insert into cache.
      */
-    virtual std::unordered_set<int> onCacheMiss(int query) = 0;
+    virtual void onCacheMiss(T query) = 0;
 
     /**
      * Set the base of the cache.
      */
-    virtual GraphType getBase() = 0;
+    virtual void setBase() = 0;
 
  public:
     /**
-     * Given a query, get the corresponding data from the cache. If item is not in the cache,
-     * gets the data from base and add it into the cache.
-     * @param query The data to search the cache for.
-     * @return The value mapped to query.
+     * Insert an item into the cache. If the item is already in cache, do nothing.
+     * @param item Item to insert.
      */
-    std::unordered_set<int> getFromCache(int query);
+    void insertIntoCache(T item) {
+        if (!cache.count(item)) {
+            onCacheMiss(item);
+        }
+    }
+
+    /**
+     * Insert multiple items into cache.
+     */
+    void insertItemsIntoCache(std::unordered_set<T> itemsToAdd) {
+        for (int item : itemsToAdd) {
+            insertIntoCache(item);
+        }
+    }
+
+    /**
+     * Get the entire cache.
+     */
+    std::unordered_map<T, std::unordered_set<U>> getCacheData() {
+        return cache;
+    }
 };

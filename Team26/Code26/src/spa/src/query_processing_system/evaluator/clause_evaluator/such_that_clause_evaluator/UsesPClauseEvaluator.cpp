@@ -1,7 +1,7 @@
 #include "UsesPClauseEvaluator.h"
 
 UsesPClauseEvaluator::UsesPClauseEvaluator(Argument left, Argument right)
-    : StringStringClauseEvaluator(left, right, storage) {}
+    : StringStringClauseEvaluator(left, right) {}
 
 std::unordered_map<std::string, std::unordered_set<std::string>>
 UsesPClauseEvaluator::getRelationshipManager() {

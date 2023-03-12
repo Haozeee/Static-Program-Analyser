@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "Cache.h"
+#include "cache/Cache.h"
 #include "../PkbUtil.h"
 #include "../Util.h"
 #include "../../../program_knowledge_base/StorageManager.h"
@@ -15,6 +15,8 @@ class ClauseEvaluator {
     std::shared_ptr<ResultTable> clauseResultTable = std::make_shared<ResultTable>();
 
     StoragePointer storage;
+
+    CachePointer cache;
 
     /**
      * Checks if the result of this such that clause equates to false. The such that clause
