@@ -1,0 +1,40 @@
+1 - variable syn
+while w; variable v;
+Select v pattern w(v, _)
+a, b, c, d, e, f, x, y, z
+5000
+2 - _
+while w;
+Select w pattern w(_, _)
+6, 9, 11, 13, 18
+5000
+3 - variable name
+while w;
+Select v pattern w("x", _)
+6
+5000
+4 - variable syn (tuple)
+while w; variable v;
+Select <w, v> pattern w(v, _)
+6 x, 6 y, 6 b, 9 y, 9 z, 9 b, 9 c, 11 z, 11 a, 11 b, 11 c, 12 z, 18 a, 18 b, 18 c, 18 d, 18 e, 18 f
+5000
+5 - variable syn (2nd arg, invalid)
+while w; variable v;
+Select w pattern w(_, v)
+SyntaxError
+5000
+6 - variable name (2nd arg, invalid)
+while w;
+Select w pattern w(_, "x")
+SyntaxError
+5000
+7 - variable name (3 args)
+while w;
+Select w pattern w(_, _, _)
+SyntaxError
+5000
+10 - variable name (1 arg)
+while w;
+Select w pattern w(_)
+SyntaxError
+5000
