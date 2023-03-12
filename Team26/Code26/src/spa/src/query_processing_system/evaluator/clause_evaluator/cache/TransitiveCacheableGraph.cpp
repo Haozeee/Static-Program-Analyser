@@ -24,7 +24,10 @@ void TransitiveCacheableGraph::onCacheMiss(int startNode) {
         }
 
         visited.insert(node);
-        auto neighbours = base.at(node);
+        std::unordered_set<int> neighbours;
+        if (base.count(node)) {
+            neighbours = base.at(node);
+        }
         for (auto neighbour : neighbours) {
             reachable.insert(neighbour);
             if (!visited.count(neighbour)) {
