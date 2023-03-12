@@ -148,3 +148,53 @@ stmt s, s1; variable v, v1; assign a, a1; read r;
 Select s such that Parent*(s, r) and Modifies(r, v) pattern a(v, _) such that Follows*(r, a1) and Uses(a1, v1) pattern a1("a", _)
 3, 5, 27, 30
 5000
+1 - Multi-clauses(Pattern and With): Parent*, Next*
+assign a; while w; stmt s;
+Select a such that Parent*(w, a) and Next*(4, s) pattern a("x", _) with a.stmt# = s.stmt#
+4, 28, 29, 32
+5000
+2 - Multi-clauses(Pattern and With): Calls, Modifies
+procedure p; variable v; assign a;
+Select <a, v> such that Calls(_, p) and Modifies(p, v) pattern a(v, _"p + q"_) with p.procName = "single"
+4 x
+5000
+3 - Multi-clauses(Pattern and With): Follows*, Parent, Uses, Modifies
+print p; variable v, v1; assign a; read r; stmt s, s1;
+Select v such that Follows*(s, p) and Follows*(s, r) and Parent(s1, a) and Uses(p, v) and Modifies(r, v1) pattern a(v, _"a"_) with v.varName = v1.varName
+x
+5000
+4 - Multi-clauses(Pattern and With): Calls*, Follows, Next, Uses
+procedure proc, proc1; assign a; while w; stmt s; call c; variable v;
+Select <c.procName, a.stmt#, v> such that Calls*(proc, proc1) and Follows(s, c) with c.procName = proc1.procName such that Next(s, a) and Uses(a, v) pattern a(v, _)
+single 41 a
+5000
+5 - Multi-clauses(Pattern and With): Parent*, Next*
+assign a; while w; stmt s; call c; variable v;
+Select a such that Parent*(w, a) and Next*(w, c) and Uses(c, v) pattern a("x", "p + q") with v.varName = "a"
+none
+5000
+6 - Multi-clauses(Pattern and With): Follows*, Uses, Modifies
+assign a, a1; call c, c1; variable v, v1; stmt s;
+Select a pattern a(v, _) and a1(v1, _) such that Follows*(s, a1) with a.stmt# = s.stmt# such that Uses(c, v) with v.varName = "x" such that Modifies(c1, v1)
+28
+5000
+7 - Multi-clauses(Pattern and With): Calls, Calls*, Parent*
+procedure proc, p, p1, p2; stmt s; call c; assign a;
+Select s such that Parent*(s, c) and Parent*(s, a) and Calls(p, p1) and Calls*(p1, p2) with c.procName = p1.procName pattern a("x", _)
+3, 5
+5000
+8 - Multi-clauses(Pattern and With): Uses, Modifies, Parent
+assign a; variable v; if ifs;
+Select a such that Uses(a, v) and Modifies(a, v) and Parent(ifs, a) with ifs.stmt# = 17 pattern a(v, _)
+19
+5000
+9 - Multi-clauses(Pattern and With): Next*, Modifies, Uses, Follows*
+assign a; variable v; while w; stmt s, s1; call c;
+Select <s> such that Next*(s, s1) and Uses(s1, v) and Modifies(c, v) and Parent*(s, a) with c.procName = "single" pattern a(_, _"x + y"_)
+3, 5, 7, 27, 40
+5000
+10 - Multi-clauses(Pattern and With): Next*, Uses, Modifies
+while w; variable v, v1; if ifs; assign a;
+Select a such that Uses(ifs, v) and Modifies(w, v1) and Next*(ifs, w) with v.varName = v1.varName pattern a(v, _"(1 * 2 * 3)"_)
+21, 28, 36
+5000
