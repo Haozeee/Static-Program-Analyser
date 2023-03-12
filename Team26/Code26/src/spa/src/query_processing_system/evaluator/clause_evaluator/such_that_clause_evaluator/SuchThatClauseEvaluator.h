@@ -16,7 +16,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
      * Evaluate a such that clause in the form of clause(synonym, synonym).
      */
     virtual void evaluateSynonymSynonym() {
-        if (leftArg == rightArg) {
+        if (leftArg == rightArg && !cacheable) {
             clauseResultTable->setNoResults();
             return;
         }

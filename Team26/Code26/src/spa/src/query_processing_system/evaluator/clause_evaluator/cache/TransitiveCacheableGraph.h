@@ -14,5 +14,5 @@ class TransitiveCacheableGraph : public CacheableGraph<int, int> {
      * Do DFS on cache miss. Get all items that can be reached from a given starting node.
      * @param node The node to do DFS from.
      */
-    void onCacheMiss(int node) override;
+    void onCacheMiss(int startNode) override;
 };
