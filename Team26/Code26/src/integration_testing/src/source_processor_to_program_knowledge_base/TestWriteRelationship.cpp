@@ -76,6 +76,8 @@ TEST_CASE("Test insert relationship for all managers") {
     REQUIRE(followsManager->containsMap(8, 14));
     REQUIRE(followsManager->containsMap(9, 13));
     REQUIRE(followsManager->containsMap(11, 12));
+    REQUIRE(followsManager->containsMap(14, 15));
+    REQUIRE(followsManager->containsMap(16, 17));
     REQUIRE(storedFollowsMap.size() == follows_map.size());
     REQUIRE(storedFollowsMap == follows_map);
 
@@ -87,6 +89,8 @@ TEST_CASE("Test insert relationship for all managers") {
     REQUIRE(followsManager->containsReversedMap(14, 8));
     REQUIRE(followsManager->containsReversedMap(13, 9));
     REQUIRE(followsManager->containsReversedMap(12, 11));
+    REQUIRE(followsManager->containsReversedMap(15, 14));
+    REQUIRE(followsManager->containsReversedMap(17, 16));
     REQUIRE(storedReversedFollowsMap.size() == reversed_follows_map.size());
     REQUIRE(storedReversedFollowsMap == reversed_follows_map);
 
