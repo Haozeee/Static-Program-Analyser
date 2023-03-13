@@ -9,9 +9,3 @@ AffectsClause::AffectsClause(Argument leftArg, Argument rightArg)
 ClauseEvaluator* AffectsClause::getClauseEvaluator() {
     return new AffectsClauseEvaluator(getLeftArg(), getRightArg());
 }
-
-std::unordered_set<DesignEntity> AffectsClause::getValidLeftDesignEntity() {
-    return std::unordered_set<DesignEntity> {
-            DesignEntity::ASSIGN,
-    };
-}

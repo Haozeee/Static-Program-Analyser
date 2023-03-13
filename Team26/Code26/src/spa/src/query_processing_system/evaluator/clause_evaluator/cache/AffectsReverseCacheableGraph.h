@@ -1,3 +1,4 @@
+#pragma once
 #include "AffectsBaseCacheableGraph.h"
 
 class AffectsReverseCacheableGraph : public AffectsBaseCacheableGraph {

@@ -1,8 +1,9 @@
 #pragma once
-#include "CacheableGraph.h"
+
 #include <unordered_map>
 #include <unordered_set>
 #include <string>
+#include "CacheableGraph.h"
 #include "../../Util.h"
 
 class AffectsBaseCacheableGraph : public CacheableGraph<int, int> {
