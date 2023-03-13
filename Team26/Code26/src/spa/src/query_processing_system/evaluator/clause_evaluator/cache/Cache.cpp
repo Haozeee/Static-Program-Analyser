@@ -2,7 +2,7 @@
 
 Cache::Cache(StoragePointer storage) :
         nextTCache(NextTCacheableGraph(storage)),
-        nextTReverseCache(storage) {
+        nextTReverseCache(NextTReverseCacheableGraph(storage)) {
     nextTCache.setBase();
     nextTReverseCache.setBase();
 }
