@@ -2,6 +2,8 @@
 #include <memory>
 #include "NextTCacheableGraph.h"
 #include "NextTReverseCacheableGraph.h"
+#include "AffectsCacheableGraph.h"
+#include "AffectsBaseCacheableGraph.h"
 #include "program_knowledge_base/StorageManager.h"
 
 class Cache {
