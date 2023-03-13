@@ -9,11 +9,9 @@
 
 class WhilePatternClauseEvaluator : public ExpressionlessPatternClauseEvaluator {
  protected:
-    std::unordered_map<int, std::unordered_set<std::string>>
-        getRelationshipEntries(std::shared_ptr<ReadStorage> storage) override;
+    std::unordered_map<int, std::unordered_set<std::string>> getRelationshipEntries() override;
 
-    std::unordered_map<std::string, std::unordered_set<int>>
-        getReverseRelationshipEntries(std::shared_ptr<ReadStorage>) override;
+    std::unordered_map<std::string, std::unordered_set<int>> getReverseRelationshipEntries() override;
 
  public:
     WhilePatternClauseEvaluator(Argument patternArg, Argument leftArg);

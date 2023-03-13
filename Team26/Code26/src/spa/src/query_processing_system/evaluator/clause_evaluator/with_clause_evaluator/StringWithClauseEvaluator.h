@@ -28,11 +28,11 @@ class StringWithClauseEvaluator : public WithClauseEvaluator<std::string> {
     static StringSet getCallStatements(StoragePointer storage, std::string value);
 
  protected:
-    StringSet getTranslatedValues(StoragePointer storage, std::string value, DesignEntity de) override;
+    StringSet getTranslatedValues(std::string value, DesignEntity de) override;
 
-    StringSet getLeftRefValues(StoragePointer storage) override;
+    StringSet getLeftRefValues() override;
 
-    StringSet getRightRefValues(StoragePointer storage) override;
+    StringSet getRightRefValues() override;
 
  public:
     StringWithClauseEvaluator(Reference left, Reference right);

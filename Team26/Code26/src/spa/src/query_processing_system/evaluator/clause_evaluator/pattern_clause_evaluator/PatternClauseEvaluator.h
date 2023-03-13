@@ -19,16 +19,16 @@ class PatternClauseEvaluator : public ClauseEvaluator {
 
     StringExpression rightArg = StringExpression(false);
 
-    virtual void evaluateSynonym(std::shared_ptr<ReadStorage>) = 0;
+    virtual void evaluateSynonym() = 0;
 
-    virtual void evaluateString(std::shared_ptr<ReadStorage>) = 0;
+    virtual void evaluateString() = 0;
 
-    virtual void evaluateWildcard(std::shared_ptr<ReadStorage>) = 0;
+    virtual void evaluateWildcard() = 0;
 
  public:
     Argument getLeftArg();
 
     StringExpression getRightArg();
 
-    std::shared_ptr<ResultTable> evaluateClause(std::shared_ptr<ReadStorage>) override;
+    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage, CachePointer cache) override;
 };

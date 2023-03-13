@@ -7,7 +7,9 @@
 
 class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
  protected:
-    IntIntClauseEvaluator(Argument left, Argument right);
+    IntIntClauseEvaluator(Argument left, Argument right, bool cacheable = false);
+
+    void evaluateEqualSynonym() override;
 
     void setLeftArgResult(std::unordered_set<int> result) override;
 
@@ -15,19 +17,13 @@ class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
 
     void setLeftAndRightArgResult(std::unordered_map<int, std::unordered_set<int>> results) override;
 
-    std::unordered_set<int> getLeftArgEntities(StoragePointer storage) override;
+    std::unordered_set<int> getLeftArgEntities() override;
 
-    std::unordered_set<int> getRightArgEntities(StoragePointer storage) override;
+    std::unordered_set<int> getRightArgEntities() override;
 
     void handleLeftWildcard() override;
-
-    void handleRightWildcard() override;
 
     int getLeftArg() override;
 
     int getRightArg() override;
-
-    bool isLeftArgAmbiguous() override;
-
-    bool isRightArgAmbiguous() override;
 };
