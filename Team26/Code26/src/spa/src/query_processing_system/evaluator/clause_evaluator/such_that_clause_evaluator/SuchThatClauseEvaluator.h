@@ -209,7 +209,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
  public:
-    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage_, CachePointer cache_) override {
+    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage_, CachePointer cache_ = nullptr) override {
         setStorageLocation(storage_, cache_);
 
         auto argumentType = getClauseArgumentType(leftArg.getArgumentType(), rightArg.getArgumentType());

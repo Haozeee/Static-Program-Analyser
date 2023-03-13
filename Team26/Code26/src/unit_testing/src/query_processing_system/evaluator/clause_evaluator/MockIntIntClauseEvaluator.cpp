@@ -4,7 +4,7 @@ MockIntIntClauseEvaluator::MockIntIntClauseEvaluator(Argument left, Argument rig
         : IntIntClauseEvaluator(left, right) {}
 
 std::unordered_map<int, std::unordered_set<int>>
-MockIntIntClauseEvaluator::getRelationshipManager(StoragePointer storage) {
+MockIntIntClauseEvaluator::getRelationshipManager() {
     std::unordered_map<int, std::unordered_set<int>> res {
             {1, {2, 3}},
             {3, {4}},
@@ -14,7 +14,7 @@ MockIntIntClauseEvaluator::getRelationshipManager(StoragePointer storage) {
 }
 
 std::unordered_map<int, std::unordered_set<int>>
-MockIntIntClauseEvaluator::getOppositeRelationshipManager(StoragePointer storage) {
+MockIntIntClauseEvaluator::getOppositeRelationshipManager() {
     std::unordered_map<int, std::unordered_set<int>> res {
             {2, {1}},
             {3, {1}},
