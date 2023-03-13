@@ -31,7 +31,7 @@ class CacheableGraph {
     /**
      * Set the base of the cache.
      */
-    virtual void setBase() = 0;
+    virtual void setBase() {}
 
  public:
     /**

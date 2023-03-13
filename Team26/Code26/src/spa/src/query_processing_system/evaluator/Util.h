@@ -39,6 +39,20 @@ class Util {
     }
 
     /**
+     * Do setA - setB, all items that are in setA but not in setB.
+     */
+    template<typename T>
+    static std::unordered_set<T> setDifference(std::unordered_set<T> &setA, const std::unordered_set<T> &setB) {
+        std::unordered_set<T> results;
+        for (T item : setA) {
+            if (!setB.count(item)) {
+                results.insert(item);
+            }
+        }
+        return results;
+    }
+
+    /**
      * Get all keys from an unordered map.
      */
     template<typename T, typename U>
