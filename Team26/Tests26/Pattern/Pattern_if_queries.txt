@@ -10,7 +10,7 @@ Select i pattern i(_, _, _)
 5000
 3 -  Pattern-if: variable name
 if i;
-Select v pattern i("x", _, _)
+Select i pattern i("x", _, _)
 3, 8, 16
 5000
 4 -  Pattern-if: variable syn (tuple)

@@ -10,13 +10,13 @@ Select w pattern w(_, _)
 5000
 3 -  Pattern-while: variable name
 while w;
-Select v pattern w("x", _)
+Select w pattern w("x", _)
 6
 5000
 4 -  Pattern-while: variable syn (tuple)
 while w; variable v;
 Select <w, v> pattern w(v, _)
-6 x, 6 y, 6 b, 9 y, 9 z, 9 b, 9 c, 11 z, 11 a, 11 b, 11 c, 12 z, 18 a, 18 b, 18 c, 18 d, 18 e, 18 f
+6 x, 6 y, 6 b, 9 y, 9 z, 9 b, 9 c, 11 z, 11 a, 11 b, 11 c, 13 a, 13 b, 13 c, 13 d, 13 e, 13 f
 5000
 5 -  Pattern-while: variable syn (2nd arg, invalid)
 while w; variable v;
