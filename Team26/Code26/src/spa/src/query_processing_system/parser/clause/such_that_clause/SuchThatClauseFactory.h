@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-
+#include <memory>
 #include "AffectsClause.h"
 #include "AffectsTClause.h"
 #include "CallsClause.h"
@@ -21,6 +21,7 @@
 #include "query_processing_system/exception/QueryExceptionMessages.h"
 #include "query_processing_system/parser/Argument.h"
 #include "query_processing_system/parser/Query.h"
+#include "program_knowledge_base/StorageManager.h"
 
 const char AffectsRelation[] = "Affects";
 const char AffectsTRelation[] = "Affects*";

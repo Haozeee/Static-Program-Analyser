@@ -97,6 +97,20 @@ class Util {
     }
 
     /**
+     * Given a map of type <T, Set<U>>, filter T such that its set contains itself.
+     */
+     template<typename T>
+     static std::unordered_set<T> getElementsWithCycles(std::unordered_map<T, std::unordered_set<T>> map) {
+         std::unordered_set<T> res;
+         for (auto const& [k, v] : map) {
+             if (v.count(k)) {
+                 res.insert(k);
+             }
+         }
+        return res;
+     }
+
+    /**
     * Converts a set containing integers to a set of strings.
     * @param intSet The set to be converted.
     * @return The string set.

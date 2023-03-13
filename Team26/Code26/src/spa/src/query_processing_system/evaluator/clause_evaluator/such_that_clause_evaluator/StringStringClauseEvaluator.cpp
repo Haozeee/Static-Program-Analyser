@@ -7,10 +7,6 @@ void StringStringClauseEvaluator::handleLeftWildcard() {
     leftArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::PROCEDURE);
 }
 
-void StringStringClauseEvaluator::handleRightWildcard() {
-    rightArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::VARIABLE);
-}
-
 void StringStringClauseEvaluator::setLeftArgResult(std::unordered_set<std::string> result) {
     clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), result);
 }
@@ -24,11 +20,11 @@ void StringStringClauseEvaluator::setLeftAndRightArgResult(std::unordered_map<st
     clauseResultTable = ResultTable::createTableFromMap(results, leftArg.getValue(), rightArg.getValue());
 }
 
-std::unordered_set<std::string> StringStringClauseEvaluator::getLeftArgEntities(StoragePointer storage) {
+std::unordered_set<std::string> StringStringClauseEvaluator::getLeftArgEntities() {
     return PkbUtil::getStringEntitiesFromPkb(storage, leftArg.getDesignEntity());
 }
 
-std::unordered_set<std::string> StringStringClauseEvaluator::getRightArgEntities(StoragePointer storage) {
+std::unordered_set<std::string> StringStringClauseEvaluator::getRightArgEntities() {
     return PkbUtil::getStringEntitiesFromPkb(storage, rightArg.getDesignEntity());
 }
 

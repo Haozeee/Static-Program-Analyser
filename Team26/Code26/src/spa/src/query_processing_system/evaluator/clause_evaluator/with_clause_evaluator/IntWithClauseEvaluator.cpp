@@ -3,16 +3,15 @@
 IntWithClauseEvaluator::IntWithClauseEvaluator(Reference left, Reference right)
     : WithClauseEvaluator<int>(left, right) {}
 
-std::unordered_set<std::string> IntWithClauseEvaluator::getTranslatedValues(StoragePointer storage,
-                                                                            int value, DesignEntity de) {
+std::unordered_set<std::string> IntWithClauseEvaluator::getTranslatedValues(int value, DesignEntity de) {
     return {std::to_string(value)};
 }
 
-IntSet IntWithClauseEvaluator::getLeftRefValues(StoragePointer storage) {
+IntSet IntWithClauseEvaluator::getLeftRefValues() {
     return getRefValue(storage, leftRef);
 }
 
-IntSet IntWithClauseEvaluator::getRightRefValues(StoragePointer storage) {
+IntSet IntWithClauseEvaluator::getRightRefValues() {
     return getRefValue(storage, rightRef);
 }
 

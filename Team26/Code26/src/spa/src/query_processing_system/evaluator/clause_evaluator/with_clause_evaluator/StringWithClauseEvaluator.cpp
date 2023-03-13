@@ -3,7 +3,7 @@
 StringWithClauseEvaluator::StringWithClauseEvaluator(Reference left, Reference right)
     : WithClauseEvaluator<std::string>(left, right) {}
 
-StringSet StringWithClauseEvaluator::getTranslatedValues(StoragePointer storage, std::string value, DesignEntity de) {
+StringSet StringWithClauseEvaluator::getTranslatedValues(std::string value, DesignEntity de) {
     switch (de) {
         case DesignEntity::CALL:
             return getCallStatements(storage, value);
@@ -16,11 +16,11 @@ StringSet StringWithClauseEvaluator::getTranslatedValues(StoragePointer storage,
     }
 }
 
-StringSet StringWithClauseEvaluator::getLeftRefValues(StoragePointer storage) {
+StringSet StringWithClauseEvaluator::getLeftRefValues() {
     return getRefValue(storage, leftRef);
 }
 
-StringSet StringWithClauseEvaluator::getRightRefValues(StoragePointer storage) {
+StringSet StringWithClauseEvaluator::getRightRefValues() {
     return getRefValue(storage, rightRef);
 }
 
