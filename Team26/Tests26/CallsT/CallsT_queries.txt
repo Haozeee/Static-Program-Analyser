@@ -1,0 +1,90 @@
+1 - CallsT - synonym, synonym
+procedure p, q;
+Select <p,q> such that Calls*(p, q)
+procedure1 procedure2, procedure1 procedure3, procedure1 procedure4, procedure1 procedure5, procedure3 procedure2, procedure3 procedure4, procedure3 procedure5, procedure4 procedure2, procedure5 procedure4, procedure5 procedure2
+5000
+2 - CallsT - synonym, _
+procedure p;
+Select p such that Calls*(p, _)
+procedure1, procedure3, procedure4, procedure5
+5000
+3 - CallsT - synonym, ident (valid)
+procedure p;
+Select p such that Calls*(p, "procedure2")
+procedure1, procedure3, procedure4, procedure5
+5000
+4 - CallsT - synonym, ident (invalid)
+procedure p;
+Select p such that Calls*(p, "InvalidProcedure")
+none
+5000
+5 - CallsT - _, synonym
+procedure p;
+Select p such that Calls*(_, p)
+procedure2, procedure3, procedure4, procedure5
+5000
+6 - CallsT - _, _
+
+Select BOOLEAN such that Calls*(_, _)
+TRUE
+5000
+7 - CallsT - _, ident (true)
+
+Select BOOLEAN such that Calls*(_, "procedure2")
+TRUE
+5000
+8 - CallsT - _, ident (false)
+
+Select BOOLEAN such that Calls*(_, "procedure1")
+FALSE
+5000
+9 - CallsT - _, ident (invalid)
+
+Select BOOLEAN such that Calls*(_, "InvalidProcedure")
+FALSE
+5000
+10 - CallsT - ident (valid), synonym
+procedure p;
+Select p such that Calls*("procedure3", p)
+procedure2, procedure4, procedure5
+5000
+11 - CallsT - ident (valid), _
+
+Select BOOLEAN such that Calls*("procedure3", _)
+TRUE
+5000
+12 - CallsT - ident (valid), ident (valid)
+
+Select BOOLEAN such that Calls*("procedure4", "procedure2")
+TRUE
+5000
+13 - CallsT - ident (valid), ident (invalid)
+
+Select BOOLEAN such that Calls*("procedure4", "InvalidProcedure")
+FALSE
+5000
+14 - CallsT - ident (invalid), synonym
+procedure p;
+Select BOOLEAN such that Calls*("InvalidProcedure", p)
+FALSE
+5000
+15 - CallsT - ident (invalid), _
+
+Select BOOLEAN such that Calls*("InvalidProcedure", _)
+FALSE
+5000
+16 - CallsT - ident (invalid), ident (valid)
+
+Select BOOLEAN such that Calls*("InvalidProcedure", "procedure2")
+FALSE
+5000
+17 - CallsT - ident (invalid), ident (invalid)
+
+Select BOOLEAN such that Calls*("InvalidProcedure", "InvalidProcedure")
+FALSE
+5000
+18 - CallsT - synonym, valid ident - procName
+procedure p;
+Select p.procName such that Calls*(p, "procedure2")
+procedure1, procedure3, procedure4, procedure5
+5000
