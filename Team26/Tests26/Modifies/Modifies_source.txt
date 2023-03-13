@@ -11,7 +11,7 @@ procedure Example {
             print w9;
         }
         z10 = z + x + i;
-        q11 = 999 + 888;
+        call q11;
         i12 = i;
     }
     if (x13 > 10) then {
@@ -26,7 +26,26 @@ procedure Example {
         x21 = p / q;
     }
     a22 = 2 + 22 + 222 + c * b;
-    p23 = 112233;
+    call p23;
     print a24;
     read c25;
+}
+
+procedure q11 {
+    read x26;
+    x = y - z + 27;
+    if (y > z) then {
+        call p23;
+        call xyz;
+    } else {
+        print c31;
+    }
+}
+
+procedure p23 {
+    read y;
+}
+
+procedure xyz {
+    print x;
 }

@@ -1,0 +1,92 @@
+procedure double {
+    x = a + b;
+    z = x + y;
+    while ((p > 1) && (q > 2) ) {
+        x = p + q;
+        if (x > 1) then {
+            z = x * 3 - 2;
+            if (y <= 10) then {
+                z = x + y + 1 * 2;
+            } else {
+                read p;
+                call single;
+            }
+            print x;
+            a = 12 + x + y + c / 8;
+            while ((p / 10 * 9 + 11) < 11) {
+                a = b + 1 + x + r + e;
+                p = q;
+                while (!(x == a + b)) {
+                    if (17 % y != x) then {
+                        a = b + 3;
+                    } else {
+                        b = a + b + p + q - 9;
+                    }
+                    read c;
+                    a = c * (1 * 2 * 3);
+                }
+                read a;
+                print b;
+            }
+            call single;
+            read x;
+            a = b - c % 26;
+        } else {
+            while (x < 8) {
+                x = (1 * 2 * 3) + a + b;
+                x = x + y + (a + b * c) * 29 * 29;
+                if (x >= 55555) then {
+                    print x;
+                    x = 1234567; }
+                else {
+                    print x;
+                    read y;
+                    call child2;
+                    a = (1 * 2 * 3) + (12 / 13 % 14) % a - 36;
+                }
+            }
+        }
+        read y;
+        print x;
+        call child;
+    }
+
+    if (p == q) then {
+        a = a + 41;
+        var = var + (x + y) + a - (z / 2 - (z * 2));
+        print var;
+    } else {
+        b = 54321 * 99 % c;
+        read b;
+        if (a == b) then {
+            b = b + 47 - (z * 2);
+        } else {
+            read = print;
+            print = read + if - while * assign / call;
+        }
+        x = 11 + ((((12)))) % 13;
+        y = 51*8-6%17;
+    }
+
+    call single;
+    a = x * y + b;
+}
+
+procedure single {
+    read x;
+    x = y * x + p + q - 55;
+    if (y > z) then {
+        call child;
+        call child2;
+    } else {
+        print c;
+    }
+}
+
+procedure child {
+    read x;
+}
+
+procedure child2 {
+    print y;
+}
