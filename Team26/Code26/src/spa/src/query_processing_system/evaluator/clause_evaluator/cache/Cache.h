@@ -3,7 +3,6 @@
 #include "NextTCacheableGraph.h"
 #include "NextTReverseCacheableGraph.h"
 #include "AffectsCacheableGraph.h"
-#include "AffectsReverseCacheableGraph.h"
 #include "AffectsTCacheableGraph.h"
 #include "AffectsTReverseCacheableGraph.h"
 #include "program_knowledge_base/StorageManager.h"
@@ -16,8 +15,6 @@ class Cache {
 
      AffectsCacheableGraph affectsCache;
 
-     AffectsReverseCacheableGraph affectsReverseCache;
-
      AffectsTCacheableGraph affectsTCache;
 
      AffectsTReverseCacheableGraph affectsTReverseCache;
@@ -25,7 +22,7 @@ class Cache {
      /**
       * AffectsT is expensive to initialise as it requires the entire affects
       * to be completed. Hence, only initialise it when it is called.
-      * The boolean keeps track if it is intialised.
+      * The boolean keeps track if it is initialized.
       */
      bool affectsTInitialised = false;
 
@@ -41,8 +38,6 @@ class Cache {
     NextTReverseCacheableGraph* getNextTReverseCache();
 
     AffectsCacheableGraph* getAffectsCacheableGraph();
-
-    AffectsReverseCacheableGraph* getAffectsReverseCacheableGraph();
 
     AffectsTCacheableGraph* getAffectsTCacheableGraph();
 

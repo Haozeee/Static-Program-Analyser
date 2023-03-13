@@ -11,8 +11,8 @@ AffectsClauseEvaluator::getRelationshipCache(std::unordered_set<int> itemsToRead
 
 std::unordered_map<int, std::unordered_set<int>>
 AffectsClauseEvaluator::getOppositeRelationshipCache(std::unordered_set<int> itemsToRead) {
-    cache->getAffectsReverseCacheableGraph()->insertItemsIntoCache(itemsToRead);
-    return cache->getAffectsReverseCacheableGraph()->getCacheData();
+    cache->getAffectsCacheableGraph()->buildAll();
+    return cache->getAffectsCacheableGraph()->getReverseCache();
 }
 
 std::unordered_map<int, std::unordered_set<int>> AffectsClauseEvaluator::getRelationshipManager() {

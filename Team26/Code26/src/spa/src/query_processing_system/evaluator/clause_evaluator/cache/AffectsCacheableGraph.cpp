@@ -1,10 +1,21 @@
 #include "AffectsCacheableGraph.h"
 #include <stack>
 
-AffectsCacheableGraph::AffectsCacheableGraph(StoragePointer storage) : AffectsBaseCacheableGraph(storage) {}
+AffectsCacheableGraph::AffectsCacheableGraph(StoragePointer storage) : CacheableGraph<int, int>(storage) {
+    modifiesMap = storage->getModifiesSManager()->getAllRelationshipEntries();
+    usesMap = storage->getUsesSManager()->getAllRelationshipEntries();
+    assignStatements = storage->getAssignManager()->getAllEntitiesEntries();
+    readStatements = storage->getReadStmtNoManager()->getAllEntitiesEntries();
+    callStatements = storage->getCallStmtNoManager()->getAllEntitiesEntries();
+}
 
-void AffectsCacheableGraph::setBase() {
-    base = storage->getNextManager()->getAllRelationshipEntries();
+
+bool AffectsCacheableGraph::isReadCallOrAssign(int stmt) {
+    return assignStatements.count(stmt) || readStatements.count(stmt) || callStatements.count(stmt);
+}
+
+std::string AffectsCacheableGraph::modifiesVariable(int stmt) {
+    return *(modifiesMap.at(stmt).begin());
 }
 
 void AffectsCacheableGraph::onCacheMiss(int startStatement) {
@@ -57,4 +68,30 @@ void AffectsCacheableGraph::onCacheMiss(int startStatement) {
     }
 
     cache.insert({startStatement, results});
+
+    for (auto i : results) {
+        if (!reverseCache.count(i)) {
+            reverseCache.insert({i, {}});
+        }
+        reverseCache.at(i).insert(startStatement);
+    }
+}
+
+void AffectsCacheableGraph::buildAll() {
+    std::unordered_set<int> currentItems = Util::getAllKeys(cache);
+    std::unordered_set<int> missingItems = Util::setDifference(assignStatements, currentItems);
+    insertItemsIntoCache(missingItems);
+}
+
+bool AffectsCacheableGraph::isEmpty() {
+    buildAll();
+    return cache.empty();
+}
+
+std::unordered_map<int, std::unordered_set<int>> AffectsCacheableGraph::getReverseCache() {
+    return reverseCache;
+}
+
+void AffectsCacheableGraph::setBase() {
+    base = storage->getNextManager()->getAllRelationshipEntries();
 }
