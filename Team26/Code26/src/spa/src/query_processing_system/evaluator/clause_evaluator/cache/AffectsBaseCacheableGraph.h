@@ -7,14 +7,18 @@
 #include "../../Util.h"
 
 class AffectsBaseCacheableGraph : public CacheableGraph<int, int> {
- private:
+ protected:
     std::unordered_map<int, std::unordered_set<std::string>> modifiesMap;
+
+    std::unordered_map<int, std::unordered_set<std::string>> usesMap;
 
     std::unordered_set<int> assignStatements;
 
     std::unordered_set<int> readStatements;
 
     std::unordered_set<int> callStatements;
+
+    explicit AffectsBaseCacheableGraph(StoragePointer storage);
 
     bool isReadCallOrAssign(int stmt);
 
@@ -23,11 +27,6 @@ class AffectsBaseCacheableGraph : public CacheableGraph<int, int> {
      * Should only be used for assign, read or call statements.
      */
     std::string modifiesVariable(int stmt);
-
- protected:
-    explicit AffectsBaseCacheableGraph(StoragePointer storage);
-
-    void onCacheMiss(int startStatement) override;
 
  public:
     bool isEmpty() override;

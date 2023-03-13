@@ -5,14 +5,14 @@ AffectsClauseEvaluator::AffectsClauseEvaluator(Argument left, Argument right)
 
 std::unordered_map<int, std::unordered_set<int>>
 AffectsClauseEvaluator::getRelationshipCache(std::unordered_set<int> itemsToRead) {
-    cache->getNextTCache()->insertItemsIntoCache(itemsToRead);
+    cache->getAffectsCacheableGraph()->insertItemsIntoCache(itemsToRead);
     return cache->getAffectsCacheableGraph()->getCacheData();
 }
 
 std::unordered_map<int, std::unordered_set<int>>
 AffectsClauseEvaluator::getOppositeRelationshipCache(std::unordered_set<int> itemsToRead) {
-    cache->getNextTReverseCache()->insertItemsIntoCache(itemsToRead);
-    return cache->getAffectsTCacheableGraph()->getCacheData();
+    cache->getAffectsReverseCacheableGraph()->insertItemsIntoCache(itemsToRead);
+    return cache->getAffectsReverseCacheableGraph()->getCacheData();
 }
 
 std::unordered_map<int, std::unordered_set<int>> AffectsClauseEvaluator::getRelationshipManager() {
@@ -26,12 +26,4 @@ AffectsClauseEvaluator::getOppositeRelationshipManager() {
 
 bool AffectsClauseEvaluator::isRelationshipEmpty() {
     return cache->getAffectsTCacheableGraph()->isEmpty();
-}
-
-bool AffectsClauseEvaluator::isLeftArgAmbiguous() {
-    return false;
-}
-
-bool AffectsClauseEvaluator::isRightArgAmbiguous() {
-    return false;
 }

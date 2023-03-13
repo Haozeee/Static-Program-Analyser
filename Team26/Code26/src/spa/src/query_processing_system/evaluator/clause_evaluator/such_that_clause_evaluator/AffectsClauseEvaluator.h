@@ -18,8 +18,4 @@ class AffectsClauseEvaluator : public IntIntClauseEvaluator {
     getOppositeRelationshipCache(std::unordered_set<int> itemsToRead) override;
 
     bool isRelationshipEmpty() override;
-
-    bool isLeftArgAmbiguous() override;
-
-    bool isRightArgAmbiguous() override;
 };
