@@ -24,6 +24,11 @@ void TransitiveCacheableGraph::onCacheMiss(int startNode) {
         }
 
         visited.insert(node);
+        if (cache.count(node)) {
+            reachable.insert(cache.at(node).begin(), cache.at(node).end());
+            continue;
+        }
+
         std::unordered_set<int> neighbours;
         if (base.count(node)) {
             neighbours = base.at(node);
@@ -37,4 +42,8 @@ void TransitiveCacheableGraph::onCacheMiss(int startNode) {
     }
 
     cache.insert({startNode, reachable});
+}
+
+bool TransitiveCacheableGraph::isEmpty() {
+    return base.empty();
 }

@@ -59,4 +59,6 @@ class CacheableGraph {
     std::unordered_map<T, std::unordered_set<U>> getCacheData() {
         return cache;
     }
+
+    virtual bool isEmpty() = 0;
 };

@@ -16,4 +16,6 @@ class NextTClauseEvaluator : public IntIntClauseEvaluator {
 
     std::unordered_map<int, std::unordered_set<int>>
     getOppositeRelationshipCache(std::unordered_set<int> itemsToRead) override;
+
+    bool isRelationshipEmpty() override;
 };

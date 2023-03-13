@@ -23,3 +23,7 @@ std::unordered_map<int, std::unordered_set<int>>
 NextTClauseEvaluator::getOppositeRelationshipManager() {
     return getOppositeRelationshipCache({});
 }
+
+bool NextTClauseEvaluator::isRelationshipEmpty() {
+    return cache->getNextTCache()->isEmpty();
+}

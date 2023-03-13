@@ -15,4 +15,7 @@ class TransitiveCacheableGraph : public CacheableGraph<int, int> {
      * @param node The node to do DFS from.
      */
     void onCacheMiss(int startNode) override;
+
+ public:
+    bool isEmpty() override;
 };

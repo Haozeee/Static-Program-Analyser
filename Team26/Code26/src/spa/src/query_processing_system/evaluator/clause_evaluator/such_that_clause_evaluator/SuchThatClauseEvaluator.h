@@ -20,8 +20,6 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
             clauseResultTable->setNoResults();
             return;
         }
-        // Set initial empty results
-        std::unordered_map<T, std::unordered_set<U>> res;
         auto relationshipMap = cacheable ? getRelationshipCache(getLeftArgEntities()) : getRelationshipManager();
         if (isLeftArgAmbiguous()) {
             relationshipMap = Util::filterMap(relationshipMap, getLeftArgEntities());
@@ -109,8 +107,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
     virtual void evaluateWildcardWildcard() {
-        auto relationshipStore = cacheable ? getRelationshipCache({}) : getRelationshipManager();
-        if (relationshipStore.empty()) {
+        if (isRelationshipEmpty()) {
             clauseResultTable->setNoResults();
         }
     }
@@ -198,6 +195,17 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
     virtual void handleLeftWildcard() = 0;
+
+    /**
+     * If a clause of (a, a) can return any results.
+     */
+    virtual bool isCyclePossible() {
+        return false;
+    }
+
+    virtual bool isRelationshipEmpty() {
+        return getRelationshipManager().empty();
+    }
 
  public:
     std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage_, CachePointer cache_) override {
