@@ -47,10 +47,15 @@ void AffectsBaseCacheableGraph::onCacheMiss(int startStatement) {
             neighbours = base.at(node);
         }
         for (auto neighbour : neighbours) {
-            if (isReadCallOrAssign(neighbour)) {
+            if (assignStatements.count(neighbour)) {
                 nodeVariable = modifiesVariable(neighbour);
                 if (variableModified == nodeVariable) {
                     results.insert(neighbour);
+                    continue;
+                }
+            } else if (isReadCallOrAssign(neighbour)) {
+                nodeVariable = modifiesVariable(neighbour);
+                if (variableModified == nodeVariable) {
                     continue;
                 }
             }
@@ -66,6 +71,11 @@ void AffectsBaseCacheableGraph::onCacheMiss(int startStatement) {
 
 void AffectsBaseCacheableGraph::buildAll() {
     std::unordered_set<int> currentItems = Util::getAllKeys(cache);
-    std::unordered_set<int> missingItems = {};
+    std::unordered_set<int> missingItems = Util::setDifference(assignStatements, currentItems);
     insertItemsIntoCache(missingItems);
+}
+
+bool AffectsBaseCacheableGraph::isEmpty() {
+    buildAll();
+    return cache.empty();
 }
