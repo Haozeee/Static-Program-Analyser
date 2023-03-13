@@ -16,8 +16,8 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
      * Evaluate a such that clause in the form of clause(synonym, synonym).
      */
     virtual void evaluateSynonymSynonym() {
-        if (leftArg == rightArg && !cacheable) {
-            clauseResultTable->setNoResults();
+        if (leftArg == rightArg) {
+            evaluateEqualSynonym();
             return;
         }
         auto relationshipMap = cacheable ? getRelationshipCache(getLeftArgEntities()) : getRelationshipManager();
@@ -112,7 +112,6 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         }
     }
 
-
  protected:
     Argument leftArg;
 
@@ -143,6 +142,15 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     getOppositeRelationshipCache(std::unordered_set<U> itemsToRead) {
         // By default, a relationship is not cached
         return std::unordered_map<U, std::unordered_set<T>> {};
+    }
+
+    /**
+     * Evaluate clauses in the form of (a, a) where the 2 args refer
+     * to the same identity. For most clauses, this should just return no results,
+     * hence the default behaviour.
+     */
+    virtual void evaluateEqualSynonym() {
+        clauseResultTable->setNoResults();
     }
 
     /**
@@ -195,13 +203,6 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
     virtual void handleLeftWildcard() = 0;
-
-    /**
-     * If a clause of (a, a) can return any results.
-     */
-    virtual bool isCyclePossible() {
-        return false;
-    }
 
     virtual bool isRelationshipEmpty() {
         return getRelationshipManager().empty();

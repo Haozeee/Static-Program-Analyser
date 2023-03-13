@@ -3,6 +3,14 @@
 IntIntClauseEvaluator::IntIntClauseEvaluator(Argument left, Argument right, bool cacheable)
     : SuchThatClauseEvaluator<int, int>(left, right, cacheable) {}
 
+void IntIntClauseEvaluator::evaluateEqualSynonym() {
+    auto relationshipMap = cacheable ? getRelationshipCache(getLeftArgEntities()) : getRelationshipManager();
+    if (isLeftArgAmbiguous()) {
+        relationshipMap = Util::filterMap(relationshipMap, getLeftArgEntities());
+    }
+    setLeftArgResult(Util::getElementsWithCycles(relationshipMap));
+}
+
 void IntIntClauseEvaluator::handleLeftWildcard() {
     leftArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::STMT);
 }

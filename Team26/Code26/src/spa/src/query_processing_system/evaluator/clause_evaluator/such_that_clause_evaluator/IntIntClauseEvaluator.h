@@ -9,6 +9,8 @@ class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
  protected:
     IntIntClauseEvaluator(Argument left, Argument right, bool cacheable = false);
 
+    void evaluateEqualSynonym() override;
+
     void setLeftArgResult(std::unordered_set<int> result) override;
 
     void setRightArgResult(std::unordered_set<int> result) override;
