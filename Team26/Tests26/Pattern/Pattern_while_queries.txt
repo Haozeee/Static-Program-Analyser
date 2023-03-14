@@ -26,7 +26,7 @@ SyntaxError
 6 -  Pattern-while: variable name (2nd arg, invalid)
 while w;
 Select w pattern w(_, "x")
-SyntaxError
+SemanticError
 5000
 7 -  Pattern-while: variable name (3 args)
 while w;
