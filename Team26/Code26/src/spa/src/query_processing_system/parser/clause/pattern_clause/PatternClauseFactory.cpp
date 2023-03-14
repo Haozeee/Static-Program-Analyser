@@ -8,7 +8,7 @@ PatternClause* PatternClauseFactory::createPatternClause(Argument pattern, Argum
     } else if (pattern.getDesignEntity() == DesignEntity::IF) {
         return new IfPatternClause(pattern, left, right);
     } else {
-        throw QueryInvalidPatternArgument(pattern.getValue()
+        throw SemanticException(pattern.getValue()
                                           + QueryInvalidCreatePatternArgument);
     }
 }
