@@ -5,14 +5,14 @@ AffectsClauseEvaluator::AffectsClauseEvaluator(Argument left, Argument right)
 
 std::unordered_map<int, std::unordered_set<int>>
 AffectsClauseEvaluator::getRelationshipCache(std::unordered_set<int> itemsToRead) {
-    cache->getNextTCache()->insertItemsIntoCache(itemsToRead);
-    return cache->getNextTCache()->getCacheData();
+    cache->getAffectsCacheableGraph()->insertItemsIntoCache(itemsToRead);
+    return cache->getAffectsCacheableGraph()->getCacheData();
 }
 
 std::unordered_map<int, std::unordered_set<int>>
 AffectsClauseEvaluator::getOppositeRelationshipCache(std::unordered_set<int> itemsToRead) {
-    cache->getNextTReverseCache()->insertItemsIntoCache(itemsToRead);
-    return cache->getNextTReverseCache()->getCacheData();
+    cache->getAffectsCacheableGraph()->buildAll();
+    return cache->getAffectsCacheableGraph()->getReverseCache();
 }
 
 std::unordered_map<int, std::unordered_set<int>> AffectsClauseEvaluator::getRelationshipManager() {
@@ -22,4 +22,8 @@ std::unordered_map<int, std::unordered_set<int>> AffectsClauseEvaluator::getRela
 std::unordered_map<int, std::unordered_set<int>>
 AffectsClauseEvaluator::getOppositeRelationshipManager() {
     return getOppositeRelationshipCache({});
+}
+
+bool AffectsClauseEvaluator::isRelationshipEmpty() {
+    return cache->getAffectsTCacheableGraph()->isEmpty();
 }
