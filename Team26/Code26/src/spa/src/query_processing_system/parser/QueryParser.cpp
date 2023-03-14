@@ -348,7 +348,7 @@ AttributeReference QueryParser::parseAttributeReference(std::shared_ptr<Token> t
     if (attributeReference.isValidAttributeReference()) {
         return attributeReference;
     } else {
-        throw QueryParserException(QueryValidatorInvalidAttributeReference);
+        throw SemanticException(QueryValidatorInvalidAttributeReference);
     }
 }
 
