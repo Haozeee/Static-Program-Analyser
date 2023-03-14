@@ -54,7 +54,7 @@ void AffectsCacheableGraph::onCacheMiss(int startStatement) {
                     results.insert(neighbour);
                 }
             }
-            if (isReadCallOrAssign(neighbour)) {
+            if (isReadCallOrAssign(neighbour) && modifiesMap.count(neighbour)) {
                 nodeVariable = modifiesVariable(neighbour);
                 if (variableModified == nodeVariable) {
                     continue;
