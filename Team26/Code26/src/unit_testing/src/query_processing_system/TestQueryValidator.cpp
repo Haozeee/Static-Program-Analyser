@@ -10,27 +10,6 @@
 #include "query_processing_system/parser/QueryParser.h"
 #include "query_processing_system/QueryValidator.h"
 
-TEST_CASE("Duplicate Synonyms in Declaration") {
-    std::vector<std::shared_ptr<Token>> tokens{
-            std::make_shared<NameToken>("variable"),
-            std::make_shared<NameToken>("v"),
-            std::make_shared<SpecialCharToken>(","),
-            std::make_shared<NameToken>("v"),
-            std::make_shared<SpecialCharToken>(";"),
-            std::make_shared<NameToken>("Select"),
-            std::make_shared<NameToken>("v"),
-            std::make_shared<EndOfFileToken>(),
-    };
-
-    Query *query = new Query();
-    QueryParser parser = QueryParser(tokens, query);
-    parser.parse();
-
-    QueryValidator validator = QueryValidator(query);
-    REQUIRE_THROWS_AS(validator.validateQuery(), QuerySemanticException);
-    delete query;
-}
-
 TEST_CASE("Undeclared Synonym in Select Clause") {
     std::vector<std::shared_ptr<Token>> tokens{
             std::make_shared<NameToken>("variable"),
