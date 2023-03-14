@@ -1141,7 +1141,7 @@ SyntaxError
 229 - Pattern while: _, invalid
 while w;
 Select BOOLEAN such that pattern w(_, "k")
-SemanticError
+SyntaxError
 5000
 230 - Pattern if:  non-alphanumeric,_
 if ifs;
