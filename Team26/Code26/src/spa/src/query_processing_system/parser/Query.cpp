@@ -79,7 +79,7 @@ DesignEntity Query::getSynonymDesignEntity(std::string string) {
         DesignEntity de = synonymToDesignEntityMap[string];
         return de;
     } else {
-        throw SyntaxException(QueryValidatorUndeclaredSuchThatClauseArgument + string);
+        throw SemanticException(QueryValidatorUndeclaredSuchThatClauseArgument + string);
     }
 }
 
