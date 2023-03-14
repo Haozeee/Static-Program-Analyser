@@ -41,7 +41,7 @@ SyntaxError
 9 -  Pattern-if: variable name (2 args)
 if i;
 Select i pattern i(_, _)
-SyntaxError
+SemanticError
 5000
 10 -  Pattern-if: variable name (4 args)
 if i;

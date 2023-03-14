@@ -6,7 +6,7 @@ a, b, c, d, e, f, x, y, z
 2 -  Pattern-while: _
 while w;
 Select w pattern w(_, _)
-6, 9, 11, 13, 18
+6, 9, 11, 13
 5000
 3 -  Pattern-while: variable name
 while w;
@@ -31,7 +31,7 @@ SyntaxError
 7 -  Pattern-while: variable name (3 args)
 while w;
 Select w pattern w(_, _, _)
-SyntaxError
+SemanticError
 5000
 10 -  Pattern-while: variable name (1 arg)
 while w;
