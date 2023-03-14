@@ -411,7 +411,7 @@ SemanticError
 83 - Uses: read
 stmt s; read r;
 Select BOOLEAN such that Uses(r, "x")
-False
+FALSE
 5000
 84 - Uses: variable
 stmt s; variable v;
@@ -476,7 +476,7 @@ SemanticError
 96 - Modifies: print
 stmt s; print p;
 Select BOOLEAN such that Modifies(p, "x")
-False
+FALSE
 5000
 97 - Modifies: variable
 stmt s; variable v;
