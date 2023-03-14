@@ -1,0 +1,40 @@
+1 -  Pattern-while: variable syn
+while w; variable v;
+Select v pattern w(v, _)
+a, b, c, d, e, f, x, y, z
+5000
+2 -  Pattern-while: _
+while w;
+Select w pattern w(_, _)
+6, 9, 11, 13
+5000
+3 -  Pattern-while: variable name
+while w;
+Select w pattern w("x", _)
+6
+5000
+4 -  Pattern-while: variable syn (tuple)
+while w; variable v;
+Select <w, v> pattern w(v, _)
+6 x, 6 y, 6 b, 9 y, 9 z, 9 b, 9 c, 11 z, 11 a, 11 b, 11 c, 13 a, 13 b, 13 c, 13 d, 13 e, 13 f
+5000
+5 -  Pattern-while: variable syn (2nd arg, invalid)
+while w; variable v;
+Select w pattern w(_, v)
+SyntaxError
+5000
+6 -  Pattern-while: variable name (2nd arg, invalid)
+while w;
+Select w pattern w(_, "x")
+SemanticError
+5000
+7 -  Pattern-while: variable name (3 args)
+while w;
+Select w pattern w(_, _, _)
+SemanticError
+5000
+10 -  Pattern-while: variable name (1 arg)
+while w;
+Select w pattern w(_)
+SyntaxError
+5000
