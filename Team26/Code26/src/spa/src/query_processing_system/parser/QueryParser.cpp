@@ -245,7 +245,7 @@ void QueryParser::parsePatternClause() {
     if (patternArg.getDesignEntity() == DesignEntity::ASSIGN || patternArg.getDesignEntity() == DesignEntity::WHILE) {
         if (isValueOf(",")) {
             throw SemanticException("Can only have 2 arguments");
-        } else if (!isValueOf(")")){
+        } else if (!isValueOf(")")) {
             throw SyntaxException("Invalid second argument");
         } else {
             parseNext(")");
