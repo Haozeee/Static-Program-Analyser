@@ -52,3 +52,13 @@ class QueryTokenizerException : public QuerySyntaxException {
  public:
     explicit QueryTokenizerException(const std::string& errorMessage) : QuerySyntaxException(errorMessage) {}
 };
+
+class SyntaxException : public QuerySyntaxException {
+ public:
+    explicit SyntaxException(const std::string& errorMessage) : QuerySyntaxException(errorMessage) {}
+};
+
+class SemanticException : public QuerySemanticException {
+ public:
+    explicit SemanticException(const std::string& errorMessage) : QuerySemanticException(errorMessage) {}
+};
