@@ -229,12 +229,13 @@ void QueryParser::parseMultiplePatternClause() {
 }
 
 void QueryParser::parsePatternClause() {
-    Argument patternArg(ArgumentType::SYNONYM, "", DesignEntity::NONE);
-    try {
-        patternArg = parseArgument();
-    } catch (SemanticException exception) {
-        throw SyntaxException("Invalid pattern argument");
-    }
+//    Argument patternArg(ArgumentType::SYNONYM, "", DesignEntity::NONE);
+    auto patternArg = parseArgument();
+//    try {
+//        patternArg = parseArgument();
+//    } catch (SemanticException exception) {
+//        throw SyntaxException("Invalid pattern argument");
+//    }
     parseNext("(");
     // First argument can be variable synonyms, wildcard or character strings
     Argument leftArgument = parseArgument();
