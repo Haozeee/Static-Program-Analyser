@@ -18,4 +18,14 @@ procedure test1 {
         y = y - 1;
     }
     y = x;
+    call test2;
+}
+
+procedure test2 {
+    read b;
+    call test3;
+}
+
+procedure test3 {
+    read c;
 }

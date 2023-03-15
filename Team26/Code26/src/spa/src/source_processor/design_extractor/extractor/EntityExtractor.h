@@ -27,4 +27,5 @@ class EntityExtractor : public BaseExtractor, IEntityExtractor {
 
  public:
     explicit EntityExtractor(std::shared_ptr<IEntityStore> entityStore, std::shared_ptr<IPatternStore> patternStore);
+    void extractProgram(std::shared_ptr<ProgramNode> node) override;
 };

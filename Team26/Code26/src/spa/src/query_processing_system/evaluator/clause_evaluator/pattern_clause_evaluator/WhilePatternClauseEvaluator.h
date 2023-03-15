@@ -2,12 +2,17 @@
 
 #include <memory>
 #include <string>
+#include <unordered_set>
+#include <unordered_map>
 #include "PatternClauseEvaluator.h"
+#include "ExpressionlessPatternClauseEvaluator.h"
 
+class WhilePatternClauseEvaluator : public ExpressionlessPatternClauseEvaluator {
+ protected:
+    std::unordered_map<int, std::unordered_set<std::string>> getRelationshipEntries() override;
 
-class WhilePatternClauseEvaluator : public PatternClauseEvaluator {
+    std::unordered_map<std::string, std::unordered_set<int>> getReverseRelationshipEntries() override;
+
  public:
     WhilePatternClauseEvaluator(Argument patternArg, Argument leftArg);
-
-    std::shared_ptr<ResultTable> evaluateClause(std::shared_ptr<ReadStorage> storage) override;
 };

@@ -1,8 +1,16 @@
 #include "WhilePatternClauseEvaluator.h"
 
-WhilePatternClauseEvaluator::WhilePatternClauseEvaluator(Argument patternArg, Argument leftArg)
-    : PatternClauseEvaluator(patternArg, leftArg, StringExpression(true)) {}
+#include <utility>
+#include <unordered_set>
+#include <unordered_map>
 
-std::shared_ptr<ResultTable> WhilePatternClauseEvaluator::evaluateClause(std::shared_ptr<ReadStorage> storage) {
-    return clauseResultTable;
+WhilePatternClauseEvaluator::WhilePatternClauseEvaluator(Argument patternArg, Argument leftArg)
+    : ExpressionlessPatternClauseEvaluator(std::move(patternArg), std::move(leftArg)) {}
+
+std::unordered_map<int, std::unordered_set<std::string>> WhilePatternClauseEvaluator::getRelationshipEntries() {
+    return storage->getWhileCondManager()->getAllRelationshipEntries();
+}
+
+std::unordered_map<std::string, std::unordered_set<int>> WhilePatternClauseEvaluator::getReverseRelationshipEntries() {
+    return storage->getWhileCondManager()->getAllReversedRelationshipEntries();
 }

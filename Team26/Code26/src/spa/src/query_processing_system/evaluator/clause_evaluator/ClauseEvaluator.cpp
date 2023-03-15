@@ -5,3 +5,8 @@ void ClauseEvaluator::optimiseResults() {
         clauseResultTable->setNoResults();
     }
 }
+
+void ClauseEvaluator::setStorageLocation(StoragePointer storage_, CachePointer cache_) {
+    storage = storage_;
+    cache = cache_;
+}

@@ -1,0 +1,85 @@
+1 - Calls - synonym, synonym
+procedure p, q;
+Select <p,q> such that Calls(p, q)
+procedure1 procedure2, procedure1 procedure3, procedure3 procedure4, procedure3 procedure5, procedure4 procedure2, procedure5 procedure4, procedure5 procedure2
+5000
+2 - Calls - synonym, _
+procedure p;
+Select p such that Calls(p, _)
+procedure1, procedure3, procedure4, procedure5
+5000
+3 - Calls - synonym, ident (valid)
+procedure p;
+Select p such that Calls(p, "procedure2")
+procedure1, procedure4, procedure5
+5000
+4 - Calls - synonym, ident (invalid)
+procedure p;
+Select p such that Calls(p, "InvalidProcedure")
+none
+5000
+5 - Calls - _, synonym
+procedure p;
+Select p such that Calls(_, p)
+procedure2, procedure3, procedure4, procedure5
+5000
+6 - Calls - _, _
+
+Select BOOLEAN such that Calls(_, _)
+TRUE
+5000
+7 - Calls - _, ident (valid)
+
+Select BOOLEAN such that Calls(_, "procedure2")
+TRUE
+5000
+8 - Calls - _, ident (invalid)
+
+Select BOOLEAN such that Calls(_, "InvalidProcedure")
+FALSE
+5000
+9 - Calls - ident (valid), synonym
+procedure p;
+Select p such that Calls("procedure3", p)
+procedure4, procedure5
+5000
+10 - Calls - ident (valid), _
+
+Select BOOLEAN such that Calls("procedure3", _)
+TRUE
+5000
+11 - Calls - ident (valid), ident (valid)
+
+Select BOOLEAN such that Calls("procedure4", "procedure2")
+TRUE
+5000
+12 - Calls - ident (valid), ident (invalid)
+
+Select BOOLEAN such that Calls("procedure4", "InvalidProcedure")
+FALSE
+5000
+13 - Calls - ident (invalid), synonym
+procedure p;
+Select BOOLEAN such that Calls("InvalidProcedure", p)
+FALSE
+5000
+14 - Calls - ident (invalid), _
+
+Select BOOLEAN such that Calls("InvalidProcedure", _)
+FALSE
+5000
+15 - Calls - ident (invalid), ident (valid)
+
+Select BOOLEAN such that Calls("InvalidProcedure", "procedure2")
+FALSE
+5000
+16 - Calls - ident (invalid), ident (invalid)
+
+Select BOOLEAN such that Calls("InvalidProcedure", "InvalidProcedure")
+FALSE
+5000
+17 - Calls - synonym, valid ident - procName
+procedure p;
+Select p.procName such that Calls(p, "procedure2")
+procedure1, procedure4, procedure5
+5000

@@ -2,17 +2,6 @@
 
 QueryValidator::QueryValidator(Query* query) : query(query) {}
 
-void QueryValidator::validateNoDuplicateSynonymsInDeclaration() {
-    std::unordered_set<std::string> declaration;
-    for (const auto &d : query->getDeclarations()) {
-        std::string synonym = d->getSynonym().ident;
-        if (declaration.find(synonym) != declaration.end()) {
-            throw QueryValidationException(QueryValidatorDuplicatedSynonymInDeclaration + synonym);
-        }
-        declaration.insert(synonym);
-    }
-}
-
 void QueryValidator::validateSynonymInSelectClauseWasDeclared() {
     std::unordered_set<std::string> declarationSynonyms = getDeclarationSynonyms();
 
@@ -67,10 +56,10 @@ void QueryValidator::validateSuchThatClause() {
         auto rightArg = clause->getRightArg();
         switch (validationResult) {
             case SuchThatClauseValidationResult::INVALID_LEFT_ARG_TYPE:
-                throw QueryInvalidArgumentType(leftArg.getValue()
+                throw SyntaxException(leftArg.getValue()
                                                + QueryValidatorInvalidFirstArgumentTypeInRelation);
             case SuchThatClauseValidationResult::INVALID_RIGHT_ARG_TYPE:
-                throw QueryInvalidArgumentType(rightArg.getValue()
+                throw SyntaxException(rightArg.getValue()
                                                + QueryValidatorInvalidSecondArgumentTypeInRelation);
             case SuchThatClauseValidationResult::INVALID_LEFT_DESIGN_ENTITY:
                 throw QueryValidationException("The synonym "
@@ -96,9 +85,15 @@ void QueryValidator::validatePatternClause() {
         auto patternArg = clause->getPatternArg();
         auto leftArg = clause->getLeftArg();
         auto rightArg = clause->getRightArg();
-        if (patternArg.getDesignEntity() == DesignEntity::IF || patternArg.getDesignEntity() == DesignEntity::WHILE) {
+        if (patternArg.getDesignEntity() == DesignEntity::WHILE) {
             if (!rightArg.isWildCard()) {
-                throw QueryValidationException(rightArg.getExpression()
+                throw QueryInvalidArgumentType(rightArg.getExpression()
+                                                  + QueryValidatorIfWhilePatternRightArgWildcard);
+            }
+        }
+        if (patternArg.getDesignEntity() == DesignEntity::IF) {
+            if (!rightArg.isWildCard()) {
+                throw QueryInvalidPatternArgument(rightArg.getExpression()
                                                     + QueryValidatorIfWhilePatternRightArgWildcard);
             }
         }
@@ -127,8 +122,6 @@ void QueryValidator::validateWithClause() {
 }
 
 void QueryValidator::validateQuery() {
-    validateNoDuplicateSynonymsInDeclaration();
-
     validateSynonymInSelectClauseWasDeclared();
 
     validateSuchThatClause();

@@ -103,13 +103,11 @@ class QueryParser : public AbstractParser {
      */
     void parseEndingUnexpectedToken();
 
-    void parseNextIfNextEqualsTo(std::string nextValue, std::string errorMessage);
+    void parseNextIfElseSyntaxError(std::string nextValue, std::string errorMessage);
+
+    void parseNextIfElseSemanticError(std::string nextValue, std::string errorMessage);
 
     std::string parseShuntingYard(std::string);
-
-    bool isValidIdent(std::string);
-
-    bool isValidStringExpression(std::string);
 
  public:
     /**

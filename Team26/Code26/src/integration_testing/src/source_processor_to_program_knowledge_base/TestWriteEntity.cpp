@@ -46,64 +46,107 @@ TEST_CASE("Test insert entity for all managers") {
     // test AssignManager
     auto assignManager = readStorage->getAssignManager();
     std::unordered_set<int> assignSet = {1, 4, 5, 6, 9};
+    auto storedAssignSet = assignManager->getAllEntitiesEntries();
 
     REQUIRE(assignManager->contains(1));
     REQUIRE(assignManager->contains(4));
     REQUIRE(assignManager->contains(5));
     REQUIRE(assignManager->contains(6));
     REQUIRE(assignManager->contains(9));
-    REQUIRE(assignManager->getAllEntitiesEntries() == assignSet);
+    REQUIRE(storedAssignSet.size() == assignSet.size());
+    REQUIRE(storedAssignSet == assignSet);
+
+    // test CallProcedureManager
+    auto callProcedureManager = readStorage->getCallProcedureManager();
+    std::unordered_set<std::string> callProcedureSet = {"test2"};
+    auto storedCallProcedureSet = callProcedureManager->getAllEntitiesEntries();
+
+    REQUIRE(callProcedureManager->contains("test2"));
+    REQUIRE(storedCallProcedureSet.size() == callProcedureSet.size());
+    REQUIRE(storedCallProcedureSet == callProcedureSet);
 
     // test CallStmtNoManager
-    auto callManager = readStorage->getCallStmtNoManager();
-    std::unordered_set<int> callSet = {2};
+    auto callStmtNoManager = readStorage->getCallStmtNoManager();
+    std::unordered_set<int> callStmtNoSet = {2};
+    auto storedCallStmtNoSet = callStmtNoManager->getAllEntitiesEntries();
 
-    REQUIRE(callManager->contains(2));
-    REQUIRE(callManager->getAllEntitiesEntries() == callSet);
+    REQUIRE(callStmtNoManager->contains(2));
+    REQUIRE(storedCallStmtNoSet.size() == callStmtNoSet.size());
+    REQUIRE(storedCallStmtNoSet == callStmtNoSet);
 
     // test ConstantManager
     auto constantManager = readStorage->getConstantManager();
     std::unordered_set<int> constantSet = {0, 1, 3, 10};
+    auto storedConstantSet = constantManager->getAllEntitiesEntries();
 
     REQUIRE(constantManager->contains(0));
     REQUIRE(constantManager->contains(1));
     REQUIRE(constantManager->contains(3));
     REQUIRE(constantManager->contains(10));
-    REQUIRE(constantManager->getAllEntitiesEntries() == constantSet);
+    REQUIRE(storedConstantSet.size() == constantSet.size());
+    REQUIRE(storedConstantSet == constantSet);
 
     // test IfManager
     auto ifManager = readStorage->getIfManager();
     std::unordered_set<int> ifSet = {3};
+    auto storedIfSet = ifManager->getAllEntitiesEntries();
 
     REQUIRE(ifManager->contains(3));
-    REQUIRE(ifManager->getAllEntitiesEntries() == ifSet);
+    REQUIRE(storedIfSet.size() == ifSet.size());
+    REQUIRE(storedIfSet == ifSet);
 
-    // test PrintManager
-    auto printManager = readStorage->getPrintStmtNoManager();
-    std::unordered_set<int> printSet = {8};
+    // test PrintStmtNoManager
+    auto printStmtNoManager = readStorage->getPrintStmtNoManager();
+    std::unordered_set<int> printStmtNoSet = {8};
+    auto storedPrintStmtNoManagerSet = printStmtNoManager->getAllEntitiesEntries();
 
-    REQUIRE(printManager->contains(8));
-    REQUIRE(printManager->getAllEntitiesEntries() == printSet);
+    REQUIRE(printStmtNoManager->contains(8));
+    REQUIRE(storedPrintStmtNoManagerSet.size() == printStmtNoSet.size());
+    REQUIRE(storedPrintStmtNoManagerSet == printStmtNoSet);
+
+    // test PrintVariableManager
+    auto printVariableManager = readStorage->getPrintVariableManager();
+    std::unordered_set<std::string> printVariableSet = {"x"};
+    auto storedPrintVariableSet = printVariableManager->getAllEntitiesEntries();
+
+    REQUIRE(printVariableManager->contains("x"));
+    REQUIRE(storedPrintVariableSet.size() == printVariableSet.size());
+    REQUIRE(storedPrintVariableSet == printVariableSet);
 
     // test ProcedureManager
     auto procedureManager = readStorage->getProcedureManager();
     std::unordered_set<std::string> procedureSet = {"test1", "test2"};
+    auto storedProcedureSet = procedureManager->getAllEntitiesEntries();
 
     REQUIRE(procedureManager->contains("test1"));
     REQUIRE(procedureManager->contains("test2"));
-    REQUIRE(procedureManager->getAllEntitiesEntries() == procedureSet);
+    REQUIRE(storedProcedureSet.size() == procedureSet.size());
+    REQUIRE(storedProcedureSet == procedureSet);
 
-    // test ReadManager
-    auto readManager = readStorage->getReadStmtNoManager();
-    std::unordered_set<int> readSet = {10, 11};
+    // test ReadStmtNoManager
+    auto readStmtNoManager = readStorage->getReadStmtNoManager();
+    std::unordered_set<int> readStmtNoSet = {10, 11};
+    auto storedReadSet = readStmtNoManager->getAllEntitiesEntries();
 
-    REQUIRE(readManager->contains(10));
-    REQUIRE(readManager->contains(11));
-    REQUIRE(readManager->getAllEntitiesEntries() == readSet);
+    REQUIRE(readStmtNoManager->contains(10));
+    REQUIRE(readStmtNoManager->contains(11));
+    REQUIRE(storedReadSet.size() == readStmtNoSet.size());
+    REQUIRE(storedReadSet == readStmtNoSet);
+
+    // test ReadVariableManager
+    auto readVariableManager = readStorage->getReadVariableManager();
+    std::unordered_set<std::string> readVariableSet = {"a", "b"};
+    auto storedReadVariableSet = readVariableManager->getAllEntitiesEntries();
+
+    REQUIRE(readVariableManager->contains("a"));
+    REQUIRE(readVariableManager->contains("b"));
+    REQUIRE(storedReadVariableSet.size() == readVariableSet.size());
+    REQUIRE(storedReadVariableSet == readVariableSet);
 
     // test StmtManager
     auto stmtManager = readStorage->getStmtManager();
     std::unordered_set<int> stmtSet = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+    auto storedStmtSet = stmtManager->getAllEntitiesEntries();
 
     REQUIRE(stmtManager->contains(1));
     REQUIRE(stmtManager->contains(2));
@@ -116,24 +159,29 @@ TEST_CASE("Test insert entity for all managers") {
     REQUIRE(stmtManager->contains(9));
     REQUIRE(stmtManager->contains(10));
     REQUIRE(stmtManager->contains(11));
-    REQUIRE(stmtManager->getAllEntitiesEntries() == stmtSet);
+    REQUIRE(storedStmtSet.size() == stmtSet.size());
+    REQUIRE(storedStmtSet == stmtSet);
 
     // test VariableManager
     auto variableManager = readStorage->getVariableManager();
     std::unordered_set<std::string> variableSet = {"a", "b", "x", "y"};
+    auto storedVariableSet = variableManager->getAllEntitiesEntries();
 
     REQUIRE(variableManager->contains("a"));
     REQUIRE(variableManager->contains("b"));
     REQUIRE(variableManager->contains("x"));
     REQUIRE(variableManager->contains("y"));
-    REQUIRE(variableManager->getAllEntitiesEntries() == variableSet);
+    REQUIRE(storedVariableSet.size() == variableSet.size());
+    REQUIRE(storedVariableSet == variableSet);
 
     // test WhileManager
     auto whileManager = readStorage->getWhileManager();
     std::unordered_set<int> whileSet = {7};
+    auto storedWhileSet = whileManager->getAllEntitiesEntries();
 
     REQUIRE(whileManager->contains(7));
-    REQUIRE(whileManager->getAllEntitiesEntries() == whileSet);
+    REQUIRE(storedWhileSet.size() == whileSet.size());
+    REQUIRE(storedWhileSet == whileSet);
 
     std::filesystem::remove(testFileName);
 }
