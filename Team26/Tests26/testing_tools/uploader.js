@@ -1,6 +1,6 @@
 const fs = require('fs')
 const util = require('util')
-const request = require('request');
+const axios = require('axios')
 const parseString = require('xml2js').parseString
 const { google } = require('googleapis')
 
@@ -9,15 +9,15 @@ const auth = new google.auth.GoogleAuth({
   scopes: "https://www.googleapis.com/auth/spreadsheets",
 })
 
-const options = {
-  'method': 'POST',
-  'url' : '',
-  'headers': {
+const config = {
+  method: 'post',
+  maxBodyLength: Infinity,
+  url: '',
+  headers: {
     'Content-Type': 'text/plain'
   },
-  body: ''
-
-};
+  data: ''
+}
 
 const spreadsheetId = process.argv[2]
 const postURL = process.argv[3]
@@ -111,7 +111,7 @@ const extractData = async (xml) => {
       array.push(x8)
 
       if (x7 === "Failed") {
-        hasFailure = true;
+        hasFailure = true
       }
     })
   })
@@ -130,13 +130,17 @@ fs.readdir(resultDirPath, { withFileTypes: true }, async (err, resultDir) => {
       const file = element
       const xmlData = fs.readFileSync(`${resultDirPath}/${file.name}`, 'utf-8')
 
-      // Post to Host
-      options.url = `${postURL}/${file.name}/${commitSha}`;
-      options.body = xmlData;
+      // Post to Remote Storage
+      config.url = `${postURL}/${file.name}/${commitSha}`
+      config.data = xmlData;
 
-      request(options, (_error, response) => {
-
-      });
+      axios(config)
+        .then(function (response) {
+          // console.log(JSON.stringify(response.data))
+        })
+        .catch(function (error) {
+          // console.log(error)
+        })
 
       const dataInArr = await extractData(xmlData)
 
@@ -151,7 +155,7 @@ fs.readdir(resultDirPath, { withFileTypes: true }, async (err, resultDir) => {
   }
 
   if (testMode || hasFailure) {
-    const output = mainSheet[0].map((_, colIndex) => mainSheet.map(row => row[colIndex]));
+    const output = mainSheet[0].map((_, colIndex) => mainSheet.map(row => row[colIndex]))
   
     const sheetName = generateNanoId(6)
     const sheet = await createNewSheet(sheetName)
