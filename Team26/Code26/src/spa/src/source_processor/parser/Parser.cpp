@@ -1,6 +1,7 @@
 #include "Parser.h"
 #include "source_processor/exception/SourceException.h"
 #include "source_processor/exception/SourceProcessorExceptionMessage.h"
+#include "common/parser/ShuntingYardParser.h"
 
 #define INITIAL_STMT_INDEX 0
 #define STMTLIST_START "{"
@@ -491,11 +492,21 @@ std::shared_ptr<AssignNode> Parser::parseAssign(std::shared_ptr<Token> nameToken
         getNext();
     }
     int newIndex = index - 1;
-    auto exprNode = parseExprNode(currIndex, newIndex);
+//    auto exprNode = parseExprNode(currIndex, newIndex);
+    std::string expr;
+    for (int i = currIndex; i <= newIndex; i++) {
+        expr += tokens[i]->getValue();
+    }
+
+    std::shared_ptr<std::unordered_set<std::string>> variables = std::make_shared<std::unordered_set<std::string>>();
+    std::shared_ptr<std::unordered_set<int>> constants = std::make_shared<std::unordered_set<int>>();
+
+    auto node = ShuntingYardParser::parse(expr, variables, constants);
+
     index = newIndex + 1;
     parseNext(STMT_END);
 
-    return std::make_shared<AssignNode>(stmtIndex, nameToken->getValue(), exprNode);
+    return std::make_shared<AssignNode>(stmtIndex, nameToken->getValue(), node, *variables, *constants);
 }
 
 std::shared_ptr<ReadNode> Parser::parseRead() {
