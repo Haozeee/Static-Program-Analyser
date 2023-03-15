@@ -25,6 +25,7 @@ const commitSha = process.argv[4]
 const testMode = process.argv[5]
 const mainSheet = []
 let hasFailure = false
+let currGroupHasFailure = false
 
 // Simple NanoID Generator Simulation not always unqiue
 function generateNanoId(length = 21) {
@@ -112,6 +113,7 @@ const extractData = async (xml) => {
 
       if (x7 === "Failed") {
         hasFailure = true
+        currGroupHasFailure = true
       }
     })
   })
@@ -132,7 +134,7 @@ fs.readdir(resultDirPath, { withFileTypes: true }, async (err, resultDir) => {
 
       // Post to Remote Storage
       config.url = `${postURL}/${file.name}/${commitSha}`
-      config.data = xmlData;
+      config.data = xmlData
 
       axios(config)
         .then(function (response) {
@@ -146,8 +148,10 @@ fs.readdir(resultDirPath, { withFileTypes: true }, async (err, resultDir) => {
 
       dataInArr.unshift(file.name)
       dataInArr.unshift(`${postURL}/common/${file.name}--${commitSha}.xml`)
-      dataInArr.unshift(" ")
+      dataInArr.unshift(currGroupHasFailure ? "Failed" : "Passed")
+      dataInArr.unshift("--")
       mainSheet.push(dataInArr)
+      currGroupHasFailure = false
       
       col = String.fromCharCode(col.charCodeAt(0) + 1)
     } catch (err) {
