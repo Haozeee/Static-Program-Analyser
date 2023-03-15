@@ -38,3 +38,7 @@ ReferenceType Reference::getReferenceType() {
 std::variant<AttributeReference, int, std::string> Reference::getValue() {
     return value;
 }
+
+bool Reference::operator==(const Reference& other) const {
+    return this->referenceType == other.referenceType && this->value == other.value;
+}
