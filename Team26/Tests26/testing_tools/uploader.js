@@ -1,5 +1,6 @@
 const fs = require('fs')
 const util = require('util')
+const axios = require('axios')
 const parseString = require('xml2js').parseString
 const { google } = require('googleapis')
 
@@ -8,9 +9,23 @@ const auth = new google.auth.GoogleAuth({
   scopes: "https://www.googleapis.com/auth/spreadsheets",
 })
 
+const config = {
+  method: 'post',
+  maxBodyLength: Infinity,
+  url: '',
+  headers: {
+    'Content-Type': 'text/plain'
+  },
+  data: ''
+}
+
 const spreadsheetId = process.argv[2]
+const postURL = process.argv[3]
+const commitSha = process.argv[4]
+const testMode = process.argv[5]
 const mainSheet = []
 let hasFailure = false
+let currGroupHasFailure = false
 
 // Simple NanoID Generator Simulation not always unqiue
 function generateNanoId(length = 21) {
@@ -50,25 +65,6 @@ const createNewSheet = async (sheetID) => {
   return await addSheet()
 }
 
-// const insertToGSheet = async (values, col, sheetName) => {
-
-//   const authClientObject = await auth.getClient()
-
-//   const googleSheetsInstance = google.sheets({ version: "v4", auth: authClientObject })
-
-//   let firstRow = "2"
-
-//   googleSheetsInstance.spreadsheets.values.append({
-//     auth, //auth object
-//     spreadsheetId, //spreadsheet id
-//     range: `${sheetName}!${col}${firstRow}:${col}`, //sheet name and range of cells
-//     valueInputOption: "RAW", // The information will be passed according to what the usere passes in as date, number or text
-//     resource: {
-//         values: values.map((value) => [value]),
-//     },
-//   })
-// }
-
 const insertToGSheet = async (values, col, sheetName) => {
 
   const authClientObject = await auth.getClient()
@@ -97,8 +93,6 @@ const extractData = async (xml) => {
     const queries = result.test_results.queries
     queries[0].query.map(query => {
 
-      // console.log(util.inspect(query, { depth: null }))
-
       const x1 = `Query ${query.id[0]._}: ${query.id[0].$.comment}`
       const x2 = JSON.stringify(query.id[0].$).replace("{", "").replace("}", "")
       const x3 = query.querystr[0]
@@ -118,7 +112,8 @@ const extractData = async (xml) => {
       array.push(x8)
 
       if (x7 === "Failed") {
-        hasFailure = true;
+        hasFailure = true
+        currGroupHasFailure = true
       }
     })
   })
@@ -132,31 +127,43 @@ fs.readdir(resultDirPath, { withFileTypes: true }, async (err, resultDir) => {
 
   let col = "A"
 
-  // console.log(util.inspect(sheet, { depth: null }))
-  // console.log(`::set-output name=url::=https://docs.google.com/spreadsheets/d/${spreadsheetId}/preview#gid=${sheet.data.replies[0].addSheet.properties.sheetId}`)
-
-  for (let i = 0; i < resultDir.length; i++) {
+  for (const element of resultDir) {
     try {
-      const file = resultDir[i]
-      // console.log(`${resultDirPath}/${file.name}`)
-      xmlData = fs.readFileSync(`${resultDirPath}/${file.name}`, 'utf-8')
+      const file = element
+      const xmlData = fs.readFileSync(`${resultDirPath}/${file.name}`, 'utf-8')
+
+      // Post to Remote Storage
+      config.url = `${postURL}/${file.name}/${commitSha}`
+      config.data = xmlData
+
+      axios(config)
+        .then(function (response) {
+          // console.log(JSON.stringify(response.data))
+        })
+        .catch(function (error) {
+          // console.log(error)
+        })
+
       const dataInArr = await extractData(xmlData)
 
       dataInArr.unshift(file.name)
-      dataInArr.unshift(" ")
+      dataInArr.unshift(`${postURL}/common/${file.name}--${commitSha}.xml`)
+      dataInArr.unshift(currGroupHasFailure ? "Failed" : "Passed")
+      dataInArr.unshift("--")
       mainSheet.push(dataInArr)
+      currGroupHasFailure = false
       
       col = String.fromCharCode(col.charCodeAt(0) + 1)
     } catch (err) {
     }
   }
 
-  if (hasFailure) {
-    const output = mainSheet[0].map((_, colIndex) => mainSheet.map(row => row[colIndex]));
+  if (testMode || hasFailure) {
+    const output = mainSheet[0].map((_, colIndex) => mainSheet.map(row => row[colIndex]))
   
     const sheetName = generateNanoId(6)
     const sheet = await createNewSheet(sheetName)
-    const gSheetInstance = await insertToGSheet(output, col, sheetName)
+    await insertToGSheet(output, col, sheetName)
 
     console.log(`url=https://docs.google.com/spreadsheets/d/${spreadsheetId}/preview#gid=${sheet.data.replies[0].addSheet.properties.sheetId}`)
   } else {
