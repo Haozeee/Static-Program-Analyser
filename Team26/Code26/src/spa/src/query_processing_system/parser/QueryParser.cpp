@@ -1,5 +1,6 @@
 #include <string>
 #include <algorithm>
+#include <unordered_set>
 
 #include "QueryParser.h"
 #include "common/parser/ShuntingYardParser.h"
