@@ -4,7 +4,7 @@
 #include "evaluator/ResultTable.h"
 
 QueryEvaluator::QueryEvaluator(Query* query, std::shared_ptr<ReadStorage> storage)
-    : query(query), storage(storage), queryResults(QueryDb(storage)) {}
+    : query(query), storage(storage), queryResults(QueryDb(storage)), cache(std::make_shared<Cache>(storage)) {}
 
 QueryDb QueryEvaluator::evaluateQuery() {
     // Evaluate select clauses
@@ -26,7 +26,7 @@ QueryDb QueryEvaluator::evaluateQuery() {
 void QueryEvaluator::evaluateSuchThatClause() {
     for (SuchThatClause* clause : query->getSuchThatClauses()) {
         auto clauseEvaluator = clause->getClauseEvaluator();
-        auto clauseResultTable = clauseEvaluator->evaluateClause(storage);
+        auto clauseResultTable = clauseEvaluator->evaluateClause(storage, cache);
         queryResults.addResult(clauseResultTable);
         delete clauseEvaluator;
     }

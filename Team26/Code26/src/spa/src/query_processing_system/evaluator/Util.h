@@ -39,6 +39,20 @@ class Util {
     }
 
     /**
+     * Do setA - setB, all items that are in setA but not in setB.
+     */
+    template<typename T>
+    static std::unordered_set<T> setDifference(std::unordered_set<T> &setA, const std::unordered_set<T> &setB) {
+        std::unordered_set<T> results;
+        for (T item : setA) {
+            if (!setB.count(item)) {
+                results.insert(item);
+            }
+        }
+        return results;
+    }
+
+    /**
      * Get all keys from an unordered map.
      */
     template<typename T, typename U>
@@ -95,6 +109,20 @@ class Util {
         }
         return res;
     }
+
+    /**
+     * Given a map of type <T, Set<U>>, filter T such that its set contains itself.
+     */
+     template<typename T>
+     static std::unordered_set<T> getElementsWithCycles(std::unordered_map<T, std::unordered_set<T>> map) {
+         std::unordered_set<T> res;
+         for (auto const& [k, v] : map) {
+             if (v.count(k)) {
+                 res.insert(k);
+             }
+         }
+        return res;
+     }
 
     /**
     * Converts a set containing integers to a set of strings.
