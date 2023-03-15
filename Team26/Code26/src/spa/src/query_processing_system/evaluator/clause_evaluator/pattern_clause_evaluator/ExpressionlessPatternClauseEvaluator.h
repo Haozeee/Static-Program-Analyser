@@ -8,17 +8,15 @@
 
 class ExpressionlessPatternClauseEvaluator : public PatternClauseEvaluator {
  protected:
-    void evaluateSynonym(std::shared_ptr<ReadStorage>) override;
+    void evaluateSynonym() override;
 
-    void evaluateString(std::shared_ptr<ReadStorage>) override;
+    void evaluateString() override;
 
-    void evaluateWildcard(std::shared_ptr<ReadStorage>) override;
+    void evaluateWildcard() override;
 
-    virtual std::unordered_map<int, std::unordered_set<std::string>>
-        getRelationshipEntries(std::shared_ptr<ReadStorage>) = 0;
+    virtual std::unordered_map<int, std::unordered_set<std::string>> getRelationshipEntries() = 0;
 
-    virtual std::unordered_map<std::string, std::unordered_set<int>>
-        getReverseRelationshipEntries(std::shared_ptr<ReadStorage>) = 0;
+    virtual std::unordered_map<std::string, std::unordered_set<int>> getReverseRelationshipEntries() = 0;
 
  public:
     ExpressionlessPatternClauseEvaluator(Argument patternArg, Argument leftArg);

@@ -1,7 +1,7 @@
 1 - Modifies: stmt, _
 stmt s;
 Select s such that Modifies(s, _)
-1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 17, 18, 20, 21, 22, 23, 25
+1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 17, 18, 20, 21, 22, 23, 25, 26, 27, 28, 29, 32
 5000
 2 - Modifies: stmt, entRef
 stmt s;
@@ -11,12 +11,12 @@ Select s such that Modifies(s, "x4")
 3 - Modifies: stmt, variable
 stmt s; variable v;
 Select s such that Modifies(s, v)
-1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 17, 18, 20, 21, 22, 23, 25
+1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 17, 18, 20, 21, 22, 23, 25, 26, 27, 28, 29, 32
 5000
 4 - Modifies: assign, _
 assign a;
 Select a such that Modifies(a, _)
-1, 2, 4, 6, 8, 10, 11, 12, 14, 17, 18, 21, 22, 23
+1, 2, 4, 6, 8, 10, 12, 14, 17, 18, 21, 22, 27
 5000
 5 - Modifies: assign, entRef
 assign a;
@@ -26,12 +26,12 @@ Select a such that Modifies(a, "x14")
 6 - Modifies: assign, variable
 assign a; variable v;
 Select a such that Modifies(a, v)
-1, 2, 4, 6, 8, 10, 11, 12, 14, 17, 18, 21, 22, 23
+1, 2, 4, 6, 8, 10, 12, 14, 17, 18, 21, 22, 27
 5000
 7 - Modifies: if, _
 if ifs;
 Select ifs such that Modifies(ifs, _)
-5, 13
+5, 13, 28
 5000
 8 - Modifies: if, entRef
 if ifs;
@@ -41,7 +41,7 @@ Select ifs such that Modifies(ifs, "z6")
 9 - Modifies: if, variable
 if ifs; variable v;
 Select ifs such that Modifies(ifs, v)
-5, 13
+5, 13, 28
 5000
 10 - Modifies: while, _
 while w;
@@ -61,7 +61,7 @@ Select w such that Modifies(w, v)
 13 - Modifies: read, _
 read r;
 Select r such that Modifies(r, _)
-7, 15, 20, 25
+7, 15, 20, 25, 26, 32
 5000
 14 - Modifies: read, entRef
 read r;
@@ -71,7 +71,7 @@ Select r such that Modifies(r, "c25")
 15 - Modifies: read, variable
 read r; variable v;
 Select r such that Modifies(r, v)
-7, 15, 20, 25
+7, 15, 20, 25, 26, 32
 5000
 16 - Modifies: print, _
 print p;
@@ -111,15 +111,240 @@ x4
 23 - Modifies: stmt number (container), variable
 variable v;
 Select v such that Modifies(3, v)
-x4, z6, z7, y8, z10, q11, i12
+x, x4, z6, z7, y8, z10, i12, x26, y
 5000
 24 - Modifies: stmt number (container), variable
 variable v;
 Select v such that Modifies(3, v)
-x4, z6, z7, y8, z10, q11, i12
+x, x4, z6, z7, y8, z10, i12, x26, y
 5000
 25 - Modifies: _, variable
 variable v;
 Select v such that Modifies(_, v)
 SemanticError
+5000
+26 - Modifies: call, _
+call c;
+Select c such that Modifies(c, _)
+11, 23, 29
+5000
+27 - Modifies: call, entRef
+call c;
+Select c such that Modifies(c, "x")
+11
+5000
+28 - Modifies: call, variable
+call c; variable v;
+Select c such that Modifies(c, v)
+11, 23, 29
+5000
+29 - Modifies: procedure, _
+procedure proc;
+Select proc such that Modifies(proc, _)
+Example, p23, q11
+5000
+30 - Modifies: procedure, entRef
+procedure proc;
+Select proc such that Modifies(proc, "x")
+Example, q11
+5000
+31 - Modifies: procedure, variable
+procedure proc; variable v;
+Select proc such that Modifies(proc, v)
+Example, p23, q11
+5000
+32 - Modifies: call, invalid
+call c;
+Select c such that Modifies(c, "invalid")
+none
+5000
+33 - Modifies: procedure, invalid
+procedure proc;
+Select proc such that Modifies(proc, "invalid")
+none
+5000
+34 - Modifies: stmt, _
+stmt s;
+Select BOOLEAN such that Modifies(s, _)
+TRUE
+5000
+35 - Modifies - stmt, entRef
+stmt s;
+Select BOOLEAN such that Modifies(s, "invalid")
+FALSE
+5000
+36 - Modifies - stmt number, variable
+stmt s; variable v;
+Select BOOLEAN such that Modifies(s, v)
+TRUE
+5000
+37 - Modifies: stmt number, _
+
+Select BOOLEAN such that Modifies(15, _)
+TRUE
+5000
+38 - Modifies: stmt number, _
+
+Select BOOLEAN such that Modifies(16, _)
+FALSE
+5000
+39 - Modifies - stmt number, entRef
+
+Select BOOLEAN such that Modifies(1, "x1")
+TRUE
+5000
+40 - Modifies - stmt number, entRef
+
+Select BOOLEAN such that Modifies(1, "invalid")
+FALSE
+5000
+41 - Modifies - stmt number, variable
+variable v;
+Select BOOLEAN such that Modifies(1, v)
+TRUE
+5000
+42 - Modifies - stmt number, variable
+variable v;
+Select BOOLEAN such that Modifies(16, v)
+FALSE
+5000
+43 - Modifies: procedure, _
+procedure proc;
+Select BOOLEAN such that Modifies(proc, _)
+TRUE
+5000
+44 - Modifies - procedure, entRef
+procedure proc;
+Select BOOLEAN such that Modifies(proc, "x")
+TRUE
+5000
+45 - Modifies - procedure, entRef
+procedure proc;
+Select BOOLEAN such that Modifies(proc, "invalid")
+FALSE
+5000
+46 - Modifies - procedure, variable
+procedure proc; variable v;
+Select BOOLEAN such that Modifies(proc, v)
+TRUE
+5000
+47 - Modifies: procedure string, variable
+variable v;
+Select v such that Modifies("q11", v)
+x, x26, y
+5000
+48 - Modifies: invalid procedure string, wildcard
+procedure proc;
+Select proc such that Modifies("invalid", _)
+none
+5000
+49 - Modifies: procedure string, _
+
+Select BOOLEAN such that Modifies("q11", _)
+TRUE
+5000
+50 - Modifies: invalid procedure string, _
+
+Select BOOLEAN such that Modifies("invalid", _)
+FALSE
+5000
+51 - Modifies: procedure string, entRef
+
+Select BOOLEAN such that Modifies("q11", "x")
+TRUE
+5000
+52 - Modifies: procedure string, entRef
+
+Select BOOLEAN such that Modifies("q11", "invalid")
+FALSE
+5000
+53 - Modifies: procedure string, variable
+variable v;
+Select BOOLEAN such that Modifies("q11", v)
+TRUE
+5000
+54 - Modifies: procedure string, variable
+variable v;
+Select BOOLEAN such that Modifies("xyz", v)
+FALSE
+5000
+55 - Modifies: stmt, entRef
+stmt s;
+Select s.stmt# such that Modifies(s, "x1")
+1
+5000
+56 - Modifies: assign, entRef
+assign a;
+Select a.stmt# such that Modifies(a, "x")
+27
+5000
+57 - Modifies: read, _
+read r;
+Select r.stmt# such that Modifies(r, _)
+7, 15, 20, 25, 26, 32
+5000
+58 - Modifies: if, variable
+if ifs; variable v;
+Select ifs.stmt# such that Modifies(ifs, v)
+5, 13, 28
+5000
+59 - Modifies: while, _
+while w;
+Select w.stmt# such that Modifies(w, _)
+3
+5000
+60 - Modifies: call, variable
+call c; variable v;
+Select c.stmt# such that Modifies(c, v)
+11, 23, 29
+5000
+61 - Modifies: call, variable
+call c; variable v;
+Select c.procName such that Modifies(c, v)
+p23, q11
+5000
+62 - Modifies: procedure, entRef
+procedure proc;
+Select proc.procName such that Modifies(proc, "x")
+Example, q11
+5000
+63 - Modifies: procedure, variable
+variable v;
+Select v.varName such that Modifies("q11", v)
+x, x26, y
+5000
+64 - Modifies: read, _
+read r;
+Select r.varName such that Modifies(r, _)
+c25, x15, x20, x26, y, z7
+5000
+65 - Modifies: read, _
+read r;
+Select <r.stmt#, r.varName> such that Modifies(r, _)
+7 z7, 15 x15, 20 x20, 25 c25, 26 x26, 32 y
+5000
+66 - Modifies: if, variable
+if ifs; variable v;
+Select <ifs, v> such that Modifies(ifs, v)
+5 y8, 5 z6, 5 z7, 13 a18, 13 x14, 13 x15, 13 x17, 13 x20, 13 x21, 28 y
+5000
+67 - Modifies: stmt, entRef
+stmt s;
+Select <s> such that Modifies(s, "y")
+3, 11, 23, 28, 29, 32
+5000
+68 - Modifies: call, variable
+call c; variable v;
+Select <c, c.procName, v> such that Modifies(c, v)
+11 q11 x, 11 q11 x26, 11 q11 y, 23 p23 y, 29 p23 y
+5000
+69 - Modifies: procedure, variable
+procedure proc; variable v;
+Select <proc, v> such that Modifies(proc, v)
+Example a18, Example a22, Example c25, Example i12, Example i2, Example x, Example x1, Example x14, Example x15, Example x17, Example x20, Example x21, Example x26, Example x4, Example y, Example y8, Example z10, Example z6, Example z7, p23 y, q11 x, q11 x26, q11 y
+5000
+70 - Modifies: read, entRef
+read r;
+Select <r.stmt#, r.varName> such that Modifies(r, "invalid")
+none
 5000

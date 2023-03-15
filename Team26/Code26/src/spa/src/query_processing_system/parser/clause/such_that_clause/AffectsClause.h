@@ -7,6 +7,4 @@ class AffectsClause : public IntIntClause {
     AffectsClause(Argument leftArg, Argument rightArg);
 
     ClauseEvaluator* getClauseEvaluator() override;
-
-    std::unordered_set<DesignEntity> getValidLeftDesignEntity() override;
 };

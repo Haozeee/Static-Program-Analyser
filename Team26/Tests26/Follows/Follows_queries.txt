@@ -268,3 +268,83 @@ stmt s; read r
 Select s such that Follows(s, r)
 SyntaxError
 5000
+55 - Follows: stmt, _
+stmt s;
+Select BOOLEAN such that Follows(s, _)
+TRUE
+5000
+56 - Follows: _, stmt
+stmt s;
+Select BOOLEAN such that Follows(_, s)
+TRUE
+5000
+57 - Follows: _, _
+
+Select BOOLEAN such that Follows(_, _)
+TRUE
+5000
+58 - Follows: stmt number, _
+
+Select BOOLEAN such that Follows(1, _)
+TRUE
+5000
+59 - Follows: stmt number, _
+
+Select BOOLEAN such that Follows(78, _)
+FALSE
+5000
+60 - Follows: _, stmt number
+
+Select BOOLEAN such that Follows(_, 77)
+TRUE
+5000
+61 - Follows: _, stmt number
+
+Select BOOLEAN such that Follows(_, 79)
+FALSE
+5000
+62 - Follows: stmt number, stmt number
+
+Select BOOLEAN such that Follows(4, 5)
+TRUE
+5000
+63 - Follows: stmt number, stmt number
+
+Select BOOLEAN such that Follows(2, 1)
+FALSE
+5000
+64 - Follows: if, stmt number
+if ifs;
+Select BOOLEAN such that Follows(ifs, 77)
+FALSE
+5000
+65 - Follows: stmt, print
+stmt s; print p;
+Select BOOLEAN such that Follows(s, p)
+TRUE
+5000
+66 - Follows: read, _
+read r;
+Select <r.stmt#, r.varName> such that Follows(r, _)
+5 x5, 10 z9, 11 x4, 33 x11, 40 c17, 42 a19, 50 x21, 60 x30, 65 y32
+5000
+67 - Follows: while, call
+while w; call c;
+Select <w, c.procName, c.stmt#> such that Follows(w, c)
+20 child 23
+5000
+68 - Follows: if, while
+if ifs; while w;
+Select <ifs, w> such that Follows(ifs, w)
+70 73
+5000
+69 - Follows: read, print
+read r; print p;
+Select <r.stmt#, r.varName, p.stmt#, p.varName> such that Follows(r, p)
+11 x4 12 z10, 42 a19 43 b20, 65 y32 66 x33
+5000
+70 - Follows: assign, while
+assign a; while w;
+Select <a, w> such that Follows(a, w)
+2 3, 35 36
+5000

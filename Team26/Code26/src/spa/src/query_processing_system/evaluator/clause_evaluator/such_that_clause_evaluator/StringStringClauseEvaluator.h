@@ -15,13 +15,11 @@ class StringStringClauseEvaluator : public SuchThatClauseEvaluator<std::string, 
 
     void setLeftAndRightArgResult(std::unordered_map<std::string , std::unordered_set<std::string>> results) override;
 
-    std::unordered_set<std::string> getLeftArgEntities(StoragePointer storage) override;
+    std::unordered_set<std::string> getLeftArgEntities() override;
 
-    std::unordered_set<std::string> getRightArgEntities(StoragePointer storage) override;
+    std::unordered_set<std::string> getRightArgEntities() override;
 
     void handleLeftWildcard() override;
-
-    void handleRightWildcard() override;
 
     std::string getLeftArg() override;
 
