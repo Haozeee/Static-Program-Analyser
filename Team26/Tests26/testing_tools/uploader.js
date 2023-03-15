@@ -145,7 +145,7 @@ fs.readdir(resultDirPath, { withFileTypes: true }, async (err, resultDir) => {
       const dataInArr = await extractData(xmlData)
 
       dataInArr.unshift(file.name)
-      dataInArr.unshift(`${postURL}/common/${file.name}--${commitSha}`)
+      dataInArr.unshift(`${postURL}/common/${file.name}--${commitSha}.xml`)
       dataInArr.unshift(" ")
       mainSheet.push(dataInArr)
       
