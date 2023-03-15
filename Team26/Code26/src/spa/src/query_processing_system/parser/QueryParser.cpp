@@ -1,5 +1,4 @@
 #include <string>
-#include <iostream>
 #include <algorithm>
 #include <unordered_set>
 
@@ -72,11 +71,6 @@ void QueryParser::parseSelectClause() {
         throw QueryParserException(getNext()->getValue()
                                     + QueryParserInvalidSelectClause);
     }
-//    for (const auto& item : *query->getSelectClause()->getSelectClauseItems()) {
-//        std::shared_ptr<Synonym> synonym_ptr = std::get<std::shared_ptr<Synonym>>(item);
-//        Synonym& synonym = *synonym_ptr;
-//        std::cout << synonym.getIdent() << std::endl;
-//    }
 }
 
 void QueryParser::parseSingleSelectClause() {
@@ -305,8 +299,6 @@ std::string QueryParser::parseStringExpression() {
     std::shared_ptr<Token> stringExpressionToken = parseNext(TokenType::TOKEN_STRING_EXPRESSION);
     std::string str = stringExpressionToken->getValue();
     parseNext("'");
-
-//    str = parseShuntingYard(str);
 
     return str;
 }
