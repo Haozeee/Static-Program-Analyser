@@ -1,6 +1,5 @@
 #include "PatternStore.h"
 #include <utility>
-#include "common/parser/ShuntingYardParser.h"
 
 PatternStore::PatternStore(const std::shared_ptr<WriteStorage>& storage) {
     patternManager = storage->getPatternManager();
@@ -9,8 +8,7 @@ PatternStore::PatternStore(const std::shared_ptr<WriteStorage>& storage) {
 }
 
 void PatternStore::insertExpressionPattern(std::shared_ptr<AssignNode> node) {
-    patternManager->insertPattern(node->stmtIndex, node->varName,
-                                  ShuntingYardParser::parse(node->exprNode->getRawString()));
+    patternManager->insertPattern(node->stmtIndex, node->varName, node->shutNode);
 }
 
 void PatternStore::insertCondExpressionIfStatement(int stmtIndex, std::string variableName) {
