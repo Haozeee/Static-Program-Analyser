@@ -123,7 +123,7 @@ jobs:
           shell: pwsh
           run: |
             cd .\Team26\Tests26\testing_tools
-            node uploader.js ${{ vars.SPREADSHEET_ID }} >> $env:GITHUB_OUTPUT
+            node uploader.js ${{ vars.SPREADSHEET_ID }} ${{ vars.STORE_URL }} ${{ github.sha }} 1 >> $env:GITHUB_OUTPUT
 
         - name: Comment PR
           uses: thollander/actions-comment-pull-request@v2
