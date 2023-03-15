@@ -238,8 +238,13 @@ void QueryParser::parsePatternClause() {
     StringExpression rightArgument = parseExpression();
     // Third argument must be wildcard for if pattern clause, otherwise should be )
     if (patternArg.getDesignEntity() == DesignEntity::ASSIGN || patternArg.getDesignEntity() == DesignEntity::WHILE) {
-        parseNextIfElseSemanticError(")", toString(patternArg.getDesignEntity())
-                                          + QueryInvalidNumberOfPatternArguments);
+        if (isValueOf(",")) {
+            throw SemanticException("Can only have 2 arguments");
+        } else if (!isValueOf(")")) {
+            throw SyntaxException("Invalid second argument");
+        } else {
+            parseNext(")");
+        }
     } else if (patternArg.getDesignEntity() == DesignEntity::IF) {
         parseNextIfElseSemanticError(",", toString(patternArg.getDesignEntity())
                                           + QueryInvalidNumberOfPatternArguments);
@@ -343,7 +348,7 @@ AttributeReference QueryParser::parseAttributeReference(std::shared_ptr<Token> t
     if (attributeReference.isValidAttributeReference()) {
         return attributeReference;
     } else {
-        throw QueryValidationException(QueryValidatorInvalidAttributeReference);
+        throw QueryParserException(QueryValidatorInvalidAttributeReference);
     }
 }
 
@@ -378,7 +383,7 @@ void QueryParser::parseNextIfElseSyntaxError(std::string nextValue, std::string 
     if (isValueOf(nextValue)) {
         parseNext(nextValue);
     } else {
-        throw QueryParserException(errorMessage);
+        throw SyntaxException(errorMessage);
     }
 }
 
@@ -386,8 +391,7 @@ void QueryParser::parseNextIfElseSemanticError(std::string nextValue, std::strin
     if (isValueOf(nextValue)) {
         parseNext(nextValue);
     } else {
-        std::cout << nextValue << std::endl;
-        throw QueryInvalidRelationshipArguments(errorMessage);
+        throw SemanticException(errorMessage);
     }
 }
 

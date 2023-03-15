@@ -1,0 +1,1195 @@
+1 - Uses Synonym WildCard Pattern Pair2
+while w; assign a;
+Select w such that Uses(w, _) pattern a(_, "x y z")
+SyntaxError
+5000
+2 - Uses Synonym WildCard Pattern Pair2
+while w; assign a;
+Select w such that Uses(w, _) pattern a("a b", "xyz")
+SyntaxError
+5000
+3- Uses Synonym WildCard Pattern Pair2
+while w; assign a;
+Select w such that Modifies("a b", _)
+SyntaxError
+5000
+4 - Test Edge Case Attribute Reference
+stmt s;
+Select BOOLEAN.varName
+SemanticError
+5000
+5 - Pattern: stmt,_
+stmt s; assign a;
+Select BOOLEAN pattern a(s, _)
+SemanticError
+5000
+6 - Pattern: read,_
+stmt s; assign a; read r;
+Select BOOLEAN pattern a(r, _)
+SemanticError
+5000
+7 - Pattern: print,_
+stmt s; assign a; print p;
+Select BOOLEAN pattern a(p, _)
+SemanticError
+5000
+8 - Pattern: call,_
+stmt s; assign a; call c;
+Select BOOLEAN pattern a(c, _)
+SemanticError
+5000
+9 - Pattern: while,_
+stmt s; assign a; while w;
+Select BOOLEAN pattern a(w, _)
+SemanticError
+5000
+10 - Pattern: if,_
+stmt s; assign a; if ifs;
+Select BOOLEAN pattern a(ifs, _)
+SemanticError
+5000
+11 - Pattern: assign,_
+stmt s; assign a, a2;
+Select BOOLEAN pattern a(a2, _)
+SemanticError
+5000
+12 - Pattern: constant,_
+stmt s; assign a; constant c;
+Select BOOLEAN pattern a(c, _)
+SemanticError
+5000
+13 - Pattern: procedure,_
+stmt s; assign a; procedure p;
+Select BOOLEAN pattern a(p, _)
+SemanticError
+5000
+14 - Pattern while: stmt,_
+stmt s; while w;
+Select BOOLEAN pattern w(s, _)
+SemanticError
+5000
+15 - Pattern while: read,_
+stmt s; while w; read r;
+Select BOOLEAN pattern w(r, _)
+SemanticError
+5000
+16 - Pattern while: print,_
+stmt s; while w; print p;
+Select BOOLEAN pattern w(p, _)
+SemanticError
+5000
+17 - Pattern while: call,_
+stmt s; while w; call c;
+Select BOOLEAN pattern w(c, _)
+SemanticError
+5000
+18 - Pattern while: while,_
+stmt s; while w;
+Select BOOLEAN pattern w(w, _)
+SemanticError
+5000
+19 - Pattern while: if,_
+stmt s; while w; if ifs;
+Select BOOLEAN pattern w(ifs, _)
+SemanticError
+5000
+20 - Pattern while: assign,_
+stmt s; while w; assign a;
+Select BOOLEAN pattern w(a, _)
+SemanticError
+5000
+21 - Pattern while: constant,_
+stmt s; while w; constant c;
+Select BOOLEAN pattern w(c, _)
+SemanticError
+5000
+22 - Pattern while: procedure,_
+stmt s; while w; procedure p;
+Select BOOLEAN pattern w(p, _)
+SemanticError
+5000
+23 - Pattern if: stmt,_,_
+stmt s; assign a; if ifs;
+Select BOOLEAN pattern ifs(s, _, _)
+SemanticError
+5000
+24 - Pattern if: read,_,_
+stmt s; if ifs; read r;
+Select BOOLEAN pattern ifs(r, _, _)
+SemanticError
+5000
+25 - Pattern if: print,_,_
+stmt s; if ifs; print p;
+Select BOOLEAN pattern ifs(p, _, _)
+SemanticError
+5000
+26 - Pattern if: call,_,_
+stmt s; if ifs; call c;
+Select BOOLEAN pattern ifs(c, _, _)
+SemanticError
+5000
+27 - Pattern if: while,_,_
+stmt s; if ifs; while w;
+Select BOOLEAN pattern ifs(w, _, _)
+SemanticError
+5000
+28 - Pattern if: if,_,_
+stmt s; if ifs;
+Select BOOLEAN pattern ifs(ifs, _, _)
+SemanticError
+5000
+29 - Pattern if: assign,_,_
+stmt s; if ifs; assign a;
+Select BOOLEAN pattern ifs(a, _, _)
+SemanticError
+5000
+30 - Pattern if: constant,_,_
+stmt s; if ifs; constant c;
+Select BOOLEAN pattern ifs(c, _, _)
+SemanticError
+5000
+31 - Pattern if: procedure,_,_
+stmt s; if ifs; procedure p;
+Select BOOLEAN pattern ifs(p, _, _)
+SemanticError
+5000
+32 - Pattern if: _,_
+stmt s; if ifs;
+Select BOOLEAN pattern ifs(_, _)
+SemanticError
+5000
+33 - Pattern while: _,_,_
+stmt s; while w;
+Select BOOLEAN pattern w(_, _, _)
+SemanticError
+5000
+34 - Pattern: _,_,_
+stmt s; assign a;
+Select BOOLEAN pattern a(_, _, _)
+SemanticError
+5000
+35 - Pattern: _,_
+stmt s;
+Select BOOLEAN pattern s(_, _)
+SemanticError
+5000
+36 - Pattern: _,_
+read r;
+Select BOOLEAN pattern r(_, _)
+SemanticError
+5000
+37 - Pattern: _,_
+call r;
+Select BOOLEAN pattern r(_, _)
+SemanticError
+5000
+38 - Pattern: _,_
+constant r;
+Select BOOLEAN pattern r(_, _)
+SemanticError
+5000
+39 - Pattern: _,_
+variable r;
+Select BOOLEAN pattern r(_, _)
+SemanticError
+5000
+40 - Pattern: _,_
+procedure r;
+Select BOOLEAN pattern r(_, _)
+SemanticError
+5000
+41 - Pattern: _,_,_
+stmt s;
+Select BOOLEAN pattern s(_, _, _)
+SemanticError
+5000
+42 - Pattern: _,_,_
+read r;
+Select BOOLEAN pattern r(_, _, _)
+SemanticError
+5000
+43 - Pattern: _,_,_
+call r;
+Select BOOLEAN pattern r(_, _, _)
+SemanticError
+5000
+44 - Pattern: _,_,_
+constant r;
+Select BOOLEAN pattern r(_, _, _)
+SemanticError
+5000
+45 - Pattern: _,_,_
+variable r;
+Select BOOLEAN pattern r(_, _, _)
+SemanticError
+5000
+46 - Pattern: _,_,_
+procedure r;
+Select BOOLEAN pattern r(_, _, _)
+SemanticError
+5000
+47 - Follows: variable
+stmt s; variable v;
+Select BOOLEAN such that Follows(v, 1)
+SemanticError
+5000
+48 - Follows: constant
+stmt s; constant c;
+Select BOOLEAN such that Follows(c, 1)
+SemanticError
+5000
+49 - Follows: procedure
+stmt s; procedure p;
+Select BOOLEAN such that Follows(p, 1)
+SemanticError
+5000
+50 - Follows: variable
+stmt s; variable v;
+Select BOOLEAN such that Follows(1, v)
+SemanticError
+5000
+51 - Follows: constant
+stmt s; constant c;
+Select BOOLEAN such that Follows(1, c)
+SemanticError
+5000
+52 - Follows: procedure
+stmt s; procedure p;
+Select BOOLEAN such that Follows(1, p)
+SemanticError
+5000
+53 - Follows*: variable
+stmt s; variable v;
+Select BOOLEAN such that Follows*(v, 1)
+SemanticError
+5000
+54 - Follows*: constant
+stmt s; constant c;
+Select BOOLEAN such that Follows*(c, 1)
+SemanticError
+5000
+55 - Follows*: procedure
+stmt s; procedure p;
+Select BOOLEAN such that Follows*(p, 1)
+SemanticError
+5000
+56 - Follows*: variable
+stmt s; variable v;
+Select BOOLEAN such that Follows*(1, v)
+SemanticError
+5000
+57 - Follows*: constant
+stmt s; constant c;
+Select BOOLEAN such that Follows*(1, c)
+SemanticError
+5000
+58 - Follows*: procedure
+stmt s; procedure p;
+Select BOOLEAN such that Follows*(1, p)
+SemanticError
+5000
+59 - Parent: variable
+stmt s; variable v;
+Select BOOLEAN such that Parent(v, 1)
+SemanticError
+5000
+60 - Parent: constant
+stmt s; constant c;
+Select BOOLEAN such that Parent(c, 1)
+SemanticError
+5000
+61 - Parent: procedure
+stmt s; procedure p;
+Select BOOLEAN such that Parent(p, 1)
+SemanticError
+5000
+62 - Parent: variable
+stmt s; variable v;
+Select BOOLEAN such that Parent(1, v)
+SemanticError
+5000
+63 - Parent: constant
+stmt s; constant c;
+Select BOOLEAN such that Parent(1, c)
+SemanticError
+5000
+64 - Parent: procedure
+stmt s; procedure p;
+Select BOOLEAN such that Parent(1, p)
+SemanticError
+5000
+65 - Parent*: variable
+stmt s; variable v;
+Select BOOLEAN such that Parent*(v, 1)
+SemanticError
+5000
+66 - Parent*: constant
+stmt s; constant c;
+Select BOOLEAN such that Parent*(c, 1)
+SemanticError
+5000
+67 - Parent*: procedure
+stmt s; procedure p;
+Select BOOLEAN such that Parent*(p, 1)
+SemanticError
+5000
+68 - Parent*: variable
+stmt s; variable v;
+Select BOOLEAN such that Parent*(1, v)
+SemanticError
+5000
+69 - Parent*: constant
+stmt s; constant c;
+Select BOOLEAN such that Parent*(1, c)
+SemanticError
+5000
+70 - Parent*: procedure
+stmt s; procedure p;
+Select BOOLEAN such that Parent*(1, p)
+SemanticError
+5000
+71 - Next: variable
+stmt s; variable v;
+Select BOOLEAN such that Next(v, 1)
+SemanticError
+5000
+72 - Next: constant
+stmt s; constant c;
+Select BOOLEAN such that Next(c, 1)
+SemanticError
+5000
+73 - Next: procedure
+stmt s; procedure p;
+Select BOOLEAN such that Next(p, 1)
+SemanticError
+5000
+74 - Next: variable
+stmt s; variable v;
+Select BOOLEAN such that Next(1, v)
+SemanticError
+5000
+75 - Next: constant
+stmt s; constant c;
+Select BOOLEAN such that Next(1, c)
+SemanticError
+5000
+76 - Next: procedure
+stmt s; procedure p;
+Select BOOLEAN such that Next(1, p)
+SemanticError
+5000
+77 - Next*: variable
+stmt s; variable v;
+Select BOOLEAN such that Next*(v, 1)
+SemanticError
+5000
+78 - Next*: constant
+stmt s; constant c;
+Select BOOLEAN such that Next*(c, 1)
+SemanticError
+5000
+79 - Next*: procedure
+stmt s; procedure p;
+Select BOOLEAN such that Next*(p, 1)
+SemanticError
+5000
+80 - Next*: variable
+stmt s; variable v;
+Select BOOLEAN such that Next*(1, v)
+SemanticError
+5000
+81 - Next*: constant
+stmt s; constant c;
+Select BOOLEAN such that Next*(1, c)
+SemanticError
+5000
+82 - Next*: procedure
+stmt s; procedure p;
+Select BOOLEAN such that Next*(1, p)
+SemanticError
+5000
+83 - Uses: read
+stmt s; read r;
+Select BOOLEAN such that Uses(r, "x")
+FALSE
+5000
+84 - Uses: variable
+stmt s; variable v;
+Select BOOLEAN such that Uses(v, "x")
+SemanticError
+5000
+85 - Uses: constant
+stmt s; constant c;
+Select BOOLEAN such that Uses(c, "x")
+SemanticError
+5000
+86 - Uses: wildcard
+stmt s;
+Select BOOLEAN such that Uses(_, "x")
+SemanticError
+5000
+87 - Uses: stmt
+stmt s, s1;
+Select BOOLEAN such that Uses(1, s)
+SemanticError
+5000
+88 - Uses: read
+stmt s; read r;
+Select BOOLEAN such that Uses(1, r)
+SemanticError
+5000
+89 - Uses: print
+stmt s; print p;
+Select BOOLEAN such that Uses(1, p)
+SemanticError
+5000
+90 - Uses: call
+stmt s; call c;
+Select BOOLEAN such that Uses(1, c)
+SemanticError
+5000
+91 - Uses: while
+stmt s; while w;
+Select BOOLEAN such that Uses(1, w)
+SemanticError
+5000
+92 - Uses: if
+stmt s; if if;
+Select BOOLEAN such that Uses(1, if)
+SemanticError
+5000
+93 - Uses: assign
+stmt s; assign a;
+Select BOOLEAN such that Uses(1, a)
+SemanticError
+5000
+94 - Uses: constant
+stmt s; constant c;
+Select BOOLEAN such that Uses(1, c)
+SemanticError
+5000
+95 - Uses: procedure
+stmt s; procedure p;
+Select BOOLEAN such that Uses(1, p)
+SemanticError
+5000
+96 - Modifies: print
+stmt s; print p;
+Select BOOLEAN such that Modifies(p, "x")
+FALSE
+5000
+97 - Modifies: variable
+stmt s; variable v;
+Select BOOLEAN such that Modifies(v, "x")
+SemanticError
+5000
+98 - Modifies: constant
+stmt s; constant c;
+Select BOOLEAN such that Modifies(c, "x")
+SemanticError
+5000
+99 - Modifies: wildcard
+stmt s;
+Select BOOLEAN such that Modifies(_, "x")
+SemanticError
+5000
+100 - Modifies: stmt
+stmt s, s1;
+Select BOOLEAN such that Modifies(1, s)
+SemanticError
+5000
+101 - Modifies: read
+stmt s; read r;
+Select BOOLEAN such that Modifies(1, r)
+SemanticError
+5000
+102 - Modifies: print
+stmt s; print p;
+Select BOOLEAN such that Modifies(1, p)
+SemanticError
+5000
+103 - Modifies: call
+stmt s; call c;
+Select BOOLEAN such that Modifies(1, c)
+SemanticError
+5000
+104 - Modifies: while
+stmt s; while w;
+Select BOOLEAN such that Modifies(1, w)
+SemanticError
+5000
+105 - Modifies: if
+stmt s; if if;
+Select BOOLEAN such that Modifies(1, if)
+SemanticError
+5000
+106 - Modifies: assign
+stmt s; assign a;
+Select BOOLEAN such that Modifies(1, a)
+SemanticError
+5000
+107 - Modifies: constant
+stmt s; constant c;
+Select BOOLEAN such that Modifies(1, c)
+SemanticError
+5000
+108 - Modifies: procedure
+stmt s; procedure p;
+Select BOOLEAN such that Modifies(1, p)
+SemanticError
+5000
+109 - Calls: read
+stmt s; read r;
+Select BOOLEAN such that Calls(r, "x")
+SemanticError
+5000
+110 - Calls: print
+stmt s; print p;
+Select BOOLEAN such that Calls(p, "x")
+SemanticError
+5000
+111 - Calls: call
+stmt s; call c;
+Select BOOLEAN such that Calls(c, "x")
+SemanticError
+5000
+112 - Calls: while
+stmt s; while w;
+Select BOOLEAN such that Calls(w, "x")
+SemanticError
+5000
+113 - Calls: if
+stmt s; if if;
+Select BOOLEAN such that Calls(if, "x")
+SemanticError
+5000
+114 - Calls: assign
+stmt s; assign a;
+Select BOOLEAN such that Calls(a, "x")
+SemanticError
+5000
+115 - Calls: variable
+stmt s; variable v;
+Select BOOLEAN such that Calls(v, "x")
+SemanticError
+5000
+116 - Calls: constant
+stmt s; constant c;
+Select BOOLEAN such that Calls(c, "x")
+SemanticError
+5000
+117 - Calls: RHS is stmt
+stmt s, s1;
+Select BOOLEAN such that Calls("x", s)
+SemanticError
+5000
+118 - Calls: RHS is read
+stmt s; read r;
+Select BOOLEAN such that Calls("x", r)
+SemanticError
+5000
+119 - Calls: RHS is print
+stmt s; print p;
+Select BOOLEAN such that Calls("x", p)
+SemanticError
+5000
+120 - Calls: RHS is call
+stmt s; call c;
+Select BOOLEAN such that Calls("x", c)
+SemanticError
+5000
+121 - Calls: RHS is while
+stmt s; while w;
+Select BOOLEAN such that Calls("x", w)
+SemanticError
+5000
+122 - Calls: RHS is if
+stmt s; if if;
+Select BOOLEAN such that Calls("x", if)
+SemanticError
+5000
+123 - Calls: RHS is assign
+stmt s; assign a;
+Select BOOLEAN such that Calls("x", a)
+SemanticError
+5000
+124 - Calls: RHS is constant
+stmt s; constant c;
+Select BOOLEAN such that Calls("x", c)
+SemanticError
+5000
+125 - Calls: RHS is variable
+stmt s; variable v;
+Select BOOLEAN such that Calls("x", v)
+SemanticError
+5000
+126 - Calls*: stmt
+stmt s, s1;
+Select BOOLEAN such that Calls*(s1, "x")
+SemanticError
+5000
+127 - Calls*: read
+stmt s; read r;
+Select BOOLEAN such that Calls*(r, "x")
+SemanticError
+5000
+128 - Calls*: print
+stmt s; print p;
+Select BOOLEAN such that Calls*(p, "x")
+SemanticError
+5000
+129 - Calls*: call
+stmt s; call c;
+Select BOOLEAN such that Calls*(c, "x")
+SemanticError
+5000
+130 - Calls*: while
+stmt s; while w;
+Select BOOLEAN such that Calls*(w, "x")
+SemanticError
+5000
+131 - Calls*: if
+stmt s; if if;
+Select BOOLEAN such that Calls*(if, "x")
+SemanticError
+5000
+132 - Calls*: assign
+stmt s; assign a;
+Select BOOLEAN such that Calls*(a, "x")
+SemanticError
+5000
+133 - Calls*: variable
+stmt s; variable v;
+Select BOOLEAN such that Calls*(v, "x")
+SemanticError
+5000
+134 - Calls*: constant
+stmt s; constant c;
+Select BOOLEAN such that Calls*(c, "x")
+SemanticError
+5000
+135 - Calls*: RHS is stmt
+stmt s, s1;
+Select BOOLEAN such that Calls*("x", s)
+SemanticError
+5000
+136 - Calls*: RHS is read
+stmt s; read r;
+Select BOOLEAN such that Calls*("x", r)
+SemanticError
+5000
+137 - Calls*: RHS is print
+stmt s; print p;
+Select BOOLEAN such that Calls*("x", p)
+SemanticError
+5000
+138 - Calls*: RHS is call
+stmt s; call c;
+Select BOOLEAN such that Calls*("x", c)
+SemanticError
+5000
+139 - Calls*: RHS is while
+stmt s; while w;
+Select BOOLEAN such that Calls*("x", w)
+SemanticError
+5000
+140 - Calls*: RHS is if
+stmt s; if if;
+Select BOOLEAN such that Calls*("x", if)
+SemanticError
+5000
+141 - Calls*: RHS is assign
+stmt s; assign a;
+Select BOOLEAN such that Calls*("x", a)
+SemanticError
+5000
+142 - Calls*: RHS is constant
+stmt s; constant c;
+Select BOOLEAN such that Calls*("x", c)
+SemanticError
+5000
+143 - Calls*: RHS is variable
+stmt s; variable v;
+Select BOOLEAN such that Calls*("x", v)
+SemanticError
+5000
+144 - Affects: variable
+stmt s; variable v;
+Select BOOLEAN such that Affects(v, 2)
+SemanticError
+5000
+145 - Affects: constant
+stmt s; constant c;
+Select BOOLEAN such that Affects(c, 2)
+SemanticError
+5000
+146 - Affects: procedure
+stmt s; procedure p;
+Select BOOLEAN such that Affects(p, 2)
+SemanticError
+5000
+147 - Affects: variable
+stmt s; variable v;
+Select BOOLEAN such that Affects(1, v)
+SemanticError
+5000
+148 - Affects: constant
+stmt s; constant c;
+Select BOOLEAN such that Affects(2, c)
+SemanticError
+5000
+149 - Affects: procedure
+stmt s; procedure p;
+Select BOOLEAN such that Affects(1, p)
+SemanticError
+5000
+150 - Affects*: variable
+stmt s; variable v;
+Select BOOLEAN such that Affects*(v, 2)
+SemanticError
+5000
+151 - Affects*: constant
+stmt s; constant c;
+Select BOOLEAN such that Affects*(c, 2)
+SemanticError
+5000
+152 - Affects*: procedure
+stmt s; procedure p;
+Select BOOLEAN such that Affects*(p, 2)
+SemanticError
+5000
+153 - Affects*: variable
+stmt s; variable v;
+Select BOOLEAN such that Affects*(1, v)
+SemanticError
+5000
+154 - Affects*: constant
+stmt s; constant c;
+Select BOOLEAN such that Affects*(2, c)
+SemanticError
+5000
+155 - Affects*: procedure
+stmt s; procedure p;
+Select BOOLEAN such that Affects*(1, p)
+SemanticError
+5000
+156 - Pattern: _,expression
+assign a;
+Select BOOLEAN pattern a(_, _"1")
+SyntaxError
+5000
+157 - Pattern: _,expression
+assign a;
+Select BOOLEAN pattern a(_, "1"_)
+SyntaxError
+5000
+158 - Pattern: _,expression
+assign a;
+Select BOOLEAN pattern a(_, 1)
+SyntaxError
+5000
+159 - Pattern: _,expression
+assign a;
+Select BOOLEAN pattern a(_, _1_)
+SyntaxError
+5000
+160 - Follows: stmt,invalid
+stmt s;
+Select BOOLEAN such that Follows(s, "a")
+SyntaxError
+5000
+161 - Follows: invalid,stmt
+stmt s;
+Select BOOLEAN such that Follows("a",s)
+SyntaxError
+5000
+162 - Follows*: stmt,invalid
+stmt s;
+Select BOOLEAN such that Follows*(s, "a")
+SyntaxError
+5000
+163 - Follows*: invalid,stmt
+stmt s;
+Select BOOLEAN such that Follows*("a",s)
+SyntaxError
+5000
+164 - Parent: stmt,invalid
+stmt s;
+Select BOOLEAN such that Parent(s, "a")
+SyntaxError
+5000
+165 - Parent: invalid,stmt
+stmt s;
+Select BOOLEAN such that Parent("a",s)
+SyntaxError
+5000
+166 - Parent*: stmt,invalid
+stmt s;
+Select BOOLEAN such that Parent*(s, "a")
+SyntaxError
+5000
+167 - Parent*: invalid,stmt
+stmt s;
+Select BOOLEAN such that Parent*("a",s)
+SyntaxError
+5000
+168 - Next: stmt,invalid
+stmt s;
+Select BOOLEAN such that Next(s, "a")
+SyntaxError
+5000
+169 - Next: invalid,stmt
+stmt s;
+Select BOOLEAN such that Next("a",s)
+SyntaxError
+5000
+170 - Next*: stmt,invalid
+stmt s;
+Select BOOLEAN such that Next*(s, "a")
+SyntaxError
+5000
+171 - Next*: invalid,stmt
+stmt s;
+Select BOOLEAN such that Next*("a",s)
+SyntaxError
+5000
+172 - Modifies: stmt,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Modifies(s, "_")
+SyntaxError
+5000
+173 - Modifies: stmt,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Modifies(s, ",")
+SyntaxError
+5000
+174 - Modifies: stmt,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Modifies(s, ".")
+SyntaxError
+5000
+175 - Modifies: stmt,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Modifies(s, " ")
+SyntaxError
+5000
+176 - Modifies: stmt,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Modifies(s, "")
+SyntaxError
+5000
+177 - Modifies: stmt,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Modifies(s, "/")
+SyntaxError
+5000
+178 - Modifies: stmt,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Modifies(s, "a-b")
+SyntaxError
+5000
+179 - Uses: stmt,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Uses(s, "_")
+SyntaxError
+5000
+180 - Uses: stmt,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Uses(s, ",")
+SyntaxError
+5000
+181 - Uses: stmt,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Uses(s, ".")
+SyntaxError
+5000
+182 - Uses: stmt,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Uses(s, " ")
+SyntaxError
+5000
+183 - Uses: stmt,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Uses(s, "")
+SyntaxError
+5000
+184 - Uses: stmt,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Uses(s, "/")
+SyntaxError
+5000
+185 - Uses: stmt,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Uses(s, "a-b")
+SyntaxError
+5000
+186 - Call: valid procedure,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Call("hello", "_")
+SyntaxError
+5000
+187 - Call: valid procedure,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Call("hello", ",")
+SyntaxError
+5000
+188 - Call: valid procedure,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Call("hello", ".")
+SyntaxError
+5000
+189 - Call: valid procedure,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Call("hello", " ")
+SyntaxError
+5000
+190 - Call: valid procedure,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Call("hello", "")
+SyntaxError
+5000
+191 - Call: valid procedure,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Call("hello", "/")
+SyntaxError
+5000
+192 - Call: valid procedure,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Call("hello", "a-b")
+SyntaxError
+5000
+193 - Call*: valid procedure,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Call*("hello", "_")
+SyntaxError
+5000
+194 - Call*: valid procedure,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Call*("hello", ",")
+SyntaxError
+5000
+195 - Call*: valid procedure,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Call*("hello", ".")
+SyntaxError
+5000
+196 - Call*: valid procedure,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Call*("hello", " ")
+SyntaxError
+5000
+197 - Call*: valid procedure,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Call*("hello", "")
+SyntaxError
+5000
+198 - Call*: valid procedure,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Call*("hello", "/")
+SyntaxError
+5000
+199 - Call*: valid procedure,non-alphanumeric
+stmt s;
+Select BOOLEAN such that Call*("hello", "a-b")
+SyntaxError
+5000
+200 - Call: non-alphanumeric,valid procedure
+stmt s;
+Select BOOLEAN such that Call("_", "hello")
+SyntaxError
+5000
+201 - Call: non-alphanumeric,valid procedure
+stmt s;
+Select BOOLEAN such that Call(",", "hello")
+SyntaxError
+5000
+202 - Call: non-alphanumeric,valid procedure
+stmt s;
+Select BOOLEAN such that Call(".", "hello")
+SyntaxError
+5000
+203 - Call: non-alphanumeric,valid procedure
+stmt s;
+Select BOOLEAN such that Call(" ", "hello")
+SyntaxError
+5000
+204 - Call: non-alphanumeric,valid procedure
+stmt s;
+Select BOOLEAN such that Call("", "hello")
+SyntaxError
+5000
+205 - Call: non-alphanumeric,valid procedure
+stmt s;
+Select BOOLEAN such that Call("/", "hello")
+SyntaxError
+5000
+206 - Call: non-alphanumeric,valid procedure
+stmt s;
+Select BOOLEAN such that Call("a-b", "hello")
+SyntaxError
+5000
+207 - Call*: non-alphanumeric,valid procedure
+stmt s;
+Select BOOLEAN such that Call*("_", "hello")
+SyntaxError
+5000
+208 - Call*: non-alphanumeric,valid procedure
+stmt s;
+Select BOOLEAN such that Call*(",", "hello")
+SyntaxError
+5000
+209 - Call*: non-alphanumeric,valid procedure
+stmt s;
+Select BOOLEAN such that Call*(".", "hello")
+SyntaxError
+5000
+210 - Call*: non-alphanumeric,valid procedure
+stmt s;
+Select BOOLEAN such that Call*(" ", "hello")
+SyntaxError
+5000
+211 - Call*: non-alphanumeric,valid procedure
+stmt s;
+Select BOOLEAN such that Call*("", "hello")
+SyntaxError
+5000
+212 - Call*: non-alphanumeric,valid procedure
+stmt s;
+Select BOOLEAN such that Call*("/", "hello")
+SyntaxError
+5000
+213 - Call*: non-alphanumeric,valid procedure
+stmt s;
+Select BOOLEAN such that Call*("a-b", "hello")
+SyntaxError
+5000
+214 - Pattern: non-alphanumeric,_
+assign a;
+Select BOOLEAN such that pattern a("_", _)
+SyntaxError
+5000
+215 - Pattern: non-alphanumeric,_
+assign a;
+Select BOOLEAN such that pattern a(",", _)
+SyntaxError
+5000
+216 - Pattern: non-alphanumeric,_
+assign a;
+Select BOOLEAN such that pattern a(".", _)
+SyntaxError
+5000
+217 - Pattern: non-alphanumeric,_
+assign a;
+Select BOOLEAN such that pattern a(" ", _)
+SyntaxError
+5000
+218 - Pattern: non-alphanumeric,_
+assign a;
+Select BOOLEAN such that pattern a("", _)
+SyntaxError
+5000
+219 - Pattern: non-alphanumeric,_
+assign a;
+Select BOOLEAN such that pattern a("/", _)
+SyntaxError
+5000
+220 - Pattern: non-alphanumeric,_
+assign a;
+Select BOOLEAN such that pattern a("a-b", _)
+SyntaxError
+5000
+221 - Pattern while:  non-alphanumeric,_
+while w;
+Select BOOLEAN such that pattern w("_", _)
+SyntaxError
+5000
+222 - Pattern while:  non-alphanumeric,_
+while w;
+Select BOOLEAN such that pattern w(",", _)
+SyntaxError
+5000
+223 - Pattern while:  non-alphanumeric,_
+while w;
+Select BOOLEAN such that pattern w(".", _)
+SyntaxError
+5000
+224 - Pattern while:  non-alphanumeric,_
+while w;
+Select BOOLEAN such that pattern w(" ", _)
+SyntaxError
+5000
+225 - Pattern while:  non-alphanumeric,_
+while w;
+Select BOOLEAN such that pattern w("", _)
+SyntaxError
+5000
+226 - Pattern while:  non-alphanumeric,_
+while w;
+Select BOOLEAN such that pattern w("/", _)
+SyntaxError
+5000
+227 - Pattern while:  non-alphanumeric,_
+while w;
+Select BOOLEAN such that pattern w("a-b", _)
+SyntaxError
+5000
+228 - Pattern while: _, invalid
+while w;
+Select BOOLEAN such that pattern w(_, k)
+SyntaxError
+5000
+229 - Pattern while: _, invalid
+while w;
+Select BOOLEAN such that pattern w(_, "k")
+SyntaxError
+5000
+230 - Pattern if:  non-alphanumeric,_
+if ifs;
+Select BOOLEAN such that pattern ifs("_", _,_)
+SyntaxError
+5000
+231 - Pattern if:  non-alphanumeric,_
+if ifs;
+Select BOOLEAN such that pattern ifs(",", _,_)
+SyntaxError
+5000
+232 - Pattern if:  non-alphanumeric,_
+if ifs;
+Select BOOLEAN such that pattern ifs(".", _,_)
+SyntaxError
+5000
+233 - Pattern if:  non-alphanumeric,_
+if ifs;
+Select BOOLEAN such that pattern ifs(" ", _,_)
+SyntaxError
+5000
+234 - Pattern if:  non-alphanumeric,_
+if ifs;
+Select BOOLEAN such that pattern ifs("", _,_)
+SyntaxError
+5000
+235 - Pattern if:  non-alphanumeric,_
+if ifs;
+Select BOOLEAN such that pattern ifs("/", _,_)
+SyntaxError
+5000
+236 - Pattern if:  non-alphanumeric,_
+if ifs;
+Select BOOLEAN such that pattern ifs("a-b", _,_)
+SyntaxError
+5000
+237 - Pattern if:  _,invalid,_
+if ifs;
+Select BOOLEAN such that pattern ifs(_, k,_)
+SyntaxError
+5000
+238 - Pattern if:  _,_,invalid
+if ifs;
+Select BOOLEAN such that pattern ifs(_, _,k)
+SyntaxError
+5000
+239 - Pattern if:  _,invalid,invalid
+if ifs;
+Select BOOLEAN such that pattern ifs(_, j,k)
+SyntaxError
+5000

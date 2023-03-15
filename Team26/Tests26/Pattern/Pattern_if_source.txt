@@ -1,0 +1,39 @@
+procedure PatternIf {
+    read x;
+    print y;
+
+    if (x == y + (z / 1 * 2 - 3)) then {
+        read y;
+    } else {
+        print x;
+    }
+
+    while (b + y == x ) {
+        x = x - 100;
+    }
+
+    if (a == x) then {
+        if (b - c <= y * z) then {
+            print c;        
+        } else {
+            read b;
+        }
+    } else {
+        while (c == (z / a + b)) {
+            read c;        
+        } 
+    }
+
+    while ((a % b < c + d) || (e >= f)) {
+        print a;
+        if (x == b) then {
+            read x;
+        } else {
+            print b;
+        }
+
+        while (1 == 2) {
+            a = a + 1;
+        }
+    }
+}

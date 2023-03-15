@@ -7,7 +7,7 @@ procedure procedure1 {
    while (z == 0) {
         x = x + 1;
         print x;
-        if (x != y + 20) {
+        if (x != y + 20) then {
             z = y % 2;
             print z;
             call procedure2;
@@ -22,7 +22,7 @@ procedure procedure2 {
     print a;
     read f;
 
-    if (f == -1) then {
+    if (f == 1) then {
         f = a;
     } else {
         read f;
@@ -54,7 +54,7 @@ procedure procedure5 {
    while (x <= 100) {
         read x;
         call procedure4;
-        if (x != 25) {
+        if (x != 25) then {
             x = x + 1;
             call procedure4;
         } else {

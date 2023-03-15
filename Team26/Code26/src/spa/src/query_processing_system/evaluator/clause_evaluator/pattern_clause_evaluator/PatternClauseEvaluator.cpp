@@ -16,14 +16,15 @@ StringExpression PatternClauseEvaluator::getRightArg() {
     return rightArg;
 }
 
-std::shared_ptr<ResultTable> PatternClauseEvaluator::evaluateClause(std::shared_ptr<ReadStorage> storage) {
+std::shared_ptr<ResultTable> PatternClauseEvaluator::evaluateClause(StoragePointer storage_, CachePointer cache_) {
+    setStorageLocation(storage_, cache_);
     auto leftArgType = leftArg.getArgumentType();
     if (leftArgType == ArgumentType::SYNONYM) {
-        evaluateSynonym(storage);
+        evaluateSynonym();
     } else if (leftArgType == ArgumentType::CHARACTERSTRING) {
-        evaluateString(storage);
+        evaluateString();
     } else if (leftArgType == ArgumentType::WILDCARD) {
-        evaluateWildcard(storage);
+        evaluateWildcard();
     } else {
         // Not a valid pattern clause
         throw std::exception();

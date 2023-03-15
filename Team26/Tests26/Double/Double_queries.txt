@@ -88,7 +88,7 @@ assign a; variable v;
 Select BOOLEAN such that Follows*(14, a) pattern a(v, "q")
 TRUE
 5000
-9 - Follows* + With: stmt, call and call
+9 - Follows* + With: stmt,call and call
 stmt s; call c;
 Select s such that Follows*(s, c) with c.procName = "child2"
 33, 34, 57
@@ -97,4 +97,279 @@ Select s such that Follows*(s, c) with c.procName = "child2"
 print p; read r;
 Select p such that Follows*(p, r) with p.varName = r.varName
 11
+5000
+1 - Parent + Pattern: stmt,assign and _,expression
+stmt s; assign a;
+Select s such that Parent(s, a) pattern a(_, _"(1 * 2 * 3)"_)
+16, 27, 30
+5000
+2 - Parent + Pattern: while,assign and _,expression
+while w; assign a; variable v;
+Select <w, v.varName, a> such that Parent(w, a) pattern a(v, _"x + y"_)
+27 x 29
+5000
+3 - Parent + Pattern: while,assign and entRef,expression
+while w; assign a; variable v;
+Select w such that Parent(w, a) pattern a("p", "q")
+13
+5000
+4 - Parent + Pattern: if,assign and entRef,_
+if ifs; assign a; variable v;
+Select ifs such that Parent(ifs, a) pattern a("x", _)
+30, 40
+5000
+5 - Parent + Pattern: while,assign and entRef,expression
+while w; assign a; variable v;
+Select w such that Parent(w, a) pattern a("d", _"1"_)
+none
+5000
+6 - Parent + Pattern: while,assign and _,expression
+while w; assign a;
+Select BOOLEAN such that Parent(w, a) pattern a(_, _"x + y"_)
+TRUE
+5000
+7 - Parent + Pattern: read,assign and _,_
+read r; assign a;
+Select BOOLEAN such that Parent(r, a) pattern a(_, _)
+FALSE
+5000
+8 - Parent + With: if,print and stmt number
+while w; if ifs;
+Select <w, ifs> such that Parent(w, ifs) with w.stmt# = 3
+3 5
+5000
+9 - Parent + With: stmt,call and stmt number
+stmt s; call c;
+Select c.procName such that Parent(s, c) with s.stmt# = 5
+single
+5000
+10 - Parent + With: if,print and stmt number
+print p; if ifs;
+Select p such that Parent(ifs, p) with ifs.stmt# = 5
+11
+5000
+1 - Parent* + Pattern: stmt,assign and _,expression
+stmt s; assign a;
+Select s such that Parent*(s, a) pattern a(_, _"(1 * 2 * 3)"_)
+3, 5, 13, 16, 27, 30
+5000
+2 - Parent* + Pattern: while,assign and _,expression
+while w; assign a; variable v;
+Select <w, v.varName, a> such that Parent*(w, a) pattern a(v, _"x + y"_)
+3 x 29, 3 z 8, 27 x 29
+5000
+3 - Parent* + Pattern: while,assign and entRef,expression
+while w; assign a; variable v;
+Select w such that Parent*(w, a) pattern a("p", "q")
+3, 13
+5000
+4 - Parent* + Pattern: if,assign and entRef,_
+if ifs; assign a; variable v;
+Select ifs such that Parent*(ifs, a) pattern a("x", _)
+5, 30, 40
+5000
+5 - Parent* + Pattern: while,assign and entRef,_
+while w; assign a; variable v;
+Select w such that Parent*(w, a) pattern a("d", _"1"_)
+none
+5000
+6 - Parent* + Pattern: while,assign and _,expression
+while w; assign a;
+Select BOOLEAN such that Parent*(w, a) pattern a(_, _"x + y"_)
+TRUE
+5000
+7 - Parent* + Pattern: read,assign and _,_
+read r; assign a;
+Select BOOLEAN such that Parent*(r, a) pattern a(_, _)
+FALSE
+5000
+8 - Parent* + With: if,print and stmt number
+while w; if ifs;
+Select <w, ifs> such that Parent*(w, ifs) with w.stmt# = 3
+3 5, 3 7, 3 17, 3 30
+5000
+9 - Parent* + With: stmt,call and stmt number
+stmt s; call c;
+Select c.procName such that Parent*(s, c) with s.stmt# = 5
+child2, single
+5000
+10 - Parent* + With: if,print and stmt number
+print p; if ifs;
+Select p such that Parent*(ifs, p) with ifs.stmt# = 5
+11, 23, 31, 33
+5000
+1 - Pattern + With: variable,expression and variable
+assign a; variable v;
+Select a pattern a(v, _"x + y"_) with v.varName = "var"
+42
+5000
+2 - Pattern + With: variable,_ and variable
+assign a; variable v;
+Select a pattern a(v, _) with v.varName = "x"
+1, 4, 28, 29, 32, 50, 55
+5000
+3 - Pattern + With: variable,_ and variable
+assign a; variable v;
+Select a pattern a(v, _) with v.varName = "invalid"
+none
+5000
+4 - Pattern + With: entRef,expression and stmt number,stmt number
+assign a; assign a1;
+Select a pattern a1("x", "p + q") with a.stmt# = a1.stmt#
+4
+5000
+5 - Pattern + With: variable,expression and stmt number
+assign a; variable v;
+Select v pattern a(v, _"(1 * 2 * 3)"_) with a.stmt# = 36
+a
+5000
+1 - Uses + Pattern: assign,entRef and entRef,_
+assign a;
+Select a such that Uses(a, "x") pattern a("x", _)
+29, 55
+5000
+2 - Uses + Pattern: assign,entRef and variable,_
+assign a; variable v;
+Select <a, v.varName> such that Uses(a, v) pattern a(v, _)
+19 b, 29 x, 36 a, 41 a, 42 var, 47 b, 55 x
+5000
+3 - Uses + Pattern: if,_ and _,expression
+if ifs; assign a;
+Select a such that Uses(ifs, _) pattern a(_, _"(1 * 2 * 3)"_)
+21, 28, 36
+5000
+4 - Uses + Pattern: while,variable and variable,expression
+while w; assign a; variable v;
+Select <w, v> such that Uses(w, v) pattern a(v, _"x + y"_)
+3 x, 3 z, 13 x, 16 x, 27 x
+5000
+5 - Uses + Pattern: assign,variable and _,expression
+assign a; variable v;
+Select a such that Uses(a, v) pattern a(_, "q")
+15
+5000
+6 - Uses + Pattern: call,variable and variable,expression
+assign a; call c; variable v;
+Select <c, c.procName, a, v> such that Uses(c, v) pattern a(v, _"a + b"_)
+10 single 1 x, 24 single 1 x, 52 single 1 x
+5000
+7 - Uses + Pattern: assign,variable and entref,_
+assign a; variable v;
+Select v such that Uses(a, v) pattern a("a", _)
+a, b, c, e, r, x, y
+5000
+8 - Uses + Pattern: assign,variable and _,expression
+assign a; variable v;
+Select a such that Uses(a, v) pattern a(_, "q + x")
+none
+5000
+9 - Uses + Pattern: assign,variable and _,expression
+assign a; variable v;
+Select BOOLEAN such that Uses(a, v) pattern a(_, "(1 * 2 * 3)")
+FALSE
+5000
+10 - Uses + Pattern: assign,entRef and variable,_
+assign a; variable v;
+Select BOOLEAN such that Uses(a, v) pattern a(v, _)
+TRUE
+5000
+11 - Uses + With: call,variable and call name
+call c; variable v;
+Select v such that Uses(c, v) with c.procName = "single"
+c, p, q, x, y, z
+5000
+12 - Uses + With: print,variable and variable name
+print p; variable v;
+Select p such that Uses(p, v) with v.varName = "y"
+61
+5000
+13 - Uses + With: if,variable and stmt number
+if ifs; variable v;
+Select v such that Uses(ifs, v) with ifs.stmt# = 40
+a, assign, b, c, call, if, p, print, q, read, var, while, x, y, z
+5000
+14 - Uses + With: procedure,variable and variable name
+variable v;
+Select BOOLEAN such that Uses("child2", v) with v.varName = "y"
+TRUE
+5000
+15 - Uses + With: stmt,variable and variable name
+stmt s; variable v;
+Select s such that Uses(s, v) with v.varName = "c"
+3, 5, 7, 10, 12, 13, 16, 21, 24, 26, 27, 29, 40, 44, 52, 56, 59
+5000
+1 - Modifies + Pattern: assign,entRef and _,entRef
+assign a;
+Select a such that Modifies(a, "x") pattern a(_, _"x"_)
+29, 55
+5000
+2 - Modifies + Pattern: assign,variable and variable,_
+assign a; variable v;
+Select <a, v.varName> such that Modifies(a, v) pattern a(v, _)
+1 x, 2 z, 4 x, 6 z, 8 z, 12 a, 14 a, 15 p, 18 a, 19 b, 21 a, 26 a, 28 x, 29 x, 32 x, 36 a, 41 a, 42 var, 44 b, 47 b, 48 read, 49 print, 50 x, 51 y, 53 a, 55 x
+5000
+3 - Modifies + Pattern: assign,_ and _,expression
+assign a;
+Select a such that Modifies(a, _) pattern a(_, "q")
+15
+5000
+4 - Uses + Pattern: if,variable and variable,expression
+if ifs; assign a; variable v;
+Select <ifs, v> such that Modifies(ifs, v) pattern a(v, _"a"_)
+5 a, 5 b, 5 x, 7 x, 17 a, 17 b, 30 a, 30 x, 40 a, 40 b, 40 var, 40 x, 46 b, 56 x
+5000
+5 - Modifies + Pattern: assign,variable and variable,expression
+assign a; variable v;
+Select a such that Modifies(a, v) pattern a(v, _"(1 * 2 * 3)"_)
+21, 28, 36
+5000
+6 - Modifies + Pattern: call,variable and variable,expression
+assign a; call c; variable v;
+Select <c, c.procName, a, v> such that Modifies(c, v) pattern a(v, _"a + b"_)
+10 single 1 x, 24 single 1 x, 39 child 1 x, 52 single 1 x, 57 child 1 x
+5000
+7 - Modifies + Pattern: assign,variable and _,expression
+assign a; variable v;
+Select v such that Modifies(a, v) pattern a(_, _"2"_)
+a, b, var, x, z
+5000
+8 - Modifies + Pattern: assign,variable and _,expression
+assign a; variable v;
+Select a such that Modifies(a, v) pattern a(_, "q + x")
+none
+5000
+9 - Modifies + Pattern: assign,variable and _,expression
+assign a; variable v;
+Select BOOLEAN such that Modifies(a, v) pattern a(_, "(1 * 2 * 3)")
+FALSE
+5000
+10 - Modifies + Pattern: assign,entRef and variable,_
+assign a; variable v;
+Select BOOLEAN such that Modifies(a, v) pattern a(v, _)
+TRUE
+5000
+11 - Modifies + With: call,variable and call name
+call c; variable v;
+Select v such that Modifies(c, v) with c.procName = "single"
+x
+5000
+12 - Modifies + With: read,variable and variable name
+read r; variable v;
+Select r such that Modifies(r, v) with v.varName = "y"
+34, 37
+5000
+13 - Modifies + With: while,variable and stmt number
+while w; variable v;
+Select v such that Modifies(w, v) with w.stmt# = 27
+a, x, y
+5000
+14 - Modifies + With: procedure,variable and variable name
+variable v;
+Select BOOLEAN such that Modifies("child", v) with v.varName = "x"
+TRUE
+5000
+15 - Modifies + With: stmt,variable and variable name
+stmt s; variable v;
+Select s such that Modifies(s, v) with v.varName = "a"
+3, 5, 12, 13, 14, 16, 17, 18, 21, 22, 26, 27, 30, 36, 40, 41, 53
 5000
