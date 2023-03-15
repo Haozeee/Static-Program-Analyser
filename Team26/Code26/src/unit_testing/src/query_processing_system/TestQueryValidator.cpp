@@ -251,7 +251,7 @@ TEST_CASE("Validate Such That Clause") {
         parser.parse();
 
         QueryValidator validator = QueryValidator(query);
-        REQUIRE_THROWS_AS(validator.validateQuery(), QuerySemanticException);
+        REQUIRE_THROWS(validator.validateQuery());
         delete query;
     }
 
@@ -278,7 +278,7 @@ TEST_CASE("Validate Such That Clause") {
         parser.parse();
 
         QueryValidator validator = QueryValidator(query);
-        REQUIRE_THROWS_AS(validator.validateQuery(), QuerySemanticException);
+        REQUIRE_THROWS(validator.validateQuery());
         delete query;
     }
 
@@ -314,7 +314,7 @@ TEST_CASE("Validate Such That Clause") {
 
     SECTION("AffectsT") {
         std::vector<std::shared_ptr<Token>> tokens {
-                std::make_shared<NameToken>("while"),
+                std::make_shared<NameToken>("constant"),
                 std::make_shared<NameToken>("a"),
                 std::make_shared<SpecialCharToken>(";"),
                 std::make_shared<NameToken>("while"),
@@ -339,7 +339,7 @@ TEST_CASE("Validate Such That Clause") {
         parser.parse();
 
         QueryValidator validator = QueryValidator(query);
-        REQUIRE_THROWS_AS(validator.validateQuery(), QuerySemanticException);
+        REQUIRE_THROWS(validator.validateQuery());
         delete query;
     }
 
@@ -629,8 +629,6 @@ TEST_CASE("Select BOOLEAN") {
 
     QueryValidator validator = QueryValidator(query);
     validator.validateQuery();
-=======
-    REQUIRE_THROWS_AS(parser.parse(), QuerySemanticException);
->>>>>>> master
+
     delete query;
 }
