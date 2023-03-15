@@ -124,6 +124,14 @@ void QueryParser::parseBooleanSelectClause() {
 
 SelectClauseItem QueryParser::parseReturnValue() {
     std::shared_ptr<Token> synonymToken = getNext();
+    std::unordered_set<std::string> declaration;
+    for (const auto &d : query->getDeclarations()) {
+        std::string synonym = d->getSynonym().ident;
+        if (declaration.find(synonym) != declaration.end()) {
+            throw SemanticException(QueryValidatorDuplicatedSynonymInDeclaration + synonym);
+        }
+        declaration.insert(synonym);
+    }
     if (synonymToken->getValue() == "_") {
         throw QueryParserException(QueryParserInvalidWildcardInSelectClause);
     }
@@ -348,7 +356,7 @@ AttributeReference QueryParser::parseAttributeReference(std::shared_ptr<Token> t
     if (attributeReference.isValidAttributeReference()) {
         return attributeReference;
     } else {
-        throw QueryParserException(QueryValidatorInvalidAttributeReference);
+        throw SyntaxException(QueryValidatorInvalidAttributeReference);
     }
 }
 

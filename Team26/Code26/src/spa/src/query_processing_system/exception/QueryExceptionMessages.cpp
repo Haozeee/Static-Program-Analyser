@@ -37,8 +37,6 @@ const char QueryParserUnexpectedToken[] =
         "Please check your input, unexpected token while parsing: ";
 const char QueryParserUnbalancedStringExpression[] =
         "Cannot start/end string expression with operator.";
-const char QueryParserPatternClauseNonWildcardArgument[] =
-        " pattern clause argument must be a wildcard instead of: ";
 const char QueryValidatorInvalidFirstArgumentTypeInRelation[] =
         " is not a valid first argument type for the given relation.";
 const char QueryValidatorInvalidSecondArgumentTypeInRelation[] =
