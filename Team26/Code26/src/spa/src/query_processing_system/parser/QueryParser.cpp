@@ -1,7 +1,5 @@
 #include <string>
-#include <iostream>
 #include <algorithm>
-#include <unordered_set>
 
 #include "QueryParser.h"
 #include "common/parser/ShuntingYardParser.h"
@@ -72,11 +70,6 @@ void QueryParser::parseSelectClause() {
         throw QueryParserException(getNext()->getValue()
                                     + QueryParserInvalidSelectClause);
     }
-//    for (const auto& item : *query->getSelectClause()->getSelectClauseItems()) {
-//        std::shared_ptr<Synonym> synonym_ptr = std::get<std::shared_ptr<Synonym>>(item);
-//        Synonym& synonym = *synonym_ptr;
-//        std::cout << synonym.getIdent() << std::endl;
-//    }
 }
 
 void QueryParser::parseSingleSelectClause() {
@@ -293,8 +286,6 @@ std::string QueryParser::parseStringExpression() {
     std::string str = stringExpressionToken->getValue();
     parseNext("'");
 
-//    str = parseShuntingYard(str);
-
     return str;
 }
 
@@ -386,7 +377,6 @@ void QueryParser::parseNextIfElseSemanticError(std::string nextValue, std::strin
     if (isValueOf(nextValue)) {
         parseNext(nextValue);
     } else {
-        std::cout << nextValue << std::endl;
         throw QueryInvalidRelationshipArguments(errorMessage);
     }
 }

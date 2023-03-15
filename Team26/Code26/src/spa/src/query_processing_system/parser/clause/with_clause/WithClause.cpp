@@ -20,3 +20,16 @@ ClauseEvaluator* WithClause::getClauseEvaluator() {
         return new IntWithClauseEvaluator(leftRef, rightRef);
     }
 }
+
+Reference WithClause::getLeftRef() {
+    return this->leftRef;
+}
+
+Reference WithClause::getRightRef() {
+    return this->rightRef;
+}
+
+bool WithClause::operator==(const WithClause& other) const {
+    const WithClause* otherClause = dynamic_cast<const WithClause*>(&other);
+    return otherClause != nullptr && this->leftRef == otherClause->leftRef && this->rightRef == otherClause->rightRef;
+}

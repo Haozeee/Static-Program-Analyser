@@ -15,4 +15,10 @@ class WithClause : public Clause {
     bool validateClause();
 
     ClauseEvaluator * getClauseEvaluator() override;
+
+    Reference getLeftRef();
+
+    Reference getRightRef();
+
+    bool operator == (const WithClause& other) const;
 };
