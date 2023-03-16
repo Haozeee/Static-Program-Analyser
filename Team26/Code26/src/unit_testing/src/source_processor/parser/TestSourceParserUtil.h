@@ -4,7 +4,7 @@
 #include <vector>
 
 class TestSourceParserUtil {
-public:
+ public:
     static std::vector<std::tuple<int, int, int>> generatePermutations(int num1, int num2, int num3) {
         std::vector<std::tuple<int, int, int>> triples;
         if (num1 < 1 || num2 < 1 || num3 < 1) {
