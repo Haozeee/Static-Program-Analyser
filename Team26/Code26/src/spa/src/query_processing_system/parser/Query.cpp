@@ -69,17 +69,12 @@ void Query::addWithClause(WithClause* clause) {
     withClauses.push_back(clause);
 }
 
-/* Synonym Design Entity */
-DesignEntity Query::getSynonymDesignEntity(std::shared_ptr<Synonym> synonym) {
-    return getSynonymDesignEntity(synonym->getIdent());
-}
-
 DesignEntity Query::getSynonymDesignEntity(std::string string) {
     if (synonymToDesignEntityMap.count(string)) {
         DesignEntity de = synonymToDesignEntityMap[string];
         return de;
     } else {
-        throw SyntaxException(QueryValidatorUndeclaredSuchThatClauseArgument + string);
+        throw SemanticException(QueryValidatorUndeclaredSuchThatClauseArgument + string);
     }
 }
 

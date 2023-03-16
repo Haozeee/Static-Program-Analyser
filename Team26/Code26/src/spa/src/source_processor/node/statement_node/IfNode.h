@@ -15,5 +15,4 @@ class IfNode : public StmtNode, public std::enable_shared_from_this<IfNode> {
         std::shared_ptr<StmtListNode> elseStmtListNode);
 
     void evaluate(IStmtExtractor& extractor) override;
-    void evaluatePattern(IPatternExtractor& extractor) override;
 };

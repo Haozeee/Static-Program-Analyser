@@ -2,7 +2,6 @@
 
 #include <utility>
 #include "source_processor/design_extractor/interface/statement_extractor/IStmtExtractor.h"
-#include "source_processor/design_extractor/interface/IPatternExtractor.h"
 
 WhileNode::WhileNode(int stmtIndex, std::shared_ptr<CondExprNode> condExprNode,
     std::shared_ptr<StmtListNode> stmtListNode) :
@@ -15,6 +14,3 @@ void WhileNode::evaluate(IStmtExtractor& extractor) {
     extractor.extractWhile(this->shared_from_this());
 }
 
-void WhileNode::evaluatePattern(IPatternExtractor &extractor) {
-    extractor.extractWhile(this->shared_from_this());
-}

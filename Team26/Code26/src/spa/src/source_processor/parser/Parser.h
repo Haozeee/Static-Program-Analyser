@@ -5,6 +5,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <unordered_set>
 #include "common/parser/AbstractParser.h"
 #include "common/tokenizer/token/Token.h"
 #include "source_processor/node/ProgramNode.h"
@@ -18,8 +19,6 @@
 #include "source_processor/node/statement_node/AssignNode.h"
 #include "source_processor/node/statement_node/WhileNode.h"
 #include "source_processor/node/statement_node/IfNode.h"
-
-
 
 class Parser : public AbstractParser {
  private:

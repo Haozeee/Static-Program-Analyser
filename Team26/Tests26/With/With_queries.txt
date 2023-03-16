@@ -1,0 +1,480 @@
+1 - With: int, ident (invalid)
+read r;
+Select r with "x" = 1
+SemanticError
+5000
+2 - With: int, int (invalid)
+print p;
+Select p with 1 = 2
+none
+5000
+3 - With: int, int (valid)
+read r;
+Select r with 1 = 1
+1, 2, 6, 11, 15, 19, 24, 27, 31
+5000
+4 - With: int, procedure.procName (invalid)
+procedure p;
+Select p with 1 = p.procName
+SemanticError
+5000
+5 - With: int, call.procName (invalid)
+call c;
+Select c with 1 = c.procName
+SemanticError
+5000
+6 - With: int, variable.varName (invalid)
+variable v;
+Select v with 1 = v.varName
+SemanticError
+5000
+7 - With: int, read.varName (invalid)
+read r;
+Select r with 1 = read.varName;
+SemanticError
+5000
+8 - With: int, print.varName (invalid)
+print p;
+Select p with 1 = p.varName
+SemanticError
+5000
+9 - With: int, constant.value
+constant c;
+Select BOOLEAN with 0 = c.value
+TRUE
+5000
+10 - With: int, stmt.stmt#
+stmt s;
+Select s with 1 = s.stmt#
+1
+5000
+11 - With: int, read.stmt#
+read r;
+Select BOOLEAN with 1 = r.stmt#
+TRUE
+5000
+12 - With: int, print.stmt#
+print p;
+Select BOOLEAN with 4 = p.stmt#
+TRUE
+5000
+13 - With: int, call.stmt#
+call c;
+Select BOOLEAN with 13 = c.stmt#
+TRUE
+5000
+14 - With: int, while.stmt#
+while w;
+Select BOOLEAN with 5 = w.stmt#
+TRUE
+5000
+15 - With: int, if.stmt#
+if ifs;
+Select BOOLEAN with 10 = ifs.stmt#
+TRUE
+5000
+16 - With: int, assign.stmt#
+assign a;
+Select BOOLEAN with 3 = a.stmt#
+TRUE
+5000
+17 - With: ident, ident (valid)
+procedure p;
+Select p with "x" = "x"
+procedure1, procedure2, procedure3, procedure4
+5000
+18 - With: ident, ident (invalid)
+
+Select BOOLEAN with "x" = "y"
+FALSE
+5000
+19 - With: ident, int (invalid)
+procedure p;
+Select p with "x" = 1
+SemanticError
+5000
+20 - With: ident, procedure.procName
+procedure p;
+Select BOOLEAN with "procedure1" = p.procName
+TRUE
+5000
+21 - With: ident, call.procName
+call c;
+Select c with "procedure4" = c.procName
+30
+5000
+22 - With: ident, variable.varName
+variable v;
+Select BOOLEAN with "x11" = v.varName
+TRUE
+5000
+23 - With: ident, read.varName
+read r;
+Select r with "x5" = r.varName
+6
+5000
+24 - With: ident, print.varName
+print p;
+Select p with "x3" = p.varName
+4
+5000
+25 - With: ident, constant.value (invalid)
+constant c;
+Select c with "x" = c.value
+SemanticError
+5000
+26 - With: ident, stmt.stmt# (invalid)
+stmt s;
+Select s with "x" = s.stmt#
+SemanticError
+5000
+27 - With: ident, read.stmt# (invalid)
+read r;
+Select r with "x" = r.stmt#
+SemanticError
+5000
+28 - With: ident, print.stmt# (invalid)
+print p;
+Select p with "x" = p.stmt#
+SemanticError
+5000
+29 - With: ident, call.stmt# (invalid)
+call c;
+Select c with "x" = c.stmt#
+SemanticError
+5000
+30 - With: ident, while.stmt# (invalid)
+while w;
+Select w with "x" = w.stmt#
+SemanticError
+5000
+31 - With: ident, if.stmt# (invalid)
+if ifs;
+Select ifs with "x" = ifs.stmt#
+SemanticError
+5000
+32 - With: ident, assign.stmt# (invalid)
+assign a;
+Select a with "x" = a.stmt#
+SemanticError
+5000
+33 - With: procName, ident (valid)
+procedure p;
+Select BOOLEAN with p.procName = "procedure4"
+TRUE
+5000
+34 - With: procName, ident (invalid)
+procedure p;
+Select BOOLEAN with p.procName = "InvalidProcedure"
+FALSE
+5000
+35 - With: procName, int (invalid)
+procedure p;
+Select BOOLEAN with p.procName = 1
+SemanticError
+5000
+36 - With: procName, procedure.procName
+procedure p, p1;
+Select p with p.procName = p1.procName
+procedure1, procedure2, procedure3, procedure4
+5000
+37 - With: procName, call.procName
+procedure p; call c;
+Select p with p.procName = c.procName
+procedure2, procedure3, procedure4
+5000
+38 - With: procName, variable.varName
+procedure p; variable v;
+Select BOOLEAN with p.procName = v.varName
+FALSE
+5000
+39 - With: procName, read.varName
+procedure p; read r;
+Select BOOLEAN with p.procName = r.varName
+FALSE
+5000
+40 - With: procName, print.varName
+procedure p; print pr;
+Select BOOLEAN with p.procName = pr.varName
+FALSE
+5000
+41 - With: procName, constant.value (invalid)
+procedure p; constant c;
+Select p with p.procName = c.value
+SemanticError
+5000
+42 - With: procName, stmt.stmt# (invalid)
+procedure p; stmt s;
+Select p with p.procName = stmt.stmt#
+SemanticError
+5000
+43 - With: procName, read.stmt# (invalid)
+procedure p; read r;
+Select p with p.procName = r.stmt#
+SemanticError
+5000
+44 - With: procName, print.stmt# (invalid)
+procedure p; print pr;
+Select p with p.procName = pr.stmt#
+SemanticError
+5000
+45 - With: procName, call.stmt# (invalid)
+procedure p; call c;
+Select p with p.procName = c.stmt#
+SemanticError
+5000
+46 - With: procName, while.stmt# (invalid)
+procedure p; while w;
+Select p with p.procName = w.stmt#
+SemanticError
+5000
+47 - With: procName, if.stmt# (invalid)
+procedure p; if ifs;
+Select p with p.procName = ifs.stmt#
+SemanticError
+5000
+48 - With: procName, assign.stmt# (invalid)
+procedure p; assign a;
+Select p with p.procName = a.stmt#
+SemanticError
+5000
+49 - With: varName, ident (valid)
+variable v;
+Select BOOLEAN with v.varName = "x"
+TRUE
+5000
+50 - With: varName, ident (invalid)
+variable v;
+Select BOOLEAN with v.varName = "InvalidVariable"
+FALSE
+5000
+51 - With: varName, int (invalid)
+variable v;
+Select v with v.varName = 1
+SemanticError
+5000
+52 - With: varName, procedure.procName
+variable v; procedure p;
+Select BOOLEAN with v.varName = p.procName
+FALSE
+5000
+53 - With: varName, call.procName
+variable v; call c;
+Select BOOLEAN with v.varName = c.procName
+FALSE
+5000
+54 - With: varName, variable.varName
+variable v, v1;
+Select <v, v1> with v.varName = v1.varName
+x x, x1 x1, x2 x2, x3 x3, x4 x4, x5 x5, x6 x6, x7 x7, x8 x8, x9 x9, x10 x10, x11 x11, x13 x13, x14 x14, x15 x15, x16 x16, x17 x17, x18 x18, x19 x19, x20 x20, x22 x22, x23 x23, x24 x24, x25 x25, x26 x26, x27 x27, x28 x28, x30 x30, x31 x31, x32 x32 
+5000
+55 - With: varName, read.varName
+variable v; read r;
+Select BOOLEAN with v.varName = r.varName
+TRUE
+5000
+56 - With: varName, print.varName
+variable v; print p;
+Select BOOLEAN with v.varName = p.varName
+TRUE
+5000
+57 - With: varName, constant.value (invalid)
+variable v; constant c;
+Select v with v.varName = c.value
+SemanticError
+5000
+58 - With: varName, stmt.stmt# (invalid)
+variable v; stmt s;
+Select v with v.varName = s.stmt#
+SemanticError
+5000
+59 - With: varName, read.stmt# (invalid)
+variable v; read r;
+Select v with v.varName = r.stmt#
+SemanticError
+5000
+60 - With: varName, print.stmt# (invalid)
+variable v; print p;
+Select v with v.varName = p.stmt#
+SemanticError
+5000
+61 - With: varName, call.stmt# (invalid)
+variable v; call c;
+Select v with v.varName = c.stmt#
+SemanticError
+5000
+62 - With: varName, while.stmt# (invalid)
+variable v; while w;
+Select v with v.varName = w.stmt#
+SemanticError
+5000
+63 - With: varName, if.stmt# (invalid)
+variable v; if ifs;
+Select v with v.varName = ifs.stmt#
+SemanticError
+5000
+64 - With: varName, assign.stmt# (invalid)
+variable v; assign a;
+Select v with v.varName = a.stmt#
+SemanticError
+5000
+65 - With: value, ident (invalid)
+constant c;
+Select c with c.value = "x"
+SemanticError
+5000
+66 - With: value, int (invalid)
+constant c;
+Select BOOLEAN with c.value = 12345
+FALSE
+5000
+67 - With: value, int (valid)
+constant c;
+Select BOOLEAN with c.value = 0
+TRUE
+5000
+68 - With: value, procedure.procName (invalid)
+constant c; procedure p;
+Select c with c.value = p.procName
+SemanticError
+5000
+69 - With: value, call.procName (invalid)
+constant c; call c;
+Select c with c.value = c.procName
+SemanticError
+5000
+70 - With: value, variable.varName (invalid)
+constant c; variable v;
+Select c with c.value = v.varName
+SemanticError
+5000
+71 - With: value, read.varName (invalid)
+constant c; read r;
+Select c with c.value = r.varName
+SemanticError
+5000
+72 - With: value, print.varName (invalid)
+constant c; print p;
+Select c with c.value = p.varName
+SemanticError
+5000
+73 - With: value, constant.value
+constant c, c1;
+Select c with c.value = c1.value
+0, 1, 2, 3, 10, 100, 1000
+5000
+74 - With: value, stmt.stmt#
+constant c; stmt s;
+Select c with c.value = s.stmt#
+1, 2, 3, 10
+5000
+75 - With: value, read.stmt#
+constant c; read r;
+Select c with c.value = r.stmt#
+1, 2
+5000
+76 - With: value, print.stmt#
+constant c; print p;
+Select c with c.value = p.stmt#
+none
+5000
+77 - With: value, call.stmt#
+constant c; call ca;
+Select c with c.value = ca.stmt#
+none
+5000
+78 - With: value, while.stmt# 
+constant c; while w;
+Select c with c.value = w.stmt#
+none
+5000
+79 - With: value, if.stmt#
+constant c; if ifs;
+Select c with c.value = ifs.stmt#
+10
+5000
+80 - With: value, assign.stmt#
+constant c; assign a;
+Select c with c.value = a.stmt#
+3
+5000
+81 - With: stmt#, ident (invalid)
+stmt s;
+Select s with s.stmt# = "x"
+SemanticError
+5000
+82 - With: stmt#, int (invalid)
+stmt s;
+Select BOOLEAN with s.stmt# = 1000
+FALSE
+5000
+83 - With: stmt#, int (valid)
+stmt s;
+Select BOOLEAN with s.stmt# = 1
+TRUE
+5000
+84 - With: stmt#, procedure.procName (invalid)
+stmt s; procedure p;
+Select s with s.stmt# = p.procName
+SemanticError
+5000
+85 - With: stmt#, call.procName (invalid)
+stmt s; call c;
+Select s with s.stmt# = c.procName
+SemanticError
+5000
+86 - With: stmt#, variable.varName (invalid)
+stmt s; variable v;
+Select s with s.stmt# = v.varName
+SemanticError
+5000
+87 - With: stmt#, read.varName (invalid)
+stmt s; read r;
+Select s with s.stmt# = r.varName
+SemanticError
+5000
+88 - With: stmt#, print.varName (invalid)
+stmt s; print p;
+Select s with s.stmt# = p.varName
+SemanticError
+5000
+89 - With: stmt#, constant.value
+stmt s; constant c;
+Select s with s.stmt# = c.value
+1, 2, 3, 10
+5000
+90 - With: stmt#, stmt.stmt#
+stmt s, s1;
+Select BOOLEAN with s.stmt# = s1.stmt#
+TRUE
+5000
+91 - With: stmt#, read.stmt#
+stmt s; read r;
+Select s with s.stmt# = r.stmt#
+1, 2, 6, 11, 15, 19, 24, 27, 31
+5000
+92 - With: stmt#, print.stmt#
+stmt s; print p;
+Select s with s.stmt# = p.stmt#
+4, 7, 12, 17, 20, 25, 28, 32
+5000
+93 - With: stmt#, call.stmt#
+stmt s; call c;
+Select s with s.stmt# = c.stmt#
+13, 22, 30
+5000
+94 - With: stmt#, while.stmt#
+stmt s; while w;
+Select s with s.stmt# = w.stmt#
+5, 18
+5000
+95 - With: stmt#, if.stmt#
+stmt s; if ifs;
+Select s with s.stmt# = ifs.stmt#
+10, 23
+5000
+96 - With: stmt#, assign.stmt#
+stmt s; assign a;
+Select s with s.stmt# = a.stmt#
+3, 8, 9, 14, 16, 21, 26, 29, 33
+5000

@@ -11,7 +11,7 @@ procedure1, procedure3, procedure4, procedure5
 3 - Calls - synonym, ident (valid)
 procedure p;
 Select p such that Calls(p, "procedure2")
-procedure4, procedure5
+procedure1, procedure4, procedure5
 5000
 4 - Calls - synonym, ident (invalid)
 procedure p;
@@ -29,9 +29,9 @@ Select BOOLEAN such that Calls(_, _)
 TRUE
 5000
 7 - Calls - _, ident (valid)
-constant c;
-Select c such that Calls(p, "procedure2")
-procedure4, procedure5
+
+Select BOOLEAN such that Calls(_, "procedure2")
+TRUE
 5000
 8 - Calls - _, ident (invalid)
 
@@ -55,11 +55,11 @@ TRUE
 5000
 12 - Calls - ident (valid), ident (invalid)
 
-Select p such that Calls("procedure4", "InvalidProcedure")
+Select BOOLEAN such that Calls("procedure4", "InvalidProcedure")
 FALSE
 5000
 13 - Calls - ident (invalid), synonym
-
+procedure p;
 Select BOOLEAN such that Calls("InvalidProcedure", p)
 FALSE
 5000
@@ -71,15 +71,15 @@ FALSE
 15 - Calls - ident (invalid), ident (valid)
 
 Select BOOLEAN such that Calls("InvalidProcedure", "procedure2")
-TRUE
+FALSE
 5000
 16 - Calls - ident (invalid), ident (invalid)
 
-Select p such that Calls("InvalidProcedure", "InvalidProcedure")
+Select BOOLEAN such that Calls("InvalidProcedure", "InvalidProcedure")
 FALSE
 5000
 17 - Calls - synonym, valid ident - procName
 procedure p;
 Select p.procName such that Calls(p, "procedure2")
-procedure4, procedure5
+procedure1, procedure4, procedure5
 5000

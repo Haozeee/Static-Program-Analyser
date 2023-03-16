@@ -44,4 +44,6 @@ class Reference {
     ReferenceType getReferenceType();
 
     std::variant<AttributeReference, int, std::string> getValue();
+
+    bool operator==(const Reference& other) const;
 };

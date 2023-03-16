@@ -54,7 +54,12 @@ void EntityExtractor::extractCall(std::shared_ptr<CallNode> node) {
 void EntityExtractor::extractAssign(std::shared_ptr<AssignNode> node) {
     patternStore->insertExpressionPattern(node);
     entityStore->insertAssignStatement(node);
-    extractExpr(node->exprNode);
+    for (auto &integer : node->exprConstants) {
+        entityStore->insertConstant(integer);
+    }
+    for (auto &variable : node->exprVariables) {
+        entityStore->insertVariableName(variable);
+    }
 }
 
 void EntityExtractor::extractIf(std::shared_ptr<IfNode> node) {
