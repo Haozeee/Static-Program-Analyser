@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <iostream>
-
 #include "Query.h"
 #include "query_processing_system/exception/QueryExceptionMessages.h"
 #include "query_processing_system/exception/QueryException.h"
@@ -34,7 +33,6 @@ std::vector<std::shared_ptr<Declaration>> Query::getDeclarations() {
 void Query::addDeclaration(const Synonym& synonym, DesignEntity designEntity) {
     auto declaration = std::make_shared<Declaration>(synonym, designEntity);
     declarations.push_back(declaration);
-//    std::cout << synonym.getIdent() << " " << toString(declaration->getDesignEntity()) << std::endl;
     synonymToDesignEntityMap.insert({synonym.getIdent(), declaration->getDesignEntity()});
 }
 
