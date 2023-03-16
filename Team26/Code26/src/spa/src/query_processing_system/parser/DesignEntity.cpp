@@ -52,6 +52,5 @@ bool isValidDesignEntity(DesignEntity designEntity) {
 
 std::string toString(DesignEntity designEntity) {
     auto result = designEntityToStringMap.find(designEntity);
-    // throw exception here if design entity not found
     return result->second;
 }

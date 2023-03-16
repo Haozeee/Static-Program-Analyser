@@ -276,11 +276,9 @@ StringExpression QueryParser::parseExpression() {
             parseNext("_");
             return StringExpression(isExactMatch, stringExpression);
         } else {
-            // Wildcard
             return StringExpression(true);
         }
     } else {
-        // Exact match
         std::string stringExpression = parseStringExpression();
         if (!QueryParserUtil::isValidStringExpression(stringExpression)) {
             throw QueryParserException(stringExpression + QueryParserInvalidStringExpression);

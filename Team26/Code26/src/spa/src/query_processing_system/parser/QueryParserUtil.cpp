@@ -64,7 +64,7 @@ bool QueryParserUtil::handleRemainingTerms(std::stack<std::shared_ptr<Token>>* t
         }
     }
 
-    if (term->size() > 1 || !op->empty()) {
+    if (term->size() > 1) {
         return false;
     }
 
@@ -196,7 +196,7 @@ bool QueryParserUtil::validateCloseBracket(std::stack<std::shared_ptr<Token>>* t
 }
 
 bool QueryParserUtil::isValidStringExpression(std::string expr) {
-    if (expr.size() == 0) {
+    if (expr.empty()) {
         return false;
     }
 
