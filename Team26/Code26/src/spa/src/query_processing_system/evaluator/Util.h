@@ -10,7 +10,7 @@ class Util {
  public:
     /**
      * Given two sets containing elements of type T, get the intersection of the two sets.
-     * @parsm res The set to store the intersection in.
+     * @param res The set to store the intersection in.
      */
     template<typename T>
     static void setIntersection(const std::unordered_set<T> &setA,

@@ -68,8 +68,7 @@ void QueryParser::parseSelectClause() {
     } else if (isValueOf("<")) {
         parseTupleSelectClause();
     } else {
-        throw QueryParserException(getNext()->getValue()
-                                    + QueryParserInvalidSelectClause);
+        throw QueryParserException(getNext()->getValue() + QueryParserInvalidSelectClause);
     }
 }
 

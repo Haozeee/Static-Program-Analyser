@@ -12,8 +12,8 @@ void QueryDb::addSelectedColumn(SelectClauseItem selectClauseItem) {
 }
 
 std::vector<std::string> QueryDb::getInterestedResults() {
-    std::vector<std::string> res;
     if (resultTablesHasFalse()) {
+        std::vector<std::string> res;
         if (selectedSynonyms.empty()) {
             res.emplace_back("FALSE");
         }
