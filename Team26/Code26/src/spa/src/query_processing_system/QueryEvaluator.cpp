@@ -1,7 +1,6 @@
 #include "QueryEvaluator.h"
 #include <algorithm>
 #include <iterator>
-#include "evaluator/ResultTable.h"
 
 QueryEvaluator::QueryEvaluator(Query* query, std::shared_ptr<ReadStorage> storage)
     : query(query), storage(storage), queryResults(QueryDb(storage)), cache(std::make_shared<Cache>(storage)) {}
@@ -24,6 +23,9 @@ void QueryEvaluator::evaluateSuchThatClause() {
         auto clauseResultTable = clauseEvaluator->evaluateClause(storage, cache);
         queryResults.addResult(clauseResultTable);
         delete clauseEvaluator;
+        if (clauseResultTable->hasNoResults()) {
+            break;
+        }
     }
 }
 
@@ -33,6 +35,9 @@ void QueryEvaluator::evaluatePatternClause() {
         auto clauseResultTable = clauseEvaluator->evaluateClause(storage);
         queryResults.addResult(clauseResultTable);
         delete clauseEvaluator;
+        if (clauseResultTable->hasNoResults()) {
+            break;
+        }
     }
 }
 
@@ -42,6 +47,9 @@ void QueryEvaluator::evaluateWithClause() {
         auto clauseResultTable = clauseEvaluator->evaluateClause(storage);
         queryResults.addResult(clauseResultTable);
         delete clauseEvaluator;
+        if (clauseResultTable->hasNoResults()) {
+            break;
+        }
     }
 }
 
