@@ -13,6 +13,8 @@
 #include "program_knowledge_base/StorageUtil.h"
 #include "program_knowledge_base/StorageManager.h"
 
+using ResultGroups = std::unordered_map<std::string, std::deque<std::shared_ptr<ResultTable>>>;
+
 class QueryDb {
  private:
     /**
@@ -43,7 +45,7 @@ class QueryDb {
      */
     bool resultTablesHasFalse();
 
-    std::vector<std::string> getBooleanResults(std::shared_ptr<ResultTable> interestedResults);
+    std::vector<std::string> getBooleanResults(std::vector<std::shared_ptr<ResultTable>> resultGroups);
 
     void mapAttributeReferences(std::shared_ptr<ResultTable> interestedResults);
 
@@ -66,7 +68,13 @@ class QueryDb {
      * Sort the list of results tables such that the table with the least amount of rows come first.
      * This makes joining the table quicker.
      */
-    void sortResultTables();
+    void sortTables(std::deque<std::shared_ptr<ResultTable>> &tables);
+
+    std::shared_ptr<ResultTable> getMainResultTableFromGroup(std::vector<std::shared_ptr<ResultTable>> resultGroups);
+
+    ResultGroups getGroups();
+
+    std::vector<std::shared_ptr<ResultTable>> evaluateGroups();
 
  public:
     explicit QueryDb(std::shared_ptr<ReadStorage> storage);

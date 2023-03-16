@@ -12,11 +12,14 @@ void QueryDb::addResult(std::shared_ptr<ResultTable> toAdd) {
         return;
     }
     results.push_back(toAdd);
-    unionFind.unionMultipleItems(toAdd->getColumnsNames());
+    if (!toAdd->hasNoResults()) {
+        unionFind.unionMultipleItems(toAdd->getColumnsNames());
+    }
 }
 
 void QueryDb::setSelectedColumns(std::vector<std::pair<SelectClauseItem, DesignEntity>> selectedCols) {
     selectedSynonyms = selectedCols;
+
     std::vector<std::string> synonymNames;
     for (const auto& i : selectedCols) {
         synonymNames.emplace_back(SelectClause::getSynonym(i.first));
@@ -51,11 +54,56 @@ std::unordered_set<std::string> QueryDb::getAllColumnsInResults() {
     return res;
 }
 
-void QueryDb::sortResultTables() {
+void QueryDb::sortTables(std::deque<std::shared_ptr<ResultTable>> &tables) {
     auto comparePredicate = [](std::shared_ptr<ResultTable> const &a, std::shared_ptr<ResultTable> const &b) {
         return a->getNumberOfRows() < b->getNumberOfRows();
     };
-    std::sort(results.begin(), results.end(), comparePredicate);
+    std::sort(tables.begin(), tables.end(), comparePredicate);
+}
+
+ResultGroups QueryDb::getGroups() {
+    ResultGroups groups;
+    for (const auto& table : results) {
+        if (table->getColumnsNames().empty()) {
+            continue;
+        }
+        std::string root = unionFind.find(table->getColumnsNames().at(0));
+        if (groups.count(root)) {
+            groups.at(root).push_back(table);
+        } else {
+            std::deque<std::shared_ptr<ResultTable>> newGroup;
+            newGroup.push_back(table);
+            groups.insert({root, newGroup});
+        }
+    }
+
+    return groups;
+}
+
+std::vector<std::shared_ptr<ResultTable>> QueryDb::evaluateGroups() {
+    auto groups = getGroups();
+    std::vector<std::shared_ptr<ResultTable>> groupResults;
+
+    for (auto item : groups) {
+        std::shared_ptr<ResultTable> individualResults;
+        sortTables(item.second);
+
+        if (!item.second.empty()) {
+            individualResults = item.second.front();
+            item.second.pop_front();
+        }
+
+        while (!item.second.empty()) {
+            auto table = item.second.front();
+            item.second.pop_front();
+            if (!table->getColumnsNamesSet().empty()) {
+                individualResults = ResultTable::joinTable(individualResults, table);
+            }
+        }
+        groupResults.emplace_back(individualResults);
+    }
+
+    return groupResults;
 }
 
 std::vector<std::string> QueryDb::getInterestedResults() {
@@ -68,24 +116,16 @@ std::vector<std::string> QueryDb::getInterestedResults() {
     }
 
     fillMissingTables();
-    sortResultTables();
-
-    std::shared_ptr<ResultTable> interestedResults;
-    if (!results.empty()) {
-        interestedResults = results.front();
-        results.pop_front();
-    }
-
-    while (!results.empty()) {
-        auto table = results.front();
-        results.pop_front();
-        if (!table->getColumnsNamesSet().empty()) {
-            interestedResults = ResultTable::joinTable(interestedResults, table);
-        }
-    }
+    auto resultGroups = evaluateGroups();
 
     if (selectedSynonyms.empty()) {
-        return getBooleanResults(interestedResults);
+        return getBooleanResults(resultGroups);
+    }
+
+    auto interestedResults = getMainResultTableFromGroup(resultGroups);
+
+    if (interestedResults == nullptr) {
+        throw std::exception();
     }
 
     // Map attribute references
@@ -108,6 +148,18 @@ void QueryDb::mapAttributeReferences(std::shared_ptr<ResultTable> interestedResu
     }
 }
 
+std::shared_ptr<ResultTable>
+QueryDb::getMainResultTableFromGroup(std::vector<std::shared_ptr<ResultTable>> resultGroups) {
+    for (auto group : resultGroups) {
+        auto colNames = group->getColumnsNamesSet();
+        if (!colNames.empty() && !selectedSynonyms.empty()
+            && colNames.count(SelectClause::getSynonym(selectedSynonyms.at(0).first))) {
+            return group;
+        }
+    }
+    return nullptr;
+}
+
 std::vector<std::string> QueryDb::getInterestedColumns() {
     std::vector<std::string> res;
     for (auto i : selectedSynonyms) {
@@ -116,16 +168,19 @@ std::vector<std::string> QueryDb::getInterestedColumns() {
     return res;
 }
 
-std::vector<std::string> QueryDb::getBooleanResults(std::shared_ptr<ResultTable> interestedResults) {
+std::vector<std::string> QueryDb::getBooleanResults(std::vector<std::shared_ptr<ResultTable>> resultGroups) {
     std::vector<std::string> res;
-    // Interested results is not null, has columns but has no rows
-    auto isFalse = interestedResults != nullptr && !interestedResults->getColumnsNamesSet().empty()
-            && interestedResults->getNumberOfRows() == 0;
-    if (isFalse) {
-        res.emplace_back("FALSE");
-    } else {
-        res.emplace_back("TRUE");
+
+    for (const auto& group : resultGroups) {
+        // Results is not null, has columns but has no rows
+        auto isFalse = group != nullptr && !group->getColumnsNamesSet().empty() && group->getNumberOfRows() == 0;
+        if (isFalse) {
+            res.emplace_back("FALSE");
+            return res;
+        }
     }
+
+    res.emplace_back("TRUE");
     return res;
 }
 

@@ -44,6 +44,10 @@ void UnionFind::unionItems(std::string p, std::string q) {
 }
 
 void UnionFind::unionMultipleItems(const std::vector<std::string>& itemsToAdd) {
+    if (itemsToAdd.empty()) {
+        return;
+    }
+
     if (itemsToAdd.size() == 1) {
         find(itemsToAdd.at(0));
         return;
