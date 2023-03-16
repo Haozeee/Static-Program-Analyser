@@ -27,22 +27,21 @@ class ShuntingYardParser {
                                             const std::shared_ptr<std::unordered_set<int>>& exprConstants);
 
  private:
-    static void parseDigit(const std::string& expr, int i, bool& isPrevFactor,
+    static void parseDigit(std::string expr, int& i, bool& isPrevFactor,
                            std::stack<std::shared_ptr<ShuntNode>>& result);
     static void parseDigit(const std::shared_ptr<std::unordered_set<int>>& exprConstants,
-                           std::string expr, int i, bool& isPrevFactor,
+                           std::string expr, int& i, bool& isPrevFactor,
                            std::stack<std::shared_ptr<ShuntNode>>& result);
 
-    static void parseVariable(const std::string& expr, int i, bool& isPrevFactor,
+    static void parseVariable(std::string expr, int& i, bool& isPrevFactor,
                               std::stack<std::shared_ptr<ShuntNode>>& result);
     static void parseVariable(const std::shared_ptr<std::unordered_set<std::string>>& exprVariables,
-                              const std::string& expr, int i, bool& isPrevFactor,
+                              std::string expr, int& i, bool& isPrevFactor,
                               std::stack<std::shared_ptr<ShuntNode>>& result);
 
     static void parseOperatorOrBracket(char c, std::stack<char>& opStack, bool& isPrevFactor,
                                       std::stack<std::shared_ptr<ShuntNode>>& result,
                                       std::unordered_map<char, int>& ranking);
 
-    static void processOperator(std::stack<char>& opStack, const std::unordered_map<char, int>& ranking,
-                                std::stack<std::shared_ptr<ShuntNode>>& result);
+    static void processOperator(std::stack<char>& opStack, std::stack<std::shared_ptr<ShuntNode>>& result);
 };

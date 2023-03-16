@@ -32,7 +32,7 @@ std::shared_ptr<ShuntNode> ShuntingYardParser::parse(std::string expr) {
     }
 
     while (!opStack.empty()) {
-        processOperator(opStack, ranking, result);
+        processOperator(opStack, result);
     }
 
     if (result.size() != 1) {
@@ -76,7 +76,7 @@ std::shared_ptr<ShuntNode> ShuntingYardParser::parse(std::string expr,
     }
 
     while (!opStack.empty()) {
-        processOperator(opStack, ranking, result);
+        processOperator(opStack, result);
     }
 
     if (result.size() != 1) {
@@ -86,7 +86,7 @@ std::shared_ptr<ShuntNode> ShuntingYardParser::parse(std::string expr,
     return result.top();
 }
 
-void ShuntingYardParser::parseDigit(const std::string& expr, int i, bool& isPrevFactor,
+void ShuntingYardParser::parseDigit(std::string expr, int& i, bool& isPrevFactor,
                                     std::stack<std::shared_ptr<ShuntNode>>& result) {
     if (isPrevFactor) {
         throw ShuntingYardParserException(ParserShuntingYardParserInvalidExpressionExceptionMessage);
@@ -101,7 +101,7 @@ void ShuntingYardParser::parseDigit(const std::string& expr, int i, bool& isPrev
     isPrevFactor = true;
 }
 
-void ShuntingYardParser::parseVariable(const std::string& expr, int i,
+void ShuntingYardParser::parseVariable(std::string expr, int& i,
                                        bool& isPrevFactor, std::stack<std::shared_ptr<ShuntNode>>& result) {
     if (isPrevFactor) {
         throw ShuntingYardParserException(ParserShuntingYardParserInvalidExpressionExceptionMessage);
@@ -123,7 +123,7 @@ void ShuntingYardParser::parseOperatorOrBracket(char c, std::stack<char>& opStac
         opStack.push(c);
     } else if (c == ')') {
         while (!opStack.empty() && opStack.top() != '(') {
-            processOperator(opStack, ranking, result);
+            processOperator(opStack, result);
         }
         if (opStack.empty()) {
             throw ShuntingYardParserException(ParserShuntingYardParserInvalidExpressionExceptionMessage);
@@ -132,7 +132,7 @@ void ShuntingYardParser::parseOperatorOrBracket(char c, std::stack<char>& opStac
 
     } else {
         while (!opStack.empty() && ranking[opStack.top()] >= ranking[c]) {
-            processOperator(opStack, ranking, result);
+            processOperator(opStack, result);
         }
         opStack.push(c);
     }
@@ -140,7 +140,7 @@ void ShuntingYardParser::parseOperatorOrBracket(char c, std::stack<char>& opStac
 }
 
 void ShuntingYardParser::parseDigit(const std::shared_ptr<std::unordered_set<int>>& exprConstants, std::string expr,
-                                    int i, bool& isPrevFactor, std::stack<std::shared_ptr<ShuntNode>>& result) {
+                                    int& i, bool& isPrevFactor, std::stack<std::shared_ptr<ShuntNode>>& result) {
     if (isPrevFactor) {
         throw ShuntingYardParserException(ParserShuntingYardParserInvalidExpressionExceptionMessage);
     }
@@ -156,7 +156,7 @@ void ShuntingYardParser::parseDigit(const std::shared_ptr<std::unordered_set<int
 }
 
 void ShuntingYardParser::parseVariable(const std::shared_ptr<std::unordered_set<std::string>>& exprVariables,
-                                       const std::string& expr, int i, bool& isPrevFactor,
+                                       std::string expr, int& i, bool& isPrevFactor,
                                        std::stack<std::shared_ptr<ShuntNode>>& result) {
     if (isPrevFactor) {
         throw ShuntingYardParserException(ParserShuntingYardParserInvalidExpressionExceptionMessage);
@@ -172,8 +172,7 @@ void ShuntingYardParser::parseVariable(const std::shared_ptr<std::unordered_set<
     isPrevFactor = true;
 }
 
-void ShuntingYardParser::processOperator(std::stack<char>& opStack, const std::unordered_map<char, int>& ranking,
-                                         std::stack<std::shared_ptr<ShuntNode>>& result) {
+void ShuntingYardParser::processOperator(std::stack<char>& opStack, std::stack<std::shared_ptr<ShuntNode>>& result) {
     if (result.size() < 2) {
         throw ShuntingYardParserException(
                 ParserShuntingYardParserInvalidExpressionExceptionMessage);
