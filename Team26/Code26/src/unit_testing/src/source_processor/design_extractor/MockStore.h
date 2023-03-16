@@ -1,15 +1,17 @@
 #pragma once
 
+#include <memory>
+#include <set>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+
 #include "source_processor/storage_writer/interface/IEntityStore.h"
 #include "source_processor/storage_writer/interface/IRelationshipStore.h"
 #include "source_processor/storage_writer/interface/IPatternStore.h"
-#include <unordered_set>
-#include <set>
-#include <unordered_map>
-#include <memory>
 
 class MockEntityStore : public IEntityStore {
-public:
+ public:
     std::unordered_set<std::shared_ptr<ProcedureNode>> procedureSet;
     std::set<int> stmtSet;
     std::unordered_set<std::shared_ptr<ReadNode>> readSet;
@@ -23,43 +25,43 @@ public:
 
     void insertProcedure(std::shared_ptr<ProcedureNode> node) override {
         procedureSet.insert(node);
-    };
+    }
 
     void insertReadStatement(std::shared_ptr<ReadNode> node) override {
         readSet.insert(node);
-    };
+    }
 
     void insertPrintStatement(std::shared_ptr<PrintNode> node) override {
         printSet.insert(node);
-    };
+    }
+
     void insertAssignStatement(std::shared_ptr<AssignNode> node) override {
         assignSet.insert(node);
-    };
+    }
 
     void insertCallStatement(std::shared_ptr<CallNode> node) override {
         callSet.insert(node);
-    };
+    }
 
     void insertWhileStatement(std::shared_ptr<WhileNode> node) override {
         whileSet.insert(node);
-    };
+    }
 
     void insertIfStatement(std::shared_ptr<IfNode> node) override {
         ifSet.insert(node);
-    };
+    }
 
     void insertVariableName(const std::string &name) override {
         variableSet.insert(name);
-    };
+    }
 
     void insertConstant(const int &integer) override {
         constantSet.insert(integer);
-    };
+    }
 
     void insertStatement(int stmtIndex) override {
         stmtSet.insert(stmtIndex);
-    };
-
+    }
 };
 
 class MockRelationshipStore : public IRelationshipStore {
@@ -72,36 +74,37 @@ class MockRelationshipStore : public IRelationshipStore {
 
     void insertFollowsRelationship(const int &previousStmtNo, const int &currentStmtNo) override {
         followsStore[previousStmtNo].insert(currentStmtNo);
-    };
+    }
 
     void insertParentsRelationship(const int &parentStmtNo, const int &childStmtNo) override {
         parentsStore[parentStmtNo].insert(childStmtNo);
-    };
+    }
 
     void insertUsesSRelationship(const int &stmtNo, const std::string &variableName) override {
         usesSStore[stmtNo].insert(variableName);
-    };
+    }
 
     void insertModifiesSRelationship(const int &stmtNo, const std::string &variableName) override {
         modifiesSStore[stmtNo].insert(variableName);
-    };
+    }
 
     void insertUsesPRelationship(const std::string  &procedureName, const std::string &variableName) override {
-        //TODO(zt): Sprint 3
-    };
+        // TODO(zt): Sprint 3
+    }
+
     void insertModifiesPRelationship(const std::string  &procedureName, const std::string &variableName) override {
-        //TODO(zt): Sprint 3
+        // TODO(zt): Sprint 3
     }
 
     void insertCallsRelationship(const int &stmtNo, const std::string &callerName, const std::string
     &calleeName) override {
+    }
 
-    };
     void insertNextRelationship(int previousStmtNo, int currStmtNo) override {
         nextStore[previousStmtNo].insert(currStmtNo);
     }
-    void insertCallsTRelationship(std::string caller, std::string callee) override {
 
+    void insertCallsTRelationship(std::string caller, std::string callee) override {
     }
 
     bool findFollows(int x, int y) {
@@ -130,19 +133,14 @@ class MockPatternStore : public IPatternStore {
     std::set<std::shared_ptr<AssignNode>> assignStore;
     void insertExpressionPattern(std::shared_ptr<AssignNode> node) override {
         assignStore.insert(node);
-    };
+    }
 
     void insertCondExpressionIfStatement(int stmtIndex, std::string variableName) override {
-
-    };
+    }
 
     void insertCondExpressionWhileStatement(int stmtIndex, std::string variableName) override {
-
-    };
+    }
 
     void invokePostReverseRelationship() override {
-
     }
 };
-
-

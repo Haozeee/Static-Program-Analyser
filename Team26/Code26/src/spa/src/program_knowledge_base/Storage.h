@@ -7,7 +7,7 @@
 
 template<template<typename, typename> typename Relationship_Read_Or_Write,
          template<typename> typename Entity_Read_Or_Write,
-                 typename Pattern_Read_Or_Write>
+         template<typename, typename> typename Pattern_Read_Or_Write>
 class Storage {
  private:
     std::shared_ptr<StorageUtil> storage;
@@ -123,7 +123,7 @@ class Storage {
         return storage->getWhileManager();
     }
 
-    std::shared_ptr<Pattern_Read_Or_Write> getPatternManager() {
-        return storage->getPatternManager();
+    std::shared_ptr<Pattern_Read_Or_Write<std::string, std::shared_ptr<ShuntNode>>> getAssignPatternManager() {
+        return storage->getAssignPatternManager();
     }
 };

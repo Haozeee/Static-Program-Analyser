@@ -11,11 +11,11 @@
 #include "IWritePatternManager.h"
 #include "common/parser/ShuntNode.h"
 
-
-class PatternManager: public IReadPatternManager, public IWritePatternManager {
+template <typename T, typename U>
+class PatternManager: public IReadPatternManager<T, U>, public IWritePatternManager<T, U> {
  private:
-    std::vector<std::string> lhs_vector;
-    std::vector<std::shared_ptr<ShuntNode>> rhs_vector;
+    std::vector<T> lhs_vector;
+    std::vector<U> rhs_vector;
     std::unordered_map<int, int> index_stmt_map;
     std::unordered_map<int, int> reversed_index_stmt_map;
 
@@ -36,7 +36,7 @@ class PatternManager: public IReadPatternManager, public IWritePatternManager {
         return reversed_index_stmt_map.empty();
     }
 
-    bool containsLhsVector(const std::string& left) override {
+    bool containsLhsVector(T left) override {
         auto it = std::find(lhs_vector.begin(), lhs_vector.end(), left);
         if (it != lhs_vector.end()) {
             return true;
@@ -44,7 +44,7 @@ class PatternManager: public IReadPatternManager, public IWritePatternManager {
         return false;
     }
 
-    bool containsRhsVector(std::shared_ptr<ShuntNode> right) override {
+    bool containsRhsVector(U right) override {
         return std::any_of(rhs_vector.begin(), rhs_vector.end(),
                            [&](const auto& node) { return *right == *node; });
     }
@@ -65,12 +65,12 @@ class PatternManager: public IReadPatternManager, public IWritePatternManager {
         return false;
     }
 
-    std::unique_ptr<std::vector<std::string>> getAllLhsPatternEntries() override {
+    std::unique_ptr<std::vector<T>> getAllLhsPatternEntries() override {
         return std::make_unique<std::vector<std::string>>(lhs_vector);
     }
 
-    std::unique_ptr<std::vector<std::shared_ptr<ShuntNode>>> getAllRhsPatternEntries() override {
-        return std::make_unique<std::vector<std::shared_ptr<ShuntNode>>>(rhs_vector);
+    std::unique_ptr<std::vector<U>> getAllRhsPatternEntries() override {
+        return std::make_unique<std::vector<U>>(rhs_vector);
     }
 
     std::unordered_map<int, int> getAllPatternEntries() override {
@@ -81,7 +81,7 @@ class PatternManager: public IReadPatternManager, public IWritePatternManager {
         return reversed_index_stmt_map;
     }
 
-    bool insertPattern(int stmt_no, std::string left, std::shared_ptr<ShuntNode> right) override {
+    bool insertPattern(int stmt_no, T left, U right) override {
         int index = static_cast<int>(lhs_vector.size());
         lhs_vector.push_back(left);
         rhs_vector.push_back(right);

@@ -1,9 +1,11 @@
 #pragma once
-#include "query_processing_system/evaluator/clause_evaluator/such_that_clause_evaluator/IntStringClauseEvaluator.h"
-#include "query_processing_system/parser/Argument.h"
+
+#include <memory>
+#include <string>
 #include <unordered_set>
 #include <unordered_map>
-#include <string>
+#include "query_processing_system/evaluator/clause_evaluator/such_that_clause_evaluator/IntStringClauseEvaluator.h"
+#include "query_processing_system/parser/Argument.h"
 
 class MockIntStringClauseEvaluator : public IntStringClauseEvaluator {
  public:

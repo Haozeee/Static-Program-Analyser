@@ -32,9 +32,9 @@ void AssignPatternClauseEvaluator::evaluateWildcard() {
 std::unordered_map<std::string, std::unordered_set<std::string>>
 AssignPatternClauseEvaluator::evaluateStringHelper(std::unordered_set<std::string> lhsValues) {
     std::unordered_map<std::string, std::unordered_set<std::string>> res;
-    auto assignStatements = storage->getPatternManager()->getAllPatternEntries();
-    auto lhsStatements = storage->getPatternManager()->getAllLhsPatternEntries();
-    auto rhsStatements = storage->getPatternManager()->getAllRhsPatternEntries();
+    auto assignStatements = storage->getAssignPatternManager()->getAllPatternEntries();
+    auto lhsStatements = storage->getAssignPatternManager()->getAllLhsPatternEntries();
+    auto rhsStatements = storage->getAssignPatternManager()->getAllRhsPatternEntries();
     for (auto const& [k, v] : assignStatements) {
         // k = index of assign statements
         // v actual position of assign statements in the source code
