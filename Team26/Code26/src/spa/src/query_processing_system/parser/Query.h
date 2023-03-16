@@ -32,8 +32,6 @@ class Query {
 
     ~Query();
 
-    DesignEntity getSynonymDesignEntity(std::shared_ptr<Synonym> synonym);
-
     DesignEntity getSynonymDesignEntity(std::string string);
 
     std::shared_ptr<SelectClause> getSelectClause();

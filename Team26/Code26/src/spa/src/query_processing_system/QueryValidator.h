@@ -20,16 +20,6 @@ class QueryValidator {
     Query* query;
 
     /**
-     * Validate that during Declaration, there are no duplicated Synonyms.
-     * Validation for Declarations
-     * Structure: design-entity (',', synonym)*';'
-     * Example: variable v; assign a; procedure p; constant c; stmt s;
-     * Example: variable v1, v2, v3; assign a1, a2; procedure p, q;
-     * Invalid example: variable, v, v, v; assign a, a; procedure p, p;
-     */
-    void validateNoDuplicateSynonymsInDeclaration();
-
-    /**
      * Validate that the Synonym in the Select Clause was previously declared.
      * Validation for Select Clauses
      * Structure: select-cl: declaration* 'Select' synonym

@@ -27,7 +27,6 @@ extern const char QueryParserInvalidTokenForRelationshipArgument[];
 extern const char QueryParserInvalidEndingSemicolon[];
 extern const char QueryParserUnexpectedToken[];
 extern const char QueryParserUnbalancedStringExpression[];
-extern const char QueryParserPatternClauseNonWildcardArgument[];
 extern const char QueryValidatorIfWhilePatternRightArgWildcard[];
 extern const char QueryParserInvalidSelectClause[];
 extern const char QueryParserInvalidEqualSignInWithClause[];

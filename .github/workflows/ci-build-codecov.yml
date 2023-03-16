@@ -3,7 +3,7 @@ name: Codecov
 on:
 
   pull_request:
-    types: [ opened, synchronize, reopened, ready_for_review ]
+    types: [ opened, synchronize, reopened ]
     paths: ['Team26/Code26/src/integration_testing/**', 'Team26/Code26/src/unit_testing/**']
 
   push:

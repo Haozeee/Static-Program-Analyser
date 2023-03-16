@@ -64,7 +64,7 @@ class AbstractParser {
     std::shared_ptr<Token> getEOF();
 
     /**
-     * Increment to next index and return the token in that index if the type matches to given type.
+     * Check the type of current token and return value of next token if it matches.
      *
      * @param type The type of token to be compared.
      * @return The next token in the token list.
@@ -72,7 +72,7 @@ class AbstractParser {
     std::shared_ptr<Token> parseNext(TokenType type);
 
     /**
-     * Increment to next index and return the token in that index if the value matches to given value.
+     * Check value of current token and return value of next token if it matches.
      *
      * @param value The value to be compared.
      * @return The next token in the token list.

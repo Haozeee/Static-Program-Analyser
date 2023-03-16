@@ -119,7 +119,12 @@ void RelationshipExtractor::extractPrint(std::shared_ptr<PrintNode> node) {
 
 void RelationshipExtractor::extractAssign(std::shared_ptr<AssignNode> node) {
     insertModifiesGroup(node);
-    extractExpr(node->exprNode);
+//    extractExpr(node->exprNode);
+    clearExprStack();
+    for (const auto& x : node->exprVariables) {
+        exprVariableList.emplace_back(x);
+    }
+    insertExprUsesGroup();
 }
 
 void RelationshipExtractor::extractWhile(std::shared_ptr<WhileNode> node) {

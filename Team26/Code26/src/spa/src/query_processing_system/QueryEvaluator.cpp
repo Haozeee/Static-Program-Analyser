@@ -7,19 +7,14 @@ QueryEvaluator::QueryEvaluator(Query* query, std::shared_ptr<ReadStorage> storag
     : query(query), storage(storage), queryResults(QueryDb(storage)), cache(std::make_shared<Cache>(storage)) {}
 
 QueryDb QueryEvaluator::evaluateQuery() {
-    // Evaluate select clauses
     evaluateSelectClause();
 
-    // Evaluate such that clauses
     evaluateSuchThatClause();
 
-    // Evaluate pattern clauses
     evaluatePatternClause();
 
-    // Evaluate with clauses
     evaluateWithClause();
 
-    // Return QueryResult
     return queryResults;
 }
 
@@ -53,7 +48,6 @@ void QueryEvaluator::evaluateWithClause() {
 void QueryEvaluator::evaluateSelectClause() {
     auto a = query->getSelectClause();
     auto selectClauses = query->getSelectClause()->getSelectClauseItems();
-    // Loop through select clauses
     for (SelectClauseItem item : *selectClauses) {
         std::string identity = SelectClause::getSynonym(item);
         // Get respective entities from pkb

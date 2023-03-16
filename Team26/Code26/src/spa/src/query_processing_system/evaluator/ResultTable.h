@@ -71,12 +71,14 @@ class ResultTable {
     /**
      * Join 2 tables that have no common columns.
      */
-    static std::shared_ptr<ResultTable> joinNoColumns(std::shared_ptr<ResultTable> table1,
-                                                      std::shared_ptr<ResultTable> table2);
+    static std::shared_ptr<ResultTable> joinNoCommonColumns(std::shared_ptr<ResultTable> table1,
+                                                            std::shared_ptr<ResultTable> table2);
     /**
      * Union 2 vectors.
      */
     static TableRow getVectorUnion(TableRow vector1, TableRow vector2);
+
+    static TableRow joinTableHelper(TableRow table1Row, TableRow table2Row, std::vector<int> &column2);
 
  public:
     /**
