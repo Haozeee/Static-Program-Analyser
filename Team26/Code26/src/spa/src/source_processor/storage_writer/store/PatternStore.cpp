@@ -3,7 +3,7 @@
 #include "common/parser/ShuntingYardParser.h"
 
 PatternStore::PatternStore(const std::shared_ptr<WriteStorage>& storage) {
-    patternManager = storage->getPatternManager();
+    patternManager = storage->getAssignPatternManager();
     whileCondManager = storage->getWhileCondManager();
     ifCondManager = storage->getIfCondManager();
 }

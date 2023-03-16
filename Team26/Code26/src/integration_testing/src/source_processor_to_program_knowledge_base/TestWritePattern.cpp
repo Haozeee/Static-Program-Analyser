@@ -31,7 +31,7 @@ TEST_CASE("Test insert pattern") {
     std::shared_ptr<IStore> store = std::make_shared<Store>(storageManager->getWriteStorage());
     sourceManager.process(testFileName, store, storageManager->getReadStorage());
     auto readStorage = storageManager->getReadStorage();
-    auto patternManager = readStorage->getPatternManager();
+    auto assignPatternManager = readStorage->getAssignPatternManager();
 
     std::vector<std::string> lhs_vector = {"x", "y", "z", "x"};
 
@@ -44,16 +44,16 @@ TEST_CASE("Test insert pattern") {
     std::unordered_map<int, int> index_stmt_map = {{0, 1}, {1, 2}, {2, 4}, {3, 5}};
     std::unordered_map<int, int> reversed_index_stmt_map = {{1, 0}, {2, 1}, {4, 2}, {5, 3}};
 
-    REQUIRE(patternManager->containsLhsVector("x"));
-    REQUIRE(patternManager->containsLhsVector("y"));
-    REQUIRE(patternManager->containsLhsVector("z"));
-    REQUIRE(*(patternManager->getAllLhsPatternEntries()) == lhs_vector);
+    REQUIRE(assignPatternManager->containsLhsVector("x"));
+    REQUIRE(assignPatternManager->containsLhsVector("y"));
+    REQUIRE(assignPatternManager->containsLhsVector("z"));
+    REQUIRE(*(assignPatternManager->getAllLhsPatternEntries()) == lhs_vector);
 
-    REQUIRE(patternManager->containsRhsVector(node1));
-    REQUIRE(patternManager->containsRhsVector(node2));
-    REQUIRE(patternManager->containsRhsVector(node3));
-    REQUIRE(patternManager->containsRhsVector(node4));
-    auto temp = patternManager->getAllRhsPatternEntries();
+    REQUIRE(assignPatternManager->containsRhsVector(node1));
+    REQUIRE(assignPatternManager->containsRhsVector(node2));
+    REQUIRE(assignPatternManager->containsRhsVector(node3));
+    REQUIRE(assignPatternManager->containsRhsVector(node4));
+    auto temp = assignPatternManager->getAllRhsPatternEntries();
     REQUIRE(std::equal(
             temp->begin(),
             temp->end(),
@@ -61,17 +61,17 @@ TEST_CASE("Test insert pattern") {
             rhs_vector.end(),
             SharedPointerComparator<ShuntNode>()
     ));
-    REQUIRE(patternManager->containsIndexStmtMap(0, 1));
-    REQUIRE(patternManager->containsIndexStmtMap(1, 2));
-    REQUIRE(patternManager->containsIndexStmtMap(2, 4));
-    REQUIRE(patternManager->containsIndexStmtMap(3, 5));
-    REQUIRE(patternManager->getAllPatternEntries() == index_stmt_map);
+    REQUIRE(assignPatternManager->containsIndexStmtMap(0, 1));
+    REQUIRE(assignPatternManager->containsIndexStmtMap(1, 2));
+    REQUIRE(assignPatternManager->containsIndexStmtMap(2, 4));
+    REQUIRE(assignPatternManager->containsIndexStmtMap(3, 5));
+    REQUIRE(assignPatternManager->getAllPatternEntries() == index_stmt_map);
 
-    REQUIRE(patternManager->containsReversedIndexStmtMap(1, 0));
-    REQUIRE(patternManager->containsReversedIndexStmtMap(2, 1));
-    REQUIRE(patternManager->containsReversedIndexStmtMap(4, 2));
-    REQUIRE(patternManager->containsReversedIndexStmtMap(5, 3));
-    REQUIRE(patternManager->getAllReversedPatternEntries() == reversed_index_stmt_map);
+    REQUIRE(assignPatternManager->containsReversedIndexStmtMap(1, 0));
+    REQUIRE(assignPatternManager->containsReversedIndexStmtMap(2, 1));
+    REQUIRE(assignPatternManager->containsReversedIndexStmtMap(4, 2));
+    REQUIRE(assignPatternManager->containsReversedIndexStmtMap(5, 3));
+    REQUIRE(assignPatternManager->getAllReversedPatternEntries() == reversed_index_stmt_map);
 
     std::filesystem::remove(testFileName);
 }
