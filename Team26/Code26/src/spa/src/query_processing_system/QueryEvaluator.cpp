@@ -54,10 +54,11 @@ void QueryEvaluator::evaluateWithClause() {
 }
 
 void QueryEvaluator::evaluateSelectClause() {
-    auto a = query->getSelectClause();
     auto selectClauses = query->getSelectClause()->getSelectClauseItems();
-    for (SelectClauseItem item : *selectClauses) {
+    std::vector<std::pair<SelectClauseItem, DesignEntity>> selectedCols;
+    for (const SelectClauseItem& item : *selectClauses) {
         std::string identity = SelectClause::getSynonym(item);
-        queryResults.addSelectedColumn(item, query->getSynonymDesignEntity(identity));
+        selectedCols.emplace_back(item, query->getSynonymDesignEntity(identity));
     }
+    queryResults.setSelectedColumns(selectedCols);
 }

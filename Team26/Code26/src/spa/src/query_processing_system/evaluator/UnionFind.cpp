@@ -16,7 +16,7 @@ std::string UnionFind::find(std::string itemToFind) {
         add(itemToFind);
     }
 
-    auto i = std::move(itemToFind);
+    auto i = itemToFind;
     while (i != id.at(i)) {
         // path compression
         id.at(i) = id.at(id.at(i));
@@ -29,6 +29,9 @@ std::string UnionFind::find(std::string itemToFind) {
 void UnionFind::unionItems(std::string p, std::string q) {
     auto i = find(std::move(p));
     auto j = find(std::move(q));
+    if (i == j) {
+        return;
+    }
     // Perform weighted union
     if (componentSize.at(i) < componentSize.at(j)) {
         id.at(i) = j;
@@ -41,6 +44,11 @@ void UnionFind::unionItems(std::string p, std::string q) {
 }
 
 void UnionFind::unionMultipleItems(const std::vector<std::string>& itemsToAdd) {
+    if (itemsToAdd.size() == 1) {
+        find(itemsToAdd.at(0));
+        return;
+    }
+
     for (int i = 0; i < itemsToAdd.size() - 1; ++i) {
         unionItems(itemsToAdd.at(i), itemsToAdd.at(i + 1));
     }

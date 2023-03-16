@@ -8,6 +8,7 @@
 #include <utility>
 #include "ResultTable.h"
 #include "AttributeReferenceMap.h"
+#include "UnionFind.h"
 #include "query_processing_system/parser/SelectClause.h"
 #include "program_knowledge_base/StorageUtil.h"
 #include "program_knowledge_base/StorageManager.h"
@@ -28,6 +29,11 @@ class QueryDb {
     std::deque<std::shared_ptr<ResultTable>> results;
 
     std::shared_ptr<ReadStorage> storage;
+
+    /**
+     * Store the different groups as part of optimisation.
+     */
+    UnionFind unionFind;
 
     /**
      * Checks if the list of results contains a result table that equates to false. This means that
@@ -67,7 +73,7 @@ class QueryDb {
 
     void addResult(std::shared_ptr<ResultTable> toAdd);
 
-    void addSelectedColumn(const SelectClauseItem& selectClauseItem, DesignEntity designEntity);
+    void setSelectedColumns(std::vector<std::pair<SelectClauseItem, DesignEntity>> selectedCols);
 
     /**
      * Join the tables that we are interested in to get the final results.

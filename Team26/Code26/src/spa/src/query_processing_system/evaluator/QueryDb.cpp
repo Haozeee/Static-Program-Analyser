@@ -1,5 +1,7 @@
 #include "QueryDb.h"
 #include <memory>
+#include <algorithm>
+#include <iterator>
 #include "PkbUtil.h"
 
 QueryDb::QueryDb(std::shared_ptr<ReadStorage> storage) : storage(storage) {}
@@ -10,10 +12,16 @@ void QueryDb::addResult(std::shared_ptr<ResultTable> toAdd) {
         return;
     }
     results.push_back(toAdd);
+    unionFind.unionMultipleItems(toAdd->getColumnsNames());
 }
 
-void QueryDb::addSelectedColumn(const SelectClauseItem& selectClauseItem, DesignEntity designEntity) {
-    selectedSynonyms.emplace_back(selectClauseItem, designEntity);
+void QueryDb::setSelectedColumns(std::vector<std::pair<SelectClauseItem, DesignEntity>> selectedCols) {
+    selectedSynonyms = selectedCols;
+    std::vector<std::string> synonymNames;
+    for (const auto& i : selectedCols) {
+        synonymNames.emplace_back(SelectClause::getSynonym(i.first));
+    }
+    unionFind.unionMultipleItems(synonymNames);
 }
 
 void QueryDb::fillMissingTables() {
