@@ -78,6 +78,8 @@ class ResultTable {
      */
     static TableRow getVectorUnion(TableRow vector1, TableRow vector2);
 
+    static TableRow joinTableHelper(TableRow table1Row, TableRow table2Row, std::vector<int> &column2);
+
  public:
     /**
      * Creates an empty table.

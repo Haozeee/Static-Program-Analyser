@@ -2,17 +2,6 @@
 
 QueryValidator::QueryValidator(Query* query) : query(query) {}
 
-void QueryValidator::validateNoDuplicateSynonymsInDeclaration() {
-    std::unordered_set<std::string> declaration;
-    for (const auto &d : query->getDeclarations()) {
-        std::string synonym = d->getSynonym().ident;
-        if (declaration.find(synonym) != declaration.end()) {
-            throw QueryValidationException(QueryValidatorDuplicatedSynonymInDeclaration + synonym);
-        }
-        declaration.insert(synonym);
-    }
-}
-
 void QueryValidator::validateSynonymInSelectClauseWasDeclared() {
     std::unordered_set<std::string> declarationSynonyms = getDeclarationSynonyms();
 
@@ -133,8 +122,6 @@ void QueryValidator::validateWithClause() {
 }
 
 void QueryValidator::validateQuery() {
-    validateNoDuplicateSynonymsInDeclaration();
-
     validateSynonymInSelectClauseWasDeclared();
 
     validateSuchThatClause();

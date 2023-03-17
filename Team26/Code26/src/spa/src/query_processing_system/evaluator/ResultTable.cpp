@@ -98,19 +98,22 @@ std::shared_ptr<ResultTable> ResultTable::joinOnColumns(std::shared_ptr<ResultTa
     for (int i = 0; i < table1->getNumberOfRows(); i++) {
         auto range = hashmap.equal_range(table1->getValuesAt(i, column1));
         for (auto it = range.first; it != range.second; it++) {
-            TableRow row;
-            auto table1Row = table1->getRow(i);
-            auto table2Row = table2->getRow(it->second);
-            row.insert(row.end(), table1Row.begin(), table1Row.end());
-            for (int j = 0; j < table2Row.size(); j++) {
-                if (std::find(column2.begin(), column2.end(), j) == column2.end()) {
-                    row.push_back(table2Row.at(j));
-                }
-            }
+            TableRow row = joinTableHelper(table1->getRow(i), table2->getRow(it->second), column2);
             res->insertRow(row);
         }
     }
     return res;
+}
+
+TableRow ResultTable::joinTableHelper(TableRow table1Row, TableRow table2Row, std::vector<int> &column2) {
+    TableRow row;
+    row.insert(row.end(), table1Row.begin(), table1Row.end());
+    for (int j = 0; j < table2Row.size(); j++) {
+        if (std::find(column2.begin(), column2.end(), j) == column2.end()) {
+            row.push_back(table2Row.at(j));
+        }
+    }
+    return row;
 }
 
 int ResultTable::getColumnNumber(std::string colName) const {
