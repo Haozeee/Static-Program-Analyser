@@ -286,8 +286,8 @@ std::shared_ptr<CondExprNode> Parser::parseConditional(
             throw SourceParserException(ParserInvalidCondExprExceptionMessage);
         }
     }
-
-    if (result.top() == HelperNode::ExprHelper) {
+    // Empty Expr node
+    if (result.empty() || result.top() == HelperNode::ExprHelper) {
         throw SourceParserException(ParserInvalidCondExprExceptionMessage);
     }
     return std::make_shared<CondExprNode>(*exprVariables, *exprConstants);
