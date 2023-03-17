@@ -1,6 +1,10 @@
 #include "catch.hpp"
 #include <memory>
+#include <vector>
 #include "query_processing_system/evaluator/QueryDb.h"
+#include "query_processing_system/parser/DesignEntity.h"
+#include "query_processing_system/parser/SelectClause.h"
+#include "query_processing_system/parser/Synonym.h"
 
 // Single column table
 std::unordered_set<std::string> table1Items {"a", "b", "c"};
@@ -14,6 +18,11 @@ auto table2 = ResultTable::createSingleColumnTable(table2Col, table2Items);
 
 // Table with no column
 auto table3 = std::make_shared<ResultTable>();
+
+// Double column table with no rows
+std::unordered_map<std::string, std::unordered_set<std::string>> table4Items {{"1", {"2", "3"}}};
+auto table4 = ResultTable::createTableFromMap(table4Items, "col1", "col2");
+
 
 TEST_CASE("Evaluate Boolean") {
     auto queryDB = QueryDb(nullptr);
@@ -57,4 +66,18 @@ TEST_CASE("Evaluate Boolean") {
     queryDB.addResult(table1);
     queryDB.addResult(table2);
     REQUIRE(queryDB.getInterestedResults() == expectedFalse);
+}
+
+TEST_CASE("Missing Select Columns") {
+    auto queryDB = QueryDb(nullptr);
+
+    // Add select declarations
+    queryDB.addSelectedColumn(std::make_shared<Synonym>("col1"), DesignEntity::NONE);
+    queryDB.addSelectedColumn(std::make_shared<Synonym>("col2"), DesignEntity::NONE);
+    queryDB.addSelectedColumn(std::make_shared<Synonym>("col3"), DesignEntity::NONE);
+
+    // Add table
+    queryDB.addResult(table4);
+    std::unordered_set<std::string> expectedCols = {"col1", "col2"};
+    REQUIRE(queryDB.getAllColumnsInResults() == expectedCols);
 }

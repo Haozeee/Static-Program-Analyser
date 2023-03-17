@@ -15,7 +15,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     /**
      * Evaluate a such that clause in the form of clause(synonym, synonym).
      */
-    virtual void evaluateSynonymSynonym() {
+    void evaluateSynonymSynonym() {
         if (leftArg == rightArg) {
             evaluateEqualSynonym();
             return;
@@ -30,7 +30,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         setLeftAndRightArgResult(relationshipMap);
     }
 
-    virtual void evaluateValueSynonym() {
+    void evaluateValueSynonym() {
         auto relationshipStore = cacheable ? getRelationshipCache({getLeftArg()}) : getRelationshipManager();
         auto it = relationshipStore.find(getLeftArg());
         std::unordered_set<U> res {};
@@ -44,7 +44,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         setRightArgResult(res);
     }
 
-    virtual void evaluateSynonymValue() {
+    void evaluateSynonymValue() {
         auto relationshipStore = cacheable ?
                 getOppositeRelationshipCache({getRightArg()}) : getOppositeRelationshipManager();
         auto it = relationshipStore.find(getRightArg());
@@ -59,7 +59,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         setLeftArgResult(res);
     }
 
-    virtual void evaluateSynonymWildcard() {
+    void evaluateSynonymWildcard() {
         auto relationshipMap = cacheable ? getRelationshipCache(getLeftArgEntities()) : getRelationshipManager();
         if (isLeftArgAmbiguous()) {
             relationshipMap = Util::filterMap(relationshipMap, getLeftArgEntities());
@@ -73,7 +73,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         setLeftArgResult(res);
     }
 
-    virtual void evaluateWildcardSynonym() {
+    void evaluateWildcardSynonym() {
         handleLeftWildcard();
         evaluateSynonymSynonym();
         // Remove wildcard placeholder
@@ -81,7 +81,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
                 rightArg.getValue(), clauseResultTable->getColumnValues(rightArg.getValue()));
     }
 
-    virtual void evaluateValueValue() {
+    void evaluateValueValue() {
         auto relationshipStore = cacheable ? getRelationshipCache({getLeftArg()}) : getRelationshipManager();
         auto iterator = relationshipStore.find(getLeftArg());
         if (iterator == relationshipStore.end() || !iterator->second.count(getRightArg())) {
@@ -89,7 +89,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         }
     }
 
-    virtual void evaluateValueWildcard() {
+    void evaluateValueWildcard() {
         auto relationshipStore = cacheable ? getRelationshipCache({getLeftArg()}) : getRelationshipManager();
         auto iterator = relationshipStore.find(getLeftArg());
         if (iterator == relationshipStore.end() || iterator->second.empty()) {
@@ -97,7 +97,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         }
     }
 
-    virtual void evaluateWildcardValue() {
+    void evaluateWildcardValue() {
         auto relationshipStore = cacheable ?
                 getOppositeRelationshipCache({getRightArg()}) : getOppositeRelationshipManager();
         auto iterator = relationshipStore.find(getRightArg());
@@ -106,7 +106,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         }
     }
 
-    virtual void evaluateWildcardWildcard() {
+    void evaluateWildcardWildcard() {
         if (isRelationshipEmpty()) {
             clauseResultTable->setNoResults();
         }

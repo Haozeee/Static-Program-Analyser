@@ -50,11 +50,6 @@ void QueryEvaluator::evaluateSelectClause() {
     auto selectClauses = query->getSelectClause()->getSelectClauseItems();
     for (SelectClauseItem item : *selectClauses) {
         std::string identity = SelectClause::getSynonym(item);
-        // Get respective entities from pkb
-        auto entities = PkbUtil::getEntitiesFromPkb(storage, query->getSynonymDesignEntity(identity));
-        // Add entities to query result
-        auto resultTable = ResultTable::createSingleColumnTable(identity, entities);
-        queryResults.addResult(resultTable);
-        queryResults.addSelectedColumn(item);
+        queryResults.addSelectedColumn(item, query->getSynonymDesignEntity(identity));
     }
 }
