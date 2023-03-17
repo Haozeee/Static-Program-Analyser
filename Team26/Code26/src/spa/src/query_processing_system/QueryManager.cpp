@@ -1,5 +1,4 @@
 #include "QueryManager.h"
-#include <iostream>
 #include <memory>
 #include <vector>
 #include "QueryTokenizer.h"
@@ -25,7 +24,6 @@ void QueryManager::process(const std::string& query, std::list<std::string> &res
         // Validate Query
         auto validator = QueryValidator(queryObject);
         validator.validateQuery();
-        // std::cout << *queryObject << "\n";
 
         // Evaluate query
         QueryEvaluator evaluator = QueryEvaluator(queryObject, storageUtil);
@@ -48,10 +46,10 @@ void QueryManager::process(const std::string& query, std::list<std::string> &res
 
 void QueryManager::addSyntaxError(std::list<std::string>& results) {
     results.clear();
-    results.push_back("SyntaxError");
+    results.emplace_back("SyntaxError");
 }
 
 void QueryManager::addSemanticError(std::list<std::string>& results) {
     results.clear();
-    results.push_back("SemanticError");
+    results.emplace_back("SemanticError");
 }

@@ -68,8 +68,7 @@ void QueryParser::parseSelectClause() {
     } else if (isValueOf("<")) {
         parseTupleSelectClause();
     } else {
-        throw QueryParserException(getNext()->getValue()
-                                    + QueryParserInvalidSelectClause);
+        throw QueryParserException(getNext()->getValue() + QueryParserInvalidSelectClause);
     }
 }
 
@@ -276,11 +275,9 @@ StringExpression QueryParser::parseExpression() {
             parseNext("_");
             return StringExpression(isExactMatch, stringExpression);
         } else {
-            // Wildcard
             return StringExpression(true);
         }
     } else {
-        // Exact match
         std::string stringExpression = parseStringExpression();
         if (!QueryParserUtil::isValidStringExpression(stringExpression)) {
             throw QueryParserException(stringExpression + QueryParserInvalidStringExpression);

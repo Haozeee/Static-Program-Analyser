@@ -44,14 +44,14 @@ std::shared_ptr<ResultTable>
 ResultTable::joinTable(std::shared_ptr<ResultTable> table1, std::shared_ptr<ResultTable> table2) {
     auto commonCols = table1->hasMatchingColumns(table2->getColumnsNamesSet());
     if (commonCols.empty()) {
-        return joinNoColumns(table1, table2);
+        return joinNoCommonColumns(table1, table2);
     } else {
         return joinOnColumns(table1, table2, commonCols);
     }
 }
 
 std::shared_ptr<ResultTable>
-ResultTable::joinNoColumns(std::shared_ptr<ResultTable> table1, std::shared_ptr<ResultTable> table2) {
+ResultTable::joinNoCommonColumns(std::shared_ptr<ResultTable> table1, std::shared_ptr<ResultTable> table2) {
     auto newTableColumns = ResultTable::getVectorUnion(table1->getColumnsNames(), table2->getColumnsNames());
     auto res = std::make_shared<ResultTable>(newTableColumns);
     for (int i = 0; i < table1->getNumberOfRows(); i++) {
@@ -72,7 +72,7 @@ std::shared_ptr<ResultTable> ResultTable::joinOnColumns(std::shared_ptr<ResultTa
                                                        std::vector<std::string> commonColumns) {
     auto col1 = table1->getColumnNumbers(commonColumns);
     auto col2 = table2->getColumnNumbers(commonColumns);
-    if (col1.size() > 0 && col2.size() > 0) {
+    if (!col1.empty() && !col2.empty()) {
         return joinOnColumns(table1, table2, col1, col2);
     } else {
         throw std::exception();

@@ -63,5 +63,3 @@ TEST_CASE("Test readInteger") {
         REQUIRE_THROWS(testTokenizer->readInteger());
     }
 }
-
-
