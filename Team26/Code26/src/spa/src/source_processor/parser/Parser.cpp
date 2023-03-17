@@ -162,7 +162,7 @@ std::shared_ptr<CondExprNode> Parser::parseConditional(
     };
 
     std::unordered_set<std::string> mathOp { "+", "-", "*", "/", "%" };
-    std::unordered_set<std::string> relOp { ">", ">=", "<", ">=", "==", "!=" };
+    std::unordered_set<std::string> relOp { ">", ">=", "<", "<=", "==", "!=" };
 
     index = index - 1;
     std::queue<std::shared_ptr<Token>> postfix;
@@ -177,13 +177,24 @@ std::shared_ptr<CondExprNode> Parser::parseConditional(
             numOfBrackets++;
         } else if (isValueOf(BRACKETS_END)) {
             numOfBrackets--;
+            bool isRelExpr = false;
             while (!opStack.empty() && opStack.top()->getValue() != BRACKETS_START) {
+                if (relOp.find(opStack.top()->getValue()) != relOp.end()) {
+                    isRelExpr = true;
+                }
                 postfix.push(opStack.top());
                 opStack.pop();
             }
+
             if (!opStack.empty()) {
                 opStack.pop();
             } else {
+                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+            }
+            if (isRelExpr &&
+                !opStack.empty() &&
+                opStack.top()->getValue() == BRACKETS_START &&
+                    (tokens[index+1]->getValue() != "&&" && tokens[index+1]->getValue() != "||")) {
                 throw SourceParserException(ParserInvalidCondExprExceptionMessage);
             }
             if (numOfBrackets == 0) {
