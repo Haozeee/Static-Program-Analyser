@@ -42,7 +42,7 @@ class QueryDb {
     void mapAttributeReferences(std::shared_ptr<ResultTable> interestedResults);
 
     /**
-     * Get the column names of the final results.
+     * Get all the column names in the list of results.
      */
     std::vector<std::string> getInterestedColumns();
 

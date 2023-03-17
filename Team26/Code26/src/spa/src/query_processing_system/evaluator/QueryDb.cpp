@@ -1,12 +1,13 @@
 #include "QueryDb.h"
 #include <memory>
+#include <algorithm>
 #include "PkbUtil.h"
 
 QueryDb::QueryDb(std::shared_ptr<ReadStorage> storage) : storage(storage) {}
 
 void QueryDb::addResult(std::shared_ptr<ResultTable> toAdd) {
     if (!toAdd->hasNoResults() && toAdd->getColumnsNamesSet().empty()) {
-        // Table will not affect final results
+        // Table will not affect final results, no need to add
         return;
     }
     results.push_back(toAdd);
