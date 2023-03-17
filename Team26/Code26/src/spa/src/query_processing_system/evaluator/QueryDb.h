@@ -52,11 +52,6 @@ class QueryDb {
     void fillMissingTables();
 
     /**
-     * Get all the columns present in results.
-     */
-    std::unordered_set<std::string> getAllColumnsInResults();
-
-    /**
      * Sort the list of results tables such that the table with the least amount of rows come first.
      * This makes joining the table quicker.
      */
@@ -74,4 +69,9 @@ class QueryDb {
      * @return The final results.
      */
     std::vector<std::string> getInterestedResults();
+
+    /**
+     * Get all the columns present in results.
+     */
+    std::unordered_set<std::string> getAllColumnsInResults();
 };
