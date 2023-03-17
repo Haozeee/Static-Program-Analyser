@@ -72,7 +72,7 @@ void EntityExtractor::extractIf(std::shared_ptr<IfNode> node) {
         entityStore->insertVariableName(variable);
     }
 
-    for (auto &variable : exprVariableList) {
+    for (auto &variable : node->condExprNode->exprVariables) {
         patternStore->insertCondExpressionIfStatement(node->stmtIndex, variable);
     }
     extractStmtList(node->thenStmtListNode);
@@ -87,7 +87,7 @@ void EntityExtractor::extractWhile(std::shared_ptr<WhileNode> node) {
     for (auto &variable : node->condExprNode->exprVariables) {
         entityStore->insertVariableName(variable);
     }
-    for (auto &variable : exprVariableList) {
+    for (auto &variable : node->condExprNode->exprVariables) {
         patternStore->insertCondExpressionWhileStatement(node->stmtIndex, variable);
     }
     extractStmtList(node->stmtListNode);
