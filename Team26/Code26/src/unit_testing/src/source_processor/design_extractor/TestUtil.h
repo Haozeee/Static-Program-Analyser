@@ -3,7 +3,6 @@
 #include <vector>
 #include "source_processor/node/statement_node/IfNode.h"
 #include "source_processor/node/statement_node/ReadNode.h"
-#include "source_processor/node/ExprNode.h"
 #include "source_processor/node/statement_node/WhileNode.h"
 
 class TestExtractorUtil {
@@ -13,12 +12,10 @@ class TestExtractorUtil {
         int thenStmtNumber = ifNo + 1;
         int elseStmtNumber = thenStmtNumber + 1;
 
-        auto constExprNode1 = std::make_shared<ExprNode>("1", ExprNodeType::FACTOR_CONSTANT);
-        auto constExprNode2 = std::make_shared<ExprNode>("1", ExprNodeType::FACTOR_CONSTANT);
+        std::unordered_set<std::string> variables;
+        std::unordered_set<int> constants { 1 };
 
-        std::shared_ptr<RelExpr> relExpr = std::make_shared<RelExpr>(
-                std::make_tuple(RelExprOperatorType::EQ, constExprNode1, constExprNode2));
-        std::shared_ptr<CondExprNode> condExpr = std::make_shared<CondExprNode>(relExpr, "1=1");
+        std::shared_ptr<CondExprNode> condExpr = std::make_shared<CondExprNode>(variables, constants);
 
         std::shared_ptr<ReadNode> thenReadNode = std::make_shared<ReadNode>(thenStmtNumber, "IfThenRead");
         std::shared_ptr<ReadNode> elseReadNode = std::make_shared<ReadNode>(elseStmtNumber, "IfElseRead");
@@ -38,12 +35,10 @@ class TestExtractorUtil {
         int whileNo = stmtNumber;
         int listStmtNo = whileNo + 1;
 
-        auto constExprNode1 = std::make_shared<ExprNode>("1", ExprNodeType::FACTOR_CONSTANT);
-        auto constExprNode2 = std::make_shared<ExprNode>("1", ExprNodeType::FACTOR_CONSTANT);
+        std::unordered_set<std::string> variables;
+        std::unordered_set<int> constants { 1 };
 
-        std::shared_ptr<RelExpr> relExpr = std::make_shared<RelExpr>(
-                std::make_tuple(RelExprOperatorType::EQ, constExprNode1, constExprNode2));
-        std::shared_ptr<CondExprNode> condExpr = std::make_shared<CondExprNode>(relExpr, "1=1");
+        std::shared_ptr<CondExprNode> condExpr = std::make_shared<CondExprNode>(variables, constants);
 
         std::shared_ptr<ReadNode> readNode = std::make_shared<ReadNode>(listStmtNo, "WhileRead");
 
