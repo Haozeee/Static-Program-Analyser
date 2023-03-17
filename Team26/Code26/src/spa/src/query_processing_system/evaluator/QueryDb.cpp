@@ -1,14 +1,54 @@
 #include "QueryDb.h"
 #include <memory>
+#include <algorithm>
+#include "PkbUtil.h"
 
 QueryDb::QueryDb(std::shared_ptr<ReadStorage> storage) : storage(storage) {}
 
 void QueryDb::addResult(std::shared_ptr<ResultTable> toAdd) {
+    if (!toAdd->hasNoResults() && toAdd->getColumnsNamesSet().empty()) {
+        // Table will not affect final results, no need to add
+        return;
+    }
     results.push_back(toAdd);
 }
 
-void QueryDb::addSelectedColumn(SelectClauseItem selectClauseItem) {
-    selectedSynonyms.push_back(selectClauseItem);
+void QueryDb::addSelectedColumn(const SelectClauseItem& selectClauseItem, DesignEntity designEntity) {
+    selectedSynonyms.emplace_back(selectClauseItem, designEntity);
+}
+
+void QueryDb::fillMissingTables() {
+    auto allColumnsPresent = getAllColumnsInResults();
+    std::vector<std::pair<std::string, DesignEntity>> missingItems;
+
+    for (const auto& selectedItems : selectedSynonyms) {
+        std::string syn = SelectClause::getSynonym(selectedItems.first);
+        if (!allColumnsPresent.count(syn)) {
+            missingItems.emplace_back(syn, selectedItems.second);
+        }
+    }
+
+    for (const auto& item : missingItems) {
+        auto entities = PkbUtil::getEntitiesFromPkb(storage, item.second);
+        auto resultTable = ResultTable::createSingleColumnTable(item.first, entities);
+        addResult(resultTable);
+    }
+}
+
+std::unordered_set<std::string> QueryDb::getAllColumnsInResults() {
+    std::unordered_set<std::string> res;
+    for (const auto& item : results) {
+        auto tableCols = item->getColumnsNamesSet();
+        res.insert(tableCols.begin(), tableCols.end());
+    }
+    return res;
+}
+
+void QueryDb::sortResultTables() {
+    auto comparePredicate = [](std::shared_ptr<ResultTable> const &a, std::shared_ptr<ResultTable> const &b) {
+        return a->getNumberOfRows() < b->getNumberOfRows();
+    };
+    std::sort(results.begin(), results.end(), comparePredicate);
 }
 
 std::vector<std::string> QueryDb::getInterestedResults() {
@@ -19,6 +59,9 @@ std::vector<std::string> QueryDb::getInterestedResults() {
         }
         return res;
     }
+
+    fillMissingTables();
+    sortResultTables();
 
     std::shared_ptr<ResultTable> interestedResults;
     if (!results.empty()) {
@@ -46,22 +89,22 @@ std::vector<std::string> QueryDb::getInterestedResults() {
 }
 
 void QueryDb::mapAttributeReferences(std::shared_ptr<ResultTable> interestedResults) {
-    for (SelectClauseItem item : selectedSynonyms) {
-        if (SelectClause::isAttribute(item)) {
-            auto attributeRef = std::get<AttributeReference>(item);
+    for (auto item : selectedSynonyms) {
+        if (SelectClause::isAttribute(item.first)) {
+            auto attributeRef = std::get<AttributeReference>(item.first);
             // E.g r.stmt#, get values of column r
             auto synonymValues = interestedResults->getColumnOrderedValues(attributeRef.getSynonym());
             // synonym values is transformed in place
             mapAttribute(attributeRef, synonymValues, storage);
-            interestedResults->insertCol(SelectClause::getString(item), synonymValues);
+            interestedResults->insertCol(SelectClause::getString(item.first), synonymValues);
         }
     }
 }
 
 std::vector<std::string> QueryDb::getInterestedColumns() {
     std::vector<std::string> res;
-    for (SelectClauseItem i : selectedSynonyms) {
-        res.push_back(SelectClause::getString(i));
+    for (auto i : selectedSynonyms) {
+        res.push_back(SelectClause::getString(i.first));
     }
     return res;
 }
