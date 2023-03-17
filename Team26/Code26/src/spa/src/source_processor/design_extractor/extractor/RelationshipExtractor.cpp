@@ -119,7 +119,6 @@ void RelationshipExtractor::extractPrint(std::shared_ptr<PrintNode> node) {
 
 void RelationshipExtractor::extractAssign(std::shared_ptr<AssignNode> node) {
     insertModifiesGroup(node);
-//    extractExpr(node->exprNode);
     clearExprStack();
     for (const auto& x : node->exprVariables) {
         exprVariableList.emplace_back(x);
@@ -156,15 +155,12 @@ void RelationshipExtractor::extractIf(std::shared_ptr<IfNode> node) {
     parentIndexStack.pop_back();
 }
 
-void RelationshipExtractor::extractExpr(std::shared_ptr<ExprNode> node) {
-    clearExprStack();
-    BaseExtractor::extractExpr(node);
-    insertExprUsesGroup();
-}
 
-void RelationshipExtractor::extractCondExpr(std::shared_ptr<CondExprNode> node) {
+void RelationshipExtractor::extractCondExpr(const std::shared_ptr<CondExprNode>& node) {
     clearExprStack();
-    BaseExtractor::extractCondExpr(node);
+    for (const auto& variable : node->exprVariables) {
+        exprVariableList.emplace_back(variable);
+    }
     insertExprUsesGroup();
 }
 

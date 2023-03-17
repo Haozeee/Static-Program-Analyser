@@ -3,7 +3,7 @@
 std::shared_ptr<ShuntNode> ShuntingYardParser::parse(std::string expr) {
     std::stack<std::shared_ptr<ShuntNode>> result;
     std::stack<char> opStack;
-    std::unordered_map<char, int> ranking{
+    std::unordered_map<char, int> ranking {
             {'+', 1},
             {'-', 1},
             {'*', 2},
@@ -148,8 +148,8 @@ void ShuntingYardParser::parseDigit(const std::shared_ptr<std::unordered_set<int
     while (k < expr.size() && std::isdigit(expr[k])) {
         ++k;
     }
-    exprConstants->insert(std::stoi(expr.substr(i, k -i)));
-    std::shared_ptr<ShuntNode> node = std::make_shared<ShuntNode>(expr.substr(i, k -i));
+    exprConstants->insert(std::stoi(expr.substr(i, k - i)));
+    std::shared_ptr<ShuntNode> node = std::make_shared<ShuntNode>(expr.substr(i, k - i));
     result.push(node);
     i = k - 1;
     isPrevFactor = true;

@@ -7,13 +7,11 @@
 #include "source_processor/node/ProgramNode.h"
 #include "source_processor/node/ProcedureNode.h"
 #include "source_processor/node/StmtListNode.h"
-#include "source_processor/node/CondExprNode.h"
 
 
 class BaseExtractor {
  protected:
     int currentStmtNo = -1;
-    std::vector<int> exprIntegerList;
     std::vector<std::string> exprVariableList;
 
     /**
@@ -27,8 +25,7 @@ class BaseExtractor {
     /**
      * For expressions and conditional expression.
      * */
-    virtual void extractExpr(std::shared_ptr<ExprNode> node);
-    virtual void extractCondExpr(std::shared_ptr<CondExprNode> node);
+
  public:
     BaseExtractor();
 

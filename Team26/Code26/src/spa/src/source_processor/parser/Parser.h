@@ -1,18 +1,18 @@
 #pragma once
 
 #include <memory>
-#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
+#include <unordered_map>
 #include <unordered_set>
+#include <queue>
+#include <stack>
 #include "common/parser/AbstractParser.h"
 #include "common/tokenizer/token/Token.h"
 #include "source_processor/node/ProgramNode.h"
 #include "source_processor/node/ProcedureNode.h"
 #include "source_processor/node/StmtListNode.h"
-#include "source_processor/node/CondExprNode.h"
-#include "source_processor/node/ExprNode.h"
 #include "source_processor/node/statement_node/ReadNode.h"
 #include "source_processor/node/statement_node/PrintNode.h"
 #include "source_processor/node/statement_node/CallNode.h"
@@ -20,17 +20,13 @@
 #include "source_processor/node/statement_node/WhileNode.h"
 #include "source_processor/node/statement_node/IfNode.h"
 
+enum class HelperNode {
+    ExprHelper,
+    CondExprHelper
+};
+
 class Parser : public AbstractParser {
  private:
-    std::shared_ptr<CondExprNode> parseCondExprNode(int startIndex, int endIndex);
-    std::shared_ptr<ExprNode> parseFactor(int index, int endIndex);
-    bool isBinaryCondOperator();
-    bool isIllegalArithmeticSplChar();
-    OperatorType getOperator();
-    bool isExprOperator();
-    bool isTermOperator();
-    bool isFactor();
-
     std::shared_ptr<ProgramNode> programRoot;
 
     int stmtIndex;
@@ -43,12 +39,9 @@ class Parser : public AbstractParser {
     std::shared_ptr<WhileNode> parseWhile();
     std::shared_ptr<IfNode> parseIf();
     std::shared_ptr<AssignNode> parseAssign(std::shared_ptr<Token> nameToken);
-    std::shared_ptr<CondExprNode> parseConditional();
-
-    std::shared_ptr<RelExpr> parseRelExpr(int startIndex, int endIndex);
-    std::shared_ptr<ExprNode> parseExprNode(int startIndex, int endIndex);
-    std::shared_ptr<ExprNode> parseTerm(int startIndex, int endIndex);
-    std::string toString(int startIndex, int endIndex);
+    std::shared_ptr<CondExprNode> parseConditional(
+            const std::shared_ptr<std::unordered_set<std::string>>& exprVariables,
+            const std::shared_ptr<std::unordered_set<int>>& exprConstants);
 
  public:
     explicit Parser(std::vector<std::shared_ptr<Token>> tokens);

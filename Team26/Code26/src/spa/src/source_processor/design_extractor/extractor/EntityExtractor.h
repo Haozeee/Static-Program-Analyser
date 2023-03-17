@@ -12,8 +12,6 @@ class EntityExtractor : public BaseExtractor, IEntityExtractor {
     std::shared_ptr<IEntityStore> entityStore;
     std::shared_ptr<IPatternStore> patternStore;
 
-    void insertExprEntities();
-
     void extractProcedure(std::shared_ptr<ProcedureNode> node) override;
     void extractStmt(std::shared_ptr<StmtNode> node) override;
     void extractRead(std::shared_ptr<ReadNode> node) override;
@@ -22,8 +20,6 @@ class EntityExtractor : public BaseExtractor, IEntityExtractor {
     void extractIf(std::shared_ptr<IfNode> node) override;
     void extractWhile(std::shared_ptr<WhileNode> node) override;
     void extractCall(std::shared_ptr<CallNode> node) override;
-    void extractExpr(std::shared_ptr<ExprNode> node) override;
-    void extractCondExpr(std::shared_ptr<CondExprNode> node) override;
 
  public:
     explicit EntityExtractor(std::shared_ptr<IEntityStore> entityStore, std::shared_ptr<IPatternStore> patternStore);

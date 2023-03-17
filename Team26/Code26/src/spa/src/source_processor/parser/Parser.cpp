@@ -98,9 +98,11 @@ std::shared_ptr<StmtListNode> Parser::parseStmtList() {
 }
 
 std::shared_ptr<WhileNode> Parser::parseWhile() {
+    std::shared_ptr<std::unordered_set<std::string>> variables = std::make_shared<std::unordered_set<std::string>>();
+    std::shared_ptr<std::unordered_set<int>> constants = std::make_shared<std::unordered_set<int>>();
     int whileStmtIndex = ++stmtIndex;
     parseNext(BRACKETS_START);
-    std::shared_ptr<CondExprNode> condExprNode = parseConditional();
+    std::shared_ptr<CondExprNode> condExprNode = parseConditional(variables, constants);
     parseNext(BRACKETS_END);
 
     parseNext(STMTLIST_START);
@@ -111,9 +113,11 @@ std::shared_ptr<WhileNode> Parser::parseWhile() {
 }
 
 std::shared_ptr<IfNode> Parser::parseIf() {
+    std::shared_ptr<std::unordered_set<std::string>> variables = std::make_shared<std::unordered_set<std::string>>();
+    std::shared_ptr<std::unordered_set<int>> constants = std::make_shared<std::unordered_set<int>>();
     int ifStmtIndex = ++stmtIndex;
     parseNext(BRACKETS_START);
-    std::shared_ptr<CondExprNode> condExprNode = parseConditional();
+    std::shared_ptr<CondExprNode> condExprNode = parseConditional(variables, constants);
     parseNext(BRACKETS_END);
 
     std::shared_ptr<Token> nameToken = parseNext(TokenType::TOKEN_NAME);
@@ -137,19 +141,62 @@ std::shared_ptr<IfNode> Parser::parseIf() {
     return std::make_shared<IfNode>(ifStmtIndex, condExprNode, thenStmtListNode, elseStmtListNode);
 }
 
-std::shared_ptr<CondExprNode> Parser::parseConditional() {
-    int oldIndex = index - 1;
-    int numOfBrackets = 1;
+std::shared_ptr<CondExprNode> Parser::parseConditional(
+        const std::shared_ptr<std::unordered_set<std::string>>& exprVariables,
+        const std::shared_ptr<std::unordered_set<int>>& exprConstants) {
+    std::unordered_map<std::string, int> ranking {
+            {"&&", 1},
+            {"||", 1},
+            {"!", 1},
+            {">", 2},
+            {">=", 2},
+            {"<", 2},
+            {"<=", 2},
+            {"==", 2},
+            {"!=", 2},
+            {"+", 3},
+            {"-", 3},
+            {"*", 4},
+            {"/", 4},
+            {"%", 4}
+    };
+
+    std::unordered_set<std::string> mathOp { "+", "-", "*", "/", "%" };
+    std::unordered_set<std::string> relOp { ">", ">=", "<", ">=", "==", "!=" };
+
+    index = index - 1;
+    std::queue<std::shared_ptr<Token>> postfix;
+    std::stack<std::shared_ptr<Token>> opStack;
+
+    int numOfBrackets = 0;
     while (!isTypeOf(TokenType::TOKEN_END_OF_FILE)) {
-        if (isValueOf(BRACKETS_START)) {
+        if (getToken()->isIntegerOrNameToken()) {
+            postfix.push(getToken());
+        } else if (isValueOf(BRACKETS_START)) {
+            opStack.push(getToken());
             numOfBrackets++;
         } else if (isValueOf(BRACKETS_END)) {
             numOfBrackets--;
+            while (!opStack.empty() && opStack.top()->getValue() != BRACKETS_START) {
+                postfix.push(opStack.top());
+                opStack.pop();
+            }
+            if (!opStack.empty()) {
+                opStack.pop();
+            } else {
+                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+            }
             if (numOfBrackets == 0) {
                 break;
             }
+        } else {
+            while (!opStack.empty() &&
+                   ranking[opStack.top()->getValue()] >= ranking[getToken()->getValue()]) {
+                postfix.push(opStack.top());
+                opStack.pop();
+            }
+            opStack.push(getToken());
         }
-
         getNext();
     }
 
@@ -157,14 +204,93 @@ std::shared_ptr<CondExprNode> Parser::parseConditional() {
         throw SourceParserException(ParserInvalidCondExprExceptionMessage);
     }
 
-    std::string temp;
-    for (int i = oldIndex; i <= index; i++) {
-        temp += tokens[i]->getValue();
+    while (!opStack.empty()) {
+        postfix.push(opStack.top());
+        opStack.pop();
     }
 
+    std::stack<HelperNode> result;
 
+    while (!postfix.empty()) {
+        std::shared_ptr<Token> curr = postfix.front();
+        postfix.pop();
 
-//    return condExprNode;
+        if (curr->getType() == TokenType::TOKEN_NAME) {
+            exprVariables->insert(curr->getValue());
+            result.push(HelperNode::ExprHelper);
+        } else if (curr->getType() == TokenType::TOKEN_INTEGER) {
+            exprConstants->insert(stoi(curr->getValue()));
+            result.push(HelperNode::ExprHelper);
+        } else if (mathOp.find(curr->getValue()) != mathOp.end()) {
+            if (result.size() < 2) {
+                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+            }
+
+            // LHS
+            if (result.top() == HelperNode::ExprHelper) {
+                result.pop();
+            } else {
+                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+            }
+
+            // RHS -- if RHS is
+            if (result.top() == HelperNode::ExprHelper) {
+                continue;
+            } else {
+                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+            }
+        } else if (curr->getValue() == "!") {
+            if (result.top() == HelperNode::CondExprHelper) {
+                continue;
+            } else {
+                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+            }
+        } else if (curr->getValue() == "&&" || curr->getValue() == "||") {
+            if (result.size() < 2) {
+                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+            }
+
+            // LHS
+            if (result.top() == HelperNode::CondExprHelper) {
+                result.pop();
+            } else {
+                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+            }
+
+            // RHS -- if RHS is
+            if (result.top() == HelperNode::CondExprHelper) {
+                continue;
+            } else {
+                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+            }
+        } else if (relOp.find(curr->getValue()) != relOp.end()) {
+            if (result.size() < 2) {
+                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+            }
+
+            // LHS
+            if (result.top() == HelperNode::ExprHelper) {
+                result.pop();
+            } else {
+                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+            }
+
+            // RHS -- if RHS is
+            if (result.top() == HelperNode::ExprHelper) {
+                result.pop();
+            } else {
+                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+            }
+            result.push(HelperNode::CondExprHelper);
+        } else {
+            throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+        }
+    }
+
+    if (result.top() == HelperNode::ExprHelper) {
+        throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+    }
+    return std::make_shared<CondExprNode>(*exprVariables, *exprConstants);
 }
 
 std::shared_ptr<AssignNode> Parser::parseAssign(std::shared_ptr<Token> nameToken) {
@@ -214,20 +340,6 @@ std::shared_ptr<CallNode> Parser::parseCall() {
     parseNext(STMT_END);
 
     return std::make_shared<CallNode>(stmtIndex, nameToken->getValue());
-}
-
-std::string Parser::toString(int startIndex, int endIndex) {
-    int oldIndex = index;
-    index = startIndex;
-
-    std::string result = "";
-    while (index <= endIndex) {
-        result += getToken()->getValue();
-        getNext();
-    }
-
-    index = oldIndex;
-    return result;
 }
 
 std::shared_ptr<ProgramNode> Parser::getProgramNode() {
