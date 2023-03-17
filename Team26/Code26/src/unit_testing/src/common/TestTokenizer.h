@@ -1,7 +1,8 @@
 #pragma once
 
-#include <string>
 #include <memory>
+#include <string>
+#include <vector>
 #include "catch.hpp"
 #include "common/tokenizer/AbstractTokenizer.h"
 
@@ -15,7 +16,6 @@ class TestTokenizer : public AbstractTokenizer {
     void readName();
     void readInteger();
     std::string getCurrentToken();
-    
     std::vector<std::shared_ptr<Token>> tokenize() override;
     void readSpecialChar() override;
 };

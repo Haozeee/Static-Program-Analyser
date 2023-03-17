@@ -42,15 +42,15 @@ TEST_CASE("Test reading pattern") {
     variableManager->insertEntity("y");
     variableManager->insertEntity("z");
 
-    auto patternManager = writeStorage->getPatternManager();
+    auto assignPatternManager = writeStorage->getAssignPatternManager();
     auto node1 = ShuntingYardParser::parse("5");
     auto node2 = ShuntingYardParser::parse("x*3");
     auto node3 = ShuntingYardParser::parse("x*y+x/y");
     auto node4 = ShuntingYardParser::parse("z");
-    patternManager->insertPattern(1, "x", node1);
-    patternManager->insertPattern(2, "y", node2);
-    patternManager->insertPattern(4, "z", node3);
-    patternManager->insertPattern(5, "x", node4);
+    assignPatternManager->insertPattern(1, "x", node1);
+    assignPatternManager->insertPattern(2, "y", node2);
+    assignPatternManager->insertPattern(4, "z", node3);
+    assignPatternManager->insertPattern(5, "x", node4);
 
     // test Pattern
     std::list<std::string> q1_results;

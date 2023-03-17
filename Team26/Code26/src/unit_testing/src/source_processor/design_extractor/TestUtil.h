@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <vector>
 #include "source_processor/node/statement_node/IfNode.h"
 #include "source_processor/node/statement_node/ReadNode.h"
@@ -16,8 +17,7 @@ class TestExtractorUtil {
         auto constExprNode2 = std::make_shared<ExprNode>("1", ExprNodeType::FACTOR_CONSTANT);
 
         std::shared_ptr<RelExpr> relExpr = std::make_shared<RelExpr>(
-                std::make_tuple(RelExprOperatorType::EQ, constExprNode1, constExprNode2)
-                );
+                std::make_tuple(RelExprOperatorType::EQ, constExprNode1, constExprNode2));
         std::shared_ptr<CondExprNode> condExpr = std::make_shared<CondExprNode>(relExpr, "1=1");
 
         std::shared_ptr<ReadNode> thenReadNode = std::make_shared<ReadNode>(thenStmtNumber, "IfThenRead");
@@ -42,8 +42,7 @@ class TestExtractorUtil {
         auto constExprNode2 = std::make_shared<ExprNode>("1", ExprNodeType::FACTOR_CONSTANT);
 
         std::shared_ptr<RelExpr> relExpr = std::make_shared<RelExpr>(
-                std::make_tuple(RelExprOperatorType::EQ, constExprNode1, constExprNode2)
-        );
+                std::make_tuple(RelExprOperatorType::EQ, constExprNode1, constExprNode2));
         std::shared_ptr<CondExprNode> condExpr = std::make_shared<CondExprNode>(relExpr, "1=1");
 
         std::shared_ptr<ReadNode> readNode = std::make_shared<ReadNode>(listStmtNo, "WhileRead");

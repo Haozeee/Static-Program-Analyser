@@ -8,7 +8,7 @@
 
 class PatternStore : public IPatternStore {
  private:
-    std::shared_ptr<IWritePatternManager> patternManager;
+    std::shared_ptr<IWritePatternManager<std::string, std::shared_ptr<ShuntNode>>> patternManager;
     std::shared_ptr<IWriteRelationshipManager<int, std::string>> whileCondManager;
     std::shared_ptr<IWriteRelationshipManager<int, std::string>> ifCondManager;
 
