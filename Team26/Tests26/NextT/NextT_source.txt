@@ -1,0 +1,49 @@
+procedure procedure1 {
+    x1 = 1;
+    x2 = 2;
+
+    while ((x3 > 1) && (y3 > 2) ) {
+        x4 = p + q;
+        read x5;
+
+        if (x5 > 1) then {
+            z6 = x * 3 - 2;
+            read x11;
+        } else {
+            print x4;
+        }
+
+        read y32;
+        print y32;
+    }
+
+    if (y7 < 10) then {
+        z8 = x + y + 1 * 2;
+    } else {
+        read z9;
+        c2 = x4 / 3; 
+    }
+    while ((x11 / 10 * 9 + 11) < 11) {
+        a12  = b + 1 + x + r + e;
+        read a19;
+        print b20;
+        if (b20 < a19) then {
+            read a20;
+        } else {
+            read a19;
+        }
+    }
+    if (x26 > 55555) then {
+        print x27;
+        x28 = 1234567;
+    } else {
+        print x29;
+        while (x23 > 8) {
+            x25 = x25 + x + (a + b * c) * x25 * x25;
+        }
+        read x4;
+    }
+
+    a35 = x * y + b;
+    print a36;
+}

@@ -30,6 +30,7 @@
 #include "program_knowledge_base/relationship/relationship_child_managers/IfCondManager.h"
 #include "program_knowledge_base/relationship/relationship_child_managers/WhileCondManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/CallProcedureManager.h"
+#include "program_knowledge_base/pattern/pattern_child_managers/AssignPatternManager.h"
 
 class StorageUtil {
  private:
@@ -68,7 +69,7 @@ class StorageUtil {
     std::shared_ptr<WhileManager> whileManager;
 
     // pattern managers
-    std::shared_ptr<PatternManager> patternManager;
+    std::shared_ptr<AssignPatternManager> assignPatternManager;
     std::shared_ptr<IfCondManager> ifCondManager;
     std::shared_ptr<WhileCondManager> whileCondManager;
 
@@ -98,7 +99,7 @@ class StorageUtil {
         readStmtNoManager = std::make_shared<ReadStmtNoManager>();
         stmtManager = std::make_shared<StmtManager>();
         variableManager = std::make_shared<VariableManager>();
-        patternManager = std::make_shared<PatternManager>();
+        assignPatternManager = std::make_shared<AssignPatternManager>();
         whileManager = std::make_shared<WhileManager>();
         ifCondManager = std::make_shared<IfCondManager>();
         whileCondManager = std::make_shared<WhileCondManager>();
@@ -213,7 +214,7 @@ class StorageUtil {
         return whileManager;
     }
 
-    std::shared_ptr<PatternManager> getPatternManager() {
-        return patternManager;
+    std::shared_ptr<AssignPatternManager> getAssignPatternManager() {
+        return assignPatternManager;
     }
 };

@@ -1,11 +1,12 @@
 #pragma once
 
 #include <memory>
+#include <string>
+#include <vector>
 #include "catch.hpp"
 #include "common/parser/AbstractParser.h"
 
 class TestParser : public AbstractParser {
-
  public:
     explicit TestParser(std::vector<std::shared_ptr<Token>> tokens);
     bool hasNext();
