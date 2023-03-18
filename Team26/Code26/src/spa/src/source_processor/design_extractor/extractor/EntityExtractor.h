@@ -21,6 +21,8 @@ class EntityExtractor : public BaseExtractor, IEntityExtractor {
     void extractWhile(std::shared_ptr<WhileNode> node) override;
     void extractCall(std::shared_ptr<CallNode> node) override;
 
+    void insertConstants(const std::unordered_set<int>& constants);
+
  public:
     explicit EntityExtractor(std::shared_ptr<IEntityStore> entityStore, std::shared_ptr<IPatternStore> patternStore);
     void extractProgram(std::shared_ptr<ProgramNode> node) override;
