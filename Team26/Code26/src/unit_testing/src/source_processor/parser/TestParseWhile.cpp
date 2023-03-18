@@ -1,6 +1,6 @@
 #include "catch.hpp"
 #include "TestSourceParserUtil.h"
-#include "source_processor/parser/Parser.h"
+#include "source_processor/parser/SourceParser.h"
 
 TEST_CASE("Parser While") {
     std::vector<std::shared_ptr<Token>> tokens;
@@ -21,7 +21,7 @@ TEST_CASE("Parser While") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
+        REQUIRE_THROWS(SourceParser(tokens).parse());
     }
 
     SECTION("single While: missing cond_expr start_bracket") {
@@ -40,7 +40,7 @@ TEST_CASE("Parser While") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
+        REQUIRE_THROWS(SourceParser(tokens).parse());
     }
 
     SECTION("single While: missing cond_expr end_bracket") {
@@ -59,7 +59,7 @@ TEST_CASE("Parser While") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
+        REQUIRE_THROWS(SourceParser(tokens).parse());
     }
 
     SECTION("single While: empty cond_expr") {
@@ -76,7 +76,7 @@ TEST_CASE("Parser While") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
+        REQUIRE_THROWS(SourceParser(tokens).parse());
     }
 
     SECTION("single While: empty cond_expr") {
@@ -95,7 +95,7 @@ TEST_CASE("Parser While") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
+        REQUIRE_THROWS(SourceParser(tokens).parse());
     }
 
     SECTION("single While: incomplete cond_expr") {
@@ -114,7 +114,7 @@ TEST_CASE("Parser While") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
+        REQUIRE_THROWS(SourceParser(tokens).parse());
     }
 
     SECTION("single While: missing start_braces") {
@@ -133,7 +133,7 @@ TEST_CASE("Parser While") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
+        REQUIRE_THROWS(SourceParser(tokens).parse());
     }
 
     SECTION("single While: missing end_braces") {
@@ -152,7 +152,7 @@ TEST_CASE("Parser While") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
+        REQUIRE_THROWS(SourceParser(tokens).parse());
     }
 
     SECTION("single While") {
@@ -172,9 +172,9 @@ TEST_CASE("Parser While") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_NOTHROW(Parser(tokens).parse());
+        REQUIRE_NOTHROW(SourceParser(tokens).parse());
 
-        auto parser = Parser(tokens);
+        auto parser = SourceParser(tokens);
         parser.parse();
         std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
 
@@ -225,9 +225,9 @@ TEST_CASE("Parser While") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_NOTHROW(Parser(tokens).parse());
+        REQUIRE_NOTHROW(SourceParser(tokens).parse());
 
-        auto parser = Parser(tokens);
+        auto parser = SourceParser(tokens);
         parser.parse();
         std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
 
@@ -294,9 +294,9 @@ TEST_CASE("Parser While") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_NOTHROW(Parser(tokens).parse());
+        REQUIRE_NOTHROW(SourceParser(tokens).parse());
 
-        auto parser = Parser(tokens);
+        auto parser = SourceParser(tokens);
         parser.parse();
         std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
 

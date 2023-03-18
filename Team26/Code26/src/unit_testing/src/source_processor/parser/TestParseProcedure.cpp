@@ -1,6 +1,6 @@
 #include "catch.hpp"
 #include "TestSourceParserUtil.h"
-#include "source_processor/parser/Parser.h"
+#include "source_processor/parser/SourceParser.h"
 
 TEST_CASE("Parser Procedure") {
     std::vector<std::shared_ptr<Token>> tokens;
@@ -11,7 +11,7 @@ TEST_CASE("Parser Procedure") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "{"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
+        REQUIRE_THROWS(SourceParser(tokens).parse());
     }
 
     SECTION("single procedure: missing keyword") {
@@ -22,7 +22,7 @@ TEST_CASE("Parser Procedure") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
+        REQUIRE_THROWS(SourceParser(tokens).parse());
     }
 
     SECTION("single procedure: missing procedure name") {
@@ -33,7 +33,7 @@ TEST_CASE("Parser Procedure") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
+        REQUIRE_THROWS(SourceParser(tokens).parse());
     }
 
     SECTION("single procedure: missing start braces") {
@@ -44,7 +44,7 @@ TEST_CASE("Parser Procedure") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
+        REQUIRE_THROWS(SourceParser(tokens).parse());
     }
 
     SECTION("single procedure: missing end braces") {
@@ -54,7 +54,7 @@ TEST_CASE("Parser Procedure") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "x"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
+        REQUIRE_THROWS(SourceParser(tokens).parse());
     }
 
     SECTION("single procedure") {
@@ -66,9 +66,9 @@ TEST_CASE("Parser Procedure") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_NOTHROW(Parser(tokens).parse());
+        REQUIRE_NOTHROW(SourceParser(tokens).parse());
 
-        auto parser = Parser(tokens);
+        auto parser = SourceParser(tokens);
         parser.parse();
         std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
 
@@ -99,9 +99,9 @@ TEST_CASE("Parser Procedure") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_NOTHROW(Parser(tokens).parse());
+        REQUIRE_NOTHROW(SourceParser(tokens).parse());
 
-        auto parser = Parser(tokens);
+        auto parser = SourceParser(tokens);
         parser.parse();
         std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
 

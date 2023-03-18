@@ -25,7 +25,7 @@ enum class HelperNode {
     CondExprHelper
 };
 
-class Parser : public AbstractParser {
+class SourceParser : public AbstractParser {
  private:
     std::shared_ptr<ProgramNode> programRoot;
     int stmtIndex;
@@ -59,7 +59,7 @@ class Parser : public AbstractParser {
     static void checkStackSize(std::stack<HelperNode>& result);
 
  public:
-    explicit Parser(std::vector<std::shared_ptr<Token>> tokens);
+    explicit SourceParser(std::vector<std::shared_ptr<Token>> tokens);
 
     void parse() override;
 

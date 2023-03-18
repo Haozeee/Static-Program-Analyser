@@ -1,6 +1,6 @@
 #include "catch.hpp"
 #include "TestSourceParserUtil.h"
-#include "source_processor/parser/Parser.h"
+#include "source_processor/parser/SourceParser.h"
 
 
 TEST_CASE("Parser Assign") {
@@ -15,7 +15,7 @@ std::vector<std::shared_ptr<Token>> tokens;
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
+        REQUIRE_THROWS(SourceParser(tokens).parse());
     }
 
     SECTION("single Assign: missing variable") {
@@ -27,7 +27,7 @@ std::vector<std::shared_ptr<Token>> tokens;
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
+        REQUIRE_THROWS(SourceParser(tokens).parse());
     }
 
     SECTION("single Assign: missing expr") {
@@ -39,7 +39,7 @@ std::vector<std::shared_ptr<Token>> tokens;
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
+        REQUIRE_THROWS(SourceParser(tokens).parse());
     }
 
     SECTION("single Assign: missing semicolon") {
@@ -51,7 +51,7 @@ std::vector<std::shared_ptr<Token>> tokens;
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_NAME, "1"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
+        REQUIRE_THROWS(SourceParser(tokens).parse());
     }
 
     SECTION("single Assign factor_int") {
@@ -64,9 +64,9 @@ std::vector<std::shared_ptr<Token>> tokens;
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_NOTHROW(Parser(tokens).parse());
+        REQUIRE_NOTHROW(SourceParser(tokens).parse());
 
-        auto parser = Parser(tokens);
+        auto parser = SourceParser(tokens);
         parser.parse();
         std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
 
@@ -96,9 +96,9 @@ std::vector<std::shared_ptr<Token>> tokens;
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_NOTHROW(Parser(tokens).parse());
+        REQUIRE_NOTHROW(SourceParser(tokens).parse());
 
-        auto parser = Parser(tokens);
+        auto parser = SourceParser(tokens);
         parser.parse();
         std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
 
@@ -132,9 +132,9 @@ std::vector<std::shared_ptr<Token>> tokens;
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_NOTHROW(Parser(tokens).parse());
+        REQUIRE_NOTHROW(SourceParser(tokens).parse());
 
-        auto parser = Parser(tokens);
+        auto parser = SourceParser(tokens);
         parser.parse();
         std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
 
@@ -189,9 +189,9 @@ std::vector<std::shared_ptr<Token>> tokens;
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, ";"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_NOTHROW(Parser(tokens).parse());
+        REQUIRE_NOTHROW(SourceParser(tokens).parse());
 
-        auto parser = Parser(tokens);
+        auto parser = SourceParser(tokens);
         parser.parse();
         std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
 

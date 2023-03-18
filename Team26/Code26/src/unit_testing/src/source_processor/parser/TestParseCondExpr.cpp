@@ -1,6 +1,6 @@
 #include "catch.hpp"
 #include "TestSourceParserUtil.h"
-#include "source_processor/parser/Parser.h"
+#include "source_processor/parser/SourceParser.h"
 
 TEST_CASE("Parser CondExpr") {
     std::vector<std::shared_ptr<Token>> tokens;
@@ -24,7 +24,7 @@ TEST_CASE("Parser CondExpr") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_THROWS(Parser(tokens).parse());
+        REQUIRE_THROWS(SourceParser(tokens).parse());
     }
 
     SECTION("rel_expr") {
@@ -54,9 +54,9 @@ TEST_CASE("Parser CondExpr") {
                 tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
                 tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
                 tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-                REQUIRE_NOTHROW(Parser(tokens).parse());
+                REQUIRE_NOTHROW(SourceParser(tokens).parse());
 
-                auto parser = Parser(tokens);
+                auto parser = SourceParser(tokens);
                 parser.parse();
                 std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
 
@@ -96,9 +96,9 @@ TEST_CASE("Parser CondExpr") {
                 tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
                 tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
                 tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-                REQUIRE_NOTHROW(Parser(tokens).parse());
+                REQUIRE_NOTHROW(SourceParser(tokens).parse());
 
-                auto parser = Parser(tokens);
+                auto parser = SourceParser(tokens);
                 parser.parse();
                 std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
 
@@ -137,9 +137,9 @@ TEST_CASE("Parser CondExpr") {
                 tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
                 tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
                 tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-                REQUIRE_NOTHROW(Parser(tokens).parse());
+                REQUIRE_NOTHROW(SourceParser(tokens).parse());
 
-                auto parser = Parser(tokens);
+                auto parser = SourceParser(tokens);
                 parser.parse();
                 std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
 
@@ -173,9 +173,9 @@ TEST_CASE("Parser CondExpr") {
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_SPECIAL_CHAR, "}"));
         tokens.push_back(std::make_shared<Token>(TokenType::TOKEN_END_OF_FILE, ""));
-        REQUIRE_NOTHROW(Parser(tokens).parse());
+        REQUIRE_NOTHROW(SourceParser(tokens).parse());
 
-        auto parser = Parser(tokens);
+        auto parser = SourceParser(tokens);
         parser.parse();
         std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
 
@@ -227,9 +227,9 @@ TEST_CASE("Parser CondExpr") {
 
 
 
-                REQUIRE_NOTHROW(Parser(tokens).parse());
+                REQUIRE_NOTHROW(SourceParser(tokens).parse());
 
-                auto parser = Parser(tokens);
+                auto parser = SourceParser(tokens);
                 parser.parse();
                 std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
 
