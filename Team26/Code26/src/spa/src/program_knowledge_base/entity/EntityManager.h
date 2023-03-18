@@ -8,33 +8,33 @@ template <typename T>
 class EntityManager : public IWriteEntityManager<T>,
         public IReadEntityManager<T> {
  private:
-    std::unordered_set<T> entities_set;
+    std::unordered_set<T> entitiesSet;
 
  public:
-    bool insertEntity(T name_or_stmtNo) {
-        auto insertedEntity =  entities_set.insert(name_or_stmtNo);
+    bool insertEntity(T nameOrStmtNo) {
+        auto insertedEntity =  entitiesSet.insert(nameOrStmtNo);
         bool flag = insertedEntity.second;
         return flag;
     }
 
     bool isEmpty() {
         bool flag = true;
-        if (entities_set.size() != 0) {
+        if (entitiesSet.size() != 0) {
             flag = false;
         }
         return flag;
     }
 
-    bool contains(T name_or_stmtNo) {
+    bool contains(T nameOrStmtNo) {
         bool flag = false;
-        auto element = entities_set.find(name_or_stmtNo);
-        if (element != entities_set.end()) {
+        auto element = entitiesSet.find(nameOrStmtNo);
+        if (element != entitiesSet.end()) {
             flag = true;
         }
         return flag;
     }
 
     std::unordered_set<T> getAllEntitiesEntries() {
-        return entities_set;
+        return entitiesSet;
     }
 };
