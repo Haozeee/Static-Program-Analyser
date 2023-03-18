@@ -41,10 +41,8 @@ void Tokenizer::readSpecialChar() {
 }
 
 std::vector<std::shared_ptr<Token>> Tokenizer::tokenize() {
-    char c = 0;
-
     while (!istream->eof()) {
-        c = nextChar();
+        char c = nextChar();
 
         if (c == EOF) {
             addToken(std::make_shared<EndOfFileToken>());
@@ -53,6 +51,7 @@ std::vector<std::shared_ptr<Token>> Tokenizer::tokenize() {
 
         currentToken += c;
         if (isspace(c)) {
+            // do nothing
         } else if (isalpha(c)) {
             readName();
             addToken(std::make_shared<NameToken>(getCurrentToken()));
