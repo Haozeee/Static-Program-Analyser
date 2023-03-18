@@ -119,7 +119,7 @@ class MockRelationshipStore : public IRelationshipStore {
     void insertCallsRelationship(const int &stmtNo, const std::string &callerName, const std::string
     &calleeName) override {
         callSStore[stmtNo].insert(calleeName);
-        callPStore[callerName].insert( calleeName);
+        callPStore[callerName].insert(calleeName);
     }
 
     void insertNextRelationship(int previousStmtNo, int currStmtNo) override {
@@ -127,7 +127,7 @@ class MockRelationshipStore : public IRelationshipStore {
     }
 
     void insertCallsTRelationship(std::string caller, std::string callee) override {
-        callsTStore[caller].insert (callee);
+        callsTStore[caller].insert(callee);
     }
 
     void invokePostReverseRelationship() override {
@@ -137,7 +137,6 @@ class MockRelationshipStore : public IRelationshipStore {
     }
 
     std::unordered_map<std::string, std::unordered_set<std::string>> getCallsPReversedRelationship() override {
-
     };
 
     std::unordered_map<std::string, std::unordered_set<std::string>> getCallsTRelationship() override {
@@ -191,6 +190,6 @@ class MockPatternStore : public IPatternStore {
         whileCondManager[stmtIndex].insert(variableName);
     }
 
-    void invokePostReverseRelationship() override {
+    void invokePostReversePattern() override {
     }
 };

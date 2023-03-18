@@ -27,7 +27,7 @@ jobs:
             cd .\Team26\Code26
             mkdir build
             cd build
-            cmake -G "Ninja" ..
+            cmake -A Win32 -G "Ninja" ..
 
         - name: Build Project
           run: |

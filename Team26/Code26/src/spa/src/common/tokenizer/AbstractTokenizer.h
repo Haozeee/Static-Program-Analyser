@@ -78,13 +78,6 @@ class AbstractTokenizer {
      * */
     void addToken(const std::shared_ptr<Token>& token);
 
-    /**
-     * Get all token in the token list
-     *
-     * @return The token list.
-     * */
-    std::vector<std::shared_ptr<Token>> getTokens();
-
  public:
     /**
      * Constructor for the Source Processor initialization.
