@@ -29,12 +29,12 @@ void EntityExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
     patternStore->invokePostReversePattern();
 }
 
-void EntityExtractor::extractProcedure(std::shared_ptr<ProcedureNode> node) {
+void EntityExtractor::extractProcedure(const std::shared_ptr<ProcedureNode>& node) {
     entityStore->insertProcedure(node);
     BaseExtractor::extractProcedure(node);
 }
 
-void EntityExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
+void EntityExtractor::extractStmt(const std::shared_ptr<StmtNode>& node) {
     BaseExtractor::extractStmt(node);  // Update Extractor Current Index
     node->evaluate(*this);
 }

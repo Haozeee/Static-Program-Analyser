@@ -16,12 +16,12 @@ class BaseExtractor {
     /**
      * General looping of nodes that contains statements.
      * */
-    virtual void extractProcedure(std::shared_ptr<ProcedureNode> node);
-    virtual void extractStmtList(std::shared_ptr<StmtListNode> node);
-    virtual void extractStmt(std::shared_ptr<StmtNode> node);
+    virtual void extractProcedure(const std::shared_ptr<ProcedureNode>& node);
+    virtual void extractStmtList(const std::shared_ptr<StmtListNode>& node);
+    virtual void extractStmt(const std::shared_ptr<StmtNode>& node);
 
  public:
     BaseExtractor();
 
-    virtual void extractProgram(std::shared_ptr<ProgramNode> node);
+    virtual void extractProgram(const std::shared_ptr<ProgramNode>& node);
 };

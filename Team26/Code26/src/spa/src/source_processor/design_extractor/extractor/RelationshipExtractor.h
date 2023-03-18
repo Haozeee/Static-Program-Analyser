@@ -46,9 +46,9 @@ class RelationshipExtractor : public BaseExtractor, IRelationshipExtractor {
     void interlinkSRelationships(const std::string& procedureName);
     void interlinkPRelationships(const std::string& procedureName);
 
-    void extractProcedure(std::shared_ptr<ProcedureNode> node) override;
-    void extractStmtList(std::shared_ptr<StmtListNode> node) override;
-    void extractStmt(std::shared_ptr<StmtNode> node) override;
+    void extractProcedure(const std::shared_ptr<ProcedureNode>& node) override;
+    void extractStmtList(const std::shared_ptr<StmtListNode>& node) override;
+    void extractStmt(const std::shared_ptr<StmtNode>& node) override;
     void extractRead(std::shared_ptr<ReadNode> node) override;
     void extractPrint(std::shared_ptr<PrintNode> node) override;
     void extractAssign(std::shared_ptr<AssignNode> node) override;

@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include <unordered_set>
 #include "source_processor/design_extractor/extractor/BaseExtractor.h"
 #include "source_processor/design_extractor/interface/IEntityExtractor.h"
 #include "source_processor/storage_writer/interface/IEntityStore.h"
@@ -12,8 +13,8 @@ class EntityExtractor : public BaseExtractor, IEntityExtractor {
     std::shared_ptr<IEntityStore> entityStore;
     std::shared_ptr<IPatternStore> patternStore;
 
-    void extractProcedure(std::shared_ptr<ProcedureNode> node) override;
-    void extractStmt(std::shared_ptr<StmtNode> node) override;
+    void extractProcedure(const std::shared_ptr<ProcedureNode>& node) override;
+    void extractStmt(const std::shared_ptr<StmtNode>& node) override;
     void extractRead(std::shared_ptr<ReadNode> node) override;
     void extractPrint(std::shared_ptr<PrintNode> node) override;
     void extractAssign(std::shared_ptr<AssignNode> node) override;

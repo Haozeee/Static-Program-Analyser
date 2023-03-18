@@ -22,9 +22,7 @@ void RelationshipExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
     // There must be at least 1 procedure that is not calling another procedure else cycle
 
     for (auto& noCallProcedure : procedureUniqueCallCount) {
-        if (noCallProcedure.second == 0) {
-            procedureQueue.push(noCallProcedure.first);
-        }
+        if (noCallProcedure.second == 0) procedureQueue.push(noCallProcedure.first);
     }
 
     callPReversedRelationships = relationshipStore->getCallsPReversedRelationship();
@@ -32,33 +30,28 @@ void RelationshipExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
         currProcedureName = procedureQueue.front();
         procedureQueue.pop();
         topologicalSortedProcedures.emplace_back(currProcedureName);
-        // Note: map::operator[] creates empty set and do not throw error, map::at will throw an error
 
+        // Note: map::operator[] creates empty set and do not throw error, map::at will throw an error
         for (auto &caller : callPReversedRelationships.operator[](currProcedureName)) {
-            if (procedureUniqueCallCount.at(caller) > 0) {
-                procedureUniqueCallCount.at(caller)--;
-            }
-            if (procedureUniqueCallCount.at(caller) == 0) {
-                procedureQueue.push(caller);
-            }
+            if (procedureUniqueCallCount.at(caller) > 0) procedureUniqueCallCount.at(caller)--;
+            if (procedureUniqueCallCount.at(caller) == 0) procedureQueue.push(caller);
         }
     }
 
     for (auto &procedureName : topologicalSortedProcedures) {
         interlinkRelationships(procedureName);
     }
-
+    std::unordered_set<std::string> topologicalSortedProceduresMap;
+    topologicalSortedProceduresMap.insert(topologicalSortedProcedures.begin(), topologicalSortedProcedures.end());
     for (auto& procedureName : relationshipStore->getProcedureEntities()) {
-        if (std::find(topologicalSortedProcedures.begin(), topologicalSortedProcedures.end(), procedureName) ==
-        topologicalSortedProcedures.end()) {
-            throw SourceExtractorException(RelationshipExtractorCyclicCallsExceptionMessage);
-        }
+        if (topologicalSortedProceduresMap.find(procedureName) == topologicalSortedProceduresMap.end()) throw
+        SourceExtractorException(RelationshipExtractorCyclicCallsExceptionMessage);
     }
 
     relationshipStore->invokePostReverseRelationship();
 }
 
-void RelationshipExtractor::extractProcedure(std::shared_ptr<ProcedureNode> node) {
+void RelationshipExtractor::extractProcedure(const std::shared_ptr<ProcedureNode>& node) {
     parentIndexStack.clear();
     statementStack.clear();
     currProcedureName = node->procedureName;
@@ -68,13 +61,13 @@ void RelationshipExtractor::extractProcedure(std::shared_ptr<ProcedureNode> node
     BaseExtractor::extractProcedure(node);
 }
 
-void RelationshipExtractor::extractStmtList(std::shared_ptr<StmtListNode> node) {
+void RelationshipExtractor::extractStmtList(const std::shared_ptr<StmtListNode>& node) {
     followsStack.push_back(std::make_shared<std::vector<int>>());
     BaseExtractor::extractStmtList(node);
     followsStack.pop_back();
 }
 
-void RelationshipExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
+void RelationshipExtractor::extractStmt(const std::shared_ptr<StmtNode>& node) {
     BaseExtractor::extractStmt(node);
 
     // CFG
@@ -244,9 +237,7 @@ void RelationshipExtractor::interlinkPRelationships(const std::string& procedure
     for (auto &caller : callPReversedRelationships.operator[](procedureName)) {
         relationshipStore->insertCallsTRelationship(caller, procedureName);
         for (auto &callee : callsTRelationships.operator[](procedureName)) {
-            if (callee == caller) {
-                throw SourceExtractorException(RelationshipExtractorSelfCallsExceptionMessage);
-            }
+            if (callee == caller) throw SourceExtractorException(RelationshipExtractorSelfCallsExceptionMessage);
             relationshipStore->insertCallsTRelationship(caller, callee);
         }
         for (auto &variableName : usesPRelationships.operator[](procedureName)) {

@@ -58,7 +58,6 @@ class Parser : public AbstractParser {
     static void continueCondExprHelper(std::stack<HelperNode>& result);
     static void checkStackSize(std::stack<HelperNode>& result);
 
-
  public:
     explicit Parser(std::vector<std::shared_ptr<Token>> tokens);
 
