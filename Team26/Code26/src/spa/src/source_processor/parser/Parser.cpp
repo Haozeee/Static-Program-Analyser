@@ -178,7 +178,7 @@ std::shared_ptr<CondExprNode> Parser::parseConditional(
         } else if (isValueOf(BRACKETS_END)) {
             numOfBrackets--;
             bool isRelExpr = false;
-            handleEndBrackets(opStack,postfix, isRelExpr, relOp, tokens, index);
+            handleEndBrackets(opStack, postfix, isRelExpr, relOp, tokens, index);
             if (numOfBrackets == 0) {
                 break;
             }
