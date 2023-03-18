@@ -42,12 +42,12 @@ class Parser : public AbstractParser {
     std::shared_ptr<CondExprNode> parseConditional(
             const std::shared_ptr<std::unordered_set<std::string>>& exprVariables,
             const std::shared_ptr<std::unordered_set<int>>& exprConstants);
-    void popExprHelper(std::stack<HelperNode>& result);
-    void continueExprHelper(std::stack<HelperNode>& result);
-    void popCondExprHelper(std::stack<HelperNode>& result);
-    void continueCondExprHelper(std::stack<HelperNode>& result);
-    void checkStackSize(std::stack<HelperNode>& result);
-    void handleEndBrackets(std::stack<std::shared_ptr<Token>>& opStack, std::queue<std::shared_ptr<Token>>& postfix,
+    static void popExprHelper(std::stack<HelperNode>& result);
+    static void continueExprHelper(std::stack<HelperNode>& result);
+    static void popCondExprHelper(std::stack<HelperNode>& result);
+    static void continueCondExprHelper(std::stack<HelperNode>& result);
+    static void checkStackSize(std::stack<HelperNode>& result);
+    static void handleEndBrackets(std::stack<std::shared_ptr<Token>>& opStack, std::queue<std::shared_ptr<Token>>& postfix,
                            bool& isRelExpr, const std::unordered_set<std::string>& relOp,
                            const std::vector<std::shared_ptr<Token>>& tokens, int index);
 
