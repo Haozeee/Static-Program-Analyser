@@ -27,7 +27,7 @@ void RelationshipExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
         }
     }
 
-    callPReversedRelationships = relationshipStore->getCallPReversedRelationship();
+    callPReversedRelationships = relationshipStore->getCallsPReversedRelationship();
     while (!procedureQueue.empty()) {
         currProcedureName = procedureQueue.front();
         procedureQueue.pop();
@@ -150,7 +150,7 @@ void RelationshipExtractor::extractCondExpr(const std::shared_ptr<CondExprNode>&
 void RelationshipExtractor::extractCall(std::shared_ptr<CallNode> node) {
     if (currProcedureName == node->procedureName) /* Self call*/ {
         throw SourceExtractorException(RelationshipExtractorSelfCallsExceptionMessage);
-    } else if (!relationshipStore->isProcedureEntitiesContains(node->procedureName)) {
+    } else if (!relationshipStore->procedureEntitiesContains(node->procedureName)) {
         /* Callee does not exits*/
         throw SourceExtractorException(RelationshipExtractorNonExistentExceptionMessage);
     }

@@ -94,7 +94,7 @@ void RelationshipStore::invokePreReverseRelationship() {
     callPManager->setReverse();
 }
 
-std::unordered_map<std::string, std::unordered_set<std::string>> RelationshipStore::getCallPReversedRelationship() {
+std::unordered_map<std::string, std::unordered_set<std::string>> RelationshipStore::getCallsPReversedRelationship() {
     return readStorage->getCallsPManager()->getAllReversedRelationshipEntries();
 }
 
@@ -110,7 +110,7 @@ std::unordered_map<std::string, std::unordered_set<std::string>> RelationshipSto
     return readStorage->getUsesPManager()->getAllRelationshipEntries();
 }
 
-bool RelationshipStore::isProcedureEntitiesContains(std::string procedureName) {
+bool RelationshipStore::procedureEntitiesContains(std::string procedureName) {
     return readStorage->getProcedureManager()->contains(procedureName);
 }
 

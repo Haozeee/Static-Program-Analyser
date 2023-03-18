@@ -30,12 +30,12 @@ class RelationshipStore : public IRelationshipStore {
                                const std::shared_ptr<ReadStorage>& readStorage);
 
     std::unordered_set<std::string> getProcedureEntities() override;
-    std::unordered_map<std::string, std::unordered_set<std::string>> getCallPReversedRelationship() override;
+    std::unordered_map<std::string, std::unordered_set<std::string>> getCallsPReversedRelationship() override;
     std::unordered_map<std::string, std::unordered_set<std::string>> getCallsTRelationship() override;
     std::unordered_map<std::string, std::unordered_set<std::string>> getModifiesPRelationship() override;
     std::unordered_map<std::string, std::unordered_set<std::string>> getUsesPRelationship() override;
     bool callsPReadContains(std::string procedureName1, std::string procedureName2) override;
-    bool isProcedureEntitiesContains(std::string procedureName) override;
+    bool procedureEntitiesContains(std::string procedureName) override;
 
     void insertFollowsRelationship(const int &previousStmtNo, const int &currentStmtNo) override;
     void insertParentsRelationship(const int &parentStmtNo, const int &childStmtNo) override;
