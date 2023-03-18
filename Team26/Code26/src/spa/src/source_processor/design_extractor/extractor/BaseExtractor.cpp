@@ -30,6 +30,3 @@ void BaseExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
     currentStmtNo = node->stmtIndex;
 }
 
-void BaseExtractor::clearExprStack() {
-    exprVariableList.clear();
-}

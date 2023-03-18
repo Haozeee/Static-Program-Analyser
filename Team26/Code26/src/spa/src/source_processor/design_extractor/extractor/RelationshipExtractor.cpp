@@ -119,11 +119,7 @@ void RelationshipExtractor::extractPrint(std::shared_ptr<PrintNode> node) {
 
 void RelationshipExtractor::extractAssign(std::shared_ptr<AssignNode> node) {
     insertModifiesGroup(node);
-    clearExprStack();
-    for (const auto& x : node->exprVariables) {
-        exprVariableList.emplace_back(x);
-    }
-    insertExprUsesGroup();
+    insertExprUsesGroup(node->exprVariables);
 }
 
 void RelationshipExtractor::extractWhile(std::shared_ptr<WhileNode> node) {
@@ -157,11 +153,7 @@ void RelationshipExtractor::extractIf(std::shared_ptr<IfNode> node) {
 
 
 void RelationshipExtractor::extractCondExpr(const std::shared_ptr<CondExprNode>& node) {
-    clearExprStack();
-    for (const auto& variable : node->exprVariables) {
-        exprVariableList.emplace_back(variable);
-    }
-    insertExprUsesGroup();
+    insertExprUsesGroup(node->exprVariables);
 }
 
 void RelationshipExtractor::extractCall(std::shared_ptr<CallNode> node) {
@@ -177,8 +169,6 @@ void RelationshipExtractor::extractCall(std::shared_ptr<CallNode> node) {
     // PKB Insertion
     relationshipStore->insertCallsRelationship(node->stmtIndex, currProcedureName, node->procedureName);
 
-
-    // TODO(zt): Refactor below?
     // Create a unique unordered_set if it does not exist
     if (procedureCalledList.count(node->procedureName) <= 0) {
         procedureCalledList[node->procedureName] = std::make_unique<std::unordered_set<int>>();
@@ -194,7 +184,7 @@ void RelationshipExtractor::extractCall(std::shared_ptr<CallNode> node) {
     }
 }
 
-void RelationshipExtractor::insertExprUsesGroup() {
+void RelationshipExtractor::insertExprUsesGroup(const std::unordered_set<std::string>& exprVariableList) {
     for (auto &variable : exprVariableList) {
         relationshipStore->insertUsesSRelationship(currentStmtNo, variable);
         for (int& parentIndex : parentIndexStack) {
