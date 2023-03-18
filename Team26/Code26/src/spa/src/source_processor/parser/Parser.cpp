@@ -178,25 +178,7 @@ std::shared_ptr<CondExprNode> Parser::parseConditional(
         } else if (isValueOf(BRACKETS_END)) {
             numOfBrackets--;
             bool isRelExpr = false;
-            while (!opStack.empty() && opStack.top()->getValue() != BRACKETS_START) {
-                if (relOp.find(opStack.top()->getValue()) != relOp.end()) {
-                    isRelExpr = true;
-                }
-                postfix.push(opStack.top());
-                opStack.pop();
-            }
-
-            if (!opStack.empty()) {
-                opStack.pop();
-            } else {
-                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
-            }
-            if (isRelExpr &&
-                !opStack.empty() &&
-                opStack.top()->getValue() == BRACKETS_START &&
-                    (tokens[index+1]->getValue() != "&&" && tokens[index+1]->getValue() != "||")) {
-                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
-            }
+            handleEndBrackets(opStack,postfix, isRelExpr, relOp, tokens, index);
             if (numOfBrackets == 0) {
                 break;
             }
@@ -360,6 +342,32 @@ void Parser::continueCondExprHelper(std::stack<HelperNode>& result, const std::s
 
 void Parser::checkStackSize(std::stack<HelperNode>& result, const std::string& ParserInvalidCondExprExceptionMessage) {
     if (result.size() < 2) {
+        throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+    }
+}
+
+void Parser::handleEndBrackets(std::stack<std::shared_ptr<Token>>& opStack,
+                                   std::queue<std::shared_ptr<Token>>& postfix,
+                                   bool& isRelExpr,
+                                   const std::unordered_set<std::string>& relOp,
+                                   const std::vector<std::shared_ptr<Token>>& tokens,
+                                   int index) {
+    while (!opStack.empty() && opStack.top()->getValue() != BRACKETS_START) {
+        if (relOp.find(opStack.top()->getValue()) != relOp.end()) {
+            isRelExpr = true;
+        }
+        postfix.push(opStack.top());
+        opStack.pop();
+    }
+    if (!opStack.empty()) {
+        opStack.pop();
+    } else {
+        throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+    }
+    if (isRelExpr &&
+        !opStack.empty() &&
+        opStack.top()->getValue() == BRACKETS_START &&
+        (tokens[index+1]->getValue() != "&&" && tokens[index+1]->getValue() != "||")) {
         throw SourceParserException(ParserInvalidCondExprExceptionMessage);
     }
 }

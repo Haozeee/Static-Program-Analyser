@@ -47,6 +47,9 @@ class Parser : public AbstractParser {
     void popCondExprHelper(std::stack<HelperNode>& result, const std::string& ParserInvalidCondExprExceptionMessage);
     void continueCondExprHelper(std::stack<HelperNode>& result, const std::string& ParserInvalidCondExprExceptionMessage);
     void checkStackSize(std::stack<HelperNode>& result, const std::string& ParserInvalidCondExprExceptionMessage);
+    void handleEndBrackets(std::stack<std::shared_ptr<Token>>& opStack, std::queue<std::shared_ptr<Token>>& postfix,
+                           bool& isRelExpr, const std::unordered_set<std::string>& relOp,
+                           const std::vector<std::shared_ptr<Token>>& tokens, int index);
 
  public:
     explicit Parser(std::vector<std::shared_ptr<Token>> tokens);
