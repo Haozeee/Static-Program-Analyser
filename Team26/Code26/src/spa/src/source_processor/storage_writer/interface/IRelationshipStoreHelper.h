@@ -12,8 +12,10 @@ class IRelationshipStoreHelper {
     virtual void invokePostReverseRelationship() = 0;
     virtual void invokePreReverseRelationship() = 0;
 
-    virtual std::shared_ptr<IReadEntityManager<std::string>> getReadProcedureManager() = 0;
-    virtual std::shared_ptr<IReadRelationshipManager<std::string, std::string>> getCallPReadManager() = 0;
+
+    virtual std::unordered_set<std::string> getProcedureEntities() = 0;
+    virtual bool isProcedureEntitiesContains(std::string procedureName) = 0;
+    virtual bool callsPReadContains(std::string procedureName1, std::string procedureName2) = 0;
     virtual std::unordered_map<std::string, std::unordered_set<std::string>> getCallPReversedRelationship() = 0;
     virtual std::unordered_map<std::string, std::unordered_set<std::string>> getCallsTRelationship() = 0;
     virtual std::unordered_map<std::string, std::unordered_set<std::string>> getModifiesPRelationship() = 0;

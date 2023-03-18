@@ -48,7 +48,7 @@ void RelationshipExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
         interlinkRelationships(procedureName);
     }
 
-    for (auto& procedureName : relationshipStore->getReadProcedureManager()->getAllEntitiesEntries()) {
+    for (auto& procedureName : relationshipStore->getProcedureEntities()) {
         if (std::find(topologicalSortedProcedures.begin(), topologicalSortedProcedures.end(), procedureName) ==
         topologicalSortedProcedures.end()) {
             throw SourceExtractorException(RelationshipExtractorCyclicCallsExceptionMessage);
@@ -150,11 +150,11 @@ void RelationshipExtractor::extractCondExpr(const std::shared_ptr<CondExprNode>&
 void RelationshipExtractor::extractCall(std::shared_ptr<CallNode> node) {
     if (currProcedureName == node->procedureName) /* Self call*/ {
         throw SourceExtractorException(RelationshipExtractorSelfCallsExceptionMessage);
-    } else if (!relationshipStore->getReadProcedureManager()->contains(node->procedureName)) {
+    } else if (!relationshipStore->isProcedureEntitiesContains(node->procedureName)) {
         /* Callee does not exits*/
         throw SourceExtractorException(RelationshipExtractorNonExistentExceptionMessage);
     }
-    if (!relationshipStore->getCallPReadManager()->containsMap(currProcedureName, node->procedureName)) {
+    if (!relationshipStore->callsPReadContains(currProcedureName, node->procedureName)) {
         /* Track a procedure's call count */
         procedureUniqueCallCount[currProcedureName]++;
     }

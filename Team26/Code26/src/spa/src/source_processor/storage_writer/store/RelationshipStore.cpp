@@ -22,14 +22,6 @@ RelationshipStore::RelationshipStore(const std::shared_ptr<WriteStorage>& writeS
     callsTManager = writeStorage->getCallsTManager();
 
     this->readStorage = readStorage;
-
-//    procedureManager = readStorage->getProcedureManager();
-//
-//    callPReadManager = readStorage->getCallsPManager();
-//    callsTReadManager = readStorage->getCallsTManager();
-//
-//    usesPReadManager = readStorage->getUsesPManager();
-//    modifiesPReadManager = readStorage->getModifiesPManager();
 }
 
 void RelationshipStore::insertFollowsRelationship(const int &previousStmtNo, const int &currentStmtNo) {
@@ -106,14 +98,6 @@ std::unordered_map<std::string, std::unordered_set<std::string>> RelationshipSto
     return readStorage->getCallsPManager()->getAllReversedRelationshipEntries();
 }
 
-std::shared_ptr<IReadEntityManager<std::string>> RelationshipStore::getReadProcedureManager() {
-    return readStorage->getProcedureManager();
-}
-
-std::shared_ptr<IReadRelationshipManager<std::string, std::string>> RelationshipStore::getCallPReadManager() {
-    return readStorage->getCallsPManager();
-}
-
 std::unordered_map<std::string, std::unordered_set<std::string>> RelationshipStore::getCallsTRelationship() {
     return readStorage->getCallsTManager()->getAllRelationshipEntries();
 }
@@ -124,5 +108,17 @@ std::unordered_map<std::string, std::unordered_set<std::string>> RelationshipSto
 
 std::unordered_map<std::string, std::unordered_set<std::string>> RelationshipStore::getUsesPRelationship() {
     return readStorage->getUsesPManager()->getAllRelationshipEntries();
+}
+
+bool RelationshipStore::isProcedureEntitiesContains(std::string procedureName) {
+    return readStorage->getProcedureManager()->contains(procedureName);
+}
+
+std::unordered_set<std::string> RelationshipStore::getProcedureEntities() {
+    return readStorage->getProcedureManager()->getAllEntitiesEntries();
+}
+
+bool RelationshipStore::callsPReadContains(std::string procedureName1, std::string procedureName2) {
+    return readStorage->getCallsPManager()->containsMap(procedureName1, procedureName2);
 }
 

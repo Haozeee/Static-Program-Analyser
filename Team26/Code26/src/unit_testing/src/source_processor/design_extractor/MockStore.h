@@ -136,14 +136,6 @@ class MockRelationshipStore : public IRelationshipStore {
     void invokePreReverseRelationship() override {
     }
 
-    std::shared_ptr<IReadEntityManager<std::string>> getReadProcedureManager() override {
-
-    };
-
-    std::shared_ptr<IReadRelationshipManager<std::string, std::string>> getCallPReadManager() override {
-
-    };
-
     std::unordered_map<std::string, std::unordered_set<std::string>> getCallPReversedRelationship() override {
 
     };
