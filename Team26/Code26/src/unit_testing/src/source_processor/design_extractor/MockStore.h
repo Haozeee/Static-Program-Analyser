@@ -72,6 +72,13 @@ class MockRelationshipStore : public IRelationshipStore {
     std::unordered_map<int, std::unordered_set<std::string>> modifiesSStore;
     std::unordered_map<int, std::unordered_set<int>> nextStore;
 
+    std::unordered_map<std::string, std::unordered_set<std::string>> usesPStore;
+    std::unordered_map<std::string, std::unordered_set<std::string>> modifiesPStore;
+
+    std::unordered_map<int, std::unordered_set<std::string>> callSManager;
+    std::unordered_map<std::string, std::unordered_set<std::string>> callPManager;
+    std::unordered_map<std::string, std::unordered_set<std::string>> callsTManager;
+
     void insertFollowsRelationship(const int &previousStmtNo, const int &currentStmtNo) override {
         followsStore[previousStmtNo].insert(currentStmtNo);
     }
@@ -89,15 +96,17 @@ class MockRelationshipStore : public IRelationshipStore {
     }
 
     void insertUsesPRelationship(const std::string  &procedureName, const std::string &variableName) override {
-        // TODO(zt): Sprint 3
+        usesPStore[procedureName].insert(variableName);
     }
 
     void insertModifiesPRelationship(const std::string  &procedureName, const std::string &variableName) override {
-        // TODO(zt): Sprint 3
+        modifiesPStore[procedureName].insert(variableName);
     }
 
     void insertCallsRelationship(const int &stmtNo, const std::string &callerName, const std::string
     &calleeName) override {
+        callSManager[stmtNo].insert(calleeName);
+        callPManager[callerName].insert( calleeName);
     }
 
     void insertNextRelationship(int previousStmtNo, int currStmtNo) override {
@@ -105,6 +114,13 @@ class MockRelationshipStore : public IRelationshipStore {
     }
 
     void insertCallsTRelationship(std::string caller, std::string callee) override {
+        callsTManager[caller].insert (callee);
+    }
+
+    void invokePostReverseRelationship() override {
+    }
+
+    void invokePreReverseRelationship() override {
     }
 
     bool findFollows(int x, int y) {
@@ -131,14 +147,19 @@ class MockRelationshipStore : public IRelationshipStore {
 class MockPatternStore : public IPatternStore {
  public:
     std::set<std::shared_ptr<AssignNode>> assignStore;
+    std::unordered_map<int, std::unordered_set<std::string>> ifCondManager;
+    std::unordered_map<int, std::unordered_set<std::string>> whileCondManager;
+
     void insertExpressionPattern(std::shared_ptr<AssignNode> node) override {
         assignStore.insert(node);
     }
 
     void insertCondExpressionIfStatement(int stmtIndex, std::string variableName) override {
+        ifCondManager[stmtIndex].insert(variableName);
     }
 
     void insertCondExpressionWhileStatement(int stmtIndex, std::string variableName) override {
+        whileCondManager[stmtIndex].insert(variableName);
     }
 
     void invokePostReverseRelationship() override {
