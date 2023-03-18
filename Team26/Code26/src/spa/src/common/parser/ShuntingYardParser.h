@@ -34,7 +34,6 @@ class ShuntingYardParser {
             {'/', 2},
             {'%', 2}
     };
-    static inline std::vector<std::string> ops = {"+", "-", "*", "/", "%", "(" , ")"};
 
     static void parseDigit(std::string expr, int& i, bool& isPrevFactor,
                            std::stack<std::shared_ptr<ShuntNode>>& result);
@@ -52,4 +51,6 @@ class ShuntingYardParser {
                                       std::stack<std::shared_ptr<ShuntNode>>& result);
 
     static void processOperator(std::stack<char>& opStack, std::stack<std::shared_ptr<ShuntNode>>& result);
+
+    static bool isMathOp(const char& value);
 };

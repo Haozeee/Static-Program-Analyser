@@ -13,9 +13,7 @@ std::shared_ptr<ShuntNode> ShuntingYardParser::parse(std::string expr) {
             parseDigit(expr, i, isPrevFactor, result);
         } else if (std::isalpha(c)) /* variable */ {
             parseVariable(expr, i, isPrevFactor, result);
-        } else if (std::find(ops.begin(),
-                             ops.end(),
-                             std::string(1, c)) != ops.end()) /* operator or bracket */ {
+        } else if (isMathOp(c)) /* operator or bracket */ {
             parseOperatorOrBracket(c, opStack, isPrevFactor, result);
         } else {
             throw ShuntingYardParserException(
@@ -49,9 +47,7 @@ std::shared_ptr<ShuntNode> ShuntingYardParser::parse(std::string expr,
             parseDigit(exprConstants, expr, i, isPrevFactor, result);
         } else if (std::isalpha(c)) /* variable */ {
             parseVariable(exprVariables, expr, i, isPrevFactor, result);
-        } else if (std::find(ops.begin(),
-                             ops.end(),
-                             std::string(1, c)) != ops.end()) /* operator or bracket */ {
+        } else if (isMathOp(c)) /* operator or bracket */ {
             parseOperatorOrBracket(c, opStack, isPrevFactor, result);
         } else {
             throw ShuntingYardParserException(
@@ -168,4 +164,9 @@ void ShuntingYardParser::processOperator(std::stack<char>& opStack, std::stack<s
     node->left = result.top();
     result.pop();
     result.push(node);
+}
+
+bool ShuntingYardParser::isMathOp(const char &value) {
+    std::unordered_set<char> mathOp = {'+', '-', '*', '/', '%', '(' , ')'};
+    return mathOp.find(value) != mathOp.end();
 }
