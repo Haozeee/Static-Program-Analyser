@@ -68,16 +68,21 @@ class MockRelationshipStore : public IRelationshipStore {
  public:
     std::unordered_map<int, std::unordered_set<int>> followsStore;
     std::unordered_map<int, std::unordered_set<int>> parentsStore;
+
+    std::unordered_map<int, std::unordered_set<int>> followsTStore;
+    std::unordered_map<int, std::unordered_set<int>> parentsTStore;
+
     std::unordered_map<int, std::unordered_set<std::string>> usesSStore;
     std::unordered_map<int, std::unordered_set<std::string>> modifiesSStore;
-    std::unordered_map<int, std::unordered_set<int>> nextStore;
 
     std::unordered_map<std::string, std::unordered_set<std::string>> usesPStore;
     std::unordered_map<std::string, std::unordered_set<std::string>> modifiesPStore;
 
-    std::unordered_map<int, std::unordered_set<std::string>> callSManager;
-    std::unordered_map<std::string, std::unordered_set<std::string>> callPManager;
-    std::unordered_map<std::string, std::unordered_set<std::string>> callsTManager;
+    std::unordered_map<int, std::unordered_set<int>> nextStore;
+
+    std::unordered_map<int, std::unordered_set<std::string>> callSStore;
+    std::unordered_map<std::string, std::unordered_set<std::string>> callPStore;
+    std::unordered_map<std::string, std::unordered_set<std::string>> callsTStore;
 
     void insertFollowsRelationship(const int &previousStmtNo, const int &currentStmtNo) override {
         followsStore[previousStmtNo].insert(currentStmtNo);
@@ -85,6 +90,14 @@ class MockRelationshipStore : public IRelationshipStore {
 
     void insertParentsRelationship(const int &parentStmtNo, const int &childStmtNo) override {
         parentsStore[parentStmtNo].insert(childStmtNo);
+    }
+
+    void insertFollowsTRelationship(const int &previousStmtNo, const int &currentStmtNo) override {
+        followsTStore[previousStmtNo].insert(currentStmtNo);
+    }
+
+    void insertParentsTRelationship(const int &parentStmtNo, const int &childStmtNo) override {
+        parentsTStore[parentStmtNo].insert(childStmtNo);
     }
 
     void insertUsesSRelationship(const int &stmtNo, const std::string &variableName) override {
@@ -105,8 +118,8 @@ class MockRelationshipStore : public IRelationshipStore {
 
     void insertCallsRelationship(const int &stmtNo, const std::string &callerName, const std::string
     &calleeName) override {
-        callSManager[stmtNo].insert(calleeName);
-        callPManager[callerName].insert( calleeName);
+        callSStore[stmtNo].insert(calleeName);
+        callPStore[callerName].insert( calleeName);
     }
 
     void insertNextRelationship(int previousStmtNo, int currStmtNo) override {
@@ -114,7 +127,7 @@ class MockRelationshipStore : public IRelationshipStore {
     }
 
     void insertCallsTRelationship(std::string caller, std::string callee) override {
-        callsTManager[caller].insert (callee);
+        callsTStore[caller].insert (callee);
     }
 
     void invokePostReverseRelationship() override {
@@ -122,6 +135,30 @@ class MockRelationshipStore : public IRelationshipStore {
 
     void invokePreReverseRelationship() override {
     }
+
+    std::shared_ptr<IReadEntityManager<std::string>> getReadProcedureManager() override {
+
+    };
+
+    std::shared_ptr<IReadRelationshipManager<std::string, std::string>> getCallPReadManager() override {
+
+    };
+
+    std::unordered_map<std::string, std::unordered_set<std::string>> getCallPReversedRelationship() override {
+
+    };
+
+    std::unordered_map<std::string, std::unordered_set<std::string>> getCallsTRelationship() override {
+        return callsTStore;
+    };
+
+    std::unordered_map<std::string, std::unordered_set<std::string>> getModifiesPRelationship() override {
+        return modifiesPStore;
+    };
+
+    std::unordered_map<std::string, std::unordered_set<std::string>> getUsesPRelationship() override {
+        return usesPStore;
+    };
 
     bool findFollows(int x, int y) {
         auto curr = followsStore.find(x);

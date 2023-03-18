@@ -4,8 +4,8 @@
 #include "source_processor/design_extractor/extractor/RelationshipExtractor.h"
 #include "source_processor/storage_writer/interface/IStore.h"
 
-TEST_CASE("Test Relationship Extractor") {
-
+//TEST_CASE("Test Relationship Extractor") {
+//
 //    SECTION("Single Procedure") {
 //        const std::string procedureName = "procedure";
 //        const std::string readNodeName = "read";
@@ -18,21 +18,30 @@ TEST_CASE("Test Relationship Extractor") {
 //        std::shared_ptr<MockRelationshipStore> relationshipStore = std::make_shared<MockRelationshipStore>();
 //
 //        std::unique_ptr<RelationshipExtractor> relationshipExtractor = std::make_unique<RelationshipExtractor>
-//                (relationshipStore, nullptr);
-//        // TODO(ZT: Update Mocking
+//                (relationshipStore);
 //        std::shared_ptr<ReadNode> readNode = std::make_shared<ReadNode>(nodeIndex++, readNodeName);
 //        std::shared_ptr<PrintNode> printNode = std::make_shared<PrintNode>(nodeIndex++, printNodeName);
 //        auto ifNode = TestExtractorUtil::makeSimpleIfNode(nodeIndex);
 //        nodeIndex = nodeIndex + 3;
 //        auto whileNode = TestExtractorUtil::makeSimpleWhileNode(nodeIndex);
 //        nodeIndex = nodeIndex + 2;
-//        std::shared_ptr<ExprNode> constExprNode = std::make_shared<ExprNode>(constant,
-//                                                                             ExprNodeType::FACTOR_CONSTANT);
-//        std::shared_ptr<ExprNode> variableExprNode = std::make_shared<ExprNode>(variable,
-//                                                                                ExprNodeType::FACTOR_VARIABLE);
-//        std::shared_ptr<AssignNode> assignNode1 = std::make_shared<AssignNode>(nodeIndex++, assignNodeName, constExprNode);
+//        std::unordered_set<std::string> variables { variable };
+//        std::unordered_set<int> constants { stoi(constant) };
+//
+//        std::unordered_set<std::string> emptyVariables;
+//        std::unordered_set<int> emptyConstants;
+//
+//        std::shared_ptr<ShuntNode> constShuntNode = std::make_shared<ShuntNode>(constant);
+//        std::shared_ptr<ShuntNode> variableShuntNode = std::make_shared<ShuntNode>(variable);
+//
+//
+//        std::shared_ptr<AssignNode> assignNode1 = std::make_shared<AssignNode>(nodeIndex++, assignNodeName,
+//                                                                               constShuntNode, emptyVariables,
+//                                                                               constants);
+//
 //        std::shared_ptr<AssignNode> assignNode2 = std::make_shared<AssignNode>(nodeIndex++, assignNodeName + "1",
-//                                                                               variableExprNode);
+//                                                                               variableShuntNode, variables, emptyConstants);
+//
 //        std::vector<std::shared_ptr<StmtNode>> stmtList;
 //        stmtList.emplace_back(readNode);
 //        stmtList.emplace_back(printNode);
@@ -84,5 +93,5 @@ TEST_CASE("Test Relationship Extractor") {
 //        REQUIRE(relationshipStore->findModifiesS(8,"assign"));
 //        REQUIRE(relationshipStore->findModifiesS(9,"assign1"));
 //    }
-
-}
+//
+//}
