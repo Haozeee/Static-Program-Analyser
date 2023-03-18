@@ -42,6 +42,11 @@ class Parser : public AbstractParser {
     std::shared_ptr<CondExprNode> parseConditional(
             const std::shared_ptr<std::unordered_set<std::string>>& exprVariables,
             const std::shared_ptr<std::unordered_set<int>>& exprConstants);
+    void popExprHelper(std::stack<HelperNode>& result, const std::string& ParserInvalidCondExprExceptionMessage);
+    void continueExprHelper(std::stack<HelperNode>& result, const std::string& exceptionMsg);
+    void popCondExprHelper(std::stack<HelperNode>& result, const std::string& ParserInvalidCondExprExceptionMessage);
+    void continueCondExprHelper(std::stack<HelperNode>& result, const std::string& ParserInvalidCondExprExceptionMessage);
+    void checkStackSize(std::stack<HelperNode>& result, const std::string& ParserInvalidCondExprExceptionMessage);
 
  public:
     explicit Parser(std::vector<std::shared_ptr<Token>> tokens);

@@ -233,65 +233,34 @@ std::shared_ptr<CondExprNode> Parser::parseConditional(
             exprConstants->insert(stoi(curr->getValue()));
             result.push(HelperNode::ExprHelper);
         } else if (mathOp.find(curr->getValue()) != mathOp.end()) {
-            if (result.size() < 2) {
-                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
-            }
+            checkStackSize(result, ParserInvalidCondExprExceptionMessage);
 
             // LHS
-            if (result.top() == HelperNode::ExprHelper) {
-                result.pop();
-            } else {
-                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
-            }
+            popExprHelper(result, ParserInvalidCondExprExceptionMessage);
 
             // RHS -- if RHS is
-            if (result.top() == HelperNode::ExprHelper) {
-                continue;
-            } else {
-                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
-            }
+            continueExprHelper(result, ParserInvalidCondExprExceptionMessage);
+
         } else if (curr->getValue() == "!") {
-            if (result.top() == HelperNode::CondExprHelper) {
-                continue;
-            } else {
-                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
-            }
+            continueCondExprHelper(result, ParserInvalidCondExprExceptionMessage);
         } else if (curr->getValue() == "&&" || curr->getValue() == "||") {
-            if (result.size() < 2) {
-                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
-            }
+            checkStackSize(result, ParserInvalidCondExprExceptionMessage);
 
             // LHS
-            if (result.top() == HelperNode::CondExprHelper) {
-                result.pop();
-            } else {
-                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
-            }
+            popCondExprHelper(result, ParserInvalidCondExprExceptionMessage);
 
             // RHS -- if RHS is
-            if (result.top() == HelperNode::CondExprHelper) {
-                continue;
-            } else {
-                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
-            }
+            continueCondExprHelper(result, ParserInvalidCondExprExceptionMessage);
+
         } else if (relOp.find(curr->getValue()) != relOp.end()) {
-            if (result.size() < 2) {
-                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
-            }
+            checkStackSize(result, ParserInvalidCondExprExceptionMessage);
 
             // LHS
-            if (result.top() == HelperNode::ExprHelper) {
-                result.pop();
-            } else {
-                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
-            }
+            popExprHelper(result, ParserInvalidCondExprExceptionMessage);
 
             // RHS -- if RHS is
-            if (result.top() == HelperNode::ExprHelper) {
-                result.pop();
-            } else {
-                throw SourceParserException(ParserInvalidCondExprExceptionMessage);
-            }
+            popExprHelper(result, ParserInvalidCondExprExceptionMessage);
+
             result.push(HelperNode::CondExprHelper);
         } else {
             throw SourceParserException(ParserInvalidCondExprExceptionMessage);
@@ -355,4 +324,42 @@ std::shared_ptr<CallNode> Parser::parseCall() {
 
 std::shared_ptr<ProgramNode> Parser::getProgramNode() {
     return this->programRoot;
+}
+
+void Parser::popExprHelper(std::stack<HelperNode>& result, const std::string& ParserInvalidCondExprExceptionMessage) {
+    if (result.top() == HelperNode::ExprHelper) {
+        result.pop();
+    } else {
+        throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+    }
+}
+
+void Parser::continueExprHelper(std::stack<HelperNode>& result, const std::string& ParserInvalidCondExprExceptionMessage) {
+    if (result.top() == HelperNode::ExprHelper) {
+        return;
+    } else {
+        throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+    }
+}
+
+void Parser::popCondExprHelper(std::stack<HelperNode>& result, const std::string& ParserInvalidCondExprExceptionMessage) {
+    if (result.top() == HelperNode::CondExprHelper) {
+        result.pop();
+    } else {
+        throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+    }
+}
+
+void Parser::continueCondExprHelper(std::stack<HelperNode>& result, const std::string& ParserInvalidCondExprExceptionMessage) {
+    if (result.top() == HelperNode::CondExprHelper) {
+        return;
+    } else {
+        throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+    }
+}
+
+void Parser::checkStackSize(std::stack<HelperNode>& result, const std::string& ParserInvalidCondExprExceptionMessage) {
+    if (result.size() < 2) {
+        throw SourceParserException(ParserInvalidCondExprExceptionMessage);
+    }
 }
