@@ -136,7 +136,7 @@ class MockRelationshipStore : public IRelationshipStore {
     void invokePreReverseRelationship() override {
     }
 
-    std::unordered_map<std::string, std::unordered_set<std::string>> getCallPReversedRelationship() override {
+    std::unordered_map<std::string, std::unordered_set<std::string>> getCallsPReversedRelationship() override {
 
     };
 
