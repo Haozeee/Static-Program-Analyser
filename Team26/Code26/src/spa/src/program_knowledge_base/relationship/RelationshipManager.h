@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 #include <memory>
 #include <unordered_map>
@@ -24,20 +25,22 @@ class RelationshipManager: public IReadRelationshipManager<T, U>,
 
     bool containsMap(T first_param, U second_param) {
         auto key = relationships_map.find(first_param);
+        bool flag = false;
         if (key != relationships_map.end()) {
             auto res = key->second;
-            return res.count(second_param);
+            flag = res.count(second_param);
         }
-        return false;
+        return flag;
     }
 
     bool containsReversedMap(U second_param, T first_param) {
         auto key = reversed_relationships_map.find(second_param);
+        bool flag = false;
         if (key != reversed_relationships_map.end()) {
             auto res = key->second;
-            return res.count(first_param);
+            flag = res.count(first_param);
         }
-        return false;
+        return flag;
     }
 
     std::unordered_map<T, std::unordered_set<U>> getAllRelationshipEntries() {
@@ -49,7 +52,6 @@ class RelationshipManager: public IReadRelationshipManager<T, U>,
 
     bool insertRelationship(T first_param, U second_param) {
         bool flag = false;
-        // the key is not a key in the map
         if (!relationships_map.count(first_param)) {
             std::unordered_set<U> new_set;
             new_set.insert(second_param);

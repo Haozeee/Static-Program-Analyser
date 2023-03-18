@@ -6,7 +6,6 @@
 #include <unordered_map>
 #include <vector>
 #include <iterator>
-
 #include "IReadPatternManager.h"
 #include "IWritePatternManager.h"
 #include "common/parser/ShuntNode.h"
@@ -37,11 +36,12 @@ class PatternManager: public IReadPatternManager<T, U>, public IWritePatternMana
     }
 
     bool containsLhsVector(T left) override {
+        bool flag = false;
         auto it = std::find(lhs_vector.begin(), lhs_vector.end(), left);
         if (it != lhs_vector.end()) {
-            return true;
+            flag = true;
         }
-        return false;
+        return flag;
     }
 
     bool containsRhsVector(U right) override {
@@ -50,19 +50,21 @@ class PatternManager: public IReadPatternManager<T, U>, public IWritePatternMana
     }
 
     bool containsIndexStmtMap(int index, int stmt_no) override {
+        bool flag = false;
         auto key = index_stmt_map.find(index);
         if (key != index_stmt_map.end()) {
-            return key->second == stmt_no;
+            flag = key->second == stmt_no;
         }
-        return false;
+        return flag;
     }
 
     bool containsReversedIndexStmtMap(int stmt_no, int index) override {
+        bool flag = false;
         auto key = reversed_index_stmt_map.find(stmt_no);
         if (key != reversed_index_stmt_map.end()) {
-            return key->second == index;
+            flag = key->second == index;
         }
-        return false;
+        return flag;
     }
 
     std::unique_ptr<std::vector<T>> getAllLhsPatternEntries() override {

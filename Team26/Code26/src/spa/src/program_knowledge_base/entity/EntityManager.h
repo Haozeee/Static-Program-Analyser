@@ -1,4 +1,5 @@
 #pragma once
+
 #include <unordered_set>
 #include "IWriteEntityManager.h"
 #include "IReadEntityManager.h"
@@ -11,7 +12,8 @@ class EntityManager : public IWriteEntityManager<T>,
 
  public:
     bool insertEntity(T name_or_stmtNo) {
-        bool flag = entities_set.insert(name_or_stmtNo).second;
+        auto insertedEntity =  entities_set.insert(name_or_stmtNo);
+        bool flag = insertedEntity.second;
         return flag;
     }
 
@@ -24,8 +26,12 @@ class EntityManager : public IWriteEntityManager<T>,
     }
 
     bool contains(T name_or_stmtNo) {
+        bool flag = false;
         auto element = entities_set.find(name_or_stmtNo);
-        return element != entities_set.end();
+        if (element != entities_set.end()) {
+            flag = true;
+        }
+        return flag;
     }
 
     std::unordered_set<T> getAllEntitiesEntries() {
