@@ -1,4 +1,4 @@
-name: MacOS (Cron)
+name: Build (MacOS - Corn)
 
 on:
   schedule:
@@ -43,19 +43,3 @@ jobs:
         working-directory: ${{runner.workspace}}/Team26/Code26/build/src/integration_testing
         shell: bash
         run: ./integration_testing
-
-  checkstyle:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.11.1'
-          
-      - name: Install cpplint
-        run: pip install cpplint
-
-      - name: Run Linter
-        run: |
-          cd Team26/Code26/src/spa
-          cpplint --recursive --filter=-legal/copyright,-runtime/references --linelength=120 extensions=cpp,h .
