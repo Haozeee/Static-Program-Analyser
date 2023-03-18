@@ -51,7 +51,7 @@ jobs:
 
   unit-test:
       needs: build
-      runs-on: windows-latest
+      runs-on: [self-hosted, Windows, X64, tester]
       timeout-minutes: 10
       strategy:
         fail-fast: true
