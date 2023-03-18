@@ -87,8 +87,12 @@ class PatternManager: public IReadPatternManager<T, U>, public IWritePatternMana
         int index = static_cast<int>(lhsVector.size());
         lhsVector.push_back(left);
         rhsVector.push_back(right);
-        auto x = indexStmtMap.insert({index, stmtNo});
-        auto y = reversedIndexStmtMap.insert({stmtNo, index});
-        return x.second && y.second;
+
+        auto insertedIndexStmtMap = indexStmtMap.insert({index, stmtNo});
+        bool flag1 = insertedIndexStmtMap.second;
+        auto insertedReversedIndexStmtMap = reversedIndexStmtMap.insert({stmtNo, index});
+        bool flag2 = insertedReversedIndexStmtMap.second;
+
+        return flag1 && flag2;
     }
 };
