@@ -69,14 +69,19 @@ class RelationshipManager: public IReadRelationshipManager<T, U>,
             auto key = pair.first;
             auto value = pair.second;
             for (auto element : value) {
-                if (!reversedRelationshipsMap.count(element)) {
-                    std::unordered_set<T> newSet;
-                    newSet.insert(key);
-                    auto res = reversedRelationshipsMap.emplace(element, newSet);
-                } else {
-                    auto res = reversedRelationshipsMap[element].insert(key);
-                }
+                setReverseHelper(key, element);
             }
+        }
+    }
+
+ private:
+    void setReverseHelper(T key, U element) {
+        if (!reversedRelationshipsMap.count(element)) {
+            std::unordered_set<T> newSet;
+            newSet.insert(key);
+            auto res = reversedRelationshipsMap.emplace(element, newSet);
+        } else {
+            auto res = reversedRelationshipsMap[element].insert(key);
         }
     }
 };
