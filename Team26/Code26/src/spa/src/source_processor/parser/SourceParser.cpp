@@ -140,7 +140,7 @@ std::shared_ptr<CondExprNode> SourceParser::parseConditional() {
             numOfBrackets++;
         } else if (isValueOf(BRACKETS_END)) {
             numOfBrackets--;
-            buildNestExpr(opStack, postfix);
+            buildNestedExpr(opStack, postfix);
             if (numOfBrackets == 0) break;
         } else {
             buildPostFixHelper(opStack, postfix);
@@ -184,20 +184,13 @@ std::shared_ptr<CondExprNode> SourceParser::buildConditionalExpr(std::queue<std:
             constants->insert(stoi(curr->getValue()));
             result.push(HelperNode::ExprHelper);
         } else if (isMathOp(curr->getValue())) {
-            checkStackSize(result);
-            popExprHelper(result);
-            continueExprHelper(result);
+            handleMathOp(result);
         } else if (curr->getValue() == NOT_OPERATOR) {
             continueCondExprHelper(result);
         } else if (isCondOp(curr->getValue())) {
-            checkStackSize(result);
-            popCondExprHelper(result);
-            continueCondExprHelper(result);
+            handleCondOp(result);
         } else if (isRelOp(curr->getValue())) {
-            checkStackSize(result);
-            popExprHelper(result);
-            popExprHelper(result);
-            result.push(HelperNode::CondExprHelper);
+            handleRelOp(result);
         } else {
             throw SourceParserException(ParserInvalidCondExprExceptionMessage);
         }
@@ -211,25 +204,15 @@ std::shared_ptr<CondExprNode> SourceParser::buildConditionalExpr(std::queue<std:
 std::shared_ptr<AssignNode> SourceParser::parseAssign(const std::shared_ptr<Token>& nameToken) {
     stmtIndex++;
     parseNext(ASSIGN_OPERATOR);
-
-    int currIndex = index;
+    std::string expr;
     while (!isValueOf(STMT_END) && !isTypeOf(TokenType::TOKEN_END_OF_FILE)) {
+        expr += getToken()->getValue();
         getNext();
     }
-    int newIndex = index - 1;
-    std::string expr;
-    for (int i = currIndex; i <= newIndex; i++) {
-        expr += tokens[i]->getValue();
-    }
-
+    parseNext(STMT_END);
     std::shared_ptr<std::unordered_set<std::string>> variables = std::make_shared<std::unordered_set<std::string>>();
     std::shared_ptr<std::unordered_set<int>> constants = std::make_shared<std::unordered_set<int>>();
-
     auto node = ShuntingYardParser::parse(expr, variables, constants);
-
-    index = newIndex + 1;
-    parseNext(STMT_END);
-
     return std::make_shared<AssignNode>(stmtIndex, nameToken->getValue(), node, *variables, *constants);
 }
 
@@ -298,7 +281,7 @@ void SourceParser::checkStackSize(std::stack<HelperNode>& result) {
     }
 }
 
-void SourceParser::buildNestExpr(std::stack<std::shared_ptr<Token>>& opStack,
+void SourceParser::buildNestedExpr(std::stack<std::shared_ptr<Token>>& opStack,
                                  std::queue<std::shared_ptr<Token>>& postfix) {
     bool isRelExpr = false;
     while (!opStack.empty() && opStack.top()->getValue() != BRACKETS_START) {
@@ -354,3 +337,23 @@ bool SourceParser::isRelOp(const std::string& value) {
     std::unordered_set<std::string> relOp { ">", ">=", "<", "<=", "==", "!=" };
     return relOp.find(value) != relOp.end();
 }
+
+void SourceParser::handleMathOp(std::stack<HelperNode>& result) {
+    checkStackSize(result);
+    popExprHelper(result);
+    continueExprHelper(result);
+}
+
+void SourceParser::handleRelOp(std::stack<HelperNode>& result) {
+    checkStackSize(result);
+    popExprHelper(result);
+    popExprHelper(result);
+    result.push(HelperNode::CondExprHelper);
+}
+
+void SourceParser::handleCondOp(std::stack<HelperNode>& result) {
+    checkStackSize(result);
+    popCondExprHelper(result);
+    continueCondExprHelper(result);
+}
+

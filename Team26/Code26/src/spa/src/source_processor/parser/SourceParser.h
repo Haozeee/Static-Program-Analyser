@@ -44,7 +44,7 @@ class SourceParser : public AbstractParser {
 
     void buildPostFixHelper(std::stack<std::shared_ptr<Token>>& opStack,
                             std::queue<std::shared_ptr<Token>>& postfix);
-    void buildNestExpr(std::stack<std::shared_ptr<Token>>& opStack, std::queue<std::shared_ptr<Token>>& postfix);
+    void buildNestedExpr(std::stack<std::shared_ptr<Token>>& opStack, std::queue<std::shared_ptr<Token>>& postfix);
 
     static bool isCondOp(const std::string& value);
     static bool isMathOp(const std::string& value);
@@ -57,6 +57,10 @@ class SourceParser : public AbstractParser {
     static void popCondExprHelper(std::stack<HelperNode>& result);
     static void continueCondExprHelper(std::stack<HelperNode>& result);
     static void checkStackSize(std::stack<HelperNode>& result);
+
+    static void handleMathOp(std::stack<HelperNode>& result);
+    static void handleRelOp(std::stack<HelperNode>& result);
+    static void handleCondOp(std::stack<HelperNode>& result);
 
  public:
     explicit SourceParser(std::vector<std::shared_ptr<Token>> tokens);
