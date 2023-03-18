@@ -11,12 +11,4 @@ class TestBaseExtractor : public BaseExtractor {
     int getStatementNumber() {
         return currentStmtNo;
     }
-
-    std::vector<std::string> getExprVariableList() {
-        return this->exprVariableList;
-    }
-
-    auto testClearExprStack() {
-        return clearExprStack();
-    }
 };
