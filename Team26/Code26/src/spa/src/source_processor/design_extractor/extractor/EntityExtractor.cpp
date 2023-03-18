@@ -26,7 +26,7 @@ void EntityExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
     for (int i = 1; i <= currentStmtNo; i++) {
         entityStore->insertStatement(i);  // Store Statement Index
     }
-    patternStore->invokePostReverseRelationship();
+    patternStore->invokePostReversePattern();
 }
 
 void EntityExtractor::extractProcedure(std::shared_ptr<ProcedureNode> node) {

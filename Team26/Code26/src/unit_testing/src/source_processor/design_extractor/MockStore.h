@@ -191,6 +191,6 @@ class MockPatternStore : public IPatternStore {
         whileCondManager[stmtIndex].insert(variableName);
     }
 
-    void invokePostReverseRelationship() override {
+    void invokePostReversePattern() override {
     }
 };

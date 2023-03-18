@@ -19,5 +19,5 @@ class PatternStore : public IPatternStore {
     void insertCondExpressionIfStatement(int stmtIndex, std::string variableName) override;
     void insertCondExpressionWhileStatement(int stmtIndex, std::string variableName) override;
 
-    void invokePostReverseRelationship() override;
+    void invokePostReversePattern() override;
 };
