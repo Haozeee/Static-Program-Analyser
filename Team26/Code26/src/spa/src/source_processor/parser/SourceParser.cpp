@@ -298,7 +298,8 @@ void SourceParser::checkStackSize(std::stack<HelperNode>& result) {
     }
 }
 
-void SourceParser::buildNestExpr(std::stack<std::shared_ptr<Token>>& opStack, std::queue<std::shared_ptr<Token>>& postfix) {
+void SourceParser::buildNestExpr(std::stack<std::shared_ptr<Token>>& opStack,
+                                 std::queue<std::shared_ptr<Token>>& postfix) {
     bool isRelExpr = false;
     while (!opStack.empty() && opStack.top()->getValue() != BRACKETS_START) {
         if (isRelOp(opStack.top()->getValue())) {
