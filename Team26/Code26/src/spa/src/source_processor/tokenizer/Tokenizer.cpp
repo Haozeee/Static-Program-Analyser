@@ -1,8 +1,7 @@
 #include "Tokenizer.h"
-#include <string>
+
 #include <unordered_set>
 #include <sstream>
-#include <iostream>
 #include "source_processor/exception/SourceException.h"
 #include "source_processor/exception/SourceProcessorExceptionMessage.h"
 #include "common/tokenizer/token/EndOfFileToken.h"
