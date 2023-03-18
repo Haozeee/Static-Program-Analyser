@@ -27,23 +27,6 @@ enum class HelperNode {
 
 class Parser : public AbstractParser {
  private:
-    std::unordered_set<std::string> mathOp { "+", "-", "*", "/", "%" };
-    std::unordered_set<std::string> relOp { ">", ">=", "<", "<=", "==", "!=" };
-    std::unordered_map<std::string, int> ranking {
-            {"&&", 1},
-            {"||", 1},
-            {"!", 1},
-            {">", 2},
-            {">=", 2},
-            {"<", 2},
-            {"<=", 2},
-            {"==", 2},
-            {"!=", 2},
-            {"+", 3},
-            {"-", 3},
-            {"*", 4},
-            {"/", 4},
-            {"%", 4}};
 
     std::shared_ptr<ProgramNode> programRoot;
     int stmtIndex;
@@ -61,16 +44,21 @@ class Parser : public AbstractParser {
     std::shared_ptr<CondExprNode> buildConditionalExpr(std::queue<std::shared_ptr<Token>>& postfix);
 
     void buildPostFixHelper(std::stack<std::shared_ptr<Token>>& opStack,
-                                   std::queue<std::shared_ptr<Token>>& postfix);
+                            std::queue<std::shared_ptr<Token>>& postfix);
+    void buildNestExpr(std::stack<std::shared_ptr<Token>>& opStack, std::queue<std::shared_ptr<Token>>& postfix);
+
+    static bool isCondOp(const std::string& value);
+    static bool isMathOp(const std::string& value);
+    static bool isRelOp(const std::string& value);
+    static bool isGreaterOrEqualRank(const std::string& lhs, const std::string& rhs);
+
+    // CondExpr Parser Helper
     static void popExprHelper(std::stack<HelperNode>& result);
     static void continueExprHelper(std::stack<HelperNode>& result);
     static void popCondExprHelper(std::stack<HelperNode>& result);
     static void continueCondExprHelper(std::stack<HelperNode>& result);
     static void checkStackSize(std::stack<HelperNode>& result);
-    static void buildNestExpr(std::stack<std::shared_ptr<Token>>& opStack,
-                                  std::queue<std::shared_ptr<Token>>& postfix,
-                                  bool& isRelExpr, const std::unordered_set<std::string>& relOp,
-                                  const std::vector<std::shared_ptr<Token>>& tokens, int index);
+
 
  public:
     explicit Parser(std::vector<std::shared_ptr<Token>> tokens);
