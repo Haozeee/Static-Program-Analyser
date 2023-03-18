@@ -7,7 +7,7 @@ RelationshipExtractor::RelationshipExtractor(std::shared_ptr<IRelationshipStore>
     this->relationshipStore = std::move(relationshipStore);
 }
 
-void RelationshipExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
+void RelationshipExtractor::extractProgram(const std::shared_ptr<ProgramNode>& node) {
     std::queue<std::string> procedureQueue;
     std::vector<std::string> topologicalSortedProcedures;
 
