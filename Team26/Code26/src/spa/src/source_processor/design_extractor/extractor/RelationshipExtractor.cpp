@@ -94,16 +94,16 @@ void RelationshipExtractor::extractStmt(const std::shared_ptr<StmtNode>& node) {
 }
 
 void RelationshipExtractor::extractRead(std::shared_ptr<ReadNode> node) {
-    insertModifiesGroup(node);
+    insertModifiesSGroup(node);
 }
 
 void RelationshipExtractor::extractPrint(std::shared_ptr<PrintNode> node) {
-    insertUsesGroup(node);
+    insertUsesSGroup(node);
 }
 
 void RelationshipExtractor::extractAssign(std::shared_ptr<AssignNode> node) {
-    insertModifiesGroup(node);
-    insertExprUsesGroup(node->exprVariables);
+    insertModifiesSGroup(node);
+    insertExprUsesSGroup(node->exprVariables);
 }
 
 void RelationshipExtractor::extractWhile(std::shared_ptr<WhileNode> node) {
@@ -137,7 +137,7 @@ void RelationshipExtractor::extractIf(std::shared_ptr<IfNode> node) {
 
 
 void RelationshipExtractor::extractCondExpr(const std::shared_ptr<CondExprNode>& node) {
-    insertExprUsesGroup(node->exprVariables);
+    insertExprUsesSGroup(node->exprVariables);
 }
 
 void RelationshipExtractor::extractCall(std::shared_ptr<CallNode> node) {
@@ -170,7 +170,7 @@ void RelationshipExtractor::extractCall(std::shared_ptr<CallNode> node) {
     }
 }
 
-void RelationshipExtractor::insertExprUsesGroup(const std::unordered_set<std::string>& exprVariableList) {
+void RelationshipExtractor::insertExprUsesSGroup(const std::unordered_set<std::string>& exprVariableList) {
     for (auto &variable : exprVariableList) {
         relationshipStore->insertUsesSRelationship(currentStmtNo, variable);
         for (int& parentIndex : parentIndexStack) {
@@ -180,7 +180,7 @@ void RelationshipExtractor::insertExprUsesGroup(const std::unordered_set<std::st
     }
 }
 
-void RelationshipExtractor::insertUsesGroup(const std::shared_ptr<VariableNameNode>& node) {
+void RelationshipExtractor::insertUsesSGroup(const std::shared_ptr<VariableNameNode>& node) {
     relationshipStore->insertUsesSRelationship(node->stmtIndex, node->varName);
     relationshipStore->insertUsesPRelationship(currProcedureName, node->varName);
     for (int& parentIndex : parentIndexStack) {
@@ -188,7 +188,7 @@ void RelationshipExtractor::insertUsesGroup(const std::shared_ptr<VariableNameNo
     }
 }
 
-void RelationshipExtractor::insertModifiesGroup(const std::shared_ptr<VariableNameNode>& node) {
+void RelationshipExtractor::insertModifiesSGroup(const std::shared_ptr<VariableNameNode>& node) {
     relationshipStore->insertModifiesSRelationship(node->stmtIndex, node->varName);
     relationshipStore->insertModifiesPRelationship(currProcedureName, node->varName);
     for (int& parentIndex : parentIndexStack) {
@@ -215,18 +215,26 @@ void RelationshipExtractor::resetFlow(int stmtIndex) {
 void RelationshipExtractor::interlinkSRelationships(const std::string& procedureName) {
     for (auto &variableName : usesPRelationships.operator[](procedureName)) {
         if (procedureCalledList.count(procedureName) > 0) {
-            for (auto &statementIndex : *(procedureCalledList.at(procedureName))) {
-                relationshipStore->insertUsesSRelationship(statementIndex, variableName);
-            }
+            insertUsesPGroup(procedureName, variableName);
         }
     }
 
     for (auto &variableName : modifiesPRelationships.operator[](procedureName)) {
         if (procedureCalledList.count(procedureName) > 0) {
-            for (auto &statementIndex : *(procedureCalledList.at(procedureName))) {
-                relationshipStore->insertModifiesSRelationship(statementIndex, variableName);
-            }
+            insertModifiesPPGroup(procedureName, variableName);
         }
+    }
+}
+
+void RelationshipExtractor::insertUsesPGroup(const std::string &procedureName, const std::string& variableName) {
+    for (auto &statementIndex : *(procedureCalledList.at(procedureName))) {
+        relationshipStore->insertUsesSRelationship(statementIndex, variableName);
+    }
+}
+
+void RelationshipExtractor::insertModifiesPPGroup(const std::string &procedureName, const std::string& variableName) {
+    for (auto &statementIndex : *(procedureCalledList.at(procedureName))) {
+        relationshipStore->insertModifiesSRelationship(statementIndex, variableName);
     }
 }
 

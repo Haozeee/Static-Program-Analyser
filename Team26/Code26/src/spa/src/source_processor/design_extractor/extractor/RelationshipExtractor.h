@@ -35,11 +35,15 @@ class RelationshipExtractor : public BaseExtractor, IRelationshipExtractor {
     void insertFlow(int stmtIndex);
     void resetFlow(int stmtIndex);
 
-    // Uses Statement
-    void insertUsesGroup(const std::shared_ptr<VariableNameNode>& node);
-    void insertModifiesGroup(const std::shared_ptr<VariableNameNode>& node);
-    void insertExprUsesGroup(const std::unordered_set<std::string>& exprVariableList);
+    // UsesS, ModifiesS Statement
+    void insertUsesSGroup(const std::shared_ptr<VariableNameNode>& node);
+    void insertModifiesSGroup(const std::shared_ptr<VariableNameNode>& node);
+    void insertExprUsesSGroup(const std::unordered_set<std::string>& exprVariableList);
     void extractCondExpr(const std::shared_ptr<CondExprNode>& node);
+
+    // UsesP, ModifiesP Statements
+    void insertUsesPGroup(const std::string& procedureName, const std::string& variableName);
+    void insertModifiesPPGroup(const std::string& procedureName, const std::string& variableName);
 
     // Calls Statement
     void interlinkRelationships(const std::string& procedureName);
