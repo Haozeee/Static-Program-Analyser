@@ -8,13 +8,15 @@ RelationshipExtractor::RelationshipExtractor(std::shared_ptr<IRelationshipStore>
 }
 
 void RelationshipExtractor::extractProgram(const std::shared_ptr<ProgramNode>& node) {
+    BaseExtractor::extractProgram(node);
+    relationshipStore->invokePreReverseRelationship();
+    postProgramExtractionLink();
+    relationshipStore->invokePostReverseRelationship();
+}
+
+void RelationshipExtractor::postProgramExtractionLink() {
     std::queue<std::string> procedureQueue;
     std::vector<std::string> topologicalSortedProcedures;
-
-    BaseExtractor::extractProgram(node);
-
-    relationshipStore->invokePreReverseRelationship();
-
     // Interlink ProceduresRelationships
     // Step 1: Toposort Procedures to get DAG (in a vector)
     // procedureUniqueCallCount tracks how many times this procedure calls another procedure uniquely.
@@ -37,19 +39,17 @@ void RelationshipExtractor::extractProgram(const std::shared_ptr<ProgramNode>& n
             if (procedureUniqueCallCount.at(caller) == 0) procedureQueue.push(caller);
         }
     }
-
     for (auto &procedureName : topologicalSortedProcedures) {
         interlinkRelationships(procedureName);
     }
     std::unordered_set<std::string> topologicalSortedProceduresMap;
     topologicalSortedProceduresMap.insert(topologicalSortedProcedures.begin(), topologicalSortedProcedures.end());
     for (auto& procedureName : relationshipStore->getProcedureEntities()) {
-        if (topologicalSortedProceduresMap.find(procedureName) == topologicalSortedProceduresMap.end()) throw
-        SourceExtractorException(RelationshipExtractorCyclicCallsExceptionMessage);
+        if (topologicalSortedProceduresMap.find(procedureName) == topologicalSortedProceduresMap.end())
+            throw SourceExtractorException(RelationshipExtractorCyclicCallsExceptionMessage);
     }
-
-    relationshipStore->invokePostReverseRelationship();
 }
+
 
 void RelationshipExtractor::extractProcedure(const std::shared_ptr<ProcedureNode>& node) {
     parentIndexStack.clear();
