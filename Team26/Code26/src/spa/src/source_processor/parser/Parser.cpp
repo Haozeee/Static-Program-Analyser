@@ -1,4 +1,6 @@
 #include "Parser.h"
+
+#include <utility>
 #include "source_processor/exception/SourceException.h"
 #include "source_processor/exception/SourceProcessorExceptionMessage.h"
 #include "common/parser/ShuntingYardParser.h"
@@ -10,17 +12,6 @@
 #define BRACKETS_END ")"
 #define STMT_END ";"
 #define ASSIGN_OPERATOR "="
-#define MULTIPLY_OPERATOR "*"
-#define DIVIDE_OPERATOR "/"
-#define MOD_OPERATOR "%"
-#define ADD_OPERATOR "+"
-#define SUBTRACT_OPERATOR "-"
-#define GT_OPERATOR ">"
-#define GTE_OPERATOR ">="
-#define LT_OPERATOR "<"
-#define LTE_OPERATOR "<="
-#define EQ_OPERATOR "=="
-#define NEQ_OPERATOR "!="
 #define NOT_OPERATOR "!"
 #define AND_OPERATOR "&&"
 #define OR_OPERATOR "||"
@@ -34,7 +25,7 @@
 #define ELSE_KEYWORD "else"
 
 Parser::Parser(std::vector<std::shared_ptr<Token>> tokens)
-    : AbstractParser(tokens), stmtIndex(INITIAL_STMT_INDEX) {}
+    : AbstractParser(std::move(tokens)), stmtIndex(INITIAL_STMT_INDEX) {}
 
 void Parser::parse() {
     programRoot = parseProgram();
@@ -98,11 +89,9 @@ std::shared_ptr<StmtListNode> Parser::parseStmtList() {
 }
 
 std::shared_ptr<WhileNode> Parser::parseWhile() {
-    std::shared_ptr<std::unordered_set<std::string>> variables = std::make_shared<std::unordered_set<std::string>>();
-    std::shared_ptr<std::unordered_set<int>> constants = std::make_shared<std::unordered_set<int>>();
     int whileStmtIndex = ++stmtIndex;
     parseNext(BRACKETS_START);
-    std::shared_ptr<CondExprNode> condExprNode = parseConditional(variables, constants);
+    std::shared_ptr<CondExprNode> condExprNode = parseConditional();
     parseNext(BRACKETS_END);
 
     parseNext(STMTLIST_START);
@@ -113,11 +102,9 @@ std::shared_ptr<WhileNode> Parser::parseWhile() {
 }
 
 std::shared_ptr<IfNode> Parser::parseIf() {
-    std::shared_ptr<std::unordered_set<std::string>> variables = std::make_shared<std::unordered_set<std::string>>();
-    std::shared_ptr<std::unordered_set<int>> constants = std::make_shared<std::unordered_set<int>>();
     int ifStmtIndex = ++stmtIndex;
     parseNext(BRACKETS_START);
-    std::shared_ptr<CondExprNode> condExprNode = parseConditional(variables, constants);
+    std::shared_ptr<CondExprNode> condExprNode = parseConditional();
     parseNext(BRACKETS_END);
 
     std::shared_ptr<Token> nameToken = parseNext(TokenType::TOKEN_NAME);
@@ -141,29 +128,8 @@ std::shared_ptr<IfNode> Parser::parseIf() {
     return std::make_shared<IfNode>(ifStmtIndex, condExprNode, thenStmtListNode, elseStmtListNode);
 }
 
-std::shared_ptr<CondExprNode> Parser::parseConditional(
-        const std::shared_ptr<std::unordered_set<std::string>>& exprVariables,
-        const std::shared_ptr<std::unordered_set<int>>& exprConstants) {
-    std::unordered_map<std::string, int> ranking {
-            {"&&", 1},
-            {"||", 1},
-            {"!", 1},
-            {">", 2},
-            {">=", 2},
-            {"<", 2},
-            {"<=", 2},
-            {"==", 2},
-            {"!=", 2},
-            {"+", 3},
-            {"-", 3},
-            {"*", 4},
-            {"/", 4},
-            {"%", 4}
-    };
 
-    std::unordered_set<std::string> mathOp { "+", "-", "*", "/", "%" };
-    std::unordered_set<std::string> relOp { ">", ">=", "<", "<=", "==", "!=" };
-
+std::shared_ptr<CondExprNode> Parser::parseConditional() {
     index = index - 1;
     std::queue<std::shared_ptr<Token>> postfix;
     std::stack<std::shared_ptr<Token>> opStack;
@@ -178,17 +144,10 @@ std::shared_ptr<CondExprNode> Parser::parseConditional(
         } else if (isValueOf(BRACKETS_END)) {
             numOfBrackets--;
             bool isRelExpr = false;
-            handleEndBrackets(opStack, postfix, isRelExpr, relOp, tokens, index);
-            if (numOfBrackets == 0) {
-                break;
-            }
+            buildNestExpr(opStack, postfix, isRelExpr, relOp, tokens, index);
+            if (numOfBrackets == 0) break;
         } else {
-            while (!opStack.empty() &&
-                   ranking[opStack.top()->getValue()] >= ranking[getToken()->getValue()]) {
-                postfix.push(opStack.top());
-                opStack.pop();
-            }
-            opStack.push(getToken());
+            buildPostFixHelper(opStack, postfix);
         }
         getNext();
     }
@@ -202,60 +161,58 @@ std::shared_ptr<CondExprNode> Parser::parseConditional(
         opStack.pop();
     }
 
+    return buildConditionalExpr(postfix);
+}
+
+void Parser::buildPostFixHelper(std::stack<std::shared_ptr<Token>>& opStack,
+                                std::queue<std::shared_ptr<Token>>& postfix) {
+    while (!opStack.empty() && ranking[opStack.top()->getValue()] >= ranking[getToken()->getValue()]) {
+        postfix.push(opStack.top());
+        opStack.pop();
+    }
+    opStack.push(getToken());
+}
+
+std::shared_ptr<CondExprNode> Parser::buildConditionalExpr(std::queue<std::shared_ptr<Token>>& postfix) {
     std::stack<HelperNode> result;
+    std::shared_ptr<std::unordered_set<std::string>> variables = std::make_shared<std::unordered_set<std::string>>();
+    std::shared_ptr<std::unordered_set<int>> constants = std::make_shared<std::unordered_set<int>>();
 
     while (!postfix.empty()) {
         std::shared_ptr<Token> curr = postfix.front();
         postfix.pop();
-
         if (curr->getType() == TokenType::TOKEN_NAME) {
-            exprVariables->insert(curr->getValue());
+            variables->insert(curr->getValue());
             result.push(HelperNode::ExprHelper);
         } else if (curr->getType() == TokenType::TOKEN_INTEGER) {
-            exprConstants->insert(stoi(curr->getValue()));
+            constants->insert(stoi(curr->getValue()));
             result.push(HelperNode::ExprHelper);
-        } else if (mathOp.find(curr->getValue()) != mathOp.end()) {
+        } else if (mathOp.find(curr->getValue()) != mathOp.end()) /* EXPR_OP */ {
             checkStackSize(result);
-
-            // LHS
-            popExprHelper(result);
-
-            // RHS -- if RHS is
-            continueExprHelper(result);
-
-        } else if (curr->getValue() == "!") {
+            popExprHelper(result);  // LHS
+            continueExprHelper(result);  // RHS -- if RHS is
+        } else if (curr->getValue() == NOT_OPERATOR) /* COND_EXPR_OP for NOT */ {
             continueCondExprHelper(result);
-        } else if (curr->getValue() == "&&" || curr->getValue() == "||") {
+        } else if (curr->getValue() == AND_OPERATOR || curr->getValue() == OR_OPERATOR) /* COND_EXPR_OP */ {
             checkStackSize(result);
-
-            // LHS
-            popCondExprHelper(result);
-
-            // RHS -- if RHS is
-            continueCondExprHelper(result);
-
-        } else if (relOp.find(curr->getValue()) != relOp.end()) {
+            popCondExprHelper(result);  // LHS
+            continueCondExprHelper(result);  // RHS -- if RHS is
+        } else if (relOp.find(curr->getValue()) != relOp.end()) /* REL_EXPR_OP */ {
             checkStackSize(result);
-
-            // LHS
-            popExprHelper(result);
-
-            // RHS -- if RHS is
-            popExprHelper(result);
-
+            popExprHelper(result);  // LHS
+            popExprHelper(result);  // RHS -- if RHS is
             result.push(HelperNode::CondExprHelper);
         } else {
             throw SourceParserException(ParserInvalidCondExprExceptionMessage);
         }
     }
-    // Empty Expr node
-    if (result.empty() || result.top() == HelperNode::ExprHelper) {
+    if (result.empty() || result.top() == HelperNode::ExprHelper) /* Empty Expr or Expr Node */ {
         throw SourceParserException(ParserInvalidCondExprExceptionMessage);
     }
-    return std::make_shared<CondExprNode>(*exprVariables, *exprConstants);
+    return std::make_shared<CondExprNode>(*variables, *constants);
 }
 
-std::shared_ptr<AssignNode> Parser::parseAssign(std::shared_ptr<Token> nameToken) {
+std::shared_ptr<AssignNode> Parser::parseAssign(const std::shared_ptr<Token>& nameToken) {
     stmtIndex++;
     parseNext(ASSIGN_OPERATOR);
 
@@ -264,7 +221,6 @@ std::shared_ptr<AssignNode> Parser::parseAssign(std::shared_ptr<Token> nameToken
         getNext();
     }
     int newIndex = index - 1;
-//    auto exprNode = parseExprNode(currIndex, newIndex);
     std::string expr;
     for (int i = currIndex; i <= newIndex; i++) {
         expr += tokens[i]->getValue();
@@ -346,7 +302,7 @@ void Parser::checkStackSize(std::stack<HelperNode>& result) {
     }
 }
 
-void Parser::handleEndBrackets(std::stack<std::shared_ptr<Token>>& opStack,
+void Parser::buildNestExpr(std::stack<std::shared_ptr<Token>>& opStack,
                                    std::queue<std::shared_ptr<Token>>& postfix,
                                    bool& isRelExpr,
                                    const std::unordered_set<std::string>& relOp,
@@ -367,7 +323,7 @@ void Parser::handleEndBrackets(std::stack<std::shared_ptr<Token>>& opStack,
     if (isRelExpr &&
         !opStack.empty() &&
         opStack.top()->getValue() == BRACKETS_START &&
-        (tokens[index+1]->getValue() != "&&" && tokens[index+1]->getValue() != "||")) {
+        (tokens[index+1]->getValue() != AND_OPERATOR && tokens[index+1]->getValue() != OR_OPERATOR)) {
         throw SourceParserException(ParserInvalidCondExprExceptionMessage);
     }
 }

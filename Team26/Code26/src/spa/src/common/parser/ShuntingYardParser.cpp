@@ -3,14 +3,6 @@
 std::shared_ptr<ShuntNode> ShuntingYardParser::parse(std::string expr) {
     std::stack<std::shared_ptr<ShuntNode>> result;
     std::stack<char> opStack;
-    std::unordered_map<char, int> ranking {
-            {'+', 1},
-            {'-', 1},
-            {'*', 2},
-            {'/', 2},
-            {'%', 2}
-    };
-    std::vector<std::string> ops{"+", "-", "*", "/", "%", "(" , ")"};
     bool isPrevFactor = false;
 
     for (int i = 0; i < expr.size(); ++i) {
@@ -24,7 +16,7 @@ std::shared_ptr<ShuntNode> ShuntingYardParser::parse(std::string expr) {
         } else if (std::find(ops.begin(),
                              ops.end(),
                              std::string(1, c)) != ops.end()) /* operator or bracket */ {
-            parseOperatorOrBracket(c, opStack, isPrevFactor, result, ranking);
+            parseOperatorOrBracket(c, opStack, isPrevFactor, result);
         } else {
             throw ShuntingYardParserException(
                     ParserShuntingYardParserUnknownOperatorExceptionMessage);
@@ -47,14 +39,6 @@ std::shared_ptr<ShuntNode> ShuntingYardParser::parse(std::string expr,
                                                  const std::shared_ptr<std::unordered_set<int>>& exprConstants) {
     std::stack<std::shared_ptr<ShuntNode>> result;
     std::stack<char> opStack;
-    std::unordered_map<char, int> ranking{
-            {'+', 1},
-            {'-', 1},
-            {'*', 2},
-            {'/', 2},
-            {'%', 2}
-    };
-    std::vector<std::string> ops{"+", "-", "*", "/", "%", "(" , ")"};
     bool isPrevFactor = false;
 
     for (int i = 0; i < expr.size(); ++i) {
@@ -68,7 +52,7 @@ std::shared_ptr<ShuntNode> ShuntingYardParser::parse(std::string expr,
         } else if (std::find(ops.begin(),
                              ops.end(),
                              std::string(1, c)) != ops.end()) /* operator or bracket */ {
-            parseOperatorOrBracket(c, opStack, isPrevFactor, result, ranking);
+            parseOperatorOrBracket(c, opStack, isPrevFactor, result);
         } else {
             throw ShuntingYardParserException(
                     ParserShuntingYardParserUnknownOperatorExceptionMessage);
@@ -117,8 +101,7 @@ void ShuntingYardParser::parseVariable(std::string expr, int& i,
 }
 
 void ShuntingYardParser::parseOperatorOrBracket(char c, std::stack<char>& opStack, bool& isPrevFactor,
-                                               std::stack<std::shared_ptr<ShuntNode>>& result,
-                                               std::unordered_map<char, int>& ranking) {
+                                               std::stack<std::shared_ptr<ShuntNode>>& result) {
     if (c == '(') {
         opStack.push(c);
     } else if (c == ')') {
