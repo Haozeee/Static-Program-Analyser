@@ -2,6 +2,8 @@
 
 #include <memory>
 #include <string>
+#include <unordered_set>
+#include <unordered_map>
 #include "source_processor/storage_writer/interface/IRelationshipStore.h"
 #include "program_knowledge_base/StorageManager.h"
 
@@ -30,7 +32,8 @@ class RelationshipStore : public IRelationshipStore {
 //    std::shared_ptr<IReadRelationshipManager<std::string, std::string>> callsTReadManager;
 
  public:
-    explicit RelationshipStore(const std::shared_ptr<WriteStorage>& writeStorage, const std::shared_ptr<ReadStorage>& readStorage);
+    explicit RelationshipStore(const std::shared_ptr<WriteStorage>& writeStorage,
+                               const std::shared_ptr<ReadStorage>& readStorage);
 
 
     std::unordered_map<std::string, std::unordered_set<std::string>> getCallPReversedRelationship() override;

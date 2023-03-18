@@ -1,7 +1,9 @@
 #pragma once
 
 #include <string>
+#include <memory>
 #include <unordered_map>
+#include <unordered_set>
 #include "program_knowledge_base/entity/IReadEntityManager.h"
 #include "program_knowledge_base/relationship/IReadRelationshipManager.h"
 

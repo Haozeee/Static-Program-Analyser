@@ -150,11 +150,12 @@ void RelationshipExtractor::extractCondExpr(const std::shared_ptr<CondExprNode>&
 void RelationshipExtractor::extractCall(std::shared_ptr<CallNode> node) {
     if (currProcedureName == node->procedureName) /* Self call*/ {
         throw SourceExtractorException(RelationshipExtractorSelfCallsExceptionMessage);
-    } else if (!relationshipStore->getReadProcedureManager()->contains(node->procedureName)) /* Callee does not exits*/ {
+    } else if (!relationshipStore->getReadProcedureManager()->contains(node->procedureName)) {
+        /* Callee does not exits*/
         throw SourceExtractorException(RelationshipExtractorNonExistentExceptionMessage);
     }
-    if (!relationshipStore->getCallPReadManager()->containsMap(currProcedureName, node->procedureName)) /* Track a procedure's call
- * count */ {
+    if (!relationshipStore->getCallPReadManager()->containsMap(currProcedureName, node->procedureName)) {
+        /* Track a procedure's call count */
         procedureUniqueCallCount[currProcedureName]++;
     }
 

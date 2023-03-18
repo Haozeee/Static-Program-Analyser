@@ -1,8 +1,8 @@
 #include "RelationshipStore.h"
 #include <utility>
 
-RelationshipStore::RelationshipStore(const std::shared_ptr<WriteStorage>& writeStorage, const std::shared_ptr<ReadStorage>&
-        readStorage) {
+RelationshipStore::RelationshipStore(const std::shared_ptr<WriteStorage>& writeStorage,
+                                     const std::shared_ptr<ReadStorage>& readStorage) {
     followsManager = writeStorage->getFollowsManager();
     followsTManager = writeStorage->getFollowsTManager();
 

@@ -2,7 +2,8 @@
 #include <utility>
 
 void StaticProgramAnalyzer::readProgramFromFile(const std::string& filename) {
-    std::shared_ptr<IStore> store = std::make_shared<Store>(storageManager->getWriteStorage(), storageManager->getReadStorage());
+    std::shared_ptr<IStore> store = std::make_shared<Store>(storageManager->getWriteStorage(),
+                                                            storageManager->getReadStorage());
     sourceManager.process(filename, store, storageManager->getReadStorage());
 }
 
