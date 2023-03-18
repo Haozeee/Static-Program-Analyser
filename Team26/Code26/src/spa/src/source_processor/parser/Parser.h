@@ -47,9 +47,10 @@ class Parser : public AbstractParser {
     static void popCondExprHelper(std::stack<HelperNode>& result);
     static void continueCondExprHelper(std::stack<HelperNode>& result);
     static void checkStackSize(std::stack<HelperNode>& result);
-    static void handleEndBrackets(std::stack<std::shared_ptr<Token>>& opStack, std::queue<std::shared_ptr<Token>>& postfix,
-                           bool& isRelExpr, const std::unordered_set<std::string>& relOp,
-                           const std::vector<std::shared_ptr<Token>>& tokens, int index);
+    static void handleEndBrackets(std::stack<std::shared_ptr<Token>>& opStack,
+                                  std::queue<std::shared_ptr<Token>>& postfix,
+                                  bool& isRelExpr, const std::unordered_set<std::string>& relOp,
+                                  const std::vector<std::shared_ptr<Token>>& tokens, int index);
 
  public:
     explicit Parser(std::vector<std::shared_ptr<Token>> tokens);
