@@ -55,7 +55,7 @@ TEST_CASE("Parser Read") {
         std::shared_ptr<ProgramNode> programNode = parser.getProgramNode();
 
         REQUIRE(programNode->procedureList.size() == 1);
-        REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
+        REQUIRE(!programNode->procedureList[0]->stmtListNode->stmtList.empty());
 
         std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
         CHECK(stmtNode->stmtIndex == 1);
@@ -133,7 +133,7 @@ TEST_CASE("Parser Read") {
         REQUIRE(programNode->procedureList.size() == 2);
 
         SECTION("first Procedure") {
-            REQUIRE(programNode->procedureList[0]->stmtListNode->stmtList.size() >= 1);
+            REQUIRE(!programNode->procedureList[0]->stmtListNode->stmtList.empty());
             std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[0]->stmtListNode->stmtList[0];
             CHECK(stmtNode->stmtIndex == 1);
             REQUIRE(stmtNode->stmtType == StmtType::STMT_READ);
@@ -144,7 +144,7 @@ TEST_CASE("Parser Read") {
         }
 
         SECTION("second Procedure") {
-            REQUIRE(programNode->procedureList[1]->stmtListNode->stmtList.size() >= 1);
+            REQUIRE(!programNode->procedureList[1]->stmtListNode->stmtList.empty());
             std::shared_ptr<StmtNode> stmtNode = programNode->procedureList[1]->stmtListNode->stmtList[0];
             CHECK(stmtNode->stmtIndex == 2);
             REQUIRE(stmtNode->stmtType == StmtType::STMT_READ);
