@@ -13,14 +13,14 @@ on:
 
 jobs:
   build:
-      runs-on: windows-latest
+      runs-on: [self-hosted, Windows, X64, builder]
       timeout-minutes: 10
       strategy:
         fail-fast: true
 
       steps:
         - uses: actions/checkout@v3
-        - uses: ilammy/msvc-dev-cmd@v1
+        # - uses: ilammy/msvc-dev-cmd@v1
 
         - name: Make Build folder
           run: |
@@ -72,7 +72,7 @@ jobs:
 
   integration-test:
       needs: build
-      runs-on: windows-latest
+      runs-on: [self-hosted, Windows, X64, tester]
       timeout-minutes: 10
       strategy:
         fail-fast: true
@@ -93,7 +93,7 @@ jobs:
 
   autotester-run:
       needs: build
-      runs-on: windows-latest
+      runs-on: [self-hosted, Windows, X64, tester]
       timeout-minutes: 10
       strategy:
         fail-fast: true
@@ -128,7 +128,7 @@ jobs:
   
   autotester-upload:
       needs: autotester-run
-      runs-on: [self-hosted, Windows, X64]
+      runs-on: [self-hosted, Windows, X64, tester]
       timeout-minutes: 10
       strategy:
         fail-fast: true
