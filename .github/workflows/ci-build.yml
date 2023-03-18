@@ -13,13 +13,14 @@ on:
 
 jobs:
   build:
-      runs-on: [self-hosted, Windows, X64]
+      runs-on: windows-latest
       timeout-minutes: 10
       strategy:
         fail-fast: true
 
       steps:
         - uses: actions/checkout@v3
+        - uses: ilammy/msvc-dev-cmd@v1
 
         - name: Make Build folder
           run: |
