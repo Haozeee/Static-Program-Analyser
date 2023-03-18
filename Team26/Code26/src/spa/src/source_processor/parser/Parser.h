@@ -27,7 +27,6 @@ enum class HelperNode {
 
 class Parser : public AbstractParser {
  private:
-
     std::shared_ptr<ProgramNode> programRoot;
     int stmtIndex;
 

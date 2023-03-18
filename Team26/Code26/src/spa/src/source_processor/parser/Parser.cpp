@@ -345,7 +345,7 @@ bool Parser::isMathOp(const std::string& value) {
 }
 
 bool Parser::isCondOp(const std::string& value) {
-    std::unordered_set<std::string> condOp {"&&","||"};
+    std::unordered_set<std::string> condOp {"&&", "||"};
     return condOp.find(value) != condOp.end();
 }
 
