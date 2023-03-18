@@ -101,7 +101,7 @@ TEST_CASE("RelationshipManager containsReversedMap int,int") {
 TEST_CASE("RelationshipManager getAllRelationshipEntries int,int") {
     RelationshipManager<int, int> relationshipManager;
     auto map = relationshipManager.getAllRelationshipEntries();
-    REQUIRE(map.size() == 0);
+    REQUIRE(map.empty());
     std::unordered_map<int, std::unordered_set<int>> testMap = {{2, {3, 4}}};
     REQUIRE(relationshipManager.insertRelationship(2, 3));
     REQUIRE(relationshipManager.insertRelationship(2, 4));
@@ -115,7 +115,7 @@ TEST_CASE("RelationshipManager getAllRelationshipEntries int,int") {
 TEST_CASE("RelationshipManager getAllRelationshipEntries int,string") {
     RelationshipManager<int, std::string> relationshipManager;
     auto map = relationshipManager.getAllRelationshipEntries();
-    REQUIRE(map.size() == 0);
+    REQUIRE(map.empty());
     std::unordered_map<int, std::unordered_set<std::string>> testMap = {{2, {"x", "y"}}};
     REQUIRE(relationshipManager.insertRelationship(2, "x"));
     REQUIRE(relationshipManager.insertRelationship(2, "y"));
@@ -129,7 +129,7 @@ TEST_CASE("RelationshipManager getAllRelationshipEntries int,string") {
 TEST_CASE("RelationshipManager getAllRelationshipEntries string,string") {
     RelationshipManager<std::string, std::string> relationshipManager;
     auto map = relationshipManager.getAllRelationshipEntries();
-    REQUIRE(map.size() == 0);
+    REQUIRE(map.empty());
     std::unordered_map<std::string, std::unordered_set<std::string>> testMap = {{"a", {"x", "y"}}};
     REQUIRE(relationshipManager.insertRelationship("a", "x"));
     REQUIRE(relationshipManager.insertRelationship("a", "y"));
@@ -143,7 +143,7 @@ TEST_CASE("RelationshipManager getAllRelationshipEntries string,string") {
 TEST_CASE("RelationshipManager getAllReversedRelationshipEntries int,int") {
     RelationshipManager<int, int> relationshipManager;
     auto map = relationshipManager.getAllReversedRelationshipEntries();
-    REQUIRE(map.size() == 0);
+    REQUIRE(map.empty());
     std::unordered_map<int, std::unordered_set<int>> testMap = {{3, {1,2}}};
     REQUIRE(relationshipManager.insertRelationship(1, 3));
     REQUIRE(relationshipManager.insertRelationship(2, 3));
@@ -158,7 +158,7 @@ TEST_CASE("RelationshipManager getAllReversedRelationshipEntries int,int") {
 TEST_CASE("RelationshipManager getAllReversedRelationshipEntries int,string") {
     RelationshipManager<int, std::string> relationshipManager;
     auto map = relationshipManager.getAllReversedRelationshipEntries();
-    REQUIRE(map.size() == 0);
+    REQUIRE(map.empty());
     std::unordered_map<std::string, std::unordered_set<int>> testMap = {{"a", {1}}, {"b",{1}}};
     REQUIRE(relationshipManager.insertRelationship(1, "a"));
     REQUIRE(relationshipManager.insertRelationship(1, "b"));
@@ -173,7 +173,7 @@ TEST_CASE("RelationshipManager getAllReversedRelationshipEntries int,string") {
 TEST_CASE("RelationshipManager getAllReversedRelationshipEntries string,string") {
     RelationshipManager<std::string, std::string> relationshipManager;
     auto map = relationshipManager.getAllReversedRelationshipEntries();
-    REQUIRE(map.size() == 0);
+    REQUIRE(map.empty());
     std::unordered_map<std::string, std::unordered_set<std::string>> testMap = {{"a", {"x"}}, {"b",{"x"}}};
     REQUIRE(relationshipManager.insertRelationship("x", "a"));
     REQUIRE(relationshipManager.insertRelationship("x", "b"));

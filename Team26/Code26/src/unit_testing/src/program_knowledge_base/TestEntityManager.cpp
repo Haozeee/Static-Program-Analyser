@@ -54,7 +54,7 @@ TEST_CASE("EntityManager contains string") {
 TEST_CASE("EntityManager getAllEntitiesEntries int") {
     EntityManager<int> entityManager;
     auto set = entityManager.getAllEntitiesEntries();
-    REQUIRE(set.size() == 0);
+    REQUIRE(set.empty());
     std::unordered_set<int> stmtNoSet = {3, 11};
     std::unordered_set<int> emptySet = {};
     REQUIRE(entityManager.insertEntity(3));
@@ -68,7 +68,7 @@ TEST_CASE("EntityManager getAllEntitiesEntries int") {
 TEST_CASE("EntityManager getAllEntitiesEntries string") {
     EntityManager<std::string> entityManager;
     auto set = entityManager.getAllEntitiesEntries();
-    REQUIRE(set.size() == 0);
+    REQUIRE(set.empty());
     std::unordered_set<std::string> varNameSet = {"x", "radius"};
     std::unordered_set<std::string> emptySet = {};
     REQUIRE(entityManager.insertEntity("x"));
