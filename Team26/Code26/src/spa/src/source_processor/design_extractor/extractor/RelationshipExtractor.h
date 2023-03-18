@@ -16,12 +16,6 @@ class RelationshipExtractor : public BaseExtractor, IRelationshipExtractor {
     // Relationships
     std::string currProcedureName;
 
-    // Calls, UsesP, UsesS, ModifiesP, ModifiesP Interlinking
-    std::shared_ptr<IReadEntityManager<std::string>> procedureManager;
-    std::shared_ptr<IReadRelationshipManager<std::string, std::string>> callPManager;
-    std::shared_ptr<IReadRelationshipManager<std::string, std::string>> usesPManager;
-    std::shared_ptr<IReadRelationshipManager<std::string, std::string>> modifiesPManager;
-    std::shared_ptr<IReadRelationshipManager<std::string, std::string>> callsTManager;
     std::unordered_map<std::string, std::unordered_set<std::string>> usesPRelationships;
     std::unordered_map<std::string, std::unordered_set<std::string>> modifiesPRelationships;
     std::unordered_map<std::string, std::unordered_set<std::string>> callPReversedRelationships;
@@ -62,9 +56,7 @@ class RelationshipExtractor : public BaseExtractor, IRelationshipExtractor {
     void extractWhile(std::shared_ptr<WhileNode> node) override;
     void extractIf(std::shared_ptr<IfNode> node) override;
 
-
  public:
-    explicit RelationshipExtractor(std::shared_ptr<IRelationshipStore> relationshipStore,
-                                   const std::shared_ptr<ReadStorage>& readStorage);
+    explicit RelationshipExtractor(std::shared_ptr<IRelationshipStore> relationshipStore);
     void extractProgram(std::shared_ptr<ProgramNode> node) override;
 };

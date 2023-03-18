@@ -21,8 +21,24 @@ class RelationshipStore : public IRelationshipStore {
     std::shared_ptr<IWriteRelationshipManager<std::string, std::string>> callPManager;
     std::shared_ptr<IWriteRelationshipManager<std::string, std::string>> callsTManager;
 
+    std::shared_ptr<ReadStorage> readStorage;
+
+    // Calls, UsesP, UsesS, ModifiesP, ModifiesP Interlinking
+//    std::shared_ptr<IReadRelationshipManager<std::string, std::string>> callPReadManager;
+//    std::shared_ptr<IReadRelationshipManager<std::string, std::string>> usesPReadManager;
+//    std::shared_ptr<IReadRelationshipManager<std::string, std::string>> modifiesPReadManager;
+//    std::shared_ptr<IReadRelationshipManager<std::string, std::string>> callsTReadManager;
+
  public:
-    explicit RelationshipStore(std::shared_ptr<WriteStorage> storage);
+    explicit RelationshipStore(const std::shared_ptr<WriteStorage>& writeStorage, const std::shared_ptr<ReadStorage>& readStorage);
+
+
+    std::unordered_map<std::string, std::unordered_set<std::string>> getCallPReversedRelationship() override;
+    std::unordered_map<std::string, std::unordered_set<std::string>> getCallsTRelationship() override;
+    std::shared_ptr<IReadEntityManager<std::string>> getReadProcedureManager() override;
+    std::shared_ptr<IReadRelationshipManager<std::string, std::string>> getCallPReadManager() override;
+    std::unordered_map<std::string, std::unordered_set<std::string>> getModifiesPRelationship() override;
+    std::unordered_map<std::string, std::unordered_set<std::string>> getUsesPRelationship() override;
 
     void insertFollowsRelationship(const int &previousStmtNo, const int &currentStmtNo) override;
     void insertParentsRelationship(const int &parentStmtNo, const int &childStmtNo) override;
