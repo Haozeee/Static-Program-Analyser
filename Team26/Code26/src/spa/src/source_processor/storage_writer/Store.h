@@ -16,7 +16,7 @@ class Store : public IStore {
     std::shared_ptr<IPatternStore> patternStore;
 
  public:
-    explicit Store(const std::shared_ptr<WriteStorage>& storage);
+    explicit Store(const std::shared_ptr<WriteStorage>& writeStorage, const std::shared_ptr<ReadStorage>& readStorage);
 
     std::shared_ptr<IEntityStore> getEntityStore() override;
     std::shared_ptr<IPatternStore> getPatternStore() override;

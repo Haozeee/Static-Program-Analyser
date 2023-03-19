@@ -1,12 +1,9 @@
 const fs = require("fs");
 const { spawn } = require("child_process");
-// const path = require("path");
-// const https = require("https");
 
 const rootDir = `${__dirname}/../`;
 const autotester = `${rootDir}/autotester.exe`;
 const resultFolder = `${rootDir}/results`;
-// const hostname = process.argv[2];
 
 if (!fs.existsSync(resultFolder)) {
     fs.mkdir("../results", (err) => {
@@ -56,33 +53,3 @@ fs.readdir(rootDir, { withFileTypes: true }, (err, baseFolder) => {
             );
         });
 });
-
-// fs.readdir(resultFolder, (err, results) => {
-//     const options = {
-//         hostname: hostname,
-//         method: `POST`,
-//         headers: {
-//             "Content-Type": "text/xml",
-//         },
-//     };
-    
-//     results.forEach((result) => {
-//         const xmlData = fs.readFileSync(`${resultFolder}/${result}`, "utf-8");
-
-//         const req = https.request(options, (res) => {
-//             if (err) {
-//                 console.log(err);
-//             } else {
-//                 console.log(res);
-//             }
-
-//             res.on("data", (d) => { });
-//         });
-
-//         req.on("error", (err) => {
-//             console.log(err.message);
-//         });
-//         req.write(xmlData);
-//         req.end();
-//     });
-// });

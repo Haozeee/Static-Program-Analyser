@@ -1,8 +1,8 @@
 #include "Tokenizer.h"
-#include <string>
+
 #include <unordered_set>
 #include <sstream>
-#include <iostream>
+#include <string>
 #include "source_processor/exception/SourceException.h"
 #include "source_processor/exception/SourceProcessorExceptionMessage.h"
 #include "common/tokenizer/token/EndOfFileToken.h"
@@ -42,10 +42,8 @@ void Tokenizer::readSpecialChar() {
 }
 
 std::vector<std::shared_ptr<Token>> Tokenizer::tokenize() {
-    char c = 0;
-
     while (!istream->eof()) {
-        c = nextChar();
+        char c = nextChar();
 
         if (c == EOF) {
             addToken(std::make_shared<EndOfFileToken>());
@@ -54,6 +52,7 @@ std::vector<std::shared_ptr<Token>> Tokenizer::tokenize() {
 
         currentToken += c;
         if (isspace(c)) {
+            // do nothing
         } else if (isalpha(c)) {
             readName();
             addToken(std::make_shared<NameToken>(getCurrentToken()));

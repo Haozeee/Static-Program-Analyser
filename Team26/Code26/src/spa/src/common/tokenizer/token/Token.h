@@ -20,10 +20,10 @@ class Token {
  public:
     Token(TokenType type, std::string value);
 
-    // TODO(zhengteck): Reconsider getter and setters is required.
     TokenType getType();
     std::string getValue();
 
     virtual bool operator==(const Token& token) const;
+    virtual bool isIntegerOrNameToken() const;
 };
 

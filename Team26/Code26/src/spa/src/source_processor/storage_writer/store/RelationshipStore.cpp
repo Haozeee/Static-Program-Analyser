@@ -1,26 +1,28 @@
 #include "RelationshipStore.h"
 #include <utility>
 
-RelationshipStore::RelationshipStore(std::shared_ptr<WriteStorage> storage) {
-    followsManager = storage->getFollowsManager();
-    followsTManager = storage->getFollowsTManager();
+RelationshipStore::RelationshipStore(const std::shared_ptr<WriteStorage>& writeStorage,
+                                     const std::shared_ptr<ReadStorage>& readStorage) {
+    followsManager = writeStorage->getFollowsManager();
+    followsTManager = writeStorage->getFollowsTManager();
 
-    parentsManager = storage->getParentManager();
-    parentsTManager = storage->getParentTManager();
+    parentsManager = writeStorage->getParentManager();
+    parentsTManager = writeStorage->getParentTManager();
 
-    usesSManager = storage->getUsesSManager();
-    usesPManager = storage->getUsesPManager();
+    usesSManager = writeStorage->getUsesSManager();
+    usesPManager = writeStorage->getUsesPManager();
 
-    modifiesSManager = storage->getModifiesSManager();
-    modifiesPManager = storage->getModifiesPManager();
+    modifiesSManager = writeStorage->getModifiesSManager();
+    modifiesPManager = writeStorage->getModifiesPManager();
 
-    nextManager = storage->getNextManager();
+    nextManager = writeStorage->getNextManager();
 
-    callSManager = storage->getCallsSManager();
-    callPManager = storage->getCallsPManager();
-    callsTManager = storage->getCallsTManager();
+    callSManager = writeStorage->getCallsSManager();
+    callPManager = writeStorage->getCallsPManager();
+    callsTManager = writeStorage->getCallsTManager();
+
+    this->readStorage = readStorage;
 }
-
 
 void RelationshipStore::insertFollowsRelationship(const int &previousStmtNo, const int &currentStmtNo) {
     followsManager->insertRelationship(previousStmtNo, currentStmtNo);
@@ -92,4 +94,31 @@ void RelationshipStore::invokePreReverseRelationship() {
     callPManager->setReverse();
 }
 
+std::unordered_map<std::string, std::unordered_set<std::string>> RelationshipStore::getCallsPReversedRelationship() {
+    return readStorage->getCallsPManager()->getAllReversedRelationshipEntries();
+}
+
+std::unordered_map<std::string, std::unordered_set<std::string>> RelationshipStore::getCallsTRelationship() {
+    return readStorage->getCallsTManager()->getAllRelationshipEntries();
+}
+
+std::unordered_map<std::string, std::unordered_set<std::string>> RelationshipStore::getModifiesPRelationship() {
+    return readStorage->getModifiesPManager()->getAllRelationshipEntries();
+}
+
+std::unordered_map<std::string, std::unordered_set<std::string>> RelationshipStore::getUsesPRelationship() {
+    return readStorage->getUsesPManager()->getAllRelationshipEntries();
+}
+
+bool RelationshipStore::procedureEntitiesContains(std::string procedureName) {
+    return readStorage->getProcedureManager()->contains(procedureName);
+}
+
+std::unordered_set<std::string> RelationshipStore::getProcedureEntities() {
+    return readStorage->getProcedureManager()->getAllEntitiesEntries();
+}
+
+bool RelationshipStore::callsPReadContains(std::string procedureName1, std::string procedureName2) {
+    return readStorage->getCallsPManager()->containsMap(procedureName1, procedureName2);
+}
 
