@@ -25,7 +25,7 @@ class EntityExtractor : public BaseExtractor, public IEntityExtractor {
     void insertConstants(const std::unordered_set<int>& constants);
 
  public:
-    ~EntityExtractor() override {};
+    ~EntityExtractor() override = default;;
     explicit EntityExtractor(std::shared_ptr<IEntityStore> entityStore, std::shared_ptr<IPatternStore> patternStore);
     void extractProgram(const std::shared_ptr<ProgramNode>& node) override;
 };
