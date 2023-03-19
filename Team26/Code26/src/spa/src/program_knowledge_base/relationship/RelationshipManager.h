@@ -15,15 +15,15 @@ class RelationshipManager: public IReadRelationshipManager<T, U>,
     std::unordered_map<T, std::unordered_set<U>> relationshipsMap;
     std::unordered_map<U, std::unordered_set<T>> reversedRelationshipsMap;
  public:
-    bool isEmptyMap() {
+    bool isEmptyMap() override {
         return relationshipsMap.empty();
     }
 
-    bool isEmptyReversedMap() {
+    bool isEmptyReversedMap() override {
         return reversedRelationshipsMap.empty();
     }
 
-    bool containsMap(T firstParam, U secondParam) {
+    bool containsMap(T firstParam, U secondParam) override {
         auto key = relationshipsMap.find(firstParam);
         bool flag = false;
         if (key != relationshipsMap.end()) {
@@ -33,7 +33,7 @@ class RelationshipManager: public IReadRelationshipManager<T, U>,
         return flag;
     }
 
-    bool containsReversedMap(U secondParam, T firstParam) {
+    bool containsReversedMap(U secondParam, T firstParam) override {
         auto key = reversedRelationshipsMap.find(secondParam);
         bool flag = false;
         if (key != reversedRelationshipsMap.end()) {
@@ -43,14 +43,15 @@ class RelationshipManager: public IReadRelationshipManager<T, U>,
         return flag;
     }
 
-    std::unordered_map<T, std::unordered_set<U>> getAllRelationshipEntries() {
+    std::unordered_map<T, std::unordered_set<U>> getAllRelationshipEntries() override {
         return relationshipsMap;
     }
-    std::unordered_map<U, std::unordered_set<T>> getAllReversedRelationshipEntries() {
+
+    std::unordered_map<U, std::unordered_set<T>> getAllReversedRelationshipEntries() override {
         return reversedRelationshipsMap;
     }
 
-    bool insertRelationship(T firstParam, U secondParam) {
+    bool insertRelationship(T firstParam, U secondParam) override {
         bool flag = false;
         if (!relationshipsMap.count(firstParam)) {
             std::unordered_set<U> newSet;
@@ -64,7 +65,7 @@ class RelationshipManager: public IReadRelationshipManager<T, U>,
         return flag;
     }
 
-    void setReverse() {
+    void setReverse() override {
         for (auto pair : relationshipsMap) {
             auto key = pair.first;
             auto value = pair.second;
@@ -79,9 +80,9 @@ class RelationshipManager: public IReadRelationshipManager<T, U>,
         if (!reversedRelationshipsMap.count(element)) {
             std::unordered_set<T> newSet;
             newSet.insert(key);
-            auto res = reversedRelationshipsMap.emplace(element, newSet);
+            reversedRelationshipsMap.emplace(element, newSet);
         } else {
-            auto res = reversedRelationshipsMap[element].insert(key);
+            reversedRelationshipsMap[element].insert(key);
         }
     }
 };

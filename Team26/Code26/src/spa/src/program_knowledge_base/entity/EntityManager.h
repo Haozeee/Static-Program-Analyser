@@ -11,21 +11,17 @@ class EntityManager : public IWriteEntityManager<T>,
     std::unordered_set<T> entitiesSet;
 
  public:
-    bool insertEntity(T nameOrStmtNo) {
+    bool insertEntity(T nameOrStmtNo) override {
         auto insertedEntity =  entitiesSet.insert(nameOrStmtNo);
         bool flag = insertedEntity.second;
         return flag;
     }
 
-    bool isEmpty() {
-        bool flag = true;
-        if (entitiesSet.size() != 0) {
-            flag = false;
-        }
-        return flag;
+    bool isEmpty() override {
+        return entitiesSet.empty();
     }
 
-    bool contains(T nameOrStmtNo) {
+    bool contains(T nameOrStmtNo) override {
         bool flag = false;
         auto element = entitiesSet.find(nameOrStmtNo);
         if (element != entitiesSet.end()) {
@@ -34,7 +30,7 @@ class EntityManager : public IWriteEntityManager<T>,
         return flag;
     }
 
-    std::unordered_set<T> getAllEntitiesEntries() {
+    std::unordered_set<T> getAllEntitiesEntries() override {
         return entitiesSet;
     }
 };
