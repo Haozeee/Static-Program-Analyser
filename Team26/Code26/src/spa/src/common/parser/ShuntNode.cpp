@@ -1,4 +1,5 @@
 #include "ShuntNode.h"
+#include <algorithm>
 
 std::vector<std::string> ShuntNode::getPreOrderTraversal(std::shared_ptr<ShuntNode> node) {
     std::vector<std::string> res;
@@ -27,18 +28,16 @@ std::vector<std::string> ShuntNode::getInOrderTraversal(std::shared_ptr<ShuntNod
 }
 
 bool ShuntNode::isSubVector(std::vector<std::string> stringVector, std::vector<std::string> subVector) {
-    std::string fullString;
-    std::string partialString;
-
-    for (auto& c : stringVector) {
-        fullString += c;
+    if (subVector.size() > stringVector.size()) {
+        return false;
     }
-
-    for (auto& c : subVector) {
-        partialString += c;
+    for (int i = 0; i <= stringVector.size() - subVector.size(); i++) {
+        // i is a possible starting point of a subarray
+        if (std::equal(subVector.begin(), subVector.end(), stringVector.begin() + i)) {
+            return true;
+        }
     }
-
-    return fullString.find(partialString) != std::string::npos;
+    return false;
 }
 
 bool ShuntNode::isSubTree(const std::shared_ptr<ShuntNode>& fullTree, const std::shared_ptr<ShuntNode>& partialTree) {
