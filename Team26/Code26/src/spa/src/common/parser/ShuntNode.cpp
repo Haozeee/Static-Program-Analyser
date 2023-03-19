@@ -27,20 +27,18 @@ std::vector<std::string> ShuntNode::getInOrderTraversal(std::shared_ptr<ShuntNod
 }
 
 bool ShuntNode::isSubVector(std::vector<std::string> stringVector, std::vector<std::string> subVector) {
-    int i = 0;
-    int j = 0;
-    while (i < stringVector.size() && j < subVector.size()) {
-        if (stringVector[i] == subVector[j]) {
-            j++;
-        } else {
-            j = 0;
-            if (stringVector[i] == subVector[j]) {
-                j++;
-            }
-        }
-        i++;
+    std::string fullString;
+    std::string partialString;
+
+    for (auto& c : stringVector) {
+        fullString += c;
     }
-    return j == subVector.size();
+
+    for (auto& c : subVector) {
+        partialString += c;
+    }
+
+    return fullString.find(partialString) != std::string::npos;
 }
 
 bool ShuntNode::isSubTree(const std::shared_ptr<ShuntNode>& fullTree, const std::shared_ptr<ShuntNode>& partialTree) {
