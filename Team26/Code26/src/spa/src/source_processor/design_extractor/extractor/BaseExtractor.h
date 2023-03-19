@@ -7,9 +7,10 @@
 #include "source_processor/node/ProgramNode.h"
 #include "source_processor/node/ProcedureNode.h"
 #include "source_processor/node/StmtListNode.h"
+#include "source_processor/design_extractor/interface/IExtractor.h"
 
 
-class BaseExtractor {
+class BaseExtractor : public IExtractor {
  protected:
     int currentStmtNo = -1;
 
@@ -23,5 +24,5 @@ class BaseExtractor {
  public:
     BaseExtractor();
 
-    virtual void extractProgram(const std::shared_ptr<ProgramNode>& node);
+    void extractProgram(const std::shared_ptr<ProgramNode>& node) override;
 };

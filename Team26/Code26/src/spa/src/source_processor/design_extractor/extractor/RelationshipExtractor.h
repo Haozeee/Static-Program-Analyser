@@ -9,7 +9,7 @@
 #include "source_processor/design_extractor/interface/IRelationshipExtractor.h"
 #include "program_knowledge_base/StorageManager.h"
 
-class RelationshipExtractor : public BaseExtractor, IRelationshipExtractor {
+class RelationshipExtractor : public BaseExtractor, public IRelationshipExtractor {
  private:
     std::shared_ptr<IRelationshipStore> relationshipStore;
 
@@ -62,6 +62,7 @@ class RelationshipExtractor : public BaseExtractor, IRelationshipExtractor {
     void extractIf(std::shared_ptr<IfNode> node) override;
 
  public:
+    ~RelationshipExtractor() override {};
     explicit RelationshipExtractor(std::shared_ptr<IRelationshipStore> relationshipStore);
     void extractProgram(const std::shared_ptr<ProgramNode>& node) override;
 };

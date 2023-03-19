@@ -10,10 +10,10 @@
 
 class DesignExtractor {
  private:
-    std::unique_ptr<BaseExtractor> entityExtractor;
-    std::unique_ptr<BaseExtractor> relationshipExtractor;
+    std::unique_ptr<IEntityExtractor> entityExtractor;
+    std::unique_ptr<IRelationshipExtractor> relationshipExtractor;
 
  public:
-    explicit DesignExtractor(const std::shared_ptr<IStore>& store, const std::shared_ptr<ReadStorage>& storage);
+    explicit DesignExtractor(const std::shared_ptr<IStore>& store);
     void extract(const std::shared_ptr<ProgramNode>& programNode);
 };
