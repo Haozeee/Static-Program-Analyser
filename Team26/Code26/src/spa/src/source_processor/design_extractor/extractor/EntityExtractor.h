@@ -8,7 +8,7 @@
 #include "source_processor/storage_writer/interface/IEntityStore.h"
 #include "source_processor/storage_writer/interface/IPatternStore.h"
 
-class EntityExtractor : public BaseExtractor, IEntityExtractor {
+class EntityExtractor : public BaseExtractor, public IEntityExtractor {
  private:
     std::shared_ptr<IEntityStore> entityStore;
     std::shared_ptr<IPatternStore> patternStore;

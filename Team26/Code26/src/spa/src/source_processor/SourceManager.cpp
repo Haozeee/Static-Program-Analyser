@@ -6,8 +6,7 @@
 #include "source_processor/parser/SourceParser.h"
 #include "source_processor/design_extractor/DesignExtractor.h"
 
-void SourceManager::process(const std::string& filename, const std::shared_ptr<IStore>& store,
-                            const std::shared_ptr<ReadStorage>&readStorage) {
+void SourceManager::process(const std::string& filename, const std::shared_ptr<IStore>& store) {
     std::ifstream input(filename);
 
     if (!input) {
@@ -21,7 +20,7 @@ void SourceManager::process(const std::string& filename, const std::shared_ptr<I
     sourceParser.parse();
     std::shared_ptr<ProgramNode> programRoot = sourceParser.getProgramNode();
 
-    DesignExtractor designExtractor = DesignExtractor(store, readStorage);
+    DesignExtractor designExtractor = DesignExtractor(store);
     designExtractor.extract(programRoot);
 
     input.close();
