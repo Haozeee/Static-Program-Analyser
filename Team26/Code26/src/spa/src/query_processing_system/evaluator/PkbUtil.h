@@ -8,8 +8,6 @@
 #include "../parser/DesignEntity.h"
 #include "../../program_knowledge_base/StorageManager.h"
 
-using stringEntitySet = std::unordered_set<std::string>;
-
 class PkbUtil {
  public:
     static std::unordered_set<std::string> getStringEntitiesFromPkb(std::shared_ptr<ReadStorage> storage,

@@ -1,7 +1,6 @@
 #include "QueryEvaluator.h"
 #include <algorithm>
 #include <iterator>
-#include "evaluator/ResultTable.h"
 
 QueryEvaluator::QueryEvaluator(Query* query, std::shared_ptr<ReadStorage> storage)
     : query(query), storage(storage), queryResults(QueryDb(storage)), cache(std::make_shared<Cache>(storage)) {}
@@ -46,9 +45,9 @@ void QueryEvaluator::evaluateWithClause() {
 }
 
 void QueryEvaluator::evaluateSelectClause() {
-    auto a = query->getSelectClause();
-    auto selectClauses = query->getSelectClause()->getSelectClauseItems();
-    for (SelectClauseItem item : *selectClauses) {
+    auto selectClause = query->getSelectClause();
+    auto selectClausesItems = selectClause->getSelectClauseItems();
+    for (SelectClauseItem item : *selectClausesItems) {
         std::string identity = SelectClause::getSynonym(item);
         queryResults.addSelectedColumn(item, query->getSynonymDesignEntity(identity));
     }
