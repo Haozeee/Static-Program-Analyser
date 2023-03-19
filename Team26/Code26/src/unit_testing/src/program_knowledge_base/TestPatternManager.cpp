@@ -92,12 +92,12 @@ TEST_CASE("PatternManager getAllLhsPatternEntries string,shuntNode") {
     auto node2  = ShuntingYardParser::parse("a+b");
     auto set = patternManager.getAllLhsPatternEntries();
     REQUIRE(set->empty());
-    std::vector<std::string> test_vector = {"left1", "left2"};
+    std::vector<std::string> testVector = {"left1", "left2"};
     patternManager.insertPattern(1, "left1", node1);
     patternManager.insertPattern(2, "left2", node2);
     set = patternManager.getAllLhsPatternEntries();
     REQUIRE(set->size() == 2);
-    REQUIRE(*(patternManager.getAllLhsPatternEntries()) == test_vector);
+    REQUIRE(*(patternManager.getAllLhsPatternEntries()) == testVector);
 }
 
 TEST_CASE("PatternManager getAllRhsPatternEntries") {
@@ -106,12 +106,12 @@ TEST_CASE("PatternManager getAllRhsPatternEntries") {
     auto node2  = ShuntingYardParser::parse("a+b");
     auto set = patternManager.getAllRhsPatternEntries();
     REQUIRE(set->empty());
-    std::vector<std::shared_ptr<ShuntNode>> test_vector = {node1, node2};
+    std::vector<std::shared_ptr<ShuntNode>> testVector = {node1, node2};
     patternManager.insertPattern(1, "left1", node1);
     patternManager.insertPattern(2, "left2", node2);
     set = patternManager.getAllRhsPatternEntries();
     REQUIRE(set->size() == 2);
-    REQUIRE(*(patternManager.getAllRhsPatternEntries()) == test_vector);
+    REQUIRE(*(patternManager.getAllRhsPatternEntries()) == testVector);
 }
 
 
@@ -121,12 +121,12 @@ TEST_CASE("PatternManager getAllPatternEntries") {
     auto node2  = ShuntingYardParser::parse("a+b");
     auto map = patternManager.getAllPatternEntries();
     REQUIRE(map.empty());
-    std::unordered_map<int, int> test_map = {{0, 1}, {1, 2}};
+    std::unordered_map<int, int> testMap = {{0, 1}, {1, 2}};
     patternManager.insertPattern(1, "left1", node1);
     patternManager.insertPattern(2, "left2", node2);
     map = patternManager.getAllPatternEntries();
     REQUIRE(map.size() == 2);
-    REQUIRE(patternManager.getAllPatternEntries() == test_map);
+    REQUIRE(patternManager.getAllPatternEntries() == testMap);
 }
 
 TEST_CASE("PatternManager getAllReversedPatternEntries") {
@@ -135,12 +135,12 @@ TEST_CASE("PatternManager getAllReversedPatternEntries") {
     auto node2  = ShuntingYardParser::parse("a+b");
     auto map = patternManager.getAllReversedPatternEntries();
     REQUIRE(map.empty());
-    std::unordered_map<int, int> test_map = {{1, 0}, {2, 1}};
+    std::unordered_map<int, int> testMap = {{1, 0}, {2, 1}};
     patternManager.insertPattern(1, "left1", node1);
     patternManager.insertPattern(2, "left2", node2);
     map = patternManager.getAllReversedPatternEntries();
     REQUIRE(map.size() == 2);
-    REQUIRE(patternManager.getAllReversedPatternEntries() == test_map);
+    REQUIRE(patternManager.getAllReversedPatternEntries() == testMap);
 }
 
 // testing insert method
@@ -163,8 +163,8 @@ TEST_CASE("PatternManager insertPattern") {
 
     std::vector<std::string> lhs_vector = {"left1", "left2", "left3"};
     std::vector<std::shared_ptr<ShuntNode>> rhs_vector = {node1, node2, node3};
-    std::unordered_map<int, int> test_map = {{0, 1}, {1, 2}, {2, 3}};
-    std::unordered_map<int, int> reversed_test_map = {{1, 0}, {2, 1}, {3, 2}};
+    std::unordered_map<int, int> testMap = {{0, 1}, {1, 2}, {2, 3}};
+    std::unordered_map<int, int> reversedTestMap = {{1, 0}, {2, 1}, {3, 2}};
     auto lhs = patternManager.getAllLhsPatternEntries();
     auto rhs = patternManager.getAllRhsPatternEntries();
     auto map = patternManager.getAllPatternEntries();
@@ -174,9 +174,9 @@ TEST_CASE("PatternManager insertPattern") {
     REQUIRE(rhs->size() == 3);
     REQUIRE(*rhs == rhs_vector);
     REQUIRE(map.size() == 3);
-    REQUIRE(map == test_map);
+    REQUIRE(map == testMap);
     REQUIRE(reversedMap.size() == 3);
-    REQUIRE(reversedMap == reversed_test_map);
+    REQUIRE(reversedMap == reversedTestMap);
 
     // invalid insert of duplicates
     REQUIRE_FALSE(patternManager.insertPattern(1, "left3", node3));
