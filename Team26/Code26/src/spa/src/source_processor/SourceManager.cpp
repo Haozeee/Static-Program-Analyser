@@ -2,7 +2,7 @@
 #include <fstream>
 #include <memory>
 #include <utility>
-#include "source_processor/tokenizer/Tokenizer.h"
+#include "source_processor/tokenizer/SourceTokenizer.h"
 #include "source_processor/parser/SourceParser.h"
 #include "source_processor/design_extractor/DesignExtractor.h"
 
@@ -13,7 +13,7 @@ void SourceManager::process(const std::string& filename, const std::shared_ptr<I
         throw SourceManagerException(ManagerInvalidInputFile);
     }
 
-    Tokenizer sourceTokenizer = Tokenizer(&input);
+    SourceTokenizer sourceTokenizer = SourceTokenizer(&input);
     auto tokens = sourceTokenizer.tokenize();
 
     SourceParser sourceParser = SourceParser(tokens);

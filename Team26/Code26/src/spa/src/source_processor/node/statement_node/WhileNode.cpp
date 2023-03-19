@@ -1,5 +1,4 @@
 #include "WhileNode.h"
-
 #include <utility>
 #include "source_processor/design_extractor/interface/statement_extractor/IStmtExtractor.h"
 
