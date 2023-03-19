@@ -1,5 +1,4 @@
 #include "SelectClause.h"
-
 #include <utility>
 
 SelectClause::SelectClause(std::shared_ptr<std::vector<SelectClauseItem>> selectClauseItems,
