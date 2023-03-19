@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 #include <memory>
 #include <unordered_map>
@@ -11,70 +12,77 @@ template <typename T, typename U>
 class RelationshipManager: public IReadRelationshipManager<T, U>,
                            public IWriteRelationshipManager<T, U> {
  protected:
-    std::unordered_map<T, std::unordered_set<U>> relationships_map;
-    std::unordered_map<U, std::unordered_set<T>> reversed_relationships_map;
+    std::unordered_map<T, std::unordered_set<U>> relationshipsMap;
+    std::unordered_map<U, std::unordered_set<T>> reversedRelationshipsMap;
  public:
-    bool isEmptyMap() {
-        return relationships_map.empty();
+    bool isEmptyMap() override {
+        return relationshipsMap.empty();
     }
 
-    bool isEmptyReversedMap() {
-        return reversed_relationships_map.empty();
+    bool isEmptyReversedMap() override {
+        return reversedRelationshipsMap.empty();
     }
 
-    bool containsMap(T first_param, U second_param) {
-        auto key = relationships_map.find(first_param);
-        if (key != relationships_map.end()) {
-            auto res = key->second;
-            return res.count(second_param);
-        }
-        return false;
-    }
-
-    bool containsReversedMap(U second_param, T first_param) {
-        auto key = reversed_relationships_map.find(second_param);
-        if (key != reversed_relationships_map.end()) {
-            auto res = key->second;
-            return res.count(first_param);
-        }
-        return false;
-    }
-
-    std::unordered_map<T, std::unordered_set<U>> getAllRelationshipEntries() {
-        return relationships_map;
-    }
-    std::unordered_map<U, std::unordered_set<T>> getAllReversedRelationshipEntries() {
-        return reversed_relationships_map;
-    }
-
-    bool insertRelationship(T first_param, U second_param) {
+    bool containsMap(T firstParam, U secondParam) override {
+        auto key = relationshipsMap.find(firstParam);
         bool flag = false;
-        // the key is not a key in the map
-        if (!relationships_map.count(first_param)) {
-            std::unordered_set<U> new_set;
-            new_set.insert(second_param);
-            auto res = relationships_map.emplace(first_param, new_set);
+        if (key != relationshipsMap.end()) {
+            auto res = key->second;
+            flag = res.count(secondParam);
+        }
+        return flag;
+    }
+
+    bool containsReversedMap(U secondParam, T firstParam) override {
+        auto key = reversedRelationshipsMap.find(secondParam);
+        bool flag = false;
+        if (key != reversedRelationshipsMap.end()) {
+            auto res = key->second;
+            flag = res.count(firstParam);
+        }
+        return flag;
+    }
+
+    std::unordered_map<T, std::unordered_set<U>> getAllRelationshipEntries() override {
+        return relationshipsMap;
+    }
+
+    std::unordered_map<U, std::unordered_set<T>> getAllReversedRelationshipEntries() override {
+        return reversedRelationshipsMap;
+    }
+
+    bool insertRelationship(T firstParam, U secondParam) override {
+        bool flag = false;
+        if (!relationshipsMap.count(firstParam)) {
+            std::unordered_set<U> newSet;
+            newSet.insert(secondParam);
+            auto res = relationshipsMap.emplace(firstParam, newSet);
             flag = res.second;
         } else {
-            auto res = relationships_map[first_param].insert(second_param);
+            auto res = relationshipsMap[firstParam].insert(secondParam);
             flag = res.second;
         }
         return flag;
     }
 
-    void setReverse() {
-        for (auto pair : relationships_map) {
+    void setReverse() override {
+        for (auto pair : relationshipsMap) {
             auto key = pair.first;
             auto value = pair.second;
             for (auto element : value) {
-                if (!reversed_relationships_map.count(element)) {
-                    std::unordered_set<T> new_set;
-                    new_set.insert(key);
-                    auto res = reversed_relationships_map.emplace(element, new_set);
-                } else {
-                    auto res = reversed_relationships_map[element].insert(key);
-                }
+                setReverseHelper(key, element);
             }
+        }
+    }
+
+ private:
+    void setReverseHelper(T key, U element) {
+        if (!reversedRelationshipsMap.count(element)) {
+            std::unordered_set<T> newSet;
+            newSet.insert(key);
+            reversedRelationshipsMap.emplace(element, newSet);
+        } else {
+            reversedRelationshipsMap[element].insert(key);
         }
     }
 };

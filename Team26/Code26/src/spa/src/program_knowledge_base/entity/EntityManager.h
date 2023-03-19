@@ -1,4 +1,5 @@
 #pragma once
+
 #include <unordered_set>
 #include "IWriteEntityManager.h"
 #include "IReadEntityManager.h"
@@ -7,28 +8,29 @@ template <typename T>
 class EntityManager : public IWriteEntityManager<T>,
         public IReadEntityManager<T> {
  private:
-    std::unordered_set<T> entities_set;
+    std::unordered_set<T> entitiesSet;
 
  public:
-    bool insertEntity(T name_or_stmtNo) {
-        bool flag = entities_set.insert(name_or_stmtNo).second;
+    bool insertEntity(T nameOrStmtNo) override {
+        auto insertedEntity =  entitiesSet.insert(nameOrStmtNo);
+        bool flag = insertedEntity.second;
         return flag;
     }
 
-    bool isEmpty() {
-        bool flag = true;
-        if (entities_set.size() != 0) {
-            flag = false;
+    bool isEmpty() override {
+        return entitiesSet.empty();
+    }
+
+    bool contains(T nameOrStmtNo) override {
+        bool flag = false;
+        auto element = entitiesSet.find(nameOrStmtNo);
+        if (element != entitiesSet.end()) {
+            flag = true;
         }
         return flag;
     }
 
-    bool contains(T name_or_stmtNo) {
-        auto element = entities_set.find(name_or_stmtNo);
-        return element != entities_set.end();
-    }
-
-    std::unordered_set<T> getAllEntitiesEntries() {
-        return entities_set;
+    std::unordered_set<T> getAllEntitiesEntries() override {
+        return entitiesSet;
     }
 };

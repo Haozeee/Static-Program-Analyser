@@ -16,8 +16,8 @@ class IReadPatternManager {
     virtual bool isEmptyReversedIndexStmtMap() = 0;
     virtual bool containsLhsVector(T left) = 0;
     virtual bool containsRhsVector(U right) = 0;
-    virtual bool containsIndexStmtMap(int, int) = 0;
-    virtual bool containsReversedIndexStmtMap(int, int) = 0;
+    virtual bool containsIndexStmtMap(int index, int stmtNo) = 0;
+    virtual bool containsReversedIndexStmtMap(int stmtNo, int index) = 0;
     virtual std::unique_ptr<std::vector<T>> getAllLhsPatternEntries() = 0;
     virtual std::unique_ptr<std::vector<U>> getAllRhsPatternEntries() = 0;
     virtual std::unordered_map<int, int> getAllPatternEntries() = 0;

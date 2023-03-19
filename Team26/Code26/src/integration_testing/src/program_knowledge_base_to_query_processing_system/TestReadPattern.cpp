@@ -53,41 +53,41 @@ TEST_CASE("Test reading pattern") {
     assignPatternManager->insertPattern(5, "x", node4);
 
     // test Pattern
-    std::list<std::string> q1_results;
+    std::list<std::string> q1Results;
     std::string q1 = "assign a; Select a pattern a(_, _)";
-    queryManager.process(q1, q1_results, storageManager->getReadStorage());
+    queryManager.process(q1, q1Results, storageManager->getReadStorage());
 
-    std::list<std::string> a1_results = {"1", "2", "4", "5"};
-    q1_results.sort(compare_int_string);
-    REQUIRE(q1_results == a1_results);
+    std::list<std::string> a1Results = {"1", "2", "4", "5"};
+    q1Results.sort(compare_int_string);
+    REQUIRE(q1Results == a1Results);
 
-    std::list<std::string> q2_results;
+    std::list<std::string> q2Results;
     std::string q2 = "assign a; Select a pattern a(\"x\", _)";
-    queryManager.process(q2, q2_results, storageManager->getReadStorage());
+    queryManager.process(q2, q2Results, storageManager->getReadStorage());
 
-    std::list<std::string> a2_results = {"1", "5"};
-    q2_results.sort(compare_int_string);
-    REQUIRE(q2_results == a2_results);
+    std::list<std::string> a2Results = {"1", "5"};
+    q2Results.sort(compare_int_string);
+    REQUIRE(q2Results == a2Results);
 
-    std::list<std::string> q3_results;
+    std::list<std::string> q3Results;
     std::string q3 = "assign a; Select a pattern a(_, _\"x*y\"_)";
-    queryManager.process(q3, q3_results, storageManager->getReadStorage());
+    queryManager.process(q3, q3Results, storageManager->getReadStorage());
 
-    std::list<std::string> a3_results = {"4"};
-    REQUIRE(q3_results == a3_results);
+    std::list<std::string> a3Results = {"4"};
+    REQUIRE(q3Results == a3Results);
 
-    std::list<std::string> q4_results;
+    std::list<std::string> q4Results;
     std::string q4 = "assign a; Select a pattern a(_, _\"x\"_)";
-    queryManager.process(q4, q4_results, storageManager->getReadStorage());
+    queryManager.process(q4, q4Results, storageManager->getReadStorage());
 
-    std::list<std::string> a4_results = {"2", "4"};
-    q4_results.sort(compare_int_string);
-    REQUIRE(q4_results == a4_results);
+    std::list<std::string> a4Results = {"2", "4"};
+    q4Results.sort(compare_int_string);
+    REQUIRE(q4Results == a4Results);
 
-    std::list<std::string> q5_results;
+    std::list<std::string> q5Results;
     std::string q5 = "assign a; Select a pattern a(_, \"x\")";
-    queryManager.process(q5, q5_results, storageManager->getReadStorage());
+    queryManager.process(q5, q5Results, storageManager->getReadStorage());
 
-    std::list<std::string> a5_results = {};
-    REQUIRE(q5_results == a5_results);
+    std::list<std::string> a5Results = {};
+    REQUIRE(q5Results == a5Results);
 }
