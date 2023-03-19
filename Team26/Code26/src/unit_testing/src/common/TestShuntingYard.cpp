@@ -91,6 +91,21 @@ TEST_CASE("Test Is Match") {
     REQUIRE_FALSE(ShuntNode::isSubTree(expressionTree, ShuntingYardParser::parse("v+x")));
     REQUIRE_FALSE(ShuntNode::isSubTree(expressionTree, ShuntingYardParser::parse("y+z*t")));
     REQUIRE_FALSE(ShuntNode::isSubTree(expressionTree, ShuntingYardParser::parse("x*y+z*t")));
+
+    // Linear expression
+    expressionTree =  ShuntingYardParser::parse("a+b+c+d+e+f+g+h+i+j+k+m+n");
+    REQUIRE(ShuntNode::isSubTree(expressionTree, ShuntingYardParser::parse("a+b")));
+    REQUIRE(ShuntNode::isSubTree(expressionTree, ShuntingYardParser::parse("a+b+c")));
+    REQUIRE(ShuntNode::isSubTree(expressionTree, ShuntingYardParser::parse("a+b+c+d")));
+    REQUIRE(ShuntNode::isSubTree(expressionTree, ShuntingYardParser::parse("a+b+c+d+e")));
+    REQUIRE(ShuntNode::isSubTree(expressionTree, ShuntingYardParser::parse("a+b+c+d+e+f")));
+    REQUIRE(ShuntNode::isSubTree(expressionTree, ShuntingYardParser::parse("a+b+c+d+e+f+g")));
+    REQUIRE(ShuntNode::isSubTree(expressionTree, ShuntingYardParser::parse("a+b+c+d+e+f+g+h")));
+    REQUIRE(ShuntNode::isSubTree(expressionTree, ShuntingYardParser::parse("a+b+c+d+e+f+g+h+i")));
+    REQUIRE(ShuntNode::isSubTree(expressionTree, ShuntingYardParser::parse("a+b+c+d+e+f+g+h+i+j")));
+    REQUIRE(ShuntNode::isSubTree(expressionTree, ShuntingYardParser::parse("a+b+c+d+e+f+g+h+i+j+k")));
+    REQUIRE(ShuntNode::isSubTree(expressionTree, ShuntingYardParser::parse("a+b+c+d+e+f+g+h+i+j+k+m")));
+    REQUIRE(ShuntNode::isSubTree(expressionTree, ShuntingYardParser::parse("a+b+c+d+e+f+g+h+i+j+k+m+n")));
 }
 
 TEST_CASE("Test Invalid Expression") {

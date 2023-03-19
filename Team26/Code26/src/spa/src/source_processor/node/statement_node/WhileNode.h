@@ -2,8 +2,8 @@
 
 #include <memory>
 #include "source_processor/node/statement_node/StmtNode.h"
-#include "source_processor/node/CondExprNode.h"
 #include "source_processor/node/StmtListNode.h"
+#include "source_processor/node/statement_node/internal/CondExprNode.h"
 
 class WhileNode : public StmtNode, public std::enable_shared_from_this<WhileNode> {
  public:

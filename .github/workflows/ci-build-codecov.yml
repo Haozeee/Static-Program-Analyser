@@ -16,7 +16,7 @@ on:
 jobs:
 
   coverage:
-      runs-on: [self-hosted, Linux, X64]
+      runs-on: [self-hosted, Linux, X64, codecov]
       timeout-minutes: 10
       strategy:
         fail-fast: true

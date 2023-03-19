@@ -3,7 +3,7 @@
 #include <memory>
 #include <utility>
 #include "source_processor/tokenizer/Tokenizer.h"
-#include "source_processor/parser/Parser.h"
+#include "source_processor/parser/SourceParser.h"
 #include "source_processor/design_extractor/DesignExtractor.h"
 
 void SourceManager::process(const std::string& filename, const std::shared_ptr<IStore>& store,
@@ -17,7 +17,7 @@ void SourceManager::process(const std::string& filename, const std::shared_ptr<I
     Tokenizer sourceTokenizer = Tokenizer(&input);
     auto tokens = sourceTokenizer.tokenize();
 
-    Parser sourceParser = Parser(tokens);
+    SourceParser sourceParser = SourceParser(tokens);
     sourceParser.parse();
     std::shared_ptr<ProgramNode> programRoot = sourceParser.getProgramNode();
 

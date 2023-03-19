@@ -3,27 +3,20 @@
 #include <utility>
 #include <queue>
 
-RelationshipExtractor::RelationshipExtractor(std::shared_ptr<IRelationshipStore> relationshipStore,
-                                             const std::shared_ptr<ReadStorage>& readStorage) {
+RelationshipExtractor::RelationshipExtractor(std::shared_ptr<IRelationshipStore> relationshipStore) {
     this->relationshipStore = std::move(relationshipStore);
-
-    procedureManager = readStorage->getProcedureManager();
-
-    callPManager = readStorage->getCallsPManager();
-    callsTManager = readStorage->getCallsTManager();
-
-    usesPManager = readStorage->getUsesPManager();
-    modifiesPManager = readStorage->getModifiesPManager();
 }
 
-void RelationshipExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
+void RelationshipExtractor::extractProgram(const std::shared_ptr<ProgramNode>& node) {
+    BaseExtractor::extractProgram(node);
+    relationshipStore->invokePreReverseRelationship();
+    postProgramExtractionLink();
+    relationshipStore->invokePostReverseRelationship();
+}
+
+void RelationshipExtractor::postProgramExtractionLink() {
     std::queue<std::string> procedureQueue;
     std::vector<std::string> topologicalSortedProcedures;
-
-    BaseExtractor::extractProgram(node);
-
-    relationshipStore->invokePreReverseRelationship();
-
     // Interlink ProceduresRelationships
     // Step 1: Toposort Procedures to get DAG (in a vector)
     // procedureUniqueCallCount tracks how many times this procedure calls another procedure uniquely.
@@ -31,43 +24,34 @@ void RelationshipExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
     // There must be at least 1 procedure that is not calling another procedure else cycle
 
     for (auto& noCallProcedure : procedureUniqueCallCount) {
-        if (noCallProcedure.second == 0) {
-            procedureQueue.push(noCallProcedure.first);
-        }
+        if (noCallProcedure.second == 0) procedureQueue.push(noCallProcedure.first);
     }
 
-    callPReversedRelationships = callPManager->getAllReversedRelationshipEntries();
+    callPReversedRelationships = relationshipStore->getCallsPReversedRelationship();
     while (!procedureQueue.empty()) {
         currProcedureName = procedureQueue.front();
         procedureQueue.pop();
         topologicalSortedProcedures.emplace_back(currProcedureName);
-        // Note: map::operator[] creates empty set and do not throw error, map::at will throw an error
 
+        // Note: map::operator[] creates empty set and do not throw error, map::at will throw an error
         for (auto &caller : callPReversedRelationships.operator[](currProcedureName)) {
-            if (procedureUniqueCallCount.at(caller) > 0) {
-                procedureUniqueCallCount.at(caller)--;
-            }
-            if (procedureUniqueCallCount.at(caller) == 0) {
-                procedureQueue.push(caller);
-            }
+            if (procedureUniqueCallCount.at(caller) > 0) procedureUniqueCallCount.at(caller)--;
+            if (procedureUniqueCallCount.at(caller) == 0) procedureQueue.push(caller);
         }
     }
-
     for (auto &procedureName : topologicalSortedProcedures) {
         interlinkRelationships(procedureName);
     }
-
-    for (auto& procedureName : procedureManager->getAllEntitiesEntries()) {
-        if (std::find(topologicalSortedProcedures.begin(), topologicalSortedProcedures.end(), procedureName) ==
-        topologicalSortedProcedures.end()) {
+    std::unordered_set<std::string> topologicalSortedProceduresMap;
+    topologicalSortedProceduresMap.insert(topologicalSortedProcedures.begin(), topologicalSortedProcedures.end());
+    for (auto& procedureName : relationshipStore->getProcedureEntities()) {
+        if (topologicalSortedProceduresMap.find(procedureName) == topologicalSortedProceduresMap.end())
             throw SourceExtractorException(RelationshipExtractorCyclicCallsExceptionMessage);
-        }
     }
-
-    relationshipStore->invokePostReverseRelationship();
 }
 
-void RelationshipExtractor::extractProcedure(std::shared_ptr<ProcedureNode> node) {
+
+void RelationshipExtractor::extractProcedure(const std::shared_ptr<ProcedureNode>& node) {
     parentIndexStack.clear();
     statementStack.clear();
     currProcedureName = node->procedureName;
@@ -77,13 +61,13 @@ void RelationshipExtractor::extractProcedure(std::shared_ptr<ProcedureNode> node
     BaseExtractor::extractProcedure(node);
 }
 
-void RelationshipExtractor::extractStmtList(std::shared_ptr<StmtListNode> node) {
+void RelationshipExtractor::extractStmtList(const std::shared_ptr<StmtListNode>& node) {
     followsStack.push_back(std::make_shared<std::vector<int>>());
     BaseExtractor::extractStmtList(node);
     followsStack.pop_back();
 }
 
-void RelationshipExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
+void RelationshipExtractor::extractStmt(const std::shared_ptr<StmtNode>& node) {
     BaseExtractor::extractStmt(node);
 
     // CFG
@@ -110,21 +94,16 @@ void RelationshipExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
 }
 
 void RelationshipExtractor::extractRead(std::shared_ptr<ReadNode> node) {
-    insertModifiesGroup(node);
+    insertModifiesSGroup(node);
 }
 
 void RelationshipExtractor::extractPrint(std::shared_ptr<PrintNode> node) {
-    insertUsesGroup(node);
+    insertUsesSGroup(node);
 }
 
 void RelationshipExtractor::extractAssign(std::shared_ptr<AssignNode> node) {
-    insertModifiesGroup(node);
-//    extractExpr(node->exprNode);
-    clearExprStack();
-    for (const auto& x : node->exprVariables) {
-        exprVariableList.emplace_back(x);
-    }
-    insertExprUsesGroup();
+    insertModifiesSGroup(node);
+    insertExprUsesSGroup(node->exprVariables);
 }
 
 void RelationshipExtractor::extractWhile(std::shared_ptr<WhileNode> node) {
@@ -156,33 +135,26 @@ void RelationshipExtractor::extractIf(std::shared_ptr<IfNode> node) {
     parentIndexStack.pop_back();
 }
 
-void RelationshipExtractor::extractExpr(std::shared_ptr<ExprNode> node) {
-    clearExprStack();
-    BaseExtractor::extractExpr(node);
-    insertExprUsesGroup();
-}
 
-void RelationshipExtractor::extractCondExpr(std::shared_ptr<CondExprNode> node) {
-    clearExprStack();
-    BaseExtractor::extractCondExpr(node);
-    insertExprUsesGroup();
+void RelationshipExtractor::extractCondExpr(const std::shared_ptr<CondExprNode>& node) {
+    insertExprUsesSGroup(node->exprVariables);
 }
 
 void RelationshipExtractor::extractCall(std::shared_ptr<CallNode> node) {
     if (currProcedureName == node->procedureName) /* Self call*/ {
         throw SourceExtractorException(RelationshipExtractorSelfCallsExceptionMessage);
-    } else if (!procedureManager->contains(node->procedureName)) /* Callee does not exits*/ {
+    } else if (!relationshipStore->procedureEntitiesContains(node->procedureName)) {
+        /* Callee does not exits*/
         throw SourceExtractorException(RelationshipExtractorNonExistentExceptionMessage);
     }
-    if (!callPManager->containsMap(currProcedureName, node->procedureName)) /* Track a procedure's call count */ {
+    if (!relationshipStore->callsPReadContains(currProcedureName, node->procedureName)) {
+        /* Track a procedure's call count */
         procedureUniqueCallCount[currProcedureName]++;
     }
 
     // PKB Insertion
     relationshipStore->insertCallsRelationship(node->stmtIndex, currProcedureName, node->procedureName);
 
-
-    // TODO(zt): Refactor below?
     // Create a unique unordered_set if it does not exist
     if (procedureCalledList.count(node->procedureName) <= 0) {
         procedureCalledList[node->procedureName] = std::make_unique<std::unordered_set<int>>();
@@ -198,7 +170,7 @@ void RelationshipExtractor::extractCall(std::shared_ptr<CallNode> node) {
     }
 }
 
-void RelationshipExtractor::insertExprUsesGroup() {
+void RelationshipExtractor::insertExprUsesSGroup(const std::unordered_set<std::string>& exprVariableList) {
     for (auto &variable : exprVariableList) {
         relationshipStore->insertUsesSRelationship(currentStmtNo, variable);
         for (int& parentIndex : parentIndexStack) {
@@ -208,7 +180,7 @@ void RelationshipExtractor::insertExprUsesGroup() {
     }
 }
 
-void RelationshipExtractor::insertUsesGroup(const std::shared_ptr<VariableNameNode>& node) {
+void RelationshipExtractor::insertUsesSGroup(const std::shared_ptr<VariableNameNode>& node) {
     relationshipStore->insertUsesSRelationship(node->stmtIndex, node->varName);
     relationshipStore->insertUsesPRelationship(currProcedureName, node->varName);
     for (int& parentIndex : parentIndexStack) {
@@ -216,7 +188,7 @@ void RelationshipExtractor::insertUsesGroup(const std::shared_ptr<VariableNameNo
     }
 }
 
-void RelationshipExtractor::insertModifiesGroup(const std::shared_ptr<VariableNameNode>& node) {
+void RelationshipExtractor::insertModifiesSGroup(const std::shared_ptr<VariableNameNode>& node) {
     relationshipStore->insertModifiesSRelationship(node->stmtIndex, node->varName);
     relationshipStore->insertModifiesPRelationship(currProcedureName, node->varName);
     for (int& parentIndex : parentIndexStack) {
@@ -243,31 +215,37 @@ void RelationshipExtractor::resetFlow(int stmtIndex) {
 void RelationshipExtractor::interlinkSRelationships(const std::string& procedureName) {
     for (auto &variableName : usesPRelationships.operator[](procedureName)) {
         if (procedureCalledList.count(procedureName) > 0) {
-            for (auto &statementIndex : *(procedureCalledList.at(procedureName))) {
-                relationshipStore->insertUsesSRelationship(statementIndex, variableName);
-            }
+            insertUsesPGroup(procedureName, variableName);
         }
     }
 
     for (auto &variableName : modifiesPRelationships.operator[](procedureName)) {
         if (procedureCalledList.count(procedureName) > 0) {
-            for (auto &statementIndex : *(procedureCalledList.at(procedureName))) {
-                relationshipStore->insertModifiesSRelationship(statementIndex, variableName);
-            }
+            insertModifiesPPGroup(procedureName, variableName);
         }
+    }
+}
+
+void RelationshipExtractor::insertUsesPGroup(const std::string &procedureName, const std::string& variableName) {
+    for (auto &statementIndex : *(procedureCalledList.at(procedureName))) {
+        relationshipStore->insertUsesSRelationship(statementIndex, variableName);
+    }
+}
+
+void RelationshipExtractor::insertModifiesPPGroup(const std::string &procedureName, const std::string& variableName) {
+    for (auto &statementIndex : *(procedureCalledList.at(procedureName))) {
+        relationshipStore->insertModifiesSRelationship(statementIndex, variableName);
     }
 }
 
 void RelationshipExtractor::interlinkPRelationships(const std::string& procedureName) {
     std::unordered_map<std::string, std::unordered_set<std::string>> callsTRelationships
-            = callsTManager->getAllRelationshipEntries();
+            = relationshipStore->getCallsTRelationship();
 
     for (auto &caller : callPReversedRelationships.operator[](procedureName)) {
         relationshipStore->insertCallsTRelationship(caller, procedureName);
         for (auto &callee : callsTRelationships.operator[](procedureName)) {
-            if (callee == caller) {
-                throw SourceExtractorException(RelationshipExtractorSelfCallsExceptionMessage);
-            }
+            if (callee == caller) throw SourceExtractorException(RelationshipExtractorSelfCallsExceptionMessage);
             relationshipStore->insertCallsTRelationship(caller, callee);
         }
         for (auto &variableName : usesPRelationships.operator[](procedureName)) {
@@ -280,8 +258,8 @@ void RelationshipExtractor::interlinkPRelationships(const std::string& procedure
 }
 
 void RelationshipExtractor::interlinkRelationships(const std::string &procedureName) {
-    modifiesPRelationships = modifiesPManager->getAllRelationshipEntries();
-    usesPRelationships = usesPManager->getAllRelationshipEntries();
+    modifiesPRelationships = relationshipStore->getModifiesPRelationship();
+    usesPRelationships = relationshipStore->getUsesPRelationship();
     interlinkSRelationships(procedureName);
     interlinkPRelationships(procedureName);
 }
