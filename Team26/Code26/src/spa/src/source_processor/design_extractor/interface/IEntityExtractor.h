@@ -4,6 +4,4 @@
 #include "source_processor/design_extractor/interface/IExtractor.h"
 
 class IEntityExtractor : public IStmtExtractor, public IExtractor {
- public:
-    virtual ~IEntityExtractor() = default;
 };

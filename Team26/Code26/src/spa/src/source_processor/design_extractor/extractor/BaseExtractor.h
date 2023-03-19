@@ -10,7 +10,7 @@
 #include "source_processor/design_extractor/interface/IExtractor.h"
 
 
-class BaseExtractor : public IExtractor {
+class BaseExtractor {
  protected:
     int currentStmtNo = -1;
 
@@ -23,6 +23,5 @@ class BaseExtractor : public IExtractor {
 
  public:
     BaseExtractor();
-
-    void extractProgram(const std::shared_ptr<ProgramNode>& node) override;
+    void extractProgram(const std::shared_ptr<ProgramNode>& node);
 };

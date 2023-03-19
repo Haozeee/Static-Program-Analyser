@@ -3,6 +3,4 @@
 #include "source_processor/design_extractor/interface/IExtractor.h"
 
 class IRelationshipExtractor : public IStmtExtractor, public IExtractor {
- public:
-    virtual ~IRelationshipExtractor() = default;
 };

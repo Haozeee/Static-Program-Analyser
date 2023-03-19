@@ -62,7 +62,6 @@ class RelationshipExtractor : public BaseExtractor, public IRelationshipExtracto
     void extractIf(std::shared_ptr<IfNode> node) override;
 
  public:
-    ~RelationshipExtractor() override = default;;
     explicit RelationshipExtractor(std::shared_ptr<IRelationshipStore> relationshipStore);
     void extractProgram(const std::shared_ptr<ProgramNode>& node) override;
 };
