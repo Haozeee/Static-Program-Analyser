@@ -27,6 +27,14 @@ class ShuntingYardParser {
                                             const std::shared_ptr<std::unordered_set<int>>& exprConstants);
 
  private:
+    static inline std::unordered_map<char, int> ranking = {
+            {'+', 1},
+            {'-', 1},
+            {'*', 2},
+            {'/', 2},
+            {'%', 2}
+    };
+
     static void parseDigit(std::string expr, int& i, bool& isPrevFactor,
                            std::stack<std::shared_ptr<ShuntNode>>& result);
     static void parseDigit(const std::shared_ptr<std::unordered_set<int>>& exprConstants,
@@ -40,8 +48,9 @@ class ShuntingYardParser {
                               std::stack<std::shared_ptr<ShuntNode>>& result);
 
     static void parseOperatorOrBracket(char c, std::stack<char>& opStack, bool& isPrevFactor,
-                                      std::stack<std::shared_ptr<ShuntNode>>& result,
-                                      std::unordered_map<char, int>& ranking);
+                                      std::stack<std::shared_ptr<ShuntNode>>& result);
 
     static void processOperator(std::stack<char>& opStack, std::stack<std::shared_ptr<ShuntNode>>& result);
+
+    static bool isMathOp(const char& value);
 };

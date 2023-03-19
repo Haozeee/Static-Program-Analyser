@@ -146,10 +146,11 @@ fs.readdir(resultDirPath, { withFileTypes: true }, async (err, resultDir) => {
 
       const dataInArr = await extractData(xmlData)
 
-      dataInArr.unshift(file.name)
+      dataInArr.unshift("--")
       dataInArr.unshift(`${postURL}/common/${file.name}--${commitSha}.xml`)
       dataInArr.unshift(currGroupHasFailure ? "Failed" : "Passed")
-      dataInArr.unshift("--")
+      dataInArr.unshift(file.name)
+
       mainSheet.push(dataInArr)
       currGroupHasFailure = false
       
