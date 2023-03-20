@@ -21,4 +21,3 @@ extern const char RelationshipExtractorCyclicCallsExceptionMessage[];
 extern const char RelationshipExtractorSelfCallsExceptionMessage[];
 extern const char RelationshipExtractorNonExistentExceptionMessage[];
 
-class SourceProcessorExceptionMessage {};

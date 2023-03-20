@@ -2,13 +2,13 @@
 #include <sstream>
 #include <vector>
 #include "catch.hpp"
-#include "source_processor/tokenizer/Tokenizer.h"
+#include "source_processor/tokenizer/SourceTokenizer.h"
 
 TEST_CASE("Test readSpecialChar") {
     SECTION("Invalid Special Char") {
         std::string inputString = "procedure procedure1 { \n x = @; }";
         std::istream* istream = new std::stringstream(inputString);
-        Tokenizer sourceTokenizer = Tokenizer(istream);
+        SourceTokenizer sourceTokenizer = SourceTokenizer(istream);
 
         REQUIRE_THROWS(sourceTokenizer.tokenize());
         delete istream;
@@ -17,7 +17,7 @@ TEST_CASE("Test readSpecialChar") {
     SECTION("Invalid Logical Op") {
         std::string inputString = "procedure procedure1 { \n >|; }";
         std::istream* istream = new std::stringstream(inputString);
-        Tokenizer sourceTokenizer = Tokenizer(istream);
+        SourceTokenizer sourceTokenizer = SourceTokenizer(istream);
 
         REQUIRE_THROWS(sourceTokenizer.tokenize());
         delete istream;
@@ -28,7 +28,7 @@ TEST_CASE("Test SourceTokenize") {
     SECTION("valid Source") {
         std::string inputString = "procedure procedure1 { x = 1 ; }";
         std::istream* istream = new std::stringstream(inputString);
-        Tokenizer sourceTokenizer = Tokenizer(istream);
+        SourceTokenizer sourceTokenizer = SourceTokenizer(istream);
 
         auto tokens = sourceTokenizer.tokenize();
         REQUIRE(tokens[0]->getValue() == "procedure");
@@ -45,7 +45,7 @@ TEST_CASE("Test SourceTokenize") {
     SECTION("invalid Source") {
         std::string inputString = "procedureprocedure1{x=1;}";
         std::istream* istream = new std::stringstream(inputString);
-        Tokenizer sourceTokenizer = Tokenizer(istream);
+        SourceTokenizer sourceTokenizer = SourceTokenizer(istream);
 
         auto tokens = sourceTokenizer.tokenize();
         REQUIRE(tokens[0]->getValue() == "procedureprocedure1");

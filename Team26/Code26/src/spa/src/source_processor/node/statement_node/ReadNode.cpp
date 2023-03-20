@@ -1,4 +1,3 @@
-#include <memory>
 #include <utility>
 #include "ReadNode.h"
 #include "source_processor/design_extractor/interface/statement_extractor/IStmtExtractor.h"

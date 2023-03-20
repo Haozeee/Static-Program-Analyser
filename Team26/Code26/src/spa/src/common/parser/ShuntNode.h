@@ -23,9 +23,9 @@ class ShuntNode {
 
     explicit ShuntNode(std::string value) : value(std::move(value)), left(nullptr), right(nullptr) {}
 
-    static std::vector<std::string> getInOrderTraversal(std::shared_ptr<ShuntNode> node);
+    static std::vector<std::string> getInOrderTraversal(const std::shared_ptr<ShuntNode>& node);
 
-    static std::vector<std::string> getPreOrderTraversal(std::shared_ptr<ShuntNode> node);
+    static std::vector<std::string> getPreOrderTraversal(const std::shared_ptr<ShuntNode>& node);
 
     /**
      * Given another node, check if the tree rooted at that node is a subtree of the current tree.

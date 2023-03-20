@@ -1,7 +1,7 @@
 #include "ShuntNode.h"
 #include <algorithm>
 
-std::vector<std::string> ShuntNode::getPreOrderTraversal(std::shared_ptr<ShuntNode> node) {
+std::vector<std::string> ShuntNode::getPreOrderTraversal(const std::shared_ptr<ShuntNode>& node) {
     std::vector<std::string> res;
     if (node == nullptr) {
         return res;
@@ -14,7 +14,7 @@ std::vector<std::string> ShuntNode::getPreOrderTraversal(std::shared_ptr<ShuntNo
     return res;
 }
 
-std::vector<std::string> ShuntNode::getInOrderTraversal(std::shared_ptr<ShuntNode> node) {
+std::vector<std::string> ShuntNode::getInOrderTraversal(const std::shared_ptr<ShuntNode>& node) {
     std::vector<std::string> res;
     if (node == nullptr) {
         return res;
