@@ -39,8 +39,8 @@ TEST_CASE("Test insert entity for all managers") {
 
     std::unique_ptr<StorageManager> storageManager = std::make_unique<StorageManager>();
     SourceManager sourceManager;
-    std::shared_ptr<IStore> store = std::make_shared<Store>(storageManager->getWriteStorage());
-    sourceManager.process(testFileName, store, storageManager->getReadStorage());
+    std::shared_ptr<IStore> store = std::make_shared<Store>(storageManager->getWriteStorage(), storageManager->getReadStorage());
+    sourceManager.process(testFileName, store);
     auto readStorage = storageManager->getReadStorage();
 
     // test AssignManager

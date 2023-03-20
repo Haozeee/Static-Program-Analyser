@@ -1,6 +1,7 @@
 #include "ShuntNode.h"
+#include <algorithm>
 
-std::vector<std::string> ShuntNode::getPreOrderTraversal(std::shared_ptr<ShuntNode> node) {
+std::vector<std::string> ShuntNode::getPreOrderTraversal(const std::shared_ptr<ShuntNode>& node) {
     std::vector<std::string> res;
     if (node == nullptr) {
         return res;
@@ -13,7 +14,7 @@ std::vector<std::string> ShuntNode::getPreOrderTraversal(std::shared_ptr<ShuntNo
     return res;
 }
 
-std::vector<std::string> ShuntNode::getInOrderTraversal(std::shared_ptr<ShuntNode> node) {
+std::vector<std::string> ShuntNode::getInOrderTraversal(const std::shared_ptr<ShuntNode>& node) {
     std::vector<std::string> res;
     if (node == nullptr) {
         return res;
@@ -27,20 +28,16 @@ std::vector<std::string> ShuntNode::getInOrderTraversal(std::shared_ptr<ShuntNod
 }
 
 bool ShuntNode::isSubVector(std::vector<std::string> stringVector, std::vector<std::string> subVector) {
-    int i = 0;
-    int j = 0;
-    while (i < stringVector.size() && j < subVector.size()) {
-        if (stringVector[i] == subVector[j]) {
-            j++;
-        } else {
-            j = 0;
-            if (stringVector[i] == subVector[j]) {
-                j++;
-            }
-        }
-        i++;
+    if (subVector.size() > stringVector.size()) {
+        return false;
     }
-    return j == subVector.size();
+    for (int i = 0; i <= stringVector.size() - subVector.size(); i++) {
+        // i is a possible starting point of a subarray
+        if (std::equal(subVector.begin(), subVector.end(), stringVector.begin() + i)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool ShuntNode::isSubTree(const std::shared_ptr<ShuntNode>& fullTree, const std::shared_ptr<ShuntNode>& partialTree) {

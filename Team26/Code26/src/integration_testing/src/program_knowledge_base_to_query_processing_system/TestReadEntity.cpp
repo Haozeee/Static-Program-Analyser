@@ -71,87 +71,87 @@ TEST_CASE("Test reading entity for all manager") {
     whileManager->insertEntity(7);
 
     // test Assign
-    std::list<std::string> q1_results;
+    std::list<std::string> q1Results;
     std::string q1 = "assign a; Select a"; // to be declared
-    queryManager.process(q1, q1_results, storageManager->getReadStorage());
+    queryManager.process(q1, q1Results, storageManager->getReadStorage());
 
-    std::list<std::string> a1_results = {"1", "4", "5", "6", "9"};
-    q1_results.sort(compare_int_string);
-    REQUIRE(q1_results == a1_results);
+    std::list<std::string> a1Results = {"1", "4", "5", "6", "9"};
+    q1Results.sort(compare_int_string);
+    REQUIRE(q1Results == a1Results);
 
     // test Call
-    std::list<std::string> q2_results;
+    std::list<std::string> q2Results;
     std::string q2 = "call cl; Select cl"; // to be declared
-    queryManager.process(q2, q2_results, storageManager->getReadStorage());
+    queryManager.process(q2, q2Results, storageManager->getReadStorage());
 
-    std::list<std::string> a2_results = {"2"};
-    REQUIRE(q2_results == a2_results);
+    std::list<std::string> a2Results = {"2"};
+    REQUIRE(q2Results == a2Results);
 
     // test Constant
-    std::list<std::string> q3_results;
+    std::list<std::string> q3Results;
     std::string q3 = "constant c; Select c"; // to be declared
-    queryManager.process(q3, q3_results, storageManager->getReadStorage());
+    queryManager.process(q3, q3Results, storageManager->getReadStorage());
 
-    std::list<std::string> a3_results = {"0", "1", "3", "10"};
-    q3_results.sort(compare_int_string);
-    REQUIRE(q3_results == a3_results);
+    std::list<std::string> a3Results = {"0", "1", "3", "10"};
+    q3Results.sort(compare_int_string);
+    REQUIRE(q3Results == a3Results);
 
     // test If
-    std::list<std::string> q4_results;
+    std::list<std::string> q4Results;
     std::string q4 = "if ifs; Select ifs"; // to be declared
-    queryManager.process(q4, q4_results, storageManager->getReadStorage());
+    queryManager.process(q4, q4Results, storageManager->getReadStorage());
 
-    std::list<std::string> a4_results = {"3"};
-    REQUIRE(q4_results == a4_results);
+    std::list<std::string> a4Results = {"3"};
+    REQUIRE(q4Results == a4Results);
 
     // test Print
-    std::list<std::string> q5_results;
+    std::list<std::string> q5Results;
     std::string q5 = "print pn; Select pn"; // to be declared
-    queryManager.process(q5, q5_results, storageManager->getReadStorage());
+    queryManager.process(q5, q5Results, storageManager->getReadStorage());
 
-    std::list<std::string> a5_results = {"8"};
-    REQUIRE(q5_results == a5_results);
+    std::list<std::string> a5Results = {"8"};
+    REQUIRE(q5Results == a5Results);
 
     // test Procedure
-    std::list<std::string> q6_results;
+    std::list<std::string> q6Results;
     std::string q6 = "procedure p; Select p"; // to be declared
-    queryManager.process(q6, q6_results, storageManager->getReadStorage());
+    queryManager.process(q6, q6Results, storageManager->getReadStorage());
 
-    std::list<std::string> a6_results = {"test1", "test2"};
-    REQUIRE(q6_results == a6_results);
+    std::list<std::string> a6Results = {"test1", "test2"};
+    REQUIRE(q6Results == a6Results);
 
     // test Read
-    std::list<std::string> q7_results;
+    std::list<std::string> q7Results;
     std::string q7 = "read r; Select r"; // to be declared
-    queryManager.process(q7, q7_results, storageManager->getReadStorage());
+    queryManager.process(q7, q7Results, storageManager->getReadStorage());
 
-    std::list<std::string> a7_results = {"10", "11"};
-    q7_results.sort(compare_int_string);
-    REQUIRE(q7_results == a7_results);
+    std::list<std::string> a7Results = {"10", "11"};
+    q7Results.sort(compare_int_string);
+    REQUIRE(q7Results == a7Results);
 
     // test Stmt
-    std::list<std::string> q8_results;
+    std::list<std::string> q8Results;
     std::string q8 = "stmt s; Select s"; // to be declared
-    queryManager.process(q8, q8_results, storageManager->getReadStorage());
+    queryManager.process(q8, q8Results, storageManager->getReadStorage());
 
-    std::list<std::string> a8_results = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"};
-    q8_results.sort(compare_int_string);
-    REQUIRE(q8_results == a8_results);
+    std::list<std::string> a8Results = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"};
+    q8Results.sort(compare_int_string);
+    REQUIRE(q8Results == a8Results);
 
     // test Variable
-    std::list<std::string> q9_results;
+    std::list<std::string> q9Results;
     std::string q9 = "variable v; Select v"; // to be declared
-    queryManager.process(q9, q9_results, storageManager->getReadStorage());
+    queryManager.process(q9, q9Results, storageManager->getReadStorage());
 
-    std::list<std::string> a9_results = {"a", "b", "x", "y"};
-    q9_results.sort();
-    REQUIRE(q9_results == a9_results);
+    std::list<std::string> a9Results = {"a", "b", "x", "y"};
+    q9Results.sort();
+    REQUIRE(q9Results == a9Results);
 
     // test While
-    std::list<std::string> q10_results;
+    std::list<std::string> q10Results;
     std::string q10 = "while w; Select w"; // to be declared
-    queryManager.process(q10, q10_results, storageManager->getReadStorage());
+    queryManager.process(q10, q10Results, storageManager->getReadStorage());
 
-    std::list<std::string> a10_results = {"7"};
-    REQUIRE(q10_results == a10_results);
+    std::list<std::string> a10Results = {"7"};
+    REQUIRE(q10Results == a10Results);
 }

@@ -154,14 +154,6 @@ class StorageUtil {
         return callsTManager;
     }
 
-    std::shared_ptr<IfCondManager> getIfCondManager() {
-        return ifCondManager;
-    }
-
-    std::shared_ptr<WhileCondManager> getWhileCondManager() {
-        return whileCondManager;
-    }
-
     std::shared_ptr<AssignManager> getAssignManager() {
         return assignManager;
     }
@@ -216,5 +208,13 @@ class StorageUtil {
 
     std::shared_ptr<AssignPatternManager> getAssignPatternManager() {
         return assignPatternManager;
+    }
+
+    std::shared_ptr<IfCondManager> getIfCondManager() {
+        return ifCondManager;
+    }
+
+    std::shared_ptr<WhileCondManager> getWhileCondManager() {
+        return whileCondManager;
     }
 };

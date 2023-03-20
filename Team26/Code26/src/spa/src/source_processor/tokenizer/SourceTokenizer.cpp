@@ -1,8 +1,4 @@
-#include "Tokenizer.h"
-#include <string>
-#include <unordered_set>
-#include <sstream>
-#include <iostream>
+#include "SourceTokenizer.h"
 #include "source_processor/exception/SourceException.h"
 #include "source_processor/exception/SourceProcessorExceptionMessage.h"
 #include "common/tokenizer/token/EndOfFileToken.h"
@@ -10,7 +6,7 @@
 #include "common/tokenizer/token/IntegerToken.h"
 #include "common/tokenizer/token/SpecialCharToken.h"
 
-Tokenizer::Tokenizer(std::istream* stream) : AbstractTokenizer(stream) {}
+SourceTokenizer::SourceTokenizer(std::istream* stream) : AbstractTokenizer(stream) {}
 
 std::unordered_set<std::string> specialChar({"{", "}", ";", "(", ")", "=", ">", "<", "+", "-", "*", "/", "%", "!",
                                              "&", "|"});
@@ -18,20 +14,20 @@ std::unordered_set<std::string> validLogicalOps({"&&", "||", ">=", "<=", "==", "
 std::unordered_set<std::string> firstOp({"&", "|", ">", "<", "=", "!"});
 std::unordered_set<char> secondOp({'&', '|', '='});
 
-bool Tokenizer::isValidSpecialChar() {
+bool SourceTokenizer::isValidSpecialChar() {
     return (specialChar.find(getCurrentToken()) != specialChar.end());
 }
 
-bool Tokenizer::isPossibleLogicalOp() {
+bool SourceTokenizer::isPossibleLogicalOp() {
     return (firstOp.find(getCurrentToken()) != firstOp.end() && secondOp.find(peekChar()) != secondOp.end());
 }
 
-bool Tokenizer::isValidLogicalOp() {
+bool SourceTokenizer::isValidLogicalOp() {
     currentToken += nextChar();
     return validLogicalOps.find(getCurrentToken()) != validLogicalOps.end();
 }
 
-void Tokenizer::readSpecialChar() {
+void SourceTokenizer::readSpecialChar() {
     if (isValidSpecialChar()) /* valid special char */ {
         if (isPossibleLogicalOp() && !isValidLogicalOp()) /* invalid logical operation */ {
             throw SourceTokenizerException(TokenizerInvalidLogicalOpExceptionMessage);
@@ -41,11 +37,9 @@ void Tokenizer::readSpecialChar() {
     }
 }
 
-std::vector<std::shared_ptr<Token>> Tokenizer::tokenize() {
-    char c = 0;
-
+std::vector<std::shared_ptr<Token>> SourceTokenizer::tokenize() {
     while (!istream->eof()) {
-        c = nextChar();
+        char c = nextChar();
 
         if (c == EOF) {
             addToken(std::make_shared<EndOfFileToken>());
@@ -54,6 +48,7 @@ std::vector<std::shared_ptr<Token>> Tokenizer::tokenize() {
 
         currentToken += c;
         if (isspace(c)) {
+            // do nothing
         } else if (isalpha(c)) {
             readName();
             addToken(std::make_shared<NameToken>(getCurrentToken()));

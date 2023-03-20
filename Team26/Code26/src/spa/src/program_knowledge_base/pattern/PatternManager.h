@@ -6,7 +6,6 @@
 #include <unordered_map>
 #include <vector>
 #include <iterator>
-
 #include "IReadPatternManager.h"
 #include "IWritePatternManager.h"
 #include "common/parser/ShuntNode.h"
@@ -14,79 +13,86 @@
 template <typename T, typename U>
 class PatternManager: public IReadPatternManager<T, U>, public IWritePatternManager<T, U> {
  private:
-    std::vector<T> lhs_vector;
-    std::vector<U> rhs_vector;
-    std::unordered_map<int, int> index_stmt_map;
-    std::unordered_map<int, int> reversed_index_stmt_map;
+    std::vector<T> lhsVector;
+    std::vector<U> rhsVector;
+    std::unordered_map<int, int> indexStmtMap;
+    std::unordered_map<int, int> reversedIndexStmtMap;
 
  public:
     bool isEmptyLhsVector() override {
-        return lhs_vector.empty();
+        return lhsVector.empty();
     }
 
     bool isEmptyRhsVector() override {
-        return rhs_vector.empty();
+        return rhsVector.empty();
     }
 
     bool isEmptyIndexStmtMap() override {
-        return index_stmt_map.empty();
+        return indexStmtMap.empty();
     }
 
     bool isEmptyReversedIndexStmtMap() override {
-        return reversed_index_stmt_map.empty();
+        return reversedIndexStmtMap.empty();
     }
 
     bool containsLhsVector(T left) override {
-        auto it = std::find(lhs_vector.begin(), lhs_vector.end(), left);
-        if (it != lhs_vector.end()) {
-            return true;
+        bool flag = false;
+        auto it = std::find(lhsVector.begin(), lhsVector.end(), left);
+        if (it != lhsVector.end()) {
+            flag = true;
         }
-        return false;
+        return flag;
     }
 
     bool containsRhsVector(U right) override {
-        return std::any_of(rhs_vector.begin(), rhs_vector.end(),
+        return std::any_of(rhsVector.begin(), rhsVector.end(),
                            [&](const auto& node) { return *right == *node; });
     }
 
-    bool containsIndexStmtMap(int index, int stmt_no) override {
-        auto key = index_stmt_map.find(index);
-        if (key != index_stmt_map.end()) {
-            return key->second == stmt_no;
+    bool containsIndexStmtMap(int index, int stmtNo) override {
+        bool flag = false;
+        auto key = indexStmtMap.find(index);
+        if (key != indexStmtMap.end()) {
+            flag = key->second == stmtNo;
         }
-        return false;
+        return flag;
     }
 
-    bool containsReversedIndexStmtMap(int stmt_no, int index) override {
-        auto key = reversed_index_stmt_map.find(stmt_no);
-        if (key != reversed_index_stmt_map.end()) {
-            return key->second == index;
+    bool containsReversedIndexStmtMap(int stmtNo, int index) override {
+        bool flag = false;
+        auto key = reversedIndexStmtMap.find(stmtNo);
+        if (key != reversedIndexStmtMap.end()) {
+            flag = key->second == index;
         }
-        return false;
+        return flag;
     }
 
     std::unique_ptr<std::vector<T>> getAllLhsPatternEntries() override {
-        return std::make_unique<std::vector<std::string>>(lhs_vector);
+        return std::make_unique<std::vector<std::string>>(lhsVector);
     }
 
     std::unique_ptr<std::vector<U>> getAllRhsPatternEntries() override {
-        return std::make_unique<std::vector<U>>(rhs_vector);
+        return std::make_unique<std::vector<U>>(rhsVector);
     }
 
     std::unordered_map<int, int> getAllPatternEntries() override {
-        return index_stmt_map;
+        return indexStmtMap;
     }
 
     std::unordered_map<int, int> getAllReversedPatternEntries() override {
-        return reversed_index_stmt_map;
+        return reversedIndexStmtMap;
     }
 
-    bool insertPattern(int stmt_no, T left, U right) override {
-        int index = static_cast<int>(lhs_vector.size());
-        lhs_vector.push_back(left);
-        rhs_vector.push_back(right);
-        auto x = index_stmt_map.insert({index, stmt_no});
-        auto y = reversed_index_stmt_map.insert({stmt_no, index});
-        return x.second && y.second;
+    bool insertPattern(int stmtNo, T left, U right) override {
+        int index = static_cast<int>(lhsVector.size());
+        lhsVector.push_back(left);
+        rhsVector.push_back(right);
+
+        auto insertedIndexStmtMap = indexStmtMap.insert({index, stmtNo});
+        bool flag1 = insertedIndexStmtMap.second;
+        auto insertedReversedIndexStmtMap = reversedIndexStmtMap.insert({stmtNo, index});
+        bool flag2 = insertedReversedIndexStmtMap.second;
+
+        return flag1 && flag2;
     }
 };

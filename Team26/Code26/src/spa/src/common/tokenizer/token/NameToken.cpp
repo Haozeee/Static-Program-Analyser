@@ -1,3 +1,5 @@
 #include "NameToken.h"
 
-NameToken::NameToken(std::string value) : Token(TokenType::TOKEN_NAME, value) {}
+#include <utility>
+
+NameToken::NameToken(std::string value) : Token(TokenType::TOKEN_NAME, std::move(value)) {}

@@ -2,7 +2,7 @@
 
 BaseExtractor::BaseExtractor() = default;
 
-void BaseExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
+void BaseExtractor::extractProgram(const std::shared_ptr<ProgramNode>& node) {
     if (node->procedureList.empty()) {
         throw SourceExtractorException(BaseExtractorEmptyProcedureListExceptionMessage);
     }
@@ -12,11 +12,11 @@ void BaseExtractor::extractProgram(std::shared_ptr<ProgramNode> node) {
     }
 }
 
-void BaseExtractor::extractProcedure(std::shared_ptr<ProcedureNode> node) {
+void BaseExtractor::extractProcedure(const std::shared_ptr<ProcedureNode>& node) {
     extractStmtList(node->stmtListNode);
 }
 
-void BaseExtractor::extractStmtList(std::shared_ptr<StmtListNode> node) {
+void BaseExtractor::extractStmtList(const std::shared_ptr<StmtListNode>& node) {
     if (node->stmtList.empty()) {
         throw SourceExtractorException(BaseExtractorEmptyStatementListExceptionMessage);
     }
@@ -26,34 +26,7 @@ void BaseExtractor::extractStmtList(std::shared_ptr<StmtListNode> node) {
     }
 }
 
-void BaseExtractor::extractStmt(std::shared_ptr<StmtNode> node) {
+void BaseExtractor::extractStmt(const std::shared_ptr<StmtNode>& node) {
     currentStmtNo = node->stmtIndex;
 }
 
-void BaseExtractor::extractExpr(std::shared_ptr<ExprNode> node) {
-    if (node->isConstant()) {
-        exprIntegerList.emplace_back(node->getConstant().value());
-    } else if (node->isVariable()) {
-        exprVariableList.emplace_back(node->getVariable().value());
-    } else {
-        BaseExtractor::extractExpr(node->returnNodes()->first);
-        BaseExtractor::extractExpr(node->returnNodes()->second);
-    }
-}
-
-void BaseExtractor::extractCondExpr(std::shared_ptr<CondExprNode> node) {
-    if (node->isRelExpr()) {
-        BaseExtractor::extractExpr(node->returnRelExprNodes()->first);
-        BaseExtractor::extractExpr(node->returnRelExprNodes()->second);
-    } else if (node->isUnaryCondExpr()) {
-        BaseExtractor::extractCondExpr(node->returnNodes()->front());
-    } else {
-        BaseExtractor::extractCondExpr(node->returnNodes()->at(0));
-        BaseExtractor::extractCondExpr(node->returnNodes()->at(1));
-    }
-}
-
-void BaseExtractor::clearExprStack() {
-    exprVariableList.clear();
-    exprIntegerList.clear();
-}

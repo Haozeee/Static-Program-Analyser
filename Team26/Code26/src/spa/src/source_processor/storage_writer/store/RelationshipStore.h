@@ -2,6 +2,8 @@
 
 #include <memory>
 #include <string>
+#include <unordered_set>
+#include <unordered_map>
 #include "source_processor/storage_writer/interface/IRelationshipStore.h"
 #include "program_knowledge_base/StorageManager.h"
 
@@ -21,8 +23,19 @@ class RelationshipStore : public IRelationshipStore {
     std::shared_ptr<IWriteRelationshipManager<std::string, std::string>> callPManager;
     std::shared_ptr<IWriteRelationshipManager<std::string, std::string>> callsTManager;
 
+    std::shared_ptr<ReadStorage> readStorage;
+
  public:
-    explicit RelationshipStore(std::shared_ptr<WriteStorage> storage);
+    explicit RelationshipStore(const std::shared_ptr<WriteStorage>& writeStorage,
+                               const std::shared_ptr<ReadStorage>& readStorage);
+
+    std::unordered_set<std::string> getProcedureEntities() override;
+    std::unordered_map<std::string, std::unordered_set<std::string>> getCallsPReversedRelationship() override;
+    std::unordered_map<std::string, std::unordered_set<std::string>> getCallsTRelationship() override;
+    std::unordered_map<std::string, std::unordered_set<std::string>> getModifiesPRelationship() override;
+    std::unordered_map<std::string, std::unordered_set<std::string>> getUsesPRelationship() override;
+    bool callsPReadContains(std::string procedureName1, std::string procedureName2) override;
+    bool procedureEntitiesContains(std::string procedureName) override;
 
     void insertFollowsRelationship(const int &previousStmtNo, const int &currentStmtNo) override;
     void insertParentsRelationship(const int &parentStmtNo, const int &childStmtNo) override;

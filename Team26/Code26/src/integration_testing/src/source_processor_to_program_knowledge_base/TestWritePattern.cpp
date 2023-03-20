@@ -28,12 +28,12 @@ TEST_CASE("Test insert pattern") {
 
     std::unique_ptr<StorageManager> storageManager = std::make_unique<StorageManager>();
     SourceManager sourceManager;
-    std::shared_ptr<IStore> store = std::make_shared<Store>(storageManager->getWriteStorage());
-    sourceManager.process(testFileName, store, storageManager->getReadStorage());
+    std::shared_ptr<IStore> store = std::make_shared<Store>(storageManager->getWriteStorage(), storageManager->getReadStorage());
+    sourceManager.process(testFileName, store);
     auto readStorage = storageManager->getReadStorage();
     auto assignPatternManager = readStorage->getAssignPatternManager();
 
-    std::vector<std::string> lhs_vector = {"x", "y", "z", "x"};
+    std::vector<std::string> lhsVector = {"x", "y", "z", "x"};
 
     auto node1 = ShuntingYardParser::parse("5");
     auto node2 = ShuntingYardParser::parse("x*3");
@@ -41,13 +41,13 @@ TEST_CASE("Test insert pattern") {
     auto node4 = ShuntingYardParser::parse("z");
     std::vector<std::shared_ptr<ShuntNode>> rhs_vector = {node1, node2, node3, node4};
 
-    std::unordered_map<int, int> index_stmt_map = {{0, 1}, {1, 2}, {2, 4}, {3, 5}};
-    std::unordered_map<int, int> reversed_index_stmt_map = {{1, 0}, {2, 1}, {4, 2}, {5, 3}};
+    std::unordered_map<int, int> indexStmtMap = {{0, 1}, {1, 2}, {2, 4}, {3, 5}};
+    std::unordered_map<int, int> reversedIndexStmtMap = {{1, 0}, {2, 1}, {4, 2}, {5, 3}};
 
     REQUIRE(assignPatternManager->containsLhsVector("x"));
     REQUIRE(assignPatternManager->containsLhsVector("y"));
     REQUIRE(assignPatternManager->containsLhsVector("z"));
-    REQUIRE(*(assignPatternManager->getAllLhsPatternEntries()) == lhs_vector);
+    REQUIRE(*(assignPatternManager->getAllLhsPatternEntries()) == lhsVector);
 
     REQUIRE(assignPatternManager->containsRhsVector(node1));
     REQUIRE(assignPatternManager->containsRhsVector(node2));
@@ -65,13 +65,13 @@ TEST_CASE("Test insert pattern") {
     REQUIRE(assignPatternManager->containsIndexStmtMap(1, 2));
     REQUIRE(assignPatternManager->containsIndexStmtMap(2, 4));
     REQUIRE(assignPatternManager->containsIndexStmtMap(3, 5));
-    REQUIRE(assignPatternManager->getAllPatternEntries() == index_stmt_map);
+    REQUIRE(assignPatternManager->getAllPatternEntries() == indexStmtMap);
 
     REQUIRE(assignPatternManager->containsReversedIndexStmtMap(1, 0));
     REQUIRE(assignPatternManager->containsReversedIndexStmtMap(2, 1));
     REQUIRE(assignPatternManager->containsReversedIndexStmtMap(4, 2));
     REQUIRE(assignPatternManager->containsReversedIndexStmtMap(5, 3));
-    REQUIRE(assignPatternManager->getAllReversedPatternEntries() == reversed_index_stmt_map);
+    REQUIRE(assignPatternManager->getAllReversedPatternEntries() == reversedIndexStmtMap);
 
     std::filesystem::remove(testFileName);
 }

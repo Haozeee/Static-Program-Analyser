@@ -234,148 +234,148 @@ TEST_CASE("Test reading relationships for all managers") {
     whileCondManager->insertRelationship(8, "y");
 
     // test Follows
-    std::list<std::string> q1a_results;
+    std::list<std::string> q1aResults;
     std::string q1a = "stmt s; Select s such that Follows(1, s)"; 
-    queryManager.process(q1a, q1a_results, storageManager->getReadStorage());
+    queryManager.process(q1a, q1aResults, storageManager->getReadStorage());
 
-    std::list<std::string> a1a_results = {"2"};
-    REQUIRE(q1a_results == a1a_results);
+    std::list<std::string> a1aResults = {"2"};
+    REQUIRE(q1aResults == a1aResults);
 
-    std::list<std::string> q1b_results;
+    std::list<std::string> q1bResults;
     std::string q1b = "stmt s; Select s such that Follows(1, 2)"; 
-    queryManager.process(q1b, q1b_results, storageManager->getReadStorage());
+    queryManager.process(q1b, q1bResults, storageManager->getReadStorage());
 
-    std::list<std::string> a1b_results = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"};
-    q1b_results.sort(compare_int_string);
-    REQUIRE(q1b_results == a1b_results);
+    std::list<std::string> a1bResults = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"};
+    q1bResults.sort(compare_int_string);
+    REQUIRE(q1bResults == a1bResults);
 
-    std::list<std::string> q1c_results;
+    std::list<std::string> q1cResults;
     std::string q1c = "stmt s; Select s such that Follows(2, 1)";
-    queryManager.process(q1c, q1c_results, storageManager->getReadStorage());
+    queryManager.process(q1c, q1cResults, storageManager->getReadStorage());
 
-    std::list<std::string> a1c_results = {};
-    REQUIRE(q1c_results == a1c_results);
+    std::list<std::string> a1cResults = {};
+    REQUIRE(q1cResults == a1cResults);
     
     // test FollowsT
-    std::list<std::string> q2a_results;
+    std::list<std::string> q2aResults;
     std::string q2a = "stmt s; Select s such that Follows*(1, s)";
-    queryManager.process(q2a, q2a_results, storageManager->getReadStorage());
+    queryManager.process(q2a, q2aResults, storageManager->getReadStorage());
 
-    std::list<std::string> a2a_results = {"2", "3", "7", "8", "14"};
-    q2a_results.sort(compare_int_string);
-    REQUIRE(q2a_results == a2a_results);
+    std::list<std::string> a2aResults = {"2", "3", "7", "8", "14"};
+    q2aResults.sort(compare_int_string);
+    REQUIRE(q2aResults == a2aResults);
 
-    std::list<std::string> q2b_results;
+    std::list<std::string> q2bResults;
     std::string q2b = "stmt s; Select s such that Follows*(s, 8)";
-    queryManager.process(q2b, q2b_results, storageManager->getReadStorage());
+    queryManager.process(q2b, q2bResults, storageManager->getReadStorage());
 
-    std::list<std::string> a2b_results = {"1", "2", "3", "7"};
-    q2b_results.sort(compare_int_string);
-    REQUIRE(q2b_results == a2b_results);
+    std::list<std::string> a2bResults = {"1", "2", "3", "7"};
+    q2bResults.sort(compare_int_string);
+    REQUIRE(q2bResults == a2bResults);
 
     // test Modifies
-    std::list<std::string> q3a_results;
+    std::list<std::string> q3aResults;
     std::string q3a = "stmt s; Select s such that Modifies(s, \"x\")";
-    queryManager.process(q3a, q3a_results, storageManager->getReadStorage());
+    queryManager.process(q3a, q3aResults, storageManager->getReadStorage());
 
-    std::list<std::string> a3a_results = {"2", "3", "4", "6", "8", "9", "11"};
-    q3a_results.sort(compare_int_string);
-    REQUIRE(q3a_results == a3a_results);
+    std::list<std::string> a3aResults = {"2", "3", "4", "6", "8", "9", "11"};
+    q3aResults.sort(compare_int_string);
+    REQUIRE(q3aResults == a3aResults);
 
-    std::list<std::string> q3b_results;
+    std::list<std::string> q3bResults;
     std::string q3b = "variable v; Select v such that Modifies(8, v)";
-    queryManager.process(q3b, q3b_results, storageManager->getReadStorage());
+    queryManager.process(q3b, q3bResults, storageManager->getReadStorage());
 
-    std::list<std::string> a3b_results = {"x", "y"};
-    q3b_results.sort();
-    REQUIRE(q3b_results == a3b_results);
+    std::list<std::string> a3bResults = {"x", "y"};
+    q3bResults.sort();
+    REQUIRE(q3bResults == a3bResults);
 
-    std::list<std::string> q3c_results;
+    std::list<std::string> q3cResults;
     std::string q3c = "assign a; variable v; Select a such that Modifies(a, v)";
-    queryManager.process(q3c, q3c_results, storageManager->getReadStorage());
+    queryManager.process(q3c, q3cResults, storageManager->getReadStorage());
 
-    std::list<std::string> a3c_results = {"2", "4", "6", "7", "11", "13", "14"};
-    q3c_results.sort(compare_int_string);
-    REQUIRE(q3c_results == a3c_results);
+    std::list<std::string> a3cResults = {"2", "4", "6", "7", "11", "13", "14"};
+    q3cResults.sort(compare_int_string);
+    REQUIRE(q3cResults == a3cResults);
 
     // test Parent
-    std::list<std::string> q4a_results;
+    std::list<std::string> q4aResults;
     std::string q4a = "stmt s; Select s such that Parent(8, s)";
-    queryManager.process(q4a, q4a_results, storageManager->getReadStorage());
+    queryManager.process(q4a, q4aResults, storageManager->getReadStorage());
 
-    std::list<std::string> a4a_results = {"9", "13"};
-    q4a_results.sort(compare_int_string);
-    REQUIRE(q4a_results == a4a_results);
+    std::list<std::string> a4aResults = {"9", "13"};
+    q4aResults.sort(compare_int_string);
+    REQUIRE(q4aResults == a4aResults);
 
-    std::list<std::string> q4b_results;
+    std::list<std::string> q4bResults;
     std::string q4b = "stmt s; Select s such that Parent(s, 3)";
-    queryManager.process(q4b, q4b_results, storageManager->getReadStorage());
+    queryManager.process(q4b, q4bResults, storageManager->getReadStorage());
 
-    std::list<std::string> a4b_results = {};
-    REQUIRE(q4b_results == a4b_results);
+    std::list<std::string> a4bResults = {};
+    REQUIRE(q4bResults == a4bResults);
 
     // test ParentT
-    std::list<std::string> q5a_results;
+    std::list<std::string> q5aResults;
     std::string q5a = "stmt s; Select s such that Parent*(8, s)";
-    queryManager.process(q5a, q5a_results, storageManager->getReadStorage());
+    queryManager.process(q5a, q5aResults, storageManager->getReadStorage());
 
-    std::list<std::string> a5a_results = {"9", "10", "11", "12", "13"};
-    q5a_results.sort(compare_int_string);
-    REQUIRE(q5a_results == a5a_results);
+    std::list<std::string> a5aResults = {"9", "10", "11", "12", "13"};
+    q5aResults.sort(compare_int_string);
+    REQUIRE(q5aResults == a5aResults);
 
-    std::list<std::string> q5b_results;
+    std::list<std::string> q5bResults;
     std::string q5b = "stmt s; Select s such that Parent*(3, s)";
-    queryManager.process(q5b, q5b_results, storageManager->getReadStorage());
+    queryManager.process(q5b, q5bResults, storageManager->getReadStorage());
 
-    std::list<std::string> a5b_results = {"4", "5", "6"};
-    q5b_results.sort(compare_int_string);
-    REQUIRE(q5b_results == a5b_results);
+    std::list<std::string> a5bResults = {"4", "5", "6"};
+    q5bResults.sort(compare_int_string);
+    REQUIRE(q5bResults == a5bResults);
 
     // test Uses
-    std::list<std::string> q6a_results;
+    std::list<std::string> q6aResults;
     std::string q6a = "stmt s; Select s such that Uses(s, \"a\")";
-    queryManager.process(q6a, q6a_results, storageManager->getReadStorage());
+    queryManager.process(q6a, q6aResults, storageManager->getReadStorage());
 
-    std::list<std::string> a6a_results = {"3"};
-    REQUIRE(q6a_results == a6a_results);
+    std::list<std::string> a6aResults = {"3"};
+    REQUIRE(q6aResults == a6aResults);
 
-    std::list<std::string> q6b_results;
+    std::list<std::string> q6bResults;
     std::string q6b = "assign a; Select a such that Uses(a, \"x\")";
-    queryManager.process(q6b, q6b_results, storageManager->getReadStorage());
+    queryManager.process(q6b, q6bResults, storageManager->getReadStorage());
 
-    std::list<std::string> a6b_results = {"4", "14"};
-    q6b_results.sort(compare_int_string);
-    REQUIRE(q6b_results == a6b_results);
+    std::list<std::string> a6bResults = {"4", "14"};
+    q6bResults.sort(compare_int_string);
+    REQUIRE(q6bResults == a6bResults);
 
-    std::list<std::string> q6c_results;
+    std::list<std::string> q6cResults;
     std::string q6c = "print pn; variable v; Select v such that Uses(pn, v)";
-    queryManager.process(q6c, q6c_results, storageManager->getReadStorage());
+    queryManager.process(q6c, q6cResults, storageManager->getReadStorage());
 
-    std::list<std::string> a6c_results = {"x"};
-    REQUIRE(q6c_results == a6c_results);
+    std::list<std::string> a6cResults = {"x"};
+    REQUIRE(q6cResults == a6cResults);
 
     // test Calls
-    std::list<std::string> q7a_results;
+    std::list<std::string> q7aResults;
     std::string q7a = "call cl; Select cl";
-    queryManager.process(q7a, q7a_results, storageManager->getReadStorage());
+    queryManager.process(q7a, q7aResults, storageManager->getReadStorage());
 
-    std::list<std::string> a7a_results = {"15", "17"};
-    q7a_results.sort(compare_int_string);
-    REQUIRE(q7a_results == a7a_results);
+    std::list<std::string> a7aResults = {"15", "17"};
+    q7aResults.sort(compare_int_string);
+    REQUIRE(q7aResults == a7aResults);
 
     // test next
-    std::list<std::string> q8a_results;
+    std::list<std::string> q8aResults;
     std::string q8a = "stmt s; read r; Select s such that Next(s, r)";
-    queryManager.process(q8a, q8a_results, storageManager->getReadStorage());
+    queryManager.process(q8a, q8aResults, storageManager->getReadStorage());
 
-    std::list<std::string> a8a_results = {};
-    REQUIRE(q8a_results == a8a_results);
+    std::list<std::string> a8aResults = {};
+    REQUIRE(q8aResults == a8aResults);
 
-    std::list<std::string> q8b_results;
+    std::list<std::string> q8bResults;
     std::string q8b = "stmt s; Select s such that Next(9, s)";
-    queryManager.process(q8b, q8b_results, storageManager->getReadStorage());
+    queryManager.process(q8b, q8bResults, storageManager->getReadStorage());
 
-    std::list<std::string> a8b_results = {"10", "11"};
-    q8b_results.sort(compare_int_string);
-    REQUIRE(q8b_results == a8b_results);
+    std::list<std::string> a8bResults = {"10", "11"};
+    q8bResults.sort(compare_int_string);
+    REQUIRE(q8bResults == a8bResults);
 }

@@ -49,7 +49,3 @@ void AbstractTokenizer::addToken(const std::shared_ptr<Token>& token) {
 std::string AbstractTokenizer::getCurrentToken() {
     return currentToken;
 }
-
-std::vector<std::shared_ptr<Token>> AbstractTokenizer::getTokens() {
-    return tokens;
-}
