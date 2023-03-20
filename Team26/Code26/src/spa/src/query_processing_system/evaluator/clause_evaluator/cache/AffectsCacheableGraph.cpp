@@ -4,14 +4,15 @@
 AffectsCacheableGraph::AffectsCacheableGraph(StoragePointer storage) : CacheableGraph<int, int>(storage) {
     modifiesMap = storage->getModifiesSManager()->getAllRelationshipEntries();
     usesMap = storage->getUsesSManager()->getAllRelationshipEntries();
+    callsSMap = storage->getCallsSManager()->getAllRelationshipEntries();
     assignStatements = storage->getAssignManager()->getAllEntitiesEntries();
     readStatements = storage->getReadStmtNoManager()->getAllEntitiesEntries();
     callStatements = storage->getCallStmtNoManager()->getAllEntitiesEntries();
 }
 
 
-bool AffectsCacheableGraph::isReadCallOrAssign(int stmt) {
-    return assignStatements.count(stmt) || readStatements.count(stmt) || callStatements.count(stmt);
+bool AffectsCacheableGraph::isReadOrAssign(int stmt) {
+    return assignStatements.count(stmt) || readStatements.count(stmt);
 }
 
 std::string AffectsCacheableGraph::modifiesVariable(int stmt) {
@@ -54,9 +55,15 @@ void AffectsCacheableGraph::onCacheMiss(int startStatement) {
                     results.insert(neighbour);
                 }
             }
-            if (isReadCallOrAssign(neighbour) && modifiesMap.count(neighbour)) {
+            if (isReadOrAssign(neighbour) && modifiesMap.count(neighbour)) {
                 nodeVariable = modifiesVariable(neighbour);
                 if (variableModified == nodeVariable) {
+                    continue;
+                }
+            }
+            if (callStatements.count(neighbour)) {
+                auto procedureCalled = *(callsSMap.at(neighbour).begin());
+                if (storage->getModifiesPManager()->containsMap(procedureCalled, variableModified)) {
                     continue;
                 }
             }
