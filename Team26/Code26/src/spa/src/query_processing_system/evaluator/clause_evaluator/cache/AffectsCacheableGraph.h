@@ -9,6 +9,8 @@ class AffectsCacheableGraph : public CacheableGraph<int, int> {
  private:
     std::unordered_map<int, std::unordered_set<std::string>> modifiesMap;
 
+    std::unordered_map<int , std::unordered_set<std::string>> callsSMap;
+
     std::unordered_map<int, std::unordered_set<std::string>> usesMap;
 
     std::unordered_set<int> assignStatements;
@@ -19,7 +21,7 @@ class AffectsCacheableGraph : public CacheableGraph<int, int> {
 
     std::unordered_map<int, std::unordered_set<int>> reverseCache;
 
-    bool isReadCallOrAssign(int stmt);
+    bool isReadOrAssign(int stmt);
 
     /**
      * Given a stmt, get all the variables modified by this statement.
