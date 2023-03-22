@@ -73,7 +73,11 @@ std::shared_ptr<ResultTable> ResultTable::joinOnColumns(std::shared_ptr<ResultTa
     auto col1 = table1->getColumnNumbers(commonColumns);
     auto col2 = table2->getColumnNumbers(commonColumns);
     if (!col1.empty() && !col2.empty()) {
-        return joinOnColumns(table1, table2, col1, col2);
+        if (table1->getNumberOfRows() > table2->getNumberOfRows()) {
+            return joinOnColumns(table1, table2, col1, col2);
+        } else {
+            return joinOnColumns(table2, table1, col2, col1);
+        }
     } else {
         throw std::exception();
     }
