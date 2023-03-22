@@ -8,8 +8,8 @@ box PKB (To QPS)
 participant "QPS" as QPS LOGIC_COLOR
 participant “:ReadStorage” as ReadStorage LOGIC_COLOR
 participant “:StmtManager" as StmtManager LOGIC_COLOR
-participant ":ParentManager" as ParentManager LOGIC_COLOR
-participant “:PatternManager” as PatternManager LOGIC_COLOR
+participant ":FollowsManager" as FollowsManager LOGIC_COLOR
+participant “:AssignPatternManager” as AssignPatternManager LOGIC_COLOR
 
 end box
 activate QPS
@@ -24,24 +24,24 @@ Activate StmtManager
 StmtManager --> QPS: unordered_set<int>: result
 deactivate StmtManager
 
-QPS -> ReadStorage: getParentManager()
+QPS -> ReadStorage: getFollowsManager()
 activate ReadStorage
-ReadStorage --> QPS: parentManager
+ReadStorage --> QPS: followsManager
 deactivate ReadStorage
 
-QPS -> ParentManager: getAllRelationshipEntries()
-Activate ParentManager
-ParentManager --> QPS: unordered_map<int,int>: result
-deactivate ParentManager
+QPS -> FollowsManager: getAllRelationshipEntries()
+Activate FollowsManager
+FollowsManager --> QPS: unordered_map<int, int>: result
+deactivate FollowsManager
 
-QPS -> ReadStorage: getPatternManager()
+QPS -> ReadStorage: getAssignPatternManager()
 activate ReadStorage
-ReadStorage --> QPS: patternManager
+ReadStorage --> QPS: assignPatternManager
 deactivate ReadStorage
 
-QPS -> PatternManager: getAllPatternEntries()
-Activate PatternManager
-PatternManager --> QPS: unordered_map<int,int>: result
-deactivate PatternManager
+QPS -> AssignPatternManager: getAllPatternEntries()
+Activate AssignPatternManager
+AssignPatternManager --> QPS: unordered_map<int, int>: result
+deactivate AssignPatternManager
 
 @enduml
