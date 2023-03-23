@@ -8,8 +8,8 @@ box PKB (From SP)
 participant "SP" as SP LOGIC_COLOR
 participant “:WriteStorage” as WriteStorage LOGIC_COLOR
 participant “:StmtManager" as StmtManager LOGIC_COLOR
-participant ":ParentManager" as ParentManager LOGIC_COLOR
-participant “:PatternManager” as PatternManager LOGIC_COLOR
+participant ":FollowsManager" as FollowsManager LOGIC_COLOR
+participant “:PatternManager” as AssignPatternManager LOGIC_COLOR
 
 end box
 activate SP
@@ -19,29 +19,29 @@ activate WriteStorage
 WriteStorage --> SP: StmtManager
 deactivate WriteStorage
 
-SP -> StmtManager: insertEntity(int: stmt_no)
+SP -> StmtManager: insertEntity(int: stmtNo)
 Activate StmtManager
 StmtManager --> SP: bool
 deactivate StmtManager
 
-SP -> WriteStorage: getParentManager()
+SP -> WriteStorage: getFollowsManager()
 activate WriteStorage
-WriteStorage --> SP: parentManager
+WriteStorage --> SP: followsManager
 deactivate WriteStorage
 
-SP -> ParentManager: insertRelationship(int: stmt_no, int: stmt_no)
-Activate ParentManager
-ParentManager --> SP: bool
-deactivate ParentManager
+SP -> FollowsManager: insertRelationship(int: stmtNo, int: stmtNo)
+Activate FollowsManager
+FollowsManager --> SP: bool
+deactivate FollowsManager
 
-SP -> WriteStorage: getPatternManager()
+SP -> WriteStorage: getAssignPatternManager()
 activate WriteStorage
-WriteStorage --> SP: patternManager
+WriteStorage --> SP: assignPatternManager
 deactivate WriteStorage
 
-SP -> PatternManager: insertPattern(int: stmt_no, string: left, string: right)
-Activate PatternManager
-PatternManager --> SP: bool
-deactivate PatternManager
+SP -> AssignPatternManager: insertAssignPattern(int: stmtNo, string: left, shared_ptr<ShuntNode>: right)
+Activate AssignPatternManager
+AssignPatternManager --> SP: bool
+deactivate AssignPatternManager
 
 @enduml
