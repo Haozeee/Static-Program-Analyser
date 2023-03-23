@@ -1,5 +1,4 @@
 #include "UnionFind.h"
-
 #include <utility>
 
 UnionFind::UnionFind() = default;
@@ -40,7 +39,6 @@ void UnionFind::unionItems(std::string p, std::string q) {
         id.at(j) = i;
         componentSize.at(i) += componentSize.at(j);
     }
-
 }
 
 void UnionFind::unionMultipleItems(const std::vector<std::string>& itemsToAdd) {

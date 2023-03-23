@@ -46,6 +46,8 @@ class Query {
 
     std::vector<WithClause*> getWithClause();
 
+    std::vector<Clause*> getAllClauses();
+
     bool containsSynonymInDeclaration(std::string);
 
     /**

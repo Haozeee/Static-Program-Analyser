@@ -29,16 +29,16 @@ void QueryDb::setSelectedColumns(std::vector<std::pair<SelectClauseItem, DesignE
 
 void QueryDb::fillMissingTables() {
     auto allColumnsPresent = getAllColumnsInResults();
-    std::vector<std::pair<std::string, DesignEntity>> missingItems;
+    std::vector<std::pair<std::string, DesignEntity>> missingColumns;
 
     for (const auto& selectedItems : selectedSynonyms) {
         std::string syn = SelectClause::getSynonym(selectedItems.first);
         if (!allColumnsPresent.count(syn)) {
-            missingItems.emplace_back(syn, selectedItems.second);
+            missingColumns.emplace_back(syn, selectedItems.second);
         }
     }
 
-    for (const auto& item : missingItems) {
+    for (const auto& item : missingColumns) {
         auto entities = PkbUtil::getEntitiesFromPkb(storage, item.second);
         auto resultTable = ResultTable::createSingleColumnTable(item.first, entities);
         addResult(resultTable);
@@ -81,21 +81,22 @@ ResultGroups QueryDb::getGroups() {
 }
 
 std::vector<std::shared_ptr<ResultTable>> QueryDb::evaluateGroups() {
-    auto groups = getGroups();
+    auto allGroups = getGroups();
     std::vector<std::shared_ptr<ResultTable>> groupResults;
 
-    for (auto item : groups) {
+    for (const auto& item : allGroups) {
+        auto group = item.second;
         std::shared_ptr<ResultTable> individualResults;
-        sortTables(item.second);
+        sortTables(group);
 
-        if (!item.second.empty()) {
-            individualResults = item.second.front();
-            item.second.pop_front();
+        if (!group.empty()) {
+            individualResults = group.front();
+            group.pop_front();
         }
 
-        while (!item.second.empty()) {
-            auto table = item.second.front();
-            item.second.pop_front();
+        while (!group.empty()) {
+            auto table = group.front();
+            group.pop_front();
             if (!table->getColumnsNamesSet().empty()) {
                 individualResults = ResultTable::joinTable(individualResults, table);
             }
@@ -116,6 +117,7 @@ std::vector<std::string> QueryDb::getInterestedResults() {
     }
 
     fillMissingTables();
+
     auto resultGroups = evaluateGroups();
 
     if (selectedSynonyms.empty()) {
@@ -136,21 +138,22 @@ std::vector<std::string> QueryDb::getInterestedResults() {
 }
 
 void QueryDb::mapAttributeReferences(std::shared_ptr<ResultTable> interestedResults) {
-    for (auto item : selectedSynonyms) {
-        if (SelectClause::isAttribute(item.first)) {
-            auto attributeRef = std::get<AttributeReference>(item.first);
+    for (const auto& item : selectedSynonyms) {
+        auto selectClauseItem = item.first;
+        if (SelectClause::isAttribute(selectClauseItem)) {
+            auto attributeRef = std::get<AttributeReference>(selectClauseItem);
             // E.g r.stmt#, get values of column r
             auto synonymValues = interestedResults->getColumnOrderedValues(attributeRef.getSynonym());
             // synonym values is transformed in place
             mapAttribute(attributeRef, synonymValues, storage);
-            interestedResults->insertCol(SelectClause::getString(item.first), synonymValues);
+            interestedResults->insertCol(SelectClause::getString(selectClauseItem), synonymValues);
         }
     }
 }
 
 std::shared_ptr<ResultTable>
-QueryDb::getMainResultTableFromGroup(std::vector<std::shared_ptr<ResultTable>> resultGroups) {
-    for (auto group : resultGroups) {
+QueryDb::getMainResultTableFromGroup(std::vector<std::shared_ptr<ResultTable>> &resultGroups) {
+    for (auto &group : resultGroups) {
         auto colNames = group->getColumnsNamesSet();
         if (!colNames.empty() && !selectedSynonyms.empty()
             && colNames.count(SelectClause::getSynonym(selectedSynonyms.at(0).first))) {
@@ -162,13 +165,13 @@ QueryDb::getMainResultTableFromGroup(std::vector<std::shared_ptr<ResultTable>> r
 
 std::vector<std::string> QueryDb::getInterestedColumns() {
     std::vector<std::string> res;
-    for (auto i : selectedSynonyms) {
+    for (const auto& i : selectedSynonyms) {
         res.push_back(SelectClause::getString(i.first));
     }
     return res;
 }
 
-std::vector<std::string> QueryDb::getBooleanResults(std::vector<std::shared_ptr<ResultTable>> resultGroups) {
+std::vector<std::string> QueryDb::getBooleanResults(std::vector<std::shared_ptr<ResultTable>> &resultGroups) {
     std::vector<std::string> res;
 
     for (const auto& group : resultGroups) {
@@ -185,7 +188,7 @@ std::vector<std::string> QueryDb::getBooleanResults(std::vector<std::shared_ptr<
 }
 
 bool QueryDb::resultTablesHasFalse() {
-    for (auto i : results) {
+    for (const auto& i : results) {
         if (i->hasNoResults()) {
             return true;
         }
