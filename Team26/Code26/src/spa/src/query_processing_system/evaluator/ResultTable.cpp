@@ -89,7 +89,7 @@ std::shared_ptr<ResultTable> ResultTable::joinOnColumns(std::shared_ptr<ResultTa
                                                        std::vector<int> &column2) {
     auto newTableColumns = ResultTable::getVectorUnion(table1->getColumnsNames(), table2->getColumnsNames());
     auto res = std::make_shared<ResultTable>(newTableColumns);
-    if (table2->getNumberOfRows() == 0) {
+    if (table2->getNumberOfRows() == 0 || table1->getNumberOfRows() == 0) {
         // Joining with an empty table
         return res;
     }
