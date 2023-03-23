@@ -16,7 +16,17 @@ QueryDb QueryEvaluator::evaluateQuery() {
 }
 
 void QueryEvaluator::evaluateClauses() {
-    for (Clause* clause : query->getAllClauses()) {
+    auto allClauses = query->getAllClauses();
+
+    if (allClauses.size() > 3) {
+        // Only sort clauses of size >= 3
+        auto sortPredicate = [](Clause* a, Clause* b) {
+            return a->getOptimisationPoints() < b->getOptimisationPoints();
+        };
+        std::sort(allClauses.begin(), allClauses.end(), sortPredicate);
+    }
+
+    for (Clause* clause : allClauses) {
         auto clauseEvaluator = clause->getClauseEvaluator();
         auto clauseResultTable = clauseEvaluator->evaluateClause(storage, cache);
         queryResults.addResult(clauseResultTable);
@@ -26,7 +36,6 @@ void QueryEvaluator::evaluateClauses() {
             break;
         }
     }
-
 }
 
 void QueryEvaluator::evaluateSelectClause() {

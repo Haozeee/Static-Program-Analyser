@@ -35,3 +35,19 @@ PatternClauseValidationResult PatternClause::isValidClause() {
     }
     return PatternClauseValidationResult::VALID;
 }
+
+int PatternClause::getOptimisationPoints() {
+    int points = 0;
+
+    if (leftArg.getArgumentType() == ArgumentType::WILDCARD) {
+        points += 2;
+    } else if (leftArg.getArgumentType() == ArgumentType::SYNONYM) {
+        points += 1;
+    }
+
+    if (rightArg.isWildCard()) {
+        points += 1;
+    }
+
+    return points;
+}

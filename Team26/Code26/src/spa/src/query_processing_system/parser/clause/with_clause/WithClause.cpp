@@ -29,7 +29,20 @@ Reference WithClause::getRightRef() {
     return this->rightRef;
 }
 
+int WithClause::getOptimisationPoints() {
+    int points = 0;
+
+    if (leftRef.getReferenceType() == ReferenceType::ATTR_REF) {
+        points += 1;
+    }
+    if (rightRef.getReferenceType() == ReferenceType::ATTR_REF) {
+        points += 1;
+    }
+
+    return points;
+}
+
 bool WithClause::operator==(const WithClause& other) const {
-    const WithClause* otherClause = dynamic_cast<const WithClause*>(&other);
+    const auto* otherClause = dynamic_cast<const WithClause*>(&other);
     return otherClause != nullptr && this->leftRef == otherClause->leftRef && this->rightRef == otherClause->rightRef;
 }

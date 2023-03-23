@@ -30,4 +30,6 @@ class SuchThatClause : public Clause {
     Argument getLeftArg();
 
     Argument getRightArg();
+
+    int getOptimisationPoints() override;
 };

@@ -29,3 +29,21 @@ SuchThatClauseValidationResult SuchThatClause::isValidClause() {
     }
     return SuchThatClauseValidationResult::VALID;
 }
+
+int SuchThatClause::getOptimisationPoints() {
+    int points = 0;
+
+    if (leftArg.getArgumentType() == ArgumentType::SYNONYM) {
+        points += 1;
+    } else if (leftArg.getArgumentType() == ArgumentType::WILDCARD) {
+        points += 2;
+    }
+
+    if (rightArg.getArgumentType() == ArgumentType::SYNONYM) {
+        points += 1;
+    } else if (rightArg.getArgumentType() == ArgumentType::WILDCARD) {
+        points += 2;
+    }
+
+    return points;
+}
