@@ -14,18 +14,14 @@ SuchThatClause *SuchThatClauseFactory::createSuchThatClause(std::string relation
         if ((leftArgType == ArgumentType::SYNONYM && leftArgDesignEntity == DesignEntity::PROCEDURE)
             || leftArgType == ArgumentType::CHARACTERSTRING) {
             if (relation == ModifiesRelation) {
-//                std::cout << "modifies procedure" << std::endl;
                 return new ModifiesPClause(leftArg, rightArg);
             } else {
-//                std::cout << "uses procedure" << std::endl;
                 return new UsesPClause(leftArg, rightArg);
             }
         } else {
             if (relation == ModifiesRelation) {
-//                std::cout << "modifies statement" << std::endl;
                 return new ModifiesSClause(leftArg, rightArg);
             } else {
-//                std::cout << "uses procedure" << std::endl;
                 return new UsesSClause(leftArg, rightArg);
             }
         }

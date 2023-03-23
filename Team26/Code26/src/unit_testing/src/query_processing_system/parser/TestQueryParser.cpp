@@ -888,6 +888,35 @@ TEST_CASE("Invalid Pattern Clause") {
 
         delete query;
     }
+
+    SECTION("Invalid Pattern Clause") {
+        std::vector<std::shared_ptr<Token>> tokens{
+                std::make_shared<NameToken>("variable"),
+                std::make_shared<NameToken>("v"),
+                std::make_shared<SpecialCharToken>(";"),
+                std::make_shared<NameToken>("variable"),
+                std::make_shared<NameToken>("v1"),
+                std::make_shared<SpecialCharToken>(";"),
+                std::make_shared<NameToken>("Select"),
+                std::make_shared<NameToken>("v"),
+                std::make_shared<NameToken>("pattern"),
+                std::make_shared<NameToken>("v1"),
+                std::make_shared<SpecialCharToken>("("),
+                std::make_shared<NameToken>("v"),
+                std::make_shared<SpecialCharToken>(","),
+                std::make_shared<SpecialCharToken>(("'")),
+                std::make_shared<StringExpressionToken>(("x+y")),
+                std::make_shared<SpecialCharToken>(("'")),
+                std::make_shared<SpecialCharToken>(")"),
+                std::make_shared<EndOfFileToken>(),
+        };
+
+        auto *query = new Query();
+        QueryParser parser = QueryParser(tokens, query);
+        REQUIRE_THROWS(parser.parse());
+
+        delete query;
+    }
 }
 
 TEST_CASE("With Clause") {
