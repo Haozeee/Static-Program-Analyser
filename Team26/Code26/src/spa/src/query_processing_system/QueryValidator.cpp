@@ -24,7 +24,7 @@ void QueryValidator::validateSynonymInSelectClauseWasDeclared() {
     }
 
     if (!containsSelectClauseSynonymInDeclaration(declarationSynonyms, selectClauseSynonyms)) {
-        throw QueryValidationException(QueryValidatorUndeclaredSelectClauseSynonym + *selectClauseSynonyms.begin());
+        throw SemanticException(QueryValidatorUndeclaredSelectClauseSynonym + *selectClauseSynonyms.begin());
     }
 }
 
@@ -62,17 +62,17 @@ void QueryValidator::validateSuchThatClause() {
                 throw SyntaxException(rightArg.getValue()
                                                + QueryValidatorInvalidSecondArgumentTypeInRelation);
             case SuchThatClauseValidationResult::INVALID_LEFT_DESIGN_ENTITY:
-                throw QueryValidationException("The synonym "
-                                               + leftArg.getValue()
-                                               + " of design entity "
-                                               + toString(leftArg.getDesignEntity())
-                                               + QueryValidatorInvalidFirstDesignEntityInRelation);
+                throw SemanticException("The synonym "
+                                           + leftArg.getValue()
+                                           + " of design entity "
+                                           + toString(leftArg.getDesignEntity())
+                                           + QueryValidatorInvalidFirstDesignEntityInRelation);
             case SuchThatClauseValidationResult::INVALID_RIGHT_DESIGN_ENTITY:
-                throw QueryValidationException("The synonym "
-                                               + rightArg.getValue()
-                                               + " of design entity "
-                                               + toString(rightArg.getDesignEntity())
-                                               + QueryValidatorInvalidSecondDesignEntityInRelation);
+                throw SemanticException("The synonym "
+                                           + rightArg.getValue()
+                                           + " of design entity "
+                                           + toString(rightArg.getDesignEntity())
+                                           + QueryValidatorInvalidSecondDesignEntityInRelation);
             default:
                 continue;
         }
@@ -87,26 +87,26 @@ void QueryValidator::validatePatternClause() {
         auto rightArg = clause->getRightArg();
         if (patternArg.getDesignEntity() == DesignEntity::WHILE) {
             if (!rightArg.isWildCard()) {
-                throw QueryInvalidArgumentType(rightArg.getExpression()
-                                                  + QueryValidatorIfWhilePatternRightArgWildcard);
+                throw SemanticException(rightArg.getExpression()
+                                          + QueryValidatorIfWhilePatternRightArgWildcard);
             }
         }
         if (patternArg.getDesignEntity() == DesignEntity::IF) {
             if (!rightArg.isWildCard()) {
-                throw QueryInvalidPatternArgument(rightArg.getExpression()
-                                                    + QueryValidatorIfWhilePatternRightArgWildcard);
+                throw SyntaxException(rightArg.getExpression()
+                                        + QueryValidatorIfWhilePatternRightArgWildcard);
             }
         }
         switch (validationResult) {
             case PatternClauseValidationResult::INVALID_LEFT_ARG_TYPE:
-                throw QueryInvalidArgumentType(leftArg.getValue()
-                                               + QueryValidatorInvalidFirstArgumentTypeInRelation);
+                throw SemanticException(leftArg.getValue()
+                                           + QueryValidatorInvalidFirstArgumentTypeInRelation);
             case PatternClauseValidationResult::INVALID_LEFT_DESIGN_ENTITY:
-                throw QueryValidationException("The synonym "
-                                               + leftArg.getValue()
-                                               + " of design entity "
-                                               + toString(leftArg.getDesignEntity())
-                                               + QueryValidatorInvalidFirstDesignEntityInRelation);
+                throw SemanticException("The synonym "
+                                           + leftArg.getValue()
+                                           + " of design entity "
+                                           + toString(leftArg.getDesignEntity())
+                                           + QueryValidatorInvalidFirstDesignEntityInRelation);
             default:
                 continue;
         }
@@ -116,7 +116,7 @@ void QueryValidator::validatePatternClause() {
 void QueryValidator::validateWithClause() {
     for (auto clause : query->getWithClause()) {
         if (!clause->validateClause()) {
-            throw QueryValidationException(QueryValidatorIncompatibleAttributeReference);
+            throw SemanticException(QueryValidatorIncompatibleAttributeReference);
         }
     }
 }

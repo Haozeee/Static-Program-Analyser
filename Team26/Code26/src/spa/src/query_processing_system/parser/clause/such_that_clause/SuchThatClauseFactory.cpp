@@ -8,7 +8,7 @@ SuchThatClause *SuchThatClauseFactory::createSuchThatClause(std::string relation
         ArgumentType leftArgType = leftArg.getArgumentType();
         if (leftArgType == ArgumentType::WILDCARD) {
             // Wildcards cannot be created
-            throw QueryValidationException(relation + QueryValidatorInvalidModifiesOrUsesRelationshipInSelectClause);
+            throw SemanticException(relation + QueryValidatorInvalidModifiesOrUsesRelationshipInSelectClause);
         }
         DesignEntity leftArgDesignEntity = leftArg.getDesignEntity();
         if ((leftArgType == ArgumentType::SYNONYM && leftArgDesignEntity == DesignEntity::PROCEDURE)
@@ -47,6 +47,6 @@ SuchThatClause *SuchThatClauseFactory::createSuchThatClause(std::string relation
         return new ParentTClause(std::move(leftArg), std::move(rightArg));
     } else {
         // No such relation, throw error
-        throw QueryInvalidRelationship(relation + QueryParserInvalidRelationshipInSelectClause);
+        throw SyntaxException(relation + QueryParserInvalidRelationshipInSelectClause);
     }
 }
