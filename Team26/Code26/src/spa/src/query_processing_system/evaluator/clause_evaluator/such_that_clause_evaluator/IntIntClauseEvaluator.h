@@ -24,4 +24,8 @@ class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
     int getLeftArg() override;
 
     int getRightArg() override;
+
+    bool isLeftArgAmbiguous() override;
+
+    bool isRightArgAmbiguous() override;
 };

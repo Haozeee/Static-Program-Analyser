@@ -201,20 +201,16 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
      * Whereas, in Modifies(5, v), the right arg "v" can only refer to variables and nothing else. Hence,
      * it is not ambiguous.
      */
-    virtual bool isLeftArgAmbiguous() {
-        return true;
-    }
+    virtual bool isLeftArgAmbiguous() = 0;
 
-    virtual bool isRightArgAmbiguous() {
-        return true;
-    }
+    virtual bool isRightArgAmbiguous() = 0;
 
     virtual bool isRelationshipEmpty() {
         return getRelationshipManager().empty();
     }
 
  public:
-    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage_, CachePointer cache_ = nullptr) override {
+    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage_, CachePointer cache_) override {
         setStorageLocation(storage_, cache_);
 
         auto argumentType = getClauseArgumentType(leftArg.getArgumentType(), rightArg.getArgumentType());

@@ -39,3 +39,11 @@ int IntIntClauseEvaluator::getLeftArg() {
 int IntIntClauseEvaluator::getRightArg() {
     return stoi(rightArg.getValue());
 }
+
+bool IntIntClauseEvaluator::isLeftArgAmbiguous() {
+    return leftArg.getDesignEntity() != DesignEntity::STMT;
+}
+
+bool IntIntClauseEvaluator::isRightArgAmbiguous() {
+    return rightArg.getDesignEntity() != DesignEntity::STMT;
+}

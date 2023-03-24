@@ -33,6 +33,10 @@ std::string IntStringClauseEvaluator::getRightArg() {
     return rightArg.getValue();
 }
 
+bool IntStringClauseEvaluator::isLeftArgAmbiguous() {
+    return leftArg.getDesignEntity() != DesignEntity::STMT;
+}
+
 bool IntStringClauseEvaluator::isRightArgAmbiguous() {
     return false;
 }

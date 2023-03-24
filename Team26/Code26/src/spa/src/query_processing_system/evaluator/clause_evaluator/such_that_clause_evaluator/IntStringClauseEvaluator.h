@@ -23,5 +23,7 @@ class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string
 
     std::string getRightArg() override;
 
+    bool isLeftArgAmbiguous() override;
+
     bool isRightArgAmbiguous() override;
 };

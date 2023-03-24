@@ -12,14 +12,14 @@ TEST_CASE("Test Number String") {
     std::shared_ptr<ResultTable> res;
 
     // Statement with no children, has results
-    testEvaluator.evaluateClause(nullptr);
+    testEvaluator.evaluateClause(nullptr, nullptr);
     res = testEvaluator.getClauseResult();
     REQUIRE_FALSE(res->hasNoResults());
 
     // Statement with no children, has no results
     leftArg = Argument(ArgumentType::NUMBER, "4", DesignEntity::NONE);
     testEvaluator = MockIntStringClauseEvaluator(leftArg, rightArg);
-    testEvaluator.evaluateClause(nullptr);
+    testEvaluator.evaluateClause(nullptr, nullptr);
     res = testEvaluator.getClauseResult();
     REQUIRE(res->hasNoResults());
 }
@@ -34,14 +34,14 @@ TEST_CASE("Test Number Wildcard") {
     std::shared_ptr<ResultTable> res;
 
     // Statement with no children, has results
-    testEvaluator.evaluateClause(nullptr);
+    testEvaluator.evaluateClause(nullptr, nullptr);
     res = testEvaluator.getClauseResult();
     REQUIRE_FALSE(res->hasNoResults());
 
     // Statement with no result
     leftArg = Argument(ArgumentType::NUMBER, "44", DesignEntity::NONE);
     testEvaluator = MockIntStringClauseEvaluator(leftArg, rightArg);
-    testEvaluator.evaluateClause(nullptr);
+    testEvaluator.evaluateClause(nullptr, nullptr);
     res = testEvaluator.getClauseResult();
     REQUIRE(res->hasNoResults());
 }
