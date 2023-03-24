@@ -15,7 +15,7 @@
 
 
 class QueryParser : public AbstractParser {
- private:
+private:
     /**
      * Query wrapper object.
      */
@@ -60,9 +60,9 @@ class QueryParser : public AbstractParser {
      * Handles parsing of relRef:
      * Follows | FollowsT | Parent | ParentT | UsesS | UsesP | ModifiesS | ModifiesP
      */
-    void parseRelRef();
+    void parseSuchThat();
 
-    void parseMultipleRelRef();
+    void parseMultipleSuchThat();
 
     /**
      * Parse Arguments of any relRef relationships.
@@ -109,7 +109,9 @@ class QueryParser : public AbstractParser {
 
     std::string parseShuntingYard(std::string);
 
- public:
+    std::string referenceToString(Reference);
+
+public:
     /**
      * Constructor for the query parser.
      *

@@ -1055,6 +1055,9 @@ TEST_CASE("Multi Clause") {
                 std::make_shared<NameToken>("variable"),
                 std::make_shared<NameToken>("v"),
                 std::make_shared<SpecialCharToken>(";"),
+                std::make_shared<NameToken>("procedure"),
+                std::make_shared<NameToken>("p"),
+                std::make_shared<SpecialCharToken>(";"),
                 std::make_shared<NameToken>("Select"),
                 std::make_shared<NameToken>("a"),
                 std::make_shared<NameToken>("such"),
@@ -1071,7 +1074,7 @@ TEST_CASE("Multi Clause") {
                 std::make_shared<NameToken>("Calls"),
                 std::make_shared<SpecialCharToken>("*"),
                 std::make_shared<SpecialCharToken>("("),
-                std::make_shared<NameToken>("a"),
+                std::make_shared<NameToken>("p"),
                 std::make_shared<SpecialCharToken>(","),
                 std::make_shared<SpecialCharToken>(("'")),
                 std::make_shared<StringExpressionToken>(("xyz")),
@@ -1120,8 +1123,8 @@ TEST_CASE("Multi Clause") {
         auto secondSuchThatClause = query->getSuchThatClauses().back();
         Argument secondLeft = secondSuchThatClause->getLeftArg();
         REQUIRE(secondLeft.getArgumentType() == ArgumentType::SYNONYM);
-        REQUIRE(secondLeft.getValue() == "a");
-        REQUIRE(secondLeft.getDesignEntity() == DesignEntity::ASSIGN);
+        REQUIRE(secondLeft.getValue() == "p");
+        REQUIRE(secondLeft.getDesignEntity() == DesignEntity::PROCEDURE);
 
         Argument secondRight = secondSuchThatClause->getRightArg();
         REQUIRE(secondRight.getArgumentType() == ArgumentType::CHARACTERSTRING);
