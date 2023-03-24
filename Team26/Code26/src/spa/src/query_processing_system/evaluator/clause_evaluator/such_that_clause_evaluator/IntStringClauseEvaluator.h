@@ -19,11 +19,11 @@ class IntStringClauseEvaluator : public SuchThatClauseEvaluator<int, std::string
 
     std::unordered_set<std::string> getRightArgEntities() override;
 
-    void handleLeftWildcard() override;
-
     int getLeftArg() override;
 
     std::string getRightArg() override;
+
+    bool isLeftArgAmbiguous() override;
 
     bool isRightArgAmbiguous() override;
 };

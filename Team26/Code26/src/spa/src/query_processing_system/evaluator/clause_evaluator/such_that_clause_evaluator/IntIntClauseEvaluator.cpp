@@ -11,10 +11,6 @@ void IntIntClauseEvaluator::evaluateEqualSynonym() {
     setLeftArgResult(Util::getElementsWithCycles(relationshipMap));
 }
 
-void IntIntClauseEvaluator::handleLeftWildcard() {
-    leftArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::STMT);
-}
-
 void IntIntClauseEvaluator::setLeftArgResult(std::unordered_set<int> result) {
     clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), Util::intSetToStringSet(result));
 }
@@ -42,4 +38,12 @@ int IntIntClauseEvaluator::getLeftArg() {
 
 int IntIntClauseEvaluator::getRightArg() {
     return stoi(rightArg.getValue());
+}
+
+bool IntIntClauseEvaluator::isLeftArgAmbiguous() {
+    return leftArg.getDesignEntity() != DesignEntity::STMT;
+}
+
+bool IntIntClauseEvaluator::isRightArgAmbiguous() {
+    return rightArg.getDesignEntity() != DesignEntity::STMT;
 }

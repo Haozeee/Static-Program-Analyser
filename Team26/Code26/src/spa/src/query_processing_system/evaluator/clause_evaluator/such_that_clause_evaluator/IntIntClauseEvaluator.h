@@ -21,9 +21,11 @@ class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
 
     std::unordered_set<int> getRightArgEntities() override;
 
-    void handleLeftWildcard() override;
-
     int getLeftArg() override;
 
     int getRightArg() override;
+
+    bool isLeftArgAmbiguous() override;
+
+    bool isRightArgAmbiguous() override;
 };

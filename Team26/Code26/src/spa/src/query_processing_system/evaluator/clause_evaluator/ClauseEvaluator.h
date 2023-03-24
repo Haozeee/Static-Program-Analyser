@@ -34,5 +34,5 @@ class ClauseEvaluator {
      * Evaluate the clause.
      * @return True if clause has been evaluated successfully.
      */
-    virtual std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage, CachePointer cache = nullptr) = 0;
+    virtual std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage, CachePointer cache) = 0;
 };
