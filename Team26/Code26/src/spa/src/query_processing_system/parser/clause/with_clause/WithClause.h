@@ -20,5 +20,7 @@ class WithClause : public Clause {
 
     Reference getRightRef();
 
+    int getOptimisationPoints() override;
+
     bool operator == (const WithClause& other) const;
 };

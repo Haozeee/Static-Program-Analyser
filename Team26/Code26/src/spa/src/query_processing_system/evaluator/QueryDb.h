@@ -8,10 +8,16 @@
 #include <utility>
 #include "ResultTable.h"
 #include "AttributeReferenceMap.h"
+#include "UnionFind.h"
 #include "query_processing_system/parser/SelectClause.h"
 #include "program_knowledge_base/StorageUtil.h"
 #include "program_knowledge_base/StorageManager.h"
 
+using ResultGroups = std::unordered_map<std::string, std::deque<std::shared_ptr<ResultTable>>>;
+
+/**
+ * Stores the results from evaluating each claues.
+ */
 class QueryDb {
  private:
     /**
@@ -30,6 +36,13 @@ class QueryDb {
     std::shared_ptr<ReadStorage> storage;
 
     /**
+     * A disjoint set data structure to store the different groups as part of optimisation.
+     * Tables that are part of different groups should be evaluated independently so as to avoid
+     * doing an unnecessary cartesian product.
+     */
+    UnionFind unionFind;
+
+    /**
      * Checks if the list of results contains a result table that equates to false. This means that
      * there would be no final results as False and anything equals false. Hence, no need to join any tables
      * and we can exit early.
@@ -37,8 +50,17 @@ class QueryDb {
      */
     bool resultTablesHasFalse();
 
-    std::vector<std::string> getBooleanResults(std::shared_ptr<ResultTable> interestedResults);
+    /**
+     * Get the results if the user specifies a Boolean in the select clause.
+     */
+    std::vector<std::string> getBooleanResults(std::vector<std::shared_ptr<ResultTable>> &resultGroups);
 
+    /**
+     * Given a certain column, map it to an attribute reference. Suppose the user specifies "v.varName", the
+     * table only contains columns for "v". This function adds an additional column "v.varname" to the table.
+     * The values of the column are obtained from the "v" values.
+     * @param interestedResults
+     */
     void mapAttributeReferences(std::shared_ptr<ResultTable> interestedResults);
 
     /**
@@ -55,14 +77,30 @@ class QueryDb {
      * Sort the list of results tables such that the table with the least amount of rows come first.
      * This makes joining the table quicker.
      */
-    void sortResultTables();
+    static void sortTables(std::deque<std::shared_ptr<ResultTable>> &tables);
+
+    /**
+     * After evaluating the different groups, we get a list of results. This methods get the main interested results
+     * from the list of results.
+     * @param resultGroups The list of results after evaluating each group.
+     * @return The interested results based on the select clause item.
+     */
+    std::shared_ptr<ResultTable> getMainResultTableFromGroup(std::vector<std::shared_ptr<ResultTable>> &resultGroups);
+
+    ResultGroups getGroups();
+
+    std::vector<std::shared_ptr<ResultTable>> evaluateGroups();
 
  public:
     explicit QueryDb(std::shared_ptr<ReadStorage> storage);
 
+    /**
+     * Add a new result.
+     * @param toAdd Result to add.
+     */
     void addResult(std::shared_ptr<ResultTable> toAdd);
 
-    void addSelectedColumn(const SelectClauseItem& selectClauseItem, DesignEntity designEntity);
+    void setSelectedColumns(std::vector<std::pair<SelectClauseItem, DesignEntity>> selectedCols);
 
     /**
      * Join the tables that we are interested in to get the final results.

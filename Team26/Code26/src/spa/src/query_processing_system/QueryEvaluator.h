@@ -18,25 +18,12 @@ class QueryEvaluator {
 
     std::shared_ptr<Cache> cache;
 
+    void evaluateClauses();
+
     /**
      * Evaluate the select clauses in the query.
      */
     void evaluateSelectClause();
-
-    /**
-     * Evaluate the such that clauses in the query.
-     */
-    void evaluateSuchThatClause();
-
-    /**
-     * Evaluate the pattern clauses in the query.
-     */
-    void evaluatePatternClause();
-
-    /**
-     * Evaluate the with clauses in the query.
-     */
-    void evaluateWithClause();
 
  public:
     explicit QueryEvaluator(Query* query, std::shared_ptr<ReadStorage> storage);

@@ -40,7 +40,18 @@ bool Query::containsSynonymInDeclaration(std::string string) {
     return synonymToDesignEntityMap.find(string) != synonymToDesignEntityMap.end();
 }
 
-/* Such That Clause */
+std::vector<Clause*> Query::getAllClauses() {
+    std::vector<Clause*> clauses;
+    auto allSuchThatClauses = getSuchThatClauses();
+    auto allPatternClauses = getPatternClause();
+    auto allWithClauses = getWithClause();
+
+    clauses.insert(clauses.end(), allSuchThatClauses.begin(), allSuchThatClauses.end());
+    clauses.insert(clauses.end(), allPatternClauses.begin(), allPatternClauses.end());
+    clauses.insert(clauses.end(), allWithClauses.begin(), allWithClauses.end());
+
+    return clauses;
+}
 std::vector<SuchThatClause*> Query::getSuchThatClauses() {
     return suchThatClauses;
 }
@@ -49,7 +60,6 @@ void Query::addSuchThatClause(SuchThatClause* clause) {
     suchThatClauses.push_back(clause);
 }
 
-/* Assign Pattern Clause */
 std::vector<PatternClause*> Query::getPatternClause() {
     return patternClauses;
 }

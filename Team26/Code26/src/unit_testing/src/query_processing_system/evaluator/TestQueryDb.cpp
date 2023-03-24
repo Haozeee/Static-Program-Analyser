@@ -72,9 +72,11 @@ TEST_CASE("Missing Select Columns") {
     auto queryDB = QueryDb(nullptr);
 
     // Add select declarations
-    queryDB.addSelectedColumn(std::make_shared<Synonym>("col1"), DesignEntity::NONE);
-    queryDB.addSelectedColumn(std::make_shared<Synonym>("col2"), DesignEntity::NONE);
-    queryDB.addSelectedColumn(std::make_shared<Synonym>("col3"), DesignEntity::NONE);
+    std::vector<std::pair<SelectClauseItem, DesignEntity>> selectedCols;
+    selectedCols.emplace_back(std::make_shared<Synonym>("col1"), DesignEntity::NONE);
+    selectedCols.emplace_back(std::make_shared<Synonym>("col2"), DesignEntity::NONE);
+    selectedCols.emplace_back(std::make_shared<Synonym>("col3"), DesignEntity::NONE);
+    queryDB.setSelectedColumns(selectedCols);
 
     // Add table
     queryDB.addResult(table4);

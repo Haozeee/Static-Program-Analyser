@@ -69,11 +69,15 @@ ResultTable::joinNoCommonColumns(std::shared_ptr<ResultTable> table1, std::share
 
 std::shared_ptr<ResultTable> ResultTable::joinOnColumns(std::shared_ptr<ResultTable> table1,
                                                        std::shared_ptr<ResultTable> table2,
-                                                       std::vector<std::string> commonColumns) {
+                                                       std::vector<std::string> &commonColumns) {
     auto col1 = table1->getColumnNumbers(commonColumns);
     auto col2 = table2->getColumnNumbers(commonColumns);
     if (!col1.empty() && !col2.empty()) {
-        return joinOnColumns(table1, table2, col1, col2);
+        if (table1->getNumberOfRows() > table2->getNumberOfRows()) {
+            return joinOnColumns(table1, table2, col1, col2);
+        } else {
+            return joinOnColumns(table2, table1, col2, col1);
+        }
     } else {
         throw std::exception();
     }
@@ -81,11 +85,11 @@ std::shared_ptr<ResultTable> ResultTable::joinOnColumns(std::shared_ptr<ResultTa
 
 std::shared_ptr<ResultTable> ResultTable::joinOnColumns(std::shared_ptr<ResultTable> table1,
                                                        std::shared_ptr<ResultTable> table2,
-                                                       std::vector<int> column1,
-                                                       std::vector<int> column2) {
+                                                       std::vector<int> &column1,
+                                                       std::vector<int> &column2) {
     auto newTableColumns = ResultTable::getVectorUnion(table1->getColumnsNames(), table2->getColumnsNames());
     auto res = std::make_shared<ResultTable>(newTableColumns);
-    if (table2->getNumberOfRows() == 0) {
+    if (table2->getNumberOfRows() == 0 || table1->getNumberOfRows() == 0) {
         // Joining with an empty table
         return res;
     }
@@ -116,7 +120,7 @@ TableRow ResultTable::joinTableHelper(TableRow table1Row, TableRow table2Row, st
     return row;
 }
 
-int ResultTable::getColumnNumber(std::string colName) const {
+int ResultTable::getColumnNumber(const std::string& colName) const {
     for (auto const& [k, v] : columnNameMap) {
         if (colName == v) {
             return k;
@@ -124,7 +128,7 @@ int ResultTable::getColumnNumber(std::string colName) const {
     }
     return -1;
 }
-std::vector<int> ResultTable::getColumnNumbers(std::vector<std::string> colName) const {
+std::vector<int> ResultTable::getColumnNumbers(std::vector<std::string> &colName) const {
     std::vector<int> res(colName.size());
     for (auto const& [k, v] : columnNameMap) {
         auto it = colName.begin();
@@ -206,7 +210,7 @@ std::string ResultTable::getValueAt(int rowNumber, int columnNumber) const {
     return relations.at(rowNumber).at(columnNumber);
 }
 
-TableRow ResultTable::getValuesAt(int rowNumber, std::vector<int> columnNumbers) const {
+TableRow ResultTable::getValuesAt(int rowNumber, std::vector<int> &columnNumbers) const {
     auto row = relations.at(rowNumber);
     std::vector<std::string> res;
     for (auto col : columnNumbers) {

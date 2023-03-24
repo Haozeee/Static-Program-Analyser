@@ -26,7 +26,7 @@ class PatternClause : public Clause {
  protected:
     PatternClause(Argument patternArg, Argument leftArg, StringExpression rightArg);
 
-    std::unordered_set<ArgumentType> getValidLeftArgumentType();
+    static std::unordered_set<ArgumentType> getValidLeftArgumentType();
 
  public:
     virtual ~PatternClause() = default;
@@ -38,4 +38,6 @@ class PatternClause : public Clause {
     Argument getLeftArg();
 
     StringExpression getRightArg();
+
+    int getOptimisationPoints() override;
 };

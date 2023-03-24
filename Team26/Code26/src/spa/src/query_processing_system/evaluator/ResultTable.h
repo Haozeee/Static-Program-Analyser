@@ -55,7 +55,7 @@ class ResultTable {
      */
     static std::shared_ptr<ResultTable> joinOnColumns(std::shared_ptr<ResultTable> table1,
                                                       std::shared_ptr<ResultTable> table2,
-                                                      std::vector<int> column1, std::vector<int> column2);
+                                                      std::vector<int> &column1, std::vector<int> &column2);
 
     /**
      * Suppose common columns are a list of columns that are present in table1 and table2.
@@ -66,7 +66,7 @@ class ResultTable {
      */
     static std::shared_ptr<ResultTable> joinOnColumns(std::shared_ptr<ResultTable> table1,
                                                       std::shared_ptr<ResultTable> table2,
-                                                      std::vector<std::string> commonColumns);
+                                                      std::vector<std::string> &commonColumns);
 
     /**
      * Join 2 tables that have no common columns.
@@ -160,7 +160,7 @@ class ResultTable {
      * Given a row number i and a list of interested column numbers,
      * return the ith row containing only the values of the interested columns.
      */
-    TableRow getValuesAt(int rowNumber, std::vector<int> columnNumbers) const;
+    TableRow getValuesAt(int rowNumber, std::vector<int> &columnNumbers) const;
 
     /**
      * Given a list of interested columns, return the values of only the interested columns
@@ -189,13 +189,13 @@ class ResultTable {
      * The order of the results is in the order of colName.
      * If the column name does not exist, the column number will be 0.
      */
-    std::vector<int> getColumnNumbers(std::vector<std::string> colName) const;
+    std::vector<int> getColumnNumbers(std::vector<std::string> &colName) const;
 
     /**
      * Returns the column number of the column with name colName.
      * @return The column number, -1 if the column does not exist.
      */
-    int getColumnNumber(std::string colName) const;
+    int getColumnNumber(const std::string& colName) const;
 
     /**
      * Get number of rows of this table.
