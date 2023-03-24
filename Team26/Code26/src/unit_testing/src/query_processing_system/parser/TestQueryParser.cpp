@@ -889,7 +889,7 @@ TEST_CASE("Invalid Pattern Clause") {
         delete query;
     }
 
-    SECTION("Invalid Pattern Clause") {
+    SECTION("Invalid Pattern Clause Design Entity") {
         std::vector<std::shared_ptr<Token>> tokens{
                 std::make_shared<NameToken>("variable"),
                 std::make_shared<NameToken>("v"),
@@ -903,6 +903,68 @@ TEST_CASE("Invalid Pattern Clause") {
                 std::make_shared<NameToken>("v1"),
                 std::make_shared<SpecialCharToken>("("),
                 std::make_shared<NameToken>("v"),
+                std::make_shared<SpecialCharToken>(","),
+                std::make_shared<SpecialCharToken>(("'")),
+                std::make_shared<StringExpressionToken>(("x+y")),
+                std::make_shared<SpecialCharToken>(("'")),
+                std::make_shared<SpecialCharToken>(")"),
+                std::make_shared<EndOfFileToken>(),
+        };
+
+        auto *query = new Query();
+        QueryParser parser = QueryParser(tokens, query);
+        REQUIRE_THROWS(parser.parse());
+
+        delete query;
+    }
+
+    SECTION("Invalid While Pattern Clause Not )") {
+        std::vector<std::shared_ptr<Token>> tokens{
+                std::make_shared<NameToken>("while"),
+                std::make_shared<NameToken>("w"),
+                std::make_shared<SpecialCharToken>(";"),
+                std::make_shared<NameToken>("variable"),
+                std::make_shared<NameToken>("v"),
+                std::make_shared<SpecialCharToken>(";"),
+                std::make_shared<NameToken>("Select"),
+                std::make_shared<NameToken>("v"),
+                std::make_shared<NameToken>("pattern"),
+                std::make_shared<NameToken>("w"),
+                std::make_shared<SpecialCharToken>("("),
+                std::make_shared<NameToken>("v"),
+                std::make_shared<SpecialCharToken>(","),
+                std::make_shared<SpecialCharToken>(("'")),
+                std::make_shared<StringExpressionToken>(("x+y")),
+                std::make_shared<SpecialCharToken>(("'")),
+                std::make_shared<SpecialCharToken>("("),
+                std::make_shared<EndOfFileToken>(),
+        };
+
+        auto *query = new Query();
+        QueryParser parser = QueryParser(tokens, query);
+        REQUIRE_THROWS(parser.parse());
+
+        delete query;
+    }
+
+    SECTION("Invalid While Pattern Clause Two Arguments") {
+        std::vector<std::shared_ptr<Token>> tokens{
+                std::make_shared<NameToken>("while"),
+                std::make_shared<NameToken>("w"),
+                std::make_shared<SpecialCharToken>(";"),
+                std::make_shared<NameToken>("variable"),
+                std::make_shared<NameToken>("v"),
+                std::make_shared<SpecialCharToken>(";"),
+                std::make_shared<NameToken>("Select"),
+                std::make_shared<NameToken>("v"),
+                std::make_shared<NameToken>("pattern"),
+                std::make_shared<NameToken>("w"),
+                std::make_shared<SpecialCharToken>("("),
+                std::make_shared<NameToken>("v"),
+                std::make_shared<SpecialCharToken>(","),
+                std::make_shared<SpecialCharToken>(("'")),
+                std::make_shared<StringExpressionToken>(("x+y")),
+                std::make_shared<SpecialCharToken>(("'")),
                 std::make_shared<SpecialCharToken>(","),
                 std::make_shared<SpecialCharToken>(("'")),
                 std::make_shared<StringExpressionToken>(("x+y")),
@@ -934,7 +996,7 @@ TEST_CASE("With Clause") {
         Reference leftRef = Reference::createReference(leftAttrRef);
         Reference rightRef = Reference::createReference(12);
 
-        for (auto const item : query->getWithClause()) {
+        for (auto const item: query->getWithClause()) {
             Reference left = item->getLeftRef();
             REQUIRE(left == leftRef);
 
@@ -966,13 +1028,39 @@ TEST_CASE("With Clause") {
         Reference leftRef = Reference::createReference(leftAttrRef);
         Reference rightRef = Reference::createReference(rightAttrRef);
 
-        for (auto const item : query->getWithClause()) {
+        for (auto const item: query->getWithClause()) {
             Reference left = item->getLeftRef();
             REQUIRE(left == leftRef);
 
             Reference right = item->getRightRef();
             REQUIRE(right == rightRef);
         }
+
+        delete query;
+    }
+
+    SECTION("Invalid Attribute Reference Type Mismatch") {
+        std::string string = "assign a; stmt s;"
+                             "Select <a, s> with a.stmt# = s";
+        QueryTokenizer tokenizer = QueryTokenizer(string);
+        std::vector<std::shared_ptr<Token>> tokens = tokenizer.tokenize();
+
+        auto *query = new Query();
+        QueryParser parser = QueryParser(tokens, query);
+        REQUIRE_THROWS(parser.parse());
+
+        delete query;
+    }
+
+    SECTION("Invalid Attribute Reference Ident") {
+        std::string string = "assign a; stmt s;"
+                             "Select <a, s> with \"a+1\" = s";
+        QueryTokenizer tokenizer = QueryTokenizer(string);
+        std::vector<std::shared_ptr<Token>> tokens = tokenizer.tokenize();
+
+        auto *query = new Query();
+        QueryParser parser = QueryParser(tokens, query);
+        REQUIRE_THROWS(parser.parse());
 
         delete query;
     }
