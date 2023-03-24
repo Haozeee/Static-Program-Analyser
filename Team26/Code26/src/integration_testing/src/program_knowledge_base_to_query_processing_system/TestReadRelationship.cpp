@@ -45,13 +45,22 @@ TEST_CASE("Test reading relationships for all managers") {
     printStmtNoManager->insertEntity(5);
     printStmtNoManager->insertEntity(10);
     printStmtNoManager->insertEntity(12);
-    
+
     auto procedureManager = writeStorage->getProcedureManager();
     procedureManager->insertEntity("test1");
-    
-    auto readManager = writeStorage->getReadStmtNoManager();
-    readManager->insertEntity(1);
-    
+    procedureManager->insertEntity("test2");
+    procedureManager->insertEntity("test3");
+
+    auto readStmtManager = writeStorage->getReadStmtNoManager();
+    readStmtManager->insertEntity(1);
+    readStmtManager->insertEntity(16);
+    readStmtManager->insertEntity(18);
+
+    auto readVariableManager = writeStorage->getReadVariableManager();
+    readVariableManager->insertEntity("a");
+    readVariableManager->insertEntity("b");
+    readVariableManager->insertEntity("c");
+
     auto stmtManager = writeStorage->getStmtManager();
     stmtManager->insertEntity(1);
     stmtManager->insertEntity(2);
@@ -67,15 +76,21 @@ TEST_CASE("Test reading relationships for all managers") {
     stmtManager->insertEntity(12);
     stmtManager->insertEntity(13);
     stmtManager->insertEntity(14);
+    stmtManager->insertEntity(15);
+    stmtManager->insertEntity(16);
+    stmtManager->insertEntity(17);
+    stmtManager->insertEntity(18);
 
     auto variableManager = writeStorage->getVariableManager();
     variableManager->insertEntity("a");
+    variableManager->insertEntity("b");
+    variableManager->insertEntity("c");
     variableManager->insertEntity("x");
     variableManager->insertEntity("y");
 
     auto whileManager = writeStorage->getWhileManager();
     whileManager->insertEntity(8);
-    
+
     auto followsManager = writeStorage->getFollowsManager();
     followsManager->insertRelationship(1, 2);
     followsManager->insertRelationship(2, 3);
@@ -95,28 +110,28 @@ TEST_CASE("Test reading relationships for all managers") {
     followsTManager->insertRelationship(1, 7);
     followsTManager->insertRelationship(1, 8);
     followsTManager->insertRelationship(1, 14);
+    followsTManager->insertRelationship(1, 15);
     followsTManager->insertRelationship(2, 3);
     followsTManager->insertRelationship(2, 7);
     followsTManager->insertRelationship(2, 8);
     followsTManager->insertRelationship(2, 14);
+    followsTManager->insertRelationship(2, 15);
     followsTManager->insertRelationship(4, 5);
     followsTManager->insertRelationship(3, 7);
     followsTManager->insertRelationship(3, 8);
     followsTManager->insertRelationship(3, 14);
+    followsTManager->insertRelationship(3, 15);
     followsTManager->insertRelationship(7, 8);
     followsTManager->insertRelationship(7, 14);
+    followsTManager->insertRelationship(7, 15);
     followsTManager->insertRelationship(8, 14);
+    followsTManager->insertRelationship(8, 15);
     followsTManager->insertRelationship(9, 13);
     followsTManager->insertRelationship(11, 12);
-    followsTManager->insertRelationship(1, 15);
-    followsTManager->insertRelationship(2, 15);
-    followsTManager->insertRelationship(3, 15);
-    followsTManager->insertRelationship(7, 15);
-    followsTManager->insertRelationship(8, 15);
     followsTManager->insertRelationship(14, 15);
     followsTManager->insertRelationship(16, 17);
     followsTManager->setReverse();
-    
+
     auto modifiesPManager = writeStorage->getModifiesPManager();
     modifiesPManager->insertRelationship("test1", "a");
     modifiesPManager->insertRelationship("test1", "b");
@@ -127,7 +142,7 @@ TEST_CASE("Test reading relationships for all managers") {
     modifiesPManager->insertRelationship("test2", "c");
     modifiesPManager->insertRelationship("test3", "c");
     modifiesPManager->setReverse();
-    
+
     auto modifiesSManager = writeStorage->getModifiesSManager();
     modifiesSManager->insertRelationship(1,"a");
     modifiesSManager->insertRelationship(2,"x");
@@ -147,7 +162,7 @@ TEST_CASE("Test reading relationships for all managers") {
     modifiesSManager->insertRelationship(17, "c");
     modifiesSManager->insertRelationship(18, "c");
     modifiesSManager->setReverse();
-    
+
     auto parentManager = writeStorage->getParentManager();
     parentManager->insertRelationship(3, 4);
     parentManager->insertRelationship(3, 5);
@@ -158,7 +173,7 @@ TEST_CASE("Test reading relationships for all managers") {
     parentManager->insertRelationship(9, 11);
     parentManager->insertRelationship(9, 12);
     parentManager->setReverse();
-    
+
     auto parentTManager = writeStorage->getParentTManager();
     parentTManager->insertRelationship(3, 4);
     parentTManager->insertRelationship(3, 5);
@@ -172,13 +187,13 @@ TEST_CASE("Test reading relationships for all managers") {
     parentTManager->insertRelationship(9, 11);
     parentTManager->insertRelationship(9, 12);
     parentTManager->setReverse();
-    
+
     auto usesPManager = writeStorage->getUsesPManager();
     usesPManager->insertRelationship("test1", "a");
     usesPManager->insertRelationship("test1", "x");
     usesPManager->insertRelationship("test1", "y");
     usesPManager->setReverse();
-    
+
     auto usesSManager = writeStorage->getUsesSManager();
     usesSManager->insertRelationship(3, "a");
     usesSManager->insertRelationship(3, "x");
@@ -205,11 +220,11 @@ TEST_CASE("Test reading relationships for all managers") {
     callsTManager->insertRelationship("test1", "test2");
     callsTManager->insertRelationship("test1", "test3");
     callsTManager->insertRelationship("test2", "test3");
-    
+
     auto ifCondManager = writeStorage->getIfCondManager();
     ifCondManager->insertRelationship(3, "a");
     ifCondManager->insertRelationship(9, "x");
-    
+
     auto nextManager = writeStorage->getNextManager();
     nextManager->insertRelationship(1, 2);
     nextManager->insertRelationship(2, 3);
@@ -235,17 +250,18 @@ TEST_CASE("Test reading relationships for all managers") {
 
     // test Follows
     std::list<std::string> q1aResults;
-    std::string q1a = "stmt s; Select s such that Follows(1, s)"; 
+    std::string q1a = "stmt s; Select s such that Follows(1, s)";
     queryManager.process(q1a, q1aResults, storageManager->getReadStorage());
 
     std::list<std::string> a1aResults = {"2"};
     REQUIRE(q1aResults == a1aResults);
 
     std::list<std::string> q1bResults;
-    std::string q1b = "stmt s; Select s such that Follows(1, 2)"; 
+    std::string q1b = "stmt s; Select s such that Follows(1, 2)";
     queryManager.process(q1b, q1bResults, storageManager->getReadStorage());
 
-    std::list<std::string> a1bResults = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"};
+    std::list<std::string> a1bResults = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13",
+                                         "14", "15", "16", "17", "18"};
     q1bResults.sort(compare_int_string);
     REQUIRE(q1bResults == a1bResults);
 
@@ -255,13 +271,13 @@ TEST_CASE("Test reading relationships for all managers") {
 
     std::list<std::string> a1cResults = {};
     REQUIRE(q1cResults == a1cResults);
-    
+
     // test FollowsT
     std::list<std::string> q2aResults;
     std::string q2a = "stmt s; Select s such that Follows*(1, s)";
     queryManager.process(q2a, q2aResults, storageManager->getReadStorage());
 
-    std::list<std::string> a2aResults = {"2", "3", "7", "8", "14"};
+    std::list<std::string> a2aResults = {"2", "3", "7", "8", "14", "15"};
     q2aResults.sort(compare_int_string);
     REQUIRE(q2aResults == a2aResults);
 
