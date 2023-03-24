@@ -15,7 +15,7 @@
 
 
 class QueryParser : public AbstractParser {
-private:
+ private:
     /**
      * Query wrapper object.
      */
@@ -111,7 +111,7 @@ private:
 
     std::string referenceToString(Reference);
 
-public:
+ public:
     /**
      * Constructor for the query parser.
      *
