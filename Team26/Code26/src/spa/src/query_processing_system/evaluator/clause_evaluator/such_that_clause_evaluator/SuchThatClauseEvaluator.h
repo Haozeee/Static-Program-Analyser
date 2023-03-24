@@ -74,11 +74,18 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
     void evaluateWildcardSynonym() {
-        handleLeftWildcard();
-        evaluateSynonymSynonym();
-        // Remove wildcard placeholder
-        clauseResultTable = ResultTable::createSingleColumnTable(
-                rightArg.getValue(), clauseResultTable->getColumnValues(rightArg.getValue()));
+        auto relationshipMap = cacheable ? getOppositeRelationshipCache(getRightArgEntities())
+                : getOppositeRelationshipManager();
+        if (isRightArgAmbiguous()) {
+            relationshipMap = Util::filterMap(relationshipMap, getRightArgEntities());
+        }
+        std::unordered_set<U> res {};
+        for (auto const& [k, v] : relationshipMap) {
+            if (!v.empty()) {
+                res.insert(k);
+            }
+        }
+        setRightArgResult(res);
     }
 
     void evaluateValueValue() {
@@ -201,8 +208,6 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     virtual bool isRightArgAmbiguous() {
         return true;
     }
-
-    virtual void handleLeftWildcard() = 0;
 
     virtual bool isRelationshipEmpty() {
         return getRelationshipManager().empty();

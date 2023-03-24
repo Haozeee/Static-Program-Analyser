@@ -19,8 +19,6 @@ class StringStringClauseEvaluator : public SuchThatClauseEvaluator<std::string, 
 
     std::unordered_set<std::string> getRightArgEntities() override;
 
-    void handleLeftWildcard() override;
-
     std::string getLeftArg() override;
 
     std::string getRightArg() override;

@@ -3,10 +3,6 @@
 IntStringClauseEvaluator::IntStringClauseEvaluator(Argument left, Argument right)
     : SuchThatClauseEvaluator<int, std::string>(left, right) {}
 
-void IntStringClauseEvaluator::handleLeftWildcard() {
-    leftArg = Argument(ArgumentType::SYNONYM, "WILDCARD_PLACEHOLDER", DesignEntity::STMT);
-}
-
 void IntStringClauseEvaluator::setLeftArgResult(std::unordered_set<int> result) {
     clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), Util::intSetToStringSet(result));
 }
