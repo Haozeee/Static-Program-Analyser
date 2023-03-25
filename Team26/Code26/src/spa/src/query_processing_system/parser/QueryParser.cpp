@@ -7,8 +7,10 @@
 #include "query_processing_system/parser/clause/pattern_clause/PatternClauseFactory.h"
 #include "QueryParserUtil.h"
 
+std::unordered_set<std::string> clauseSet;
+
 QueryParser::QueryParser(std::vector<std::shared_ptr<Token>> tokens, Query* query) :
-query(query), AbstractParser(tokens) {}
+        query(query), AbstractParser(tokens) {}
 
 void QueryParser::parseAllDeclarations() {
     while (hasNext()) {
@@ -146,34 +148,39 @@ bool QueryParser::hasSuchThatClause() {
     } else {
         parseNext("such");
         parseNext("that");
-        parseMultipleRelRef();
+        parseMultipleSuchThat();
         return true;
     }
 }
 
-void QueryParser::parseMultipleRelRef() {
-    parseRelRef();
+void QueryParser::parseMultipleSuchThat() {
+    parseSuchThat();
 
     while (hasNext() && isValueOf("and")) {
         parseNext("and");
-        parseRelRef();
+        parseSuchThat();
     }
 }
 
-void QueryParser::parseRelRef() {
-    auto relRefToken = getNext();
-    std::string relRefString = relRefToken->getValue();
+void QueryParser::parseSuchThat() {
+    auto suchThatToken = getNext();
+    std::string suchThatString = suchThatToken->getValue();
     if (isValueOf("*")) {
         std::shared_ptr<Token> asteriskToken = parseNext("*");
-        relRefString += asteriskToken->getValue();
+        suchThatString += asteriskToken->getValue();
     }
     parseNext("(");
     Argument leftArgument = parseArgument();
     parseNext(",");
     Argument rightArgument = parseArgument();
     parseNext(")");
-    auto relRefClause = SuchThatClauseFactory::createSuchThatClause(relRefString, leftArgument, rightArgument);
-    query->addSuchThatClause(relRefClause);
+
+    auto tempSuchThatString = suchThatString + "(" + leftArgument.getValue() + "," + rightArgument.getValue() + ")";
+    if (clauseSet.find(tempSuchThatString) == clauseSet.end()) {
+        auto suchThatClause = SuchThatClauseFactory::createSuchThatClause(suchThatString, leftArgument, rightArgument);
+        query->addSuchThatClause(suchThatClause);
+        clauseSet.insert(tempSuchThatString);
+    }
 }
 
 Argument QueryParser::parseArgument() {
@@ -252,9 +259,15 @@ void QueryParser::parsePatternClause() {
         parseNext("_");
         parseNext(")");
     }
-    PatternClause* patternClause =
-            PatternClauseFactory::createPatternClause(patternArg, leftArgument, rightArgument);
-    query->addPatternClause(patternClause);
+
+    auto patternString = "pattern" + patternArg.getValue() + "(" + leftArgument.getValue() + ","
+                                + rightArgument.getExpression() + ")";
+    if (clauseSet.find(patternString) == clauseSet.end()) {
+        PatternClause* patternClause =
+                PatternClauseFactory::createPatternClause(patternArg, leftArgument, rightArgument);
+        query->addPatternClause(patternClause);
+        clauseSet.insert(patternString);
+    }
 }
 
 StringExpression QueryParser::parseExpression() {
@@ -315,8 +328,13 @@ void QueryParser::parseWithClause() {
     parseNextIfElseSyntaxError("=", getToken()->getValue()
                                     + QueryParserInvalidEqualSignInWithClause);
     Reference rightRef = parseReference();
-    auto withClause = new WithClause(leftRef, rightRef);
-    query->addWithClause(withClause);
+
+    auto withString = Reference::toString(leftRef) + "=" + Reference::toString(rightRef);
+    if (clauseSet.find(withString) == clauseSet.end()) {
+        auto withClause = new WithClause(leftRef, rightRef);
+        query->addWithClause(withClause);
+        clauseSet.insert(withString);
+    }
 }
 
 void QueryParser::parseMultipleWithClause() {
@@ -423,4 +441,6 @@ void QueryParser::parse() {
 
         parseEndingUnexpectedToken();
     }
+
+    clauseSet.clear();
 }
