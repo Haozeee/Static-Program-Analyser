@@ -31,6 +31,7 @@ void AssignPatternClauseEvaluator::evaluateWildcard() {
 
 EntityEntityMap AssignPatternClauseEvaluator::evaluateStringHelper(EntitySet lhsValues) {
     EntityEntityMap res;
+    // To fix
     auto assignStatements = storage->getAssignPatternManager()->getAllPatternEntries();
     auto lhsStatements = storage->getAssignPatternManager()->getAllLhsPatternEntries();
     auto rhsStatements = storage->getAssignPatternManager()->getAllRhsPatternEntries();

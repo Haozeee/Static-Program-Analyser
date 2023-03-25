@@ -5,7 +5,7 @@
 #include "StringStringClauseEvaluator.h"
 
 class CallsTClauseEvaluator : public StringStringClauseEvaluator {
-protected:
+ protected:
     EntityEntityMap getRelationshipMap(EntitySet &interestedValues) override;
 
     EntityEntityMap getOppositeRelationshipMap(EntitySet &interestedValues) override;

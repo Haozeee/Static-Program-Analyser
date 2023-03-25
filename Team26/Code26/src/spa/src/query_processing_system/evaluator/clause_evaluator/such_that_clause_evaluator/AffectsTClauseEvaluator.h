@@ -10,6 +10,6 @@ class AffectsTClauseEvaluator : public IntIntClauseEvaluator {
 
     bool isEmptyRelation() override;
 
-public:
+ public:
     AffectsTClauseEvaluator(Argument left, Argument right);
 };

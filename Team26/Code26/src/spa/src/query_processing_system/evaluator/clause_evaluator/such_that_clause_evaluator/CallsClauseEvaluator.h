@@ -12,6 +12,6 @@ class CallsClauseEvaluator : public StringStringClauseEvaluator {
 
     bool isEmptyRelation() override;
 
-public:
+ public:
     CallsClauseEvaluator(Argument left, Argument right);
 };

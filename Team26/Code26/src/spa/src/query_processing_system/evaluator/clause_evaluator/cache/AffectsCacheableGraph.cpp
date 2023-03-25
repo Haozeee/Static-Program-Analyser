@@ -2,12 +2,12 @@
 #include <stack>
 
 AffectsCacheableGraph::AffectsCacheableGraph(StoragePointer storage) : CacheableGraph<int, int>(storage) {
-    modifiesMap = storage->getModifiesSManager()->getAllRelationshipEntries();
-    usesMap = storage->getUsesSManager()->getAllRelationshipEntries();
-    callsSMap = storage->getCallsSManager()->getAllRelationshipEntries();
-    assignStatements = storage->getAssignManager()->getAllEntitiesEntries();
-    readStatements = storage->getReadStmtNoManager()->getAllEntitiesEntries();
-    callStatements = storage->getCallStmtNoManager()->getAllEntitiesEntries();
+    modifiesMap = StorageUtil::getRelationshipMap(storage->getModifiesSManager());
+    usesMap = StorageUtil::getRelationshipMap(storage->getUsesSManager());
+    callsSMap = StorageUtil::getRelationshipMap(storage->getCallsSManager());
+    assignStatements = StorageUtil::getEntityValues(storage->getAssignManager());
+    readStatements = StorageUtil::getEntityValues(storage->getReadStmtNoManager());
+    callStatements = StorageUtil::getEntityValues(storage->getCallStmtNoManager());
 }
 
 
@@ -80,8 +80,7 @@ void AffectsCacheableGraph::onCacheMiss(int startStatement) {
 
 bool AffectsCacheableGraph::callStatementModifiesVariable(int callStatement, std::string variableModified) {
     auto procedureCalled = *(callsSMap.at(callStatement).begin());
-    auto modifiesManager = storage->getModifiesPManager();
-    return modifiesManager->containsMap(procedureCalled, variableModified);
+    return StorageUtil::relationContains(storage->getModifiesPManager(), procedureCalled, variableModified);
 }
 
 void AffectsCacheableGraph::buildAll() {
@@ -104,5 +103,5 @@ std::unordered_map<int, std::unordered_set<int>> AffectsCacheableGraph::getRever
 }
 
 void AffectsCacheableGraph::setBase() {
-    base = storage->getNextManager()->getAllRelationshipEntries();
+    base = StorageUtil::getRelationshipMap(storage->getNextManager());
 }

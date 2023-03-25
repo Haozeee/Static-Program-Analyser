@@ -9,5 +9,5 @@ class AffectsTCacheableGraph : public TransitiveCacheableGraph {
  public:
     explicit AffectsTCacheableGraph(StoragePointer storage);
 
-    void setBase(std::unordered_map<int, std::unordered_set<int>> newBase);
+    void setBase(StmtStmtCache newBase);
 };

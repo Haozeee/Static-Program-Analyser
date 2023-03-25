@@ -11,9 +11,11 @@ class MockIntStringClauseEvaluator : public IntStringClauseEvaluator {
  public:
     MockIntStringClauseEvaluator(Argument left, Argument right);
 
-    std::unordered_map<int, std::unordered_set<std::string>> getRelationshipMap() override;
+    StmtEntityMap getRelationshipMap(StmtSet &interestedValues) override;
 
-    std::unordered_map<std::string, std::unordered_set<int>> getOppositeRelationshipManager() override;
+    EntityStmtMap getOppositeRelationshipMap(EntitySet &interestedValues) override;
+
+    bool isEmptyRelation() override;
 
     std::shared_ptr<ResultTable> getClauseResult();
 };

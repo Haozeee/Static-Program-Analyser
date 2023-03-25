@@ -11,6 +11,6 @@ class FollowsTClauseEvaluator : public IntIntClauseEvaluator {
 
     bool isEmptyRelation() override;
 
-public:
+ public:
     FollowsTClauseEvaluator(Argument left, Argument right);
 };

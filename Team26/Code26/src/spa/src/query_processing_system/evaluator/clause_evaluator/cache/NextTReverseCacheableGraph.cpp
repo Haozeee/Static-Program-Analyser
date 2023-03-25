@@ -3,5 +3,5 @@
 NextTReverseCacheableGraph::NextTReverseCacheableGraph(StoragePointer storage) : TransitiveCacheableGraph(storage) {}
 
 void NextTReverseCacheableGraph::setBase() {
-    base = storage->getNextManager()->getAllReversedRelationshipEntries();
+    base = StorageUtil::getReverseRelationshipMap(storage->getNextManager());
 }

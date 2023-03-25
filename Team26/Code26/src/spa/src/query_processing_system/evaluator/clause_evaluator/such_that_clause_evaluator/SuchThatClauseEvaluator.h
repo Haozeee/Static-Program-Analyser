@@ -32,7 +32,8 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
     void evaluateValueSynonym() {
-        auto relationshipStore = getRelationshipMap({getLeftArg()});
+        std::unordered_set<T> interestedValues {getLeftArg()};
+        auto relationshipStore = getRelationshipMap(interestedValues);
         auto it = relationshipStore.find(getLeftArg());
         std::unordered_set<U> res {};
         if (it != relationshipStore.end()) {
@@ -46,7 +47,8 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
     void evaluateSynonymValue() {
-        auto relationshipStore = getOppositeRelationshipMap({getRightArg()});
+        std::unordered_set<U> interestedValues {getRightArg()};
+        auto relationshipStore = getOppositeRelationshipMap(interestedValues);
         auto it = relationshipStore.find(getRightArg());
         std::unordered_set<T> res {};
         if (it != relationshipStore.end()) {
@@ -90,7 +92,8 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
     void evaluateValueValue() {
-        auto relationshipStore = getRelationshipMap({getLeftArg()});
+        std::unordered_set<T> interestedValues {getLeftArg()};
+        auto relationshipStore = getRelationshipMap(interestedValues);
         auto iterator = relationshipStore.find(getLeftArg());
         if (iterator == relationshipStore.end() || !iterator->second.count(getRightArg())) {
             clauseResultTable->setNoResults();
@@ -98,7 +101,8 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
     void evaluateValueWildcard() {
-        auto relationshipStore = getRelationshipMap({getLeftArg()});
+        std::unordered_set<T> interestedValues {getLeftArg()};
+        auto relationshipStore = getRelationshipMap(interestedValues);
         auto iterator = relationshipStore.find(getLeftArg());
         if (iterator == relationshipStore.end() || iterator->second.empty()) {
             clauseResultTable->setNoResults();
@@ -106,7 +110,8 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
     void evaluateWildcardValue() {
-        auto relationshipStore = getOppositeRelationshipMap({getRightArg()});
+        std::unordered_set<U> interestedValues {getRightArg()};
+        auto relationshipStore = getOppositeRelationshipMap(interestedValues);
         auto iterator = relationshipStore.find(getRightArg());
         if (iterator == relationshipStore.end() || iterator->second.empty()) {
             clauseResultTable->setNoResults();

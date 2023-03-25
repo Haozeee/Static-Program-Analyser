@@ -12,5 +12,5 @@ StmtStmtMap FollowsTClauseEvaluator::getOppositeRelationshipMap(StmtSet &interes
 }
 
 bool FollowsTClauseEvaluator::isEmptyRelation() {
-    return StorageUtil::isRelationEmpty(storage->getFollowsTManager())
+    return StorageUtil::isRelationEmpty(storage->getFollowsTManager());
 }

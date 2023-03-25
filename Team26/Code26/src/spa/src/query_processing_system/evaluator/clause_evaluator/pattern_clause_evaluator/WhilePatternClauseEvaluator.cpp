@@ -5,9 +5,9 @@ WhilePatternClauseEvaluator::WhilePatternClauseEvaluator(Argument patternArg, Ar
     : ExpressionlessPatternClauseEvaluator(std::move(patternArg), std::move(leftArg)) {}
 
 StmtEntityMap WhilePatternClauseEvaluator::getRelationshipEntries() {
-    return storage->getWhileCondManager()->getAllRelationshipEntries();
+    return StorageUtil::getRelationshipMap(storage->getWhileCondManager());
 }
 
 EntityStmtMap WhilePatternClauseEvaluator::getReverseRelationshipEntries() {
-    return storage->getWhileCondManager()->getAllReversedRelationshipEntries();
+    return StorageUtil::getReverseRelationshipMap(storage->getWhileCondManager());
 }

@@ -11,6 +11,6 @@ class UsesSClauseEvaluator : public IntStringClauseEvaluator {
 
     bool isEmptyRelation() override;
 
-public:
+ public:
     UsesSClauseEvaluator(Argument left, Argument right);
 };

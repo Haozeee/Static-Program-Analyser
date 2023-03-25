@@ -8,7 +8,7 @@ StmtStmtMap ParentTClauseEvaluator::getRelationshipMap(StmtSet &interestedValues
 }
 
 StmtStmtMap ParentTClauseEvaluator::getOppositeRelationshipMap(StmtSet &interestedValues) {
-    return StorageUtil::getRelationshipMap(storage->getParentTManager());
+    return StorageUtil::getReverseRelationshipMap(storage->getParentTManager());
 }
 
 bool ParentTClauseEvaluator::isEmptyRelation() {

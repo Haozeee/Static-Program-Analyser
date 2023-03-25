@@ -11,6 +11,6 @@ class ParentTClauseEvaluator : public IntIntClauseEvaluator {
 
     bool isEmptyRelation() override;
 
-public:
+ public:
     ParentTClauseEvaluator(Argument left, Argument right);
 };

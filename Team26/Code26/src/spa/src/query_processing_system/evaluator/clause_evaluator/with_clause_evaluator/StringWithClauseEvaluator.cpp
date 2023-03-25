@@ -35,10 +35,10 @@ EntitySet StringWithClauseEvaluator::getRefValue(StoragePointer storage, Referen
 
 EntitySet StringWithClauseEvaluator::getReadStatements(StoragePointer storage, std::string value) {
     StmtSet res;
-    auto relationshipStore = storage->getModifiesSManager()->getAllReversedRelationshipEntries();
+    auto relationshipStore = StorageUtil::getReverseRelationshipMap(storage->getModifiesSManager());
     auto it = relationshipStore.find(value);
     if (it != relationshipStore.end()) {
-        auto readStatements = storage->getReadStmtNoManager()->getAllEntitiesEntries();
+        auto readStatements = StorageUtil::getEntityValues(storage->getReadStmtNoManager());
         Util::setIntersection(it->second, readStatements, res);
     }
     return Util::intSetToStringSet(res);
@@ -46,10 +46,10 @@ EntitySet StringWithClauseEvaluator::getReadStatements(StoragePointer storage, s
 
 EntitySet StringWithClauseEvaluator::getPrintStatements(StoragePointer storage, std::string value) {
     StmtSet res;
-    auto relationshipStore = storage->getUsesSManager()->getAllReversedRelationshipEntries();
+    auto relationshipStore = StorageUtil::getReverseRelationshipMap(storage->getUsesSManager());
     auto it = relationshipStore.find(value);
     if (it != relationshipStore.end()) {
-        auto printStatements = storage->getPrintStmtNoManager()->getAllEntitiesEntries();
+        auto printStatements = StorageUtil::getEntityValues(storage->getPrintStmtNoManager());
         Util::setIntersection(it->second, printStatements, res);
     }
     return Util::intSetToStringSet(res);
@@ -57,7 +57,7 @@ EntitySet StringWithClauseEvaluator::getPrintStatements(StoragePointer storage, 
 
 EntitySet StringWithClauseEvaluator::getCallStatements(StoragePointer storage, std::string value) {
     StmtSet res;
-    auto relationshipStore = storage->getCallsSManager()->getAllReversedRelationshipEntries();
+    auto relationshipStore = StorageUtil::getReverseRelationshipMap(storage->getCallsSManager());
     auto it = relationshipStore.find(value);
     if (it != relationshipStore.end()) {
         res = it->second;

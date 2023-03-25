@@ -10,6 +10,6 @@ class NextClauseEvaluator : public IntIntClauseEvaluator {
 
     bool isEmptyRelation() override;
 
-public:
+ public:
     NextClauseEvaluator(Argument left, Argument right);
 };

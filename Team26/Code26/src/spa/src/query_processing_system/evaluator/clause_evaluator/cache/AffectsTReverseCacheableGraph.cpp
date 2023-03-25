@@ -3,6 +3,6 @@
 AffectsTReverseCacheableGraph::AffectsTReverseCacheableGraph(StoragePointer storage)
     : TransitiveCacheableGraph(storage) {}
 
-void AffectsTReverseCacheableGraph::setBase(std::unordered_map<int, std::unordered_set<int>> newBase) {
+void AffectsTReverseCacheableGraph::setBase(StmtStmtCache newBase) {
     base = std::move(newBase);
 }

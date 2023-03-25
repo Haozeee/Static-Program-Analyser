@@ -2,6 +2,8 @@
 
 #include <memory>
 #include <string>
+#include <unordered_set>
+#include <unordered_map>
 #include "program_knowledge_base/entity/entity_child_managers/AssignManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/PrintStmtNoManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/PrintVariableManager.h"
@@ -238,5 +240,10 @@ class StorageUtil {
     template<typename T, typename U>
     static bool relationContains(std::shared_ptr<IReadRelationshipManager<T, U>> relation, T first, U second) {
         return relation->containsMap(first, second);
+    }
+
+    template<typename T>
+    static std::unordered_set<T> getEntityValues(std::shared_ptr<IReadEntityManager<T>> entityManager) {
+        return entityManager->getAllEntitiesEntries();
     }
 };
