@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <unordered_set>
 #include "WithClauseEvaluator.h"
 
 class StringWithClauseEvaluator : public WithClauseEvaluator<std::string> {

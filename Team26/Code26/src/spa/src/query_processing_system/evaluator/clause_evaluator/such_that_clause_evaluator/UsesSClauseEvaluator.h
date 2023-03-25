@@ -1,8 +1,6 @@
 #pragma once
 
 #include "IntStringClauseEvaluator.h"
-#include <unordered_map>
-#include <unordered_set>
 #include <string>
 
 class UsesSClauseEvaluator : public IntStringClauseEvaluator {

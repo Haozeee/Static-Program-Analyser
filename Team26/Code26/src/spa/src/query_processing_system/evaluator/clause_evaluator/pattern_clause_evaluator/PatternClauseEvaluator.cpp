@@ -1,5 +1,4 @@
 #include <utility>
-
 #include "PatternClauseEvaluator.h"
 
 PatternClauseEvaluator::PatternClauseEvaluator(Argument patternArg, Argument leftArg, StringExpression rightArg)

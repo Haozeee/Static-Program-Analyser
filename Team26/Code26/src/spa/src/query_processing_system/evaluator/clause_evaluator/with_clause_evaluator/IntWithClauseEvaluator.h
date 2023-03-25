@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <unordered_set>
 #include "WithClauseEvaluator.h"
 
 class IntWithClauseEvaluator : public WithClauseEvaluator<int> {

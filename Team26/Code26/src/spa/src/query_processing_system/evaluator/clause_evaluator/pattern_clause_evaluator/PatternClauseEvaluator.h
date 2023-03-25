@@ -1,5 +1,4 @@
 #pragma once
-
 #include <memory>
 #include <variant>
 #include "query_processing_system/evaluator/clause_evaluator/ClauseEvaluator.h"

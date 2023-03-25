@@ -4,11 +4,11 @@ NextTClauseEvaluator::NextTClauseEvaluator(Argument left, Argument right) : IntI
     cacheable = true;
 }
 
-IntIntMap NextTClauseEvaluator::getRelationshipCache(std::unordered_set<int> itemsToRead) {
+IntIntMap NextTClauseEvaluator::getRelationshipCache(IntSet itemsToRead) {
     return Cache::getCacheData(cache->getNextTCache(), itemsToRead);
 }
 
-IntIntMap NextTClauseEvaluator::getOppositeRelationshipCache(std::unordered_set<int> itemsToRead) {
+IntIntMap NextTClauseEvaluator::getOppositeRelationshipCache(IntSet itemsToRead) {
     return Cache::getCacheData(cache->getNextTReverseCache(), itemsToRead);
 }
 

@@ -4,11 +4,11 @@ AffectsClauseEvaluator::AffectsClauseEvaluator(Argument left, Argument right) : 
     cacheable = true;
 }
 
-IntIntMap AffectsClauseEvaluator::getRelationshipCache(std::unordered_set<int> itemsToRead) {
+IntIntMap AffectsClauseEvaluator::getRelationshipCache(IntSet itemsToRead) {
     return Cache::getCacheData(cache->getAffectsCache(), itemsToRead);
 }
 
-IntIntMap AffectsClauseEvaluator::getOppositeRelationshipCache(std::unordered_set<int> itemsToRead) {
+IntIntMap AffectsClauseEvaluator::getOppositeRelationshipCache(IntSet itemsToRead) {
     return cache->getAffectsReverseCacheData();
 }
 

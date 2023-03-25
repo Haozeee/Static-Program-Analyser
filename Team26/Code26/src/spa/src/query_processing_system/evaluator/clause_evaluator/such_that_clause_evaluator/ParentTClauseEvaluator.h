@@ -2,8 +2,6 @@
 
 #include "IntIntClauseEvaluator.h"
 #include <memory>
-#include <unordered_map>
-#include <unordered_set>
 
 class ParentTClauseEvaluator : public IntIntClauseEvaluator {
  public:

@@ -1,9 +1,6 @@
 #pragma once
 
 #include <memory>
-#include <variant>
-#include <unordered_set>
-#include <unordered_map>
 #include <string>
 #include <utility>
 #include "PatternClauseEvaluator.h"

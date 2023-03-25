@@ -1,8 +1,6 @@
 #pragma once
 
 #include "IntIntClauseEvaluator.h"
-#include <unordered_map>
-#include <unordered_set>
 
 class AffectsTClauseEvaluator : public IntIntClauseEvaluator {
  public:
@@ -12,9 +10,9 @@ class AffectsTClauseEvaluator : public IntIntClauseEvaluator {
 
     IntIntMap getOppositeRelationshipManager() override;
 
-    IntIntMap getRelationshipCache(std::unordered_set<int> itemsToRead) override;
+    IntIntMap getRelationshipCache(IntSet itemsToRead) override;
 
-    IntIntMap getOppositeRelationshipCache(std::unordered_set<int> itemsToRead) override;
+    IntIntMap getOppositeRelationshipCache(IntSet itemsToRead) override;
 
     bool isRelationshipEmpty() override;
 };

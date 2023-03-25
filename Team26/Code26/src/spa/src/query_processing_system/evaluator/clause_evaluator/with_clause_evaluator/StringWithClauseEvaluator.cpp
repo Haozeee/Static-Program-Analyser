@@ -34,7 +34,7 @@ StringSet StringWithClauseEvaluator::getRefValue(StoragePointer storage, Referen
 }
 
 StringSet StringWithClauseEvaluator::getReadStatements(StoragePointer storage, std::string value) {
-    std::unordered_set<int> res;
+    IntSet res;
     auto relationshipStore = storage->getModifiesSManager()->getAllReversedRelationshipEntries();
     auto it = relationshipStore.find(value);
     if (it != relationshipStore.end()) {
@@ -45,7 +45,7 @@ StringSet StringWithClauseEvaluator::getReadStatements(StoragePointer storage, s
 }
 
 StringSet StringWithClauseEvaluator::getPrintStatements(StoragePointer storage, std::string value) {
-    std::unordered_set<int> res;
+    IntSet res;
     auto relationshipStore = storage->getUsesSManager()->getAllReversedRelationshipEntries();
     auto it = relationshipStore.find(value);
     if (it != relationshipStore.end()) {
@@ -56,7 +56,7 @@ StringSet StringWithClauseEvaluator::getPrintStatements(StoragePointer storage, 
 }
 
 StringSet StringWithClauseEvaluator::getCallStatements(StoragePointer storage, std::string value) {
-    std::unordered_set<int> res;
+    IntSet res;
     auto relationshipStore = storage->getCallsSManager()->getAllReversedRelationshipEntries();
     auto it = relationshipStore.find(value);
     if (it != relationshipStore.end()) {

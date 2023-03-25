@@ -1,8 +1,6 @@
 #pragma once
 #include "SuchThatClauseEvaluator.h"
 #include <memory>
-#include <unordered_set>
-#include <unordered_map>
 #include <string>
 
 class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
