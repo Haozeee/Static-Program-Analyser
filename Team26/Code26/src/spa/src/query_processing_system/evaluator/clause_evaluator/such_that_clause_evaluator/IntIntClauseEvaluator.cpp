@@ -11,24 +11,24 @@ void IntIntClauseEvaluator::evaluateEqualSynonym() {
     setLeftArgResult(Util::getElementsWithCycles(relationshipMap));
 }
 
-void IntIntClauseEvaluator::setLeftArgResult(IntSet result) {
+void IntIntClauseEvaluator::setLeftArgResult(StmtSet result) {
     clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), Util::intSetToStringSet(result));
 }
 
-void IntIntClauseEvaluator::setRightArgResult(IntSet result) {
+void IntIntClauseEvaluator::setRightArgResult(StmtSet result) {
     clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), Util::intSetToStringSet(result));
 }
 
-void IntIntClauseEvaluator::setLeftAndRightArgResult(IntIntMap results) {
+void IntIntClauseEvaluator::setLeftAndRightArgResult(StmtStmtMap results) {
     auto res = Util::intMapTostringMap(results);
     clauseResultTable = ResultTable::createTableFromMap(res, leftArg.getValue(), rightArg.getValue());
 }
 
-IntSet IntIntClauseEvaluator::getLeftArgEntities() {
+StmtSet IntIntClauseEvaluator::getLeftArgEntities() {
     return PkbUtil::getIntEntitiesFromPkb(storage, leftArg.getDesignEntity());
 }
 
-IntSet IntIntClauseEvaluator::getRightArgEntities() {
+StmtSet IntIntClauseEvaluator::getRightArgEntities() {
     return PkbUtil::getIntEntitiesFromPkb(storage, rightArg.getDesignEntity());
 }
 

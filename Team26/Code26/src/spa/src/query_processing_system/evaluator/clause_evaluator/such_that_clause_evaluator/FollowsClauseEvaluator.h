@@ -6,7 +6,7 @@ class FollowsClauseEvaluator : public IntIntClauseEvaluator {
  public:
     FollowsClauseEvaluator(Argument left, Argument right);
 
-    IntIntMap getRelationshipManager() override;
+    StmtStmtMap getRelationshipManager() override;
 
-    IntIntMap getOppositeRelationshipManager() override;
+    StmtStmtMap getOppositeRelationshipManager() override;
 };

@@ -4,10 +4,10 @@
 IfPatternClauseEvaluator::IfPatternClauseEvaluator(Argument patternArg, Argument leftArg)
     : ExpressionlessPatternClauseEvaluator(std::move(patternArg), std::move(leftArg)) {}
 
-IntStringMap IfPatternClauseEvaluator::getRelationshipEntries() {
+StmtEntityMap IfPatternClauseEvaluator::getRelationshipEntries() {
     return storage->getIfCondManager()->getAllRelationshipEntries();
 }
 
-StringIntMap IfPatternClauseEvaluator::getReverseRelationshipEntries() {
+EntityStmtMap IfPatternClauseEvaluator::getReverseRelationshipEntries() {
     return storage->getIfCondManager()->getAllReversedRelationshipEntries();
 }

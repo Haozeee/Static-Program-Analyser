@@ -4,19 +4,19 @@ AffectsTClauseEvaluator::AffectsTClauseEvaluator(Argument left, Argument right) 
     cacheable = true;
 }
 
-IntIntMap AffectsTClauseEvaluator::getRelationshipCache(IntSet itemsToRead) {
+StmtStmtMap AffectsTClauseEvaluator::getRelationshipCache(StmtSet itemsToRead) {
     return Cache::getCacheData(cache->getAffectsTCache(), itemsToRead);
 }
 
-IntIntMap AffectsTClauseEvaluator::getOppositeRelationshipCache(IntSet itemsToRead) {
+StmtStmtMap AffectsTClauseEvaluator::getOppositeRelationshipCache(StmtSet itemsToRead) {
     return Cache::getCacheData(cache->getAffectsTReverseCache(), itemsToRead);
 }
 
-IntIntMap AffectsTClauseEvaluator::getRelationshipManager() {
+StmtStmtMap AffectsTClauseEvaluator::getRelationshipManager() {
     return Cache::getEntireCacheData(cache->getAffectsTCache());
 }
 
-IntIntMap AffectsTClauseEvaluator::getOppositeRelationshipManager() {
+StmtStmtMap AffectsTClauseEvaluator::getOppositeRelationshipManager() {
     return Cache::getEntireCacheData(cache->getAffectsTReverseCache());
 }
 

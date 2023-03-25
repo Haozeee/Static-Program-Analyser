@@ -7,7 +7,7 @@ class ParentTClauseEvaluator : public IntIntClauseEvaluator {
  public:
     ParentTClauseEvaluator(Argument left, Argument right);
 
-    IntIntMap getRelationshipManager() override;
+    StmtStmtMap getRelationshipManager() override;
 
-    IntIntMap getOppositeRelationshipManager() override;
+    StmtStmtMap getOppositeRelationshipManager() override;
 };

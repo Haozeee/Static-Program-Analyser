@@ -4,19 +4,19 @@ NextTClauseEvaluator::NextTClauseEvaluator(Argument left, Argument right) : IntI
     cacheable = true;
 }
 
-IntIntMap NextTClauseEvaluator::getRelationshipCache(IntSet itemsToRead) {
+StmtStmtMap NextTClauseEvaluator::getRelationshipCache(StmtSet itemsToRead) {
     return Cache::getCacheData(cache->getNextTCache(), itemsToRead);
 }
 
-IntIntMap NextTClauseEvaluator::getOppositeRelationshipCache(IntSet itemsToRead) {
+StmtStmtMap NextTClauseEvaluator::getOppositeRelationshipCache(StmtSet itemsToRead) {
     return Cache::getCacheData(cache->getNextTReverseCache(), itemsToRead);
 }
 
-IntIntMap NextTClauseEvaluator::getRelationshipManager() {
+StmtStmtMap NextTClauseEvaluator::getRelationshipManager() {
     return Cache::getEntireCacheData(cache->getNextTCache());
 }
 
-IntIntMap NextTClauseEvaluator::getOppositeRelationshipManager() {
+StmtStmtMap NextTClauseEvaluator::getOppositeRelationshipManager() {
     return Cache::getEntireCacheData(cache->getNextTReverseCache());
 }
 

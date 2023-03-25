@@ -3,23 +3,23 @@
 StringStringClauseEvaluator::StringStringClauseEvaluator(Argument left, Argument right)
     : SuchThatClauseEvaluator<std::string, std::string>(left, right) {}
 
-void StringStringClauseEvaluator::setLeftArgResult(StringSet result) {
+void StringStringClauseEvaluator::setLeftArgResult(EntitySet result) {
     clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), result);
 }
 
-void StringStringClauseEvaluator::setRightArgResult(StringSet result) {
+void StringStringClauseEvaluator::setRightArgResult(EntitySet result) {
     clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), result);
 }
 
-void StringStringClauseEvaluator::setLeftAndRightArgResult(StringStringMap results) {
+void StringStringClauseEvaluator::setLeftAndRightArgResult(EntityEntityMap results) {
     clauseResultTable = ResultTable::createTableFromMap(results, leftArg.getValue(), rightArg.getValue());
 }
 
-StringSet StringStringClauseEvaluator::getLeftArgEntities() {
+EntitySet StringStringClauseEvaluator::getLeftArgEntities() {
     return PkbUtil::getStringEntitiesFromPkb(storage, leftArg.getDesignEntity());
 }
 
-StringSet StringStringClauseEvaluator::getRightArgEntities() {
+EntitySet StringStringClauseEvaluator::getRightArgEntities() {
     return PkbUtil::getStringEntitiesFromPkb(storage, rightArg.getDesignEntity());
 }
 

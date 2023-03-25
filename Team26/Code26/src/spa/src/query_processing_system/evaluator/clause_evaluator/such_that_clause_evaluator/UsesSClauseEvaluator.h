@@ -7,7 +7,7 @@ class UsesSClauseEvaluator : public IntStringClauseEvaluator {
  public:
     UsesSClauseEvaluator(Argument left, Argument right);
 
-    IntStringMap getRelationshipManager() override;
+    StmtEntityMap getRelationshipManager() override;
 
-    StringIntMap getOppositeRelationshipManager() override;
+    EntityStmtMap getOppositeRelationshipManager() override;
 };

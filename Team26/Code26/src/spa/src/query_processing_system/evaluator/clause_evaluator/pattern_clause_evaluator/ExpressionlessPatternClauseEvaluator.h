@@ -12,9 +12,9 @@ class ExpressionlessPatternClauseEvaluator : public PatternClauseEvaluator {
 
     void evaluateWildcard() override;
 
-    virtual IntStringMap getRelationshipEntries() = 0;
+    virtual StmtEntityMap getRelationshipEntries() = 0;
 
-    virtual StringIntMap getReverseRelationshipEntries() = 0;
+    virtual EntityStmtMap getReverseRelationshipEntries() = 0;
 
  public:
     ExpressionlessPatternClauseEvaluator(Argument patternArg, Argument leftArg);

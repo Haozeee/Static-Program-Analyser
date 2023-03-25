@@ -3,10 +3,10 @@
 NextClauseEvaluator::NextClauseEvaluator(Argument left, Argument right)
     : IntIntClauseEvaluator(left, right) {}
 
-IntIntMap NextClauseEvaluator::getRelationshipManager() {
+StmtStmtMap NextClauseEvaluator::getRelationshipManager() {
     return storage->getNextManager()->getAllRelationshipEntries();
 }
 
-IntIntMap NextClauseEvaluator::getOppositeRelationshipManager() {
+StmtStmtMap NextClauseEvaluator::getOppositeRelationshipManager() {
     return storage->getNextManager()->getAllReversedRelationshipEntries();
 }

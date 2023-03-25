@@ -19,7 +19,7 @@ class AffectsCacheableGraph : public CacheableGraph<int, int> {
 
     std::unordered_set<int> callStatements;
 
-    IntIntCache reverseCache;
+    StmtStmtCache reverseCache;
 
     bool fullyBuilt = false;
 
@@ -48,5 +48,5 @@ class AffectsCacheableGraph : public CacheableGraph<int, int> {
      */
     void buildAll() override;
 
-    IntIntCache getReverseCache();
+    StmtStmtCache getReverseCache();
 };

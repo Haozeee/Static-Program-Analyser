@@ -3,10 +3,10 @@
 FollowsTClauseEvaluator::FollowsTClauseEvaluator(Argument left, Argument right)
         : IntIntClauseEvaluator(left, right) {}
 
-IntIntMap FollowsTClauseEvaluator::getRelationshipManager() {
+StmtStmtMap FollowsTClauseEvaluator::getRelationshipManager() {
     return storage->getFollowsTManager()->getAllRelationshipEntries();
 }
 
-IntIntMap FollowsTClauseEvaluator::getOppositeRelationshipManager() {
+StmtStmtMap FollowsTClauseEvaluator::getOppositeRelationshipManager() {
     return storage->getFollowsTManager()->getAllReversedRelationshipEntries();
 }

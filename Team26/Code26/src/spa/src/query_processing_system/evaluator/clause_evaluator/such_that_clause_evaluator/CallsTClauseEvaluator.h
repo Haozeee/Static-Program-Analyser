@@ -8,7 +8,7 @@ class CallsTClauseEvaluator : public StringStringClauseEvaluator {
  public:
     CallsTClauseEvaluator(Argument left, Argument right);
 
-    StringStringMap getRelationshipManager() override;
+    EntityEntityMap getRelationshipManager() override;
 
-    StringStringMap getOppositeRelationshipManager() override;
+    EntityEntityMap getOppositeRelationshipManager() override;
 };

@@ -6,9 +6,9 @@
 
 class WhilePatternClauseEvaluator : public ExpressionlessPatternClauseEvaluator {
  protected:
-    IntStringMap getRelationshipEntries() override;
+    StmtEntityMap getRelationshipEntries() override;
 
-    StringIntMap getReverseRelationshipEntries() override;
+    EntityStmtMap getReverseRelationshipEntries() override;
 
  public:
     WhilePatternClauseEvaluator(Argument patternArg, Argument leftArg);

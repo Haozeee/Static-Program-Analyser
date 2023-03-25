@@ -6,13 +6,13 @@ class NextTClauseEvaluator : public IntIntClauseEvaluator {
  public:
     NextTClauseEvaluator(Argument left, Argument right);
 
-    IntIntMap getRelationshipManager() override;
+    StmtStmtMap getRelationshipManager() override;
 
-    IntIntMap getOppositeRelationshipManager() override;
+    StmtStmtMap getOppositeRelationshipManager() override;
 
-    IntIntMap getRelationshipCache(IntSet itemsToRead) override;
+    StmtStmtMap getRelationshipCache(StmtSet itemsToRead) override;
 
-    IntIntMap getOppositeRelationshipCache(IntSet itemsToRead) override;
+    StmtStmtMap getOppositeRelationshipCache(StmtSet itemsToRead) override;
 
     bool isRelationshipEmpty() override;
 };

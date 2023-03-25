@@ -47,7 +47,7 @@ AffectsTReverseCacheableGraph* Cache::getAffectsTReverseCache() {
     return &affectsTReverseCache;
 }
 
-IntIntCache Cache::getCacheData(CacheableGraph<int, int> *cacheGraph, std::unordered_set<int> &itemToInsert) {
+StmtStmtCache Cache::getCacheData(CacheableGraph<int, int> *cacheGraph, std::unordered_set<int> &itemToInsert) {
     insertDataToCache(cacheGraph, itemToInsert);
     return cacheGraph->getCacheData();
 }
@@ -64,7 +64,7 @@ void Cache::buildEntireCache(CacheableGraph<int, int>* cacheGraph) {
     cacheGraph->buildAll();
 }
 
-IntIntCache Cache::getEntireCacheData(CacheableGraph<int, int> *cacheGraph) {
+StmtStmtCache Cache::getEntireCacheData(CacheableGraph<int, int> *cacheGraph) {
     buildEntireCache(cacheGraph);
     return cacheGraph->getCacheData();
 }

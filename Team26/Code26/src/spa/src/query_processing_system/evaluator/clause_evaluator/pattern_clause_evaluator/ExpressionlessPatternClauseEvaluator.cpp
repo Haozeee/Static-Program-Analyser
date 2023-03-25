@@ -10,7 +10,7 @@ ExpressionlessPatternClauseEvaluator::ExpressionlessPatternClauseEvaluator(Argum
 
 void ExpressionlessPatternClauseEvaluator::evaluateSynonym() {
     auto statements = getRelationshipEntries();
-    StringStringMap interestedResults = Util::intStringMapTostringMap(statements);
+    EntityEntityMap interestedResults = Util::intStringMapTostringMap(statements);
     clauseResultTable = ResultTable::createTableFromMap(interestedResults,
                                                         patternArg.getValue(), leftArg.getValue());
 }
@@ -18,7 +18,7 @@ void ExpressionlessPatternClauseEvaluator::evaluateSynonym() {
 void ExpressionlessPatternClauseEvaluator::evaluateString() {
     auto relationshipStore = getReverseRelationshipEntries();
     auto it = relationshipStore.find(leftArg.getValue());
-    StringSet interestedResults;
+    EntitySet interestedResults;
     if (it != relationshipStore.end()) {
         interestedResults = Util::intSetToStringSet(it->second);
     }
@@ -27,6 +27,6 @@ void ExpressionlessPatternClauseEvaluator::evaluateString() {
 
 void ExpressionlessPatternClauseEvaluator::evaluateWildcard() {
     auto statements = getRelationshipEntries();
-    StringSet interestedResults = Util::intSetToStringSet(Util::getAllKeys(statements));
+    EntitySet interestedResults = Util::intSetToStringSet(Util::getAllKeys(statements));
     clauseResultTable = ResultTable::createSingleColumnTable(patternArg.getValue(), interestedResults);
 }

@@ -12,7 +12,7 @@ void AssignPatternClauseEvaluator::evaluateSynonym() {
 
 void AssignPatternClauseEvaluator::evaluateString() {
     auto allResults = evaluateStringHelper({leftArg.getValue()});
-    StringSet interestedResults;
+    EntitySet interestedResults;
     for (auto const& [k, v] : allResults) {
         interestedResults.insert(k);
     }
@@ -22,15 +22,15 @@ void AssignPatternClauseEvaluator::evaluateString() {
 void AssignPatternClauseEvaluator::evaluateWildcard() {
     auto identities = PkbUtil::getStringEntitiesFromPkb(storage, DesignEntity::VARIABLE);
     auto allResults = evaluateStringHelper(identities);
-    StringSet interestedResults;
+    EntitySet interestedResults;
     for (auto const& [k, v] : allResults) {
         interestedResults.insert(k);
     }
     clauseResultTable = ResultTable::createSingleColumnTable(patternArg.getValue(), interestedResults);
 }
 
-StringStringMap AssignPatternClauseEvaluator::evaluateStringHelper(StringSet lhsValues) {
-    StringStringMap res;
+EntityEntityMap AssignPatternClauseEvaluator::evaluateStringHelper(EntitySet lhsValues) {
+    EntityEntityMap res;
     auto assignStatements = storage->getAssignPatternManager()->getAllPatternEntries();
     auto lhsStatements = storage->getAssignPatternManager()->getAllLhsPatternEntries();
     auto rhsStatements = storage->getAssignPatternManager()->getAllRhsPatternEntries();

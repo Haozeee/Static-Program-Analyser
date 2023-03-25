@@ -5,7 +5,7 @@
 #include "program_knowledge_base/StorageManager.h"
 
 using StoragePointer = std::shared_ptr<ReadStorage>;
-using IntIntCache = std::unordered_map<int, std::unordered_set<int>>;
+using StmtStmtCache = std::unordered_map<int, std::unordered_set<int>>;
 
 template<typename T, typename U>
 class CacheableGraph {

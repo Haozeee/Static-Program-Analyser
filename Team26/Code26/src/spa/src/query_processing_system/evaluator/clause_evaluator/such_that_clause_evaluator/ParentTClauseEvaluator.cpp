@@ -3,10 +3,10 @@
 ParentTClauseEvaluator::ParentTClauseEvaluator(Argument left, Argument right)
         : IntIntClauseEvaluator(left, right) {}
 
-IntIntMap ParentTClauseEvaluator::getRelationshipManager() {
+StmtStmtMap ParentTClauseEvaluator::getRelationshipManager() {
     return storage->getParentTManager()->getAllRelationshipEntries();
 }
 
-IntIntMap ParentTClauseEvaluator::getOppositeRelationshipManager() {
+StmtStmtMap ParentTClauseEvaluator::getOppositeRelationshipManager() {
     return storage->getParentTManager()->getAllReversedRelationshipEntries();
 }

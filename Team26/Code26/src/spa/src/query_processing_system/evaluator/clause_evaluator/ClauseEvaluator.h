@@ -11,12 +11,12 @@
 
 using StoragePointer = std::shared_ptr<ReadStorage>;
 using CachePointer = std::shared_ptr<Cache>;
-using IntIntMap = std::unordered_map<int, std::unordered_set<int>>;
-using IntStringMap = std::unordered_map<int, std::unordered_set<std::string>>;
-using StringIntMap = std::unordered_map<std::string , std::unordered_set<int>>;
-using StringStringMap = std::unordered_map<std::string , std::unordered_set<std::string>>;
-using IntSet = std::unordered_set<int>;
-using StringSet = std::unordered_set<std::string>;
+using StmtStmtMap = std::unordered_map<int, std::unordered_set<int>>;
+using StmtEntityMap = std::unordered_map<int, std::unordered_set<std::string>>;
+using EntityStmtMap = std::unordered_map<std::string , std::unordered_set<int>>;
+using EntityEntityMap = std::unordered_map<std::string , std::unordered_set<std::string>>;
+using StmtSet = std::unordered_set<int>;
+using EntitySet = std::unordered_set<std::string>;
 
 class ClauseEvaluator {
  protected:

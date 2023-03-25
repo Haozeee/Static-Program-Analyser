@@ -7,7 +7,7 @@ class ModifiesSClauseEvaluator : public IntStringClauseEvaluator {
  public:
     ModifiesSClauseEvaluator(Argument left, Argument right);
 
-    IntStringMap getRelationshipManager() override;
+    StmtEntityMap getRelationshipManager() override;
 
-    StringIntMap getOppositeRelationshipManager() override;
+    EntityStmtMap getOppositeRelationshipManager() override;
 };

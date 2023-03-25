@@ -3,10 +3,10 @@
 ModifiesPClauseEvaluator::ModifiesPClauseEvaluator(Argument left, Argument right)
     : StringStringClauseEvaluator(left, right) {}
 
-StringStringMap ModifiesPClauseEvaluator::getRelationshipManager() {
+EntityEntityMap ModifiesPClauseEvaluator::getRelationshipManager() {
     return storage->getModifiesPManager()->getAllRelationshipEntries();
 }
 
-StringStringMap ModifiesPClauseEvaluator::getOppositeRelationshipManager() {
+EntityEntityMap ModifiesPClauseEvaluator::getOppositeRelationshipManager() {
     return storage->getModifiesPManager()->getAllReversedRelationshipEntries();
 }

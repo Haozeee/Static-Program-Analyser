@@ -9,15 +9,15 @@ class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
 
     void evaluateEqualSynonym() override;
 
-    void setLeftArgResult(IntSet result) override;
+    void setLeftArgResult(StmtSet result) override;
 
-    void setRightArgResult(IntSet result) override;
+    void setRightArgResult(StmtSet result) override;
 
-    void setLeftAndRightArgResult(IntIntMap results) override;
+    void setLeftAndRightArgResult(StmtStmtMap results) override;
 
-    IntSet getLeftArgEntities() override;
+    StmtSet getLeftArgEntities() override;
 
-    IntSet getRightArgEntities() override;
+    StmtSet getRightArgEntities() override;
 
     int getLeftArg() override;
 

@@ -27,7 +27,7 @@ class AssignPatternClauseEvaluator : public PatternClauseEvaluator {
      * on the left side and whose right side matches the string expression argument.
      * @return A map with keys as the assign statements and values as the lhs values.
      */
-    StringStringMap evaluateStringHelper(StringSet lhsValues);
+    EntityEntityMap evaluateStringHelper(EntitySet lhsValues);
 
  public:
     AssignPatternClauseEvaluator(Argument patternArg, Argument leftArg, StringExpression rightArg);

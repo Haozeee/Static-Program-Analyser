@@ -3,7 +3,7 @@
 StringWithClauseEvaluator::StringWithClauseEvaluator(Reference left, Reference right)
     : WithClauseEvaluator<std::string>(left, right) {}
 
-StringSet StringWithClauseEvaluator::getTranslatedValues(std::string value, DesignEntity de) {
+EntitySet StringWithClauseEvaluator::getTranslatedValues(std::string value, DesignEntity de) {
     switch (de) {
         case DesignEntity::CALL:
             return getCallStatements(storage, value);
@@ -16,25 +16,25 @@ StringSet StringWithClauseEvaluator::getTranslatedValues(std::string value, Desi
     }
 }
 
-StringSet StringWithClauseEvaluator::getLeftRefValues() {
+EntitySet StringWithClauseEvaluator::getLeftRefValues() {
     return getRefValue(storage, leftRef);
 }
 
-StringSet StringWithClauseEvaluator::getRightRefValues() {
+EntitySet StringWithClauseEvaluator::getRightRefValues() {
     return getRefValue(storage, rightRef);
 }
 
-StringSet StringWithClauseEvaluator::getRefValue(StoragePointer storage, Reference ref) {
+EntitySet StringWithClauseEvaluator::getRefValue(StoragePointer storage, Reference ref) {
     return std::visit(overload{
-            [](const int& i) -> StringSet { return {std::to_string(i)}; },
-            [](const std::string& i) -> StringSet { return {i}; },
+            [](const int& i) -> EntitySet { return {std::to_string(i)}; },
+            [](const std::string& i) -> EntitySet { return {i}; },
             [storage](const AttributeReference i) ->
-                StringSet { return PkbUtil::getStringEntitiesFromPkb(storage, i.getDesignEntity()); }
+                EntitySet { return PkbUtil::getStringEntitiesFromPkb(storage, i.getDesignEntity()); }
     }, ref.getValue());
 }
 
-StringSet StringWithClauseEvaluator::getReadStatements(StoragePointer storage, std::string value) {
-    IntSet res;
+EntitySet StringWithClauseEvaluator::getReadStatements(StoragePointer storage, std::string value) {
+    StmtSet res;
     auto relationshipStore = storage->getModifiesSManager()->getAllReversedRelationshipEntries();
     auto it = relationshipStore.find(value);
     if (it != relationshipStore.end()) {
@@ -44,8 +44,8 @@ StringSet StringWithClauseEvaluator::getReadStatements(StoragePointer storage, s
     return Util::intSetToStringSet(res);
 }
 
-StringSet StringWithClauseEvaluator::getPrintStatements(StoragePointer storage, std::string value) {
-    IntSet res;
+EntitySet StringWithClauseEvaluator::getPrintStatements(StoragePointer storage, std::string value) {
+    StmtSet res;
     auto relationshipStore = storage->getUsesSManager()->getAllReversedRelationshipEntries();
     auto it = relationshipStore.find(value);
     if (it != relationshipStore.end()) {
@@ -55,8 +55,8 @@ StringSet StringWithClauseEvaluator::getPrintStatements(StoragePointer storage, 
     return Util::intSetToStringSet(res);
 }
 
-StringSet StringWithClauseEvaluator::getCallStatements(StoragePointer storage, std::string value) {
-    IntSet res;
+EntitySet StringWithClauseEvaluator::getCallStatements(StoragePointer storage, std::string value) {
+    StmtSet res;
     auto relationshipStore = storage->getCallsSManager()->getAllReversedRelationshipEntries();
     auto it = relationshipStore.find(value);
     if (it != relationshipStore.end()) {

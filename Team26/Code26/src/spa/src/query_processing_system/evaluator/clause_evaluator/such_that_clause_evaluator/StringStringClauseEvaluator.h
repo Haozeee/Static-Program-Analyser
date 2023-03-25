@@ -7,15 +7,15 @@ class StringStringClauseEvaluator : public SuchThatClauseEvaluator<std::string, 
  protected:
     StringStringClauseEvaluator(Argument left, Argument right);
 
-    void setLeftArgResult(StringSet result) override;
+    void setLeftArgResult(EntitySet result) override;
 
-    void setRightArgResult(StringSet result) override;
+    void setRightArgResult(EntitySet result) override;
 
-    void setLeftAndRightArgResult(StringStringMap results) override;
+    void setLeftAndRightArgResult(EntityEntityMap results) override;
 
-    StringSet getLeftArgEntities() override;
+    EntitySet getLeftArgEntities() override;
 
-    StringSet getRightArgEntities() override;
+    EntitySet getRightArgEntities() override;
 
     std::string getLeftArg() override;
 
