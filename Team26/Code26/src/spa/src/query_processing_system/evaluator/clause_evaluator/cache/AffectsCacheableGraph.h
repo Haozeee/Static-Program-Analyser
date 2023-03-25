@@ -21,6 +21,8 @@ class AffectsCacheableGraph : public CacheableGraph<int, int> {
 
     std::unordered_map<int, std::unordered_set<int>> reverseCache;
 
+    bool callStatementModifiesVariable(int callStatement, std::string variableModified);
+
     bool isReadOrAssign(int stmt);
 
     /**

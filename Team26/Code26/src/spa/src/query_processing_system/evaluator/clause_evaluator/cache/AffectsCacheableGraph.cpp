@@ -50,22 +50,16 @@ void AffectsCacheableGraph::onCacheMiss(int startStatement) {
             neighbours = base.at(node);
         }
         for (auto neighbour : neighbours) {
-            if (assignStatements.count(neighbour)) {
-                if (usesMap.count(neighbour) && usesMap.at(neighbour).count(variableModified)) {
-                    results.insert(neighbour);
-                }
+            if (assignStatements.count(neighbour) && usesMap.count(neighbour) &&
+                    usesMap.at(neighbour).count(variableModified)) {
+                results.insert(neighbour);
             }
-            if (isReadOrAssign(neighbour) && modifiesMap.count(neighbour)) {
-                nodeVariable = modifiesVariable(neighbour);
-                if (variableModified == nodeVariable) {
-                    continue;
-                }
+            if (isReadOrAssign(neighbour) && modifiesMap.count(neighbour) &&
+                    variableModified == modifiesVariable(neighbour)) {
+                continue;
             }
-            if (callStatements.count(neighbour)) {
-                auto procedureCalled = *(callsSMap.at(neighbour).begin());
-                if (storage->getModifiesPManager()->containsMap(procedureCalled, variableModified)) {
-                    continue;
-                }
+            if (callStatements.count(neighbour) && callStatementModifiesVariable(neighbour, variableModified)) {
+                continue;
             }
 
             if (!visited.count(neighbour)) {
@@ -82,6 +76,12 @@ void AffectsCacheableGraph::onCacheMiss(int startStatement) {
         }
         reverseCache.at(i).insert(startStatement);
     }
+}
+
+bool AffectsCacheableGraph::callStatementModifiesVariable(int callStatement, std::string variableModified) {
+    auto procedureCalled = *(callsSMap.at(callStatement).begin());
+    auto modifiesManager = storage->getModifiesPManager();
+    return modifiesManager->containsMap(procedureCalled, variableModified);
 }
 
 void AffectsCacheableGraph::buildAll() {
