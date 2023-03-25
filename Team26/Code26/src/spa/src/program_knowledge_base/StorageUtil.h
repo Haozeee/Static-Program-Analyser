@@ -217,4 +217,26 @@ class StorageUtil {
     std::shared_ptr<WhileCondManager> getWhileCondManager() {
         return whileCondManager;
     }
+
+    template<typename T, typename U>
+    static std::unordered_map<T, std::unordered_set<U>>
+    getRelationshipMap(std::shared_ptr<IReadRelationshipManager<T, U>> relation) {
+        return relation->getAllRelationshipEntries();
+    }
+
+    template<typename T, typename U>
+    static std::unordered_map<U, std::unordered_set<T>>
+    getReverseRelationshipMap(std::shared_ptr<IReadRelationshipManager<T, U>> relation) {
+        return relation->getAllReversedRelationshipEntries();
+    }
+
+    template<typename T, typename U>
+    static bool isRelationEmpty(std::shared_ptr<IReadRelationshipManager<T, U>> relation) {
+        return relation->isEmptyMap();
+    }
+
+    template<typename T, typename U>
+    static bool relationContains(std::shared_ptr<IReadRelationshipManager<T, U>> relation, T first, U second) {
+        return relation->containsMap(first, second);
+    }
 };

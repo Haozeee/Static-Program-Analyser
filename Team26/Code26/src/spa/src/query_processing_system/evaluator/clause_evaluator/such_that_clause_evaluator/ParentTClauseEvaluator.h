@@ -4,10 +4,13 @@
 #include <memory>
 
 class ParentTClauseEvaluator : public IntIntClauseEvaluator {
- public:
+ protected:
+    StmtStmtMap getRelationshipMap(StmtSet &interestedValues) override;
+
+    StmtStmtMap getOppositeRelationshipMap(StmtSet &interestedValues) override;
+
+    bool isEmptyRelation() override;
+
+public:
     ParentTClauseEvaluator(Argument left, Argument right);
-
-    StmtStmtMap getRelationshipManager() override;
-
-    StmtStmtMap getOppositeRelationshipManager() override;
 };

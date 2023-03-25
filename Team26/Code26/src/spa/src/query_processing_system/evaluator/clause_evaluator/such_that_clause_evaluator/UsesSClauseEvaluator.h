@@ -4,10 +4,13 @@
 #include <string>
 
 class UsesSClauseEvaluator : public IntStringClauseEvaluator {
- public:
+ protected:
+    StmtEntityMap getRelationshipMap(StmtSet &interestedValues) override;
+
+    EntityStmtMap getOppositeRelationshipMap(EntitySet &interestedValues) override;
+
+    bool isEmptyRelation() override;
+
+public:
     UsesSClauseEvaluator(Argument left, Argument right);
-
-    StmtEntityMap getRelationshipManager() override;
-
-    EntityStmtMap getOppositeRelationshipManager() override;
 };

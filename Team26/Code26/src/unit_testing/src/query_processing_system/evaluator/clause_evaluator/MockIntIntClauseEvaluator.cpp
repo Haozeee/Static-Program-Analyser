@@ -4,7 +4,7 @@ MockIntIntClauseEvaluator::MockIntIntClauseEvaluator(Argument left, Argument rig
         : IntIntClauseEvaluator(left, right) {}
 
 std::unordered_map<int, std::unordered_set<int>>
-MockIntIntClauseEvaluator::getRelationshipManager() {
+MockIntIntClauseEvaluator::getRelationshipMap() {
     std::unordered_map<int, std::unordered_set<int>> res {
             {1, {2, 3}},
             {3, {4}},

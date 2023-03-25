@@ -4,7 +4,7 @@ MockIntStringClauseEvaluator::MockIntStringClauseEvaluator(Argument left, Argume
     : IntStringClauseEvaluator(left, right) {}
 
 std::unordered_map<int, std::unordered_set<std::string>>
-MockIntStringClauseEvaluator::getRelationshipManager() {
+MockIntStringClauseEvaluator::getRelationshipMap() {
     std::unordered_map<int, std::unordered_set<std::string>> res {
             {1, {"v1", "v2"}},
             {3, {"v1"}},

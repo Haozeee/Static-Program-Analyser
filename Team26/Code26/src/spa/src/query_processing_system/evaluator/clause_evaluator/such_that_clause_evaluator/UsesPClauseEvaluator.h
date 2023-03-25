@@ -5,10 +5,13 @@
 #include "StringStringClauseEvaluator.h"
 
 class UsesPClauseEvaluator : public StringStringClauseEvaluator {
+ protected:
+    EntityEntityMap getRelationshipMap(EntitySet &interestedValues) override;
+
+    EntityEntityMap getOppositeRelationshipMap(EntitySet &interestedValues) override;
+
+    bool isEmptyRelation() override;
+
  public:
     UsesPClauseEvaluator(Argument left, Argument right);
-
-    EntityEntityMap getRelationshipManager() override;
-
-    EntityEntityMap getOppositeRelationshipManager() override;
 };

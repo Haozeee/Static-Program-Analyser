@@ -4,7 +4,7 @@ IntIntClauseEvaluator::IntIntClauseEvaluator(Argument left, Argument right)
     : SuchThatClauseEvaluator<int, int>(left, right) {}
 
 void IntIntClauseEvaluator::evaluateEqualSynonym() {
-    auto relationshipMap = cacheable ? getRelationshipCache(getLeftArgEntities()) : getRelationshipManager();
+    auto relationshipMap = cacheable ? getRelationshipCache(getLeftArgEntities()) : getRelationshipMap();
     if (isLeftArgAmbiguous()) {
         relationshipMap = Util::filterMap(relationshipMap, getLeftArgEntities());
     }

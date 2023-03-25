@@ -1,25 +1,15 @@
 #include "AffectsTClauseEvaluator.h"
 
-AffectsTClauseEvaluator::AffectsTClauseEvaluator(Argument left, Argument right) : IntIntClauseEvaluator(left, right) {
-    cacheable = true;
-}
+AffectsTClauseEvaluator::AffectsTClauseEvaluator(Argument left, Argument right) : IntIntClauseEvaluator(left, right) {}
 
-StmtStmtMap AffectsTClauseEvaluator::getRelationshipCache(StmtSet itemsToRead) {
-    return Cache::getCacheData(cache->getAffectsTCache(), itemsToRead);
-}
-
-StmtStmtMap AffectsTClauseEvaluator::getOppositeRelationshipCache(StmtSet itemsToRead) {
-    return Cache::getCacheData(cache->getAffectsTReverseCache(), itemsToRead);
-}
-
-StmtStmtMap AffectsTClauseEvaluator::getRelationshipManager() {
+StmtStmtMap AffectsTClauseEvaluator::getRelationshipMap(StmtSet &interestedValues) {
     return Cache::getEntireCacheData(cache->getAffectsTCache());
 }
 
-StmtStmtMap AffectsTClauseEvaluator::getOppositeRelationshipManager() {
+StmtStmtMap AffectsTClauseEvaluator::getOppositeRelationshipMap(StmtSet &interestedValues) {
     return Cache::getEntireCacheData(cache->getAffectsTReverseCache());
 }
 
-bool AffectsTClauseEvaluator::isRelationshipEmpty() {
+bool AffectsTClauseEvaluator::isEmptyRelation() {
     return Cache::isCacheEmpty(cache->getAffectsTCache());
 }

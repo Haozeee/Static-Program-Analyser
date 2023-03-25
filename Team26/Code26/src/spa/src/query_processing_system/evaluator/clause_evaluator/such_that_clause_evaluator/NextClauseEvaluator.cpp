@@ -3,10 +3,14 @@
 NextClauseEvaluator::NextClauseEvaluator(Argument left, Argument right)
     : IntIntClauseEvaluator(left, right) {}
 
-StmtStmtMap NextClauseEvaluator::getRelationshipManager() {
-    return storage->getNextManager()->getAllRelationshipEntries();
+StmtStmtMap NextClauseEvaluator::getRelationshipMap(StmtSet &interestedValues) {
+    return StorageUtil::getRelationshipMap(storage->getNextManager());
 }
 
-StmtStmtMap NextClauseEvaluator::getOppositeRelationshipManager() {
-    return storage->getNextManager()->getAllReversedRelationshipEntries();
+StmtStmtMap NextClauseEvaluator::getOppositeRelationshipMap(StmtSet &interestedValues) {
+    return StorageUtil::getReverseRelationshipMap(storage->getNextManager());
+}
+
+bool NextClauseEvaluator::isEmptyRelation() {
+    return StorageUtil::isRelationEmpty(storage->getNextManager());
 }

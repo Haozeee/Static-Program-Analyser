@@ -4,10 +4,13 @@
 #include <memory>
 
 class FollowsTClauseEvaluator : public IntIntClauseEvaluator {
- public:
+ protected:
+    StmtStmtMap getRelationshipMap(StmtSet &interestedValues) override;
+
+    StmtStmtMap getOppositeRelationshipMap(StmtSet &interestedValues) override;
+
+    bool isEmptyRelation() override;
+
+public:
     FollowsTClauseEvaluator(Argument left, Argument right);
-
-    StmtStmtMap getRelationshipManager() override;
-
-    StmtStmtMap getOppositeRelationshipManager() override;
 };

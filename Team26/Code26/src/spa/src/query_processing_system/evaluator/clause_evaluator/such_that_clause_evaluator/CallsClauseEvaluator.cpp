@@ -3,10 +3,14 @@
 CallsClauseEvaluator::CallsClauseEvaluator(Argument left, Argument right)
         : StringStringClauseEvaluator(left, right) {}
 
-EntityEntityMap CallsClauseEvaluator::getRelationshipManager() {
-    return storage->getCallsPManager()->getAllRelationshipEntries();
+EntityEntityMap CallsClauseEvaluator::getRelationshipMap(EntitySet &interestedValues) {
+    return StorageUtil::getRelationshipMap(storage->getCallsPManager());
 }
 
-EntityEntityMap CallsClauseEvaluator::getOppositeRelationshipManager() {
-    return storage->getCallsPManager()->getAllReversedRelationshipEntries();
+EntityEntityMap CallsClauseEvaluator::getOppositeRelationshipMap(EntitySet &interestedValues) {
+    return StorageUtil::getReverseRelationshipMap(storage->getCallsPManager());
+}
+
+bool CallsClauseEvaluator::isEmptyRelation() {
+    return StorageUtil::isRelationEmpty(storage->getCallsPManager());
 }

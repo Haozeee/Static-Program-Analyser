@@ -3,10 +3,13 @@
 #include "IntIntClauseEvaluator.h"
 
 class ParentClauseEvaluator : public IntIntClauseEvaluator {
- public:
+ protected:
+    StmtStmtMap getRelationshipMap(StmtSet &interestedValues) override;
+
+    StmtStmtMap getOppositeRelationshipMap(StmtSet &interestedValues) override;
+
+    bool isEmptyRelation() override;
+
+public:
     ParentClauseEvaluator(Argument left, Argument right);
-
-    StmtStmtMap getRelationshipManager() override;
-
-    StmtStmtMap getOppositeRelationshipManager() override;
 };
