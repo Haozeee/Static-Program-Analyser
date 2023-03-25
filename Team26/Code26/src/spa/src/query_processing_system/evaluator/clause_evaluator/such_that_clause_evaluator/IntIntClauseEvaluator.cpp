@@ -1,7 +1,7 @@
 #include "IntIntClauseEvaluator.h"
 
-IntIntClauseEvaluator::IntIntClauseEvaluator(Argument left, Argument right, bool cacheable)
-    : SuchThatClauseEvaluator<int, int>(left, right, cacheable) {}
+IntIntClauseEvaluator::IntIntClauseEvaluator(Argument left, Argument right)
+    : SuchThatClauseEvaluator<int, int>(left, right) {}
 
 void IntIntClauseEvaluator::evaluateEqualSynonym() {
     auto relationshipMap = cacheable ? getRelationshipCache(getLeftArgEntities()) : getRelationshipManager();

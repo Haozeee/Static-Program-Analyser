@@ -1,7 +1,8 @@
 #include "AffectsTClauseEvaluator.h"
 
-AffectsTClauseEvaluator::AffectsTClauseEvaluator(Argument left, Argument right)
-        : IntIntClauseEvaluator(left, right, true) {}
+AffectsTClauseEvaluator::AffectsTClauseEvaluator(Argument left, Argument right) : IntIntClauseEvaluator(left, right) {
+    cacheable = true;
+}
 
 IntIntMap AffectsTClauseEvaluator::getRelationshipCache(std::unordered_set<int> itemsToRead) {
     cache->getAffectsTCacheableGraph()->insertItemsIntoCache(itemsToRead);

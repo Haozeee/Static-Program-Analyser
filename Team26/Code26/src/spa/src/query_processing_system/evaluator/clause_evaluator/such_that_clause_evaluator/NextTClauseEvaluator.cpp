@@ -1,7 +1,8 @@
 #include "NextTClauseEvaluator.h"
 
-NextTClauseEvaluator::NextTClauseEvaluator(Argument left, Argument right)
-    : IntIntClauseEvaluator(left, right, true) {}
+NextTClauseEvaluator::NextTClauseEvaluator(Argument left, Argument right) : IntIntClauseEvaluator(left, right) {
+    cacheable = true;
+}
 
 IntIntMap NextTClauseEvaluator::getRelationshipCache(std::unordered_set<int> itemsToRead) {
     cache->getNextTCache()->insertItemsIntoCache(itemsToRead);

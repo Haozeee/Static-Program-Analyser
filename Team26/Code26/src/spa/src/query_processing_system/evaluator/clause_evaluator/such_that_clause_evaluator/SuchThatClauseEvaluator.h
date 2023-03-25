@@ -128,10 +128,10 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
      * Indicates if this clause is evaluated on the run by reading from a cache or if it is
      * precomputed in which case data is read from pkb directly.
      */
-    bool cacheable;
+    bool cacheable = false;
 
-    SuchThatClauseEvaluator<T, U>(Argument left, Argument right, bool cacheable = false)
-            : leftArg(std::move(left)), rightArg(std::move(right)), cacheable(cacheable) {}
+    SuchThatClauseEvaluator<T, U>(Argument left, Argument right)
+        : leftArg(std::move(left)), rightArg(std::move(right)) {}
 
     virtual std::unordered_map<T, std::unordered_set<U>> getRelationshipManager() = 0;
 

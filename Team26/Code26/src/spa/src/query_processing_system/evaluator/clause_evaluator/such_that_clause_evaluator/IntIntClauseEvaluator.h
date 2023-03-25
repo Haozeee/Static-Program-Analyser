@@ -7,7 +7,7 @@
 
 class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
  protected:
-    IntIntClauseEvaluator(Argument left, Argument right, bool cacheable = false);
+    IntIntClauseEvaluator(Argument left, Argument right);
 
     void evaluateEqualSynonym() override;
 
