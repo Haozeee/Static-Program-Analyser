@@ -9,9 +9,9 @@
 
 class IfPatternClauseEvaluator : public ExpressionlessPatternClauseEvaluator {
  protected:
-    std::unordered_map<int, std::unordered_set<std::string>> getRelationshipEntries() override;
+    IntStringMap getRelationshipEntries() override;
 
-    std::unordered_map<std::string, std::unordered_set<int>> getReverseRelationshipEntries() override;
+    StringIntMap getReverseRelationshipEntries() override;
 
  public:
     IfPatternClauseEvaluator(Argument patternArg, Argument leftArg);

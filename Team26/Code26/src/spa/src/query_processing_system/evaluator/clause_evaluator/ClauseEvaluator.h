@@ -1,5 +1,8 @@
 #pragma once
 #include <memory>
+#include <unordered_set>
+#include <unordered_map>
+#include <string>
 #include "cache/Cache.h"
 #include "../PkbUtil.h"
 #include "../Util.h"
@@ -7,8 +10,13 @@
 #include "../ResultTable.h"
 
 using StoragePointer = std::shared_ptr<ReadStorage>;
-
 using CachePointer = std::shared_ptr<Cache>;
+using IntIntMap = std::unordered_map<int, std::unordered_set<int>>;
+using IntStringMap = std::unordered_map<int, std::unordered_set<std::string>>;
+using StringIntMap = std::unordered_map<std::string , std::unordered_set<int>>;
+using StringStringMap = std::unordered_map<std::string , std::unordered_set<std::string>>;
+using IntSet = std::unordered_set<int>;
+using StringSet = std::unordered_set<std::string>;
 
 class ClauseEvaluator {
  protected:

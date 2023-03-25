@@ -11,24 +11,24 @@ void IntIntClauseEvaluator::evaluateEqualSynonym() {
     setLeftArgResult(Util::getElementsWithCycles(relationshipMap));
 }
 
-void IntIntClauseEvaluator::setLeftArgResult(std::unordered_set<int> result) {
+void IntIntClauseEvaluator::setLeftArgResult(IntSet result) {
     clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), Util::intSetToStringSet(result));
 }
 
-void IntIntClauseEvaluator::setRightArgResult(std::unordered_set<int> result) {
+void IntIntClauseEvaluator::setRightArgResult(IntSet result) {
     clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), Util::intSetToStringSet(result));
 }
 
-void IntIntClauseEvaluator::setLeftAndRightArgResult(std::unordered_map<int, std::unordered_set<int>> results) {
+void IntIntClauseEvaluator::setLeftAndRightArgResult(IntIntMap results) {
     auto res = Util::intMapTostringMap(results);
     clauseResultTable = ResultTable::createTableFromMap(res, leftArg.getValue(), rightArg.getValue());
 }
 
-std::unordered_set<int> IntIntClauseEvaluator::getLeftArgEntities() {
+IntSet IntIntClauseEvaluator::getLeftArgEntities() {
     return PkbUtil::getIntEntitiesFromPkb(storage, leftArg.getDesignEntity());
 }
 
-std::unordered_set<int> IntIntClauseEvaluator::getRightArgEntities() {
+IntSet IntIntClauseEvaluator::getRightArgEntities() {
     return PkbUtil::getIntEntitiesFromPkb(storage, rightArg.getDesignEntity());
 }
 

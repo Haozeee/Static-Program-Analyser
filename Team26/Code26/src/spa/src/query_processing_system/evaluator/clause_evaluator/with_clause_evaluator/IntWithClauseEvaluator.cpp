@@ -3,7 +3,7 @@
 IntWithClauseEvaluator::IntWithClauseEvaluator(Reference left, Reference right)
     : WithClauseEvaluator<int>(left, right) {}
 
-std::unordered_set<std::string> IntWithClauseEvaluator::getTranslatedValues(int value, DesignEntity de) {
+StringSet IntWithClauseEvaluator::getTranslatedValues(int value, DesignEntity de) {
     return {std::to_string(value)};
 }
 

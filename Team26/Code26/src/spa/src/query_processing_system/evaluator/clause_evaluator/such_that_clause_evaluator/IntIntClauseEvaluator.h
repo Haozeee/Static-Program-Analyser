@@ -11,15 +11,15 @@ class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
 
     void evaluateEqualSynonym() override;
 
-    void setLeftArgResult(std::unordered_set<int> result) override;
+    void setLeftArgResult(IntSet result) override;
 
-    void setRightArgResult(std::unordered_set<int> result) override;
+    void setRightArgResult(IntSet result) override;
 
-    void setLeftAndRightArgResult(std::unordered_map<int, std::unordered_set<int>> results) override;
+    void setLeftAndRightArgResult(IntIntMap results) override;
 
-    std::unordered_set<int> getLeftArgEntities() override;
+    IntSet getLeftArgEntities() override;
 
-    std::unordered_set<int> getRightArgEntities() override;
+    IntSet getRightArgEntities() override;
 
     int getLeftArg() override;
 

@@ -3,8 +3,6 @@
 #include <unordered_set>
 #include "WithClauseEvaluator.h"
 
-using StringSet = std::unordered_set<std::string>;
-
 class StringWithClauseEvaluator : public WithClauseEvaluator<std::string> {
  private:
     /**

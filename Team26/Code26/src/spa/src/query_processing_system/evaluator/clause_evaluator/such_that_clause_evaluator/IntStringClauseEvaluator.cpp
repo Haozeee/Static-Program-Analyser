@@ -3,24 +3,23 @@
 IntStringClauseEvaluator::IntStringClauseEvaluator(Argument left, Argument right)
     : SuchThatClauseEvaluator<int, std::string>(left, right) {}
 
-void IntStringClauseEvaluator::setLeftArgResult(std::unordered_set<int> result) {
+void IntStringClauseEvaluator::setLeftArgResult(IntSet result) {
     clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), Util::intSetToStringSet(result));
 }
 
-void IntStringClauseEvaluator::setRightArgResult(std::unordered_set<std::string> result) {
+void IntStringClauseEvaluator::setRightArgResult(StringSet result) {
     clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), result);
 }
 
-std::unordered_set<int> IntStringClauseEvaluator::getLeftArgEntities() {
+IntSet IntStringClauseEvaluator::getLeftArgEntities() {
     return PkbUtil::getIntEntitiesFromPkb(storage, leftArg.getDesignEntity());
 }
 
-std::unordered_set<std::string> IntStringClauseEvaluator::getRightArgEntities() {
+StringSet IntStringClauseEvaluator::getRightArgEntities() {
     return PkbUtil::getStringEntitiesFromPkb(storage, rightArg.getDesignEntity());
 }
 
-void IntStringClauseEvaluator::setLeftAndRightArgResult(std::unordered_map<int,
-                                                        std::unordered_set<std::string>> results) {
+void IntStringClauseEvaluator::setLeftAndRightArgResult(IntStringMap results) {
     auto res = Util::intStringMapTostringMap(results);
     clauseResultTable = ResultTable::createTableFromMap(res, leftArg.getValue(), rightArg.getValue());
 }

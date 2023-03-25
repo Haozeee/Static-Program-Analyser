@@ -3,10 +3,10 @@
 ModifiesSClauseEvaluator::ModifiesSClauseEvaluator(Argument left, Argument right)
         : IntStringClauseEvaluator(left, right) {}
 
-std::unordered_map<int, std::unordered_set<std::string>> ModifiesSClauseEvaluator::getRelationshipManager() {
+IntStringMap ModifiesSClauseEvaluator::getRelationshipManager() {
     return storage->getModifiesSManager()->getAllRelationshipEntries();
 }
 
-std::unordered_map<std::string, std::unordered_set<int>> ModifiesSClauseEvaluator::getOppositeRelationshipManager() {
+StringIntMap ModifiesSClauseEvaluator::getOppositeRelationshipManager() {
     return storage->getModifiesSManager()->getAllReversedRelationshipEntries();
 }

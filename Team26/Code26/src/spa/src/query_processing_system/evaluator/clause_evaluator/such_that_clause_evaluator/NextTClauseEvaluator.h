@@ -8,14 +8,13 @@ class NextTClauseEvaluator : public IntIntClauseEvaluator {
  public:
     NextTClauseEvaluator(Argument left, Argument right);
 
-    std::unordered_map<int, std::unordered_set<int>> getRelationshipManager() override;
+    IntIntMap getRelationshipManager() override;
 
-    std::unordered_map<int, std::unordered_set<int>> getOppositeRelationshipManager() override;
+    IntIntMap getOppositeRelationshipManager() override;
 
-    std::unordered_map<int, std::unordered_set<int>> getRelationshipCache(std::unordered_set<int> itemsToRead) override;
+    IntIntMap getRelationshipCache(std::unordered_set<int> itemsToRead) override;
 
-    std::unordered_map<int, std::unordered_set<int>>
-    getOppositeRelationshipCache(std::unordered_set<int> itemsToRead) override;
+    IntIntMap getOppositeRelationshipCache(std::unordered_set<int> itemsToRead) override;
 
     bool isRelationshipEmpty() override;
 };

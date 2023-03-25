@@ -10,9 +10,7 @@ class CallsTClauseEvaluator : public StringStringClauseEvaluator {
  public:
     CallsTClauseEvaluator(Argument left, Argument right);
 
-    std::unordered_map<std::string , std::unordered_set<std::string>>
-    getRelationshipManager() override;
+    StringStringMap getRelationshipManager() override;
 
-    std::unordered_map<std::string, std::unordered_set<std::string>>
-    getOppositeRelationshipManager() override;
+    StringStringMap getOppositeRelationshipManager() override;
 };

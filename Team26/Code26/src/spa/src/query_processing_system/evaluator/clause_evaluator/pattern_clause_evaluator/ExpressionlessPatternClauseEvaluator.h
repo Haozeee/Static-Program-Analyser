@@ -14,9 +14,9 @@ class ExpressionlessPatternClauseEvaluator : public PatternClauseEvaluator {
 
     void evaluateWildcard() override;
 
-    virtual std::unordered_map<int, std::unordered_set<std::string>> getRelationshipEntries() = 0;
+    virtual IntStringMap getRelationshipEntries() = 0;
 
-    virtual std::unordered_map<std::string, std::unordered_set<int>> getReverseRelationshipEntries() = 0;
+    virtual StringIntMap getReverseRelationshipEntries() = 0;
 
  public:
     ExpressionlessPatternClauseEvaluator(Argument patternArg, Argument leftArg);

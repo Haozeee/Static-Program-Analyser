@@ -9,15 +9,15 @@ class StringStringClauseEvaluator : public SuchThatClauseEvaluator<std::string, 
  protected:
     StringStringClauseEvaluator(Argument left, Argument right);
 
-    void setLeftArgResult(std::unordered_set<std::string> result) override;
+    void setLeftArgResult(StringSet result) override;
 
-    void setRightArgResult(std::unordered_set<std::string> result) override;
+    void setRightArgResult(StringSet result) override;
 
-    void setLeftAndRightArgResult(std::unordered_map<std::string , std::unordered_set<std::string>> results) override;
+    void setLeftAndRightArgResult(StringStringMap results) override;
 
-    std::unordered_set<std::string> getLeftArgEntities() override;
+    StringSet getLeftArgEntities() override;
 
-    std::unordered_set<std::string> getRightArgEntities() override;
+    StringSet getRightArgEntities() override;
 
     std::string getLeftArg() override;
 

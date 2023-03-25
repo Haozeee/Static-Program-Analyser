@@ -9,7 +9,7 @@ class ModifiesSClauseEvaluator : public IntStringClauseEvaluator {
  public:
     ModifiesSClauseEvaluator(Argument left, Argument right);
 
-    std::unordered_map<int, std::unordered_set<std::string>> getRelationshipManager() override;
+    IntStringMap getRelationshipManager() override;
 
-    std::unordered_map<std::string, std::unordered_set<int>> getOppositeRelationshipManager() override;
+    StringIntMap getOppositeRelationshipManager() override;
 };

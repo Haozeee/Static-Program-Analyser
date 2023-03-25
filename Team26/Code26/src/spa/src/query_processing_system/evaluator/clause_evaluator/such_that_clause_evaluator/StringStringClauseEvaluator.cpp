@@ -3,24 +3,23 @@
 StringStringClauseEvaluator::StringStringClauseEvaluator(Argument left, Argument right)
     : SuchThatClauseEvaluator<std::string, std::string>(left, right) {}
 
-void StringStringClauseEvaluator::setLeftArgResult(std::unordered_set<std::string> result) {
+void StringStringClauseEvaluator::setLeftArgResult(StringSet result) {
     clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), result);
 }
 
-void StringStringClauseEvaluator::setRightArgResult(std::unordered_set<std::string> result) {
+void StringStringClauseEvaluator::setRightArgResult(StringSet result) {
     clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), result);
 }
 
-void StringStringClauseEvaluator::setLeftAndRightArgResult(std::unordered_map<std::string,
-                                                           std::unordered_set<std::string>> results) {
+void StringStringClauseEvaluator::setLeftAndRightArgResult(StringStringMap results) {
     clauseResultTable = ResultTable::createTableFromMap(results, leftArg.getValue(), rightArg.getValue());
 }
 
-std::unordered_set<std::string> StringStringClauseEvaluator::getLeftArgEntities() {
+StringSet StringStringClauseEvaluator::getLeftArgEntities() {
     return PkbUtil::getStringEntitiesFromPkb(storage, leftArg.getDesignEntity());
 }
 
-std::unordered_set<std::string> StringStringClauseEvaluator::getRightArgEntities() {
+StringSet StringStringClauseEvaluator::getRightArgEntities() {
     return PkbUtil::getStringEntitiesFromPkb(storage, rightArg.getDesignEntity());
 }
 
