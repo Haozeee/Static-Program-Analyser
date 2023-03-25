@@ -4,11 +4,22 @@ IntStringClauseEvaluator::IntStringClauseEvaluator(Argument left, Argument right
     : SuchThatClauseEvaluator<int, std::string>(left, right) {}
 
 void IntStringClauseEvaluator::setLeftArgResult(StmtSet result) {
-    clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), Util::intSetToStringSet(result));
+    if (leftArg.getArgumentType() == ArgumentType::SYNONYM) {
+        clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), Util::intSetToStringSet(result));
+    }
 }
 
 void IntStringClauseEvaluator::setRightArgResult(EntitySet result) {
-    clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), result);
+    if (rightArg.getArgumentType() == ArgumentType::SYNONYM) {
+        clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), result);
+    }
+}
+
+void IntStringClauseEvaluator::setLeftAndRightArgResult(StmtEntityMap results) {
+    if (leftArg.getArgumentType() == ArgumentType::SYNONYM && rightArg.getArgumentType() == ArgumentType::SYNONYM) {
+        auto res = Util::intStringMapTostringMap(results);
+        clauseResultTable = ResultTable::createTableFromMap(res, leftArg.getValue(), rightArg.getValue());
+    }
 }
 
 StmtSet IntStringClauseEvaluator::getLeftArgEntities() {
@@ -17,11 +28,6 @@ StmtSet IntStringClauseEvaluator::getLeftArgEntities() {
 
 EntitySet IntStringClauseEvaluator::getRightArgEntities() {
     return PkbUtil::getStringEntitiesFromPkb(storage, rightArg.getDesignEntity());
-}
-
-void IntStringClauseEvaluator::setLeftAndRightArgResult(StmtEntityMap results) {
-    auto res = Util::intStringMapTostringMap(results);
-    clauseResultTable = ResultTable::createTableFromMap(res, leftArg.getValue(), rightArg.getValue());
 }
 
 int IntStringClauseEvaluator::getLeftArg() {

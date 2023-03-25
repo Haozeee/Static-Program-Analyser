@@ -4,15 +4,21 @@ StringStringClauseEvaluator::StringStringClauseEvaluator(Argument left, Argument
     : SuchThatClauseEvaluator<std::string, std::string>(left, right) {}
 
 void StringStringClauseEvaluator::setLeftArgResult(EntitySet result) {
-    clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), result);
+    if (leftArg.getArgumentType() == ArgumentType::SYNONYM) {
+        clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), result);
+    }
 }
 
 void StringStringClauseEvaluator::setRightArgResult(EntitySet result) {
-    clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), result);
+    if (rightArg.getArgumentType() == ArgumentType::SYNONYM) {
+        clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), result);
+    }
 }
 
 void StringStringClauseEvaluator::setLeftAndRightArgResult(EntityEntityMap results) {
-    clauseResultTable = ResultTable::createTableFromMap(results, leftArg.getValue(), rightArg.getValue());
+    if (leftArg.getArgumentType() == ArgumentType::SYNONYM && rightArg.getArgumentType() == ArgumentType::SYNONYM) {
+        clauseResultTable = ResultTable::createTableFromMap(results, leftArg.getValue(), rightArg.getValue());
+    }
 }
 
 EntitySet StringStringClauseEvaluator::getLeftArgEntities() {

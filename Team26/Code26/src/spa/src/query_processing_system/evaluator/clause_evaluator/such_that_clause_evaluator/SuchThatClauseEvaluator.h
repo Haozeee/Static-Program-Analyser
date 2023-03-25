@@ -151,21 +151,18 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
 
     /**
      * Set the queryResults that are to be projected on to the left arguments in the clause result.
-     * Should only be used when the left argument is a synonym.
      * @param result The result to be projected.
      */
     virtual void setLeftArgResult(std::unordered_set<T> result) = 0;
 
     /**
      * Set the queryResults that are to be projected on to the right arguments in the clause result.
-     * Should only be used when the right argument is a synonym.
      * @param result The result to be projected.
      */
     virtual void setRightArgResult(std::unordered_set<U> result) = 0;
 
     /**
      * Set the queryResults that are to be projected on to the right arguments in the clause result.
-     * Should only be used when the right argument is a synonym.
      * @param result The result to be projected.
      */
     virtual void setLeftAndRightArgResult(std::unordered_map<T, std::unordered_set<U>> results) = 0;

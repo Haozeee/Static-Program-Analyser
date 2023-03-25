@@ -13,16 +13,22 @@ void IntIntClauseEvaluator::evaluateEqualSynonym() {
 }
 
 void IntIntClauseEvaluator::setLeftArgResult(StmtSet result) {
-    clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), Util::intSetToStringSet(result));
+    if (leftArg.getArgumentType() == ArgumentType::SYNONYM) {
+        clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), Util::intSetToStringSet(result));
+    }
 }
 
 void IntIntClauseEvaluator::setRightArgResult(StmtSet result) {
-    clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), Util::intSetToStringSet(result));
+    if (rightArg.getArgumentType() == ArgumentType::SYNONYM) {
+        clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), Util::intSetToStringSet(result));
+    }
 }
 
 void IntIntClauseEvaluator::setLeftAndRightArgResult(StmtStmtMap results) {
-    auto res = Util::intMapTostringMap(results);
-    clauseResultTable = ResultTable::createTableFromMap(res, leftArg.getValue(), rightArg.getValue());
+    if (leftArg.getArgumentType() == ArgumentType::SYNONYM && rightArg.getArgumentType() == ArgumentType::SYNONYM) {
+        auto res = Util::intMapTostringMap(results);
+        clauseResultTable = ResultTable::createTableFromMap(res, leftArg.getValue(), rightArg.getValue());
+    }
 }
 
 StmtSet IntIntClauseEvaluator::getLeftArgEntities() {
