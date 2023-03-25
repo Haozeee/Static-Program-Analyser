@@ -1,4 +1,6 @@
 #include "ClauseArgumentsType.h"
+#include <functional>
+#include "SuchThatClauseEvaluator.h"
 
 bool isValueArgumentType(ArgumentType arg) {
     return arg == ArgumentType::CHARACTERSTRING || arg == ArgumentType::NUMBER;
@@ -27,3 +29,4 @@ ClauseArgumentTypes getClauseArgumentType(ArgumentType leftArg, ArgumentType rig
         return ClauseArgumentTypes::NONE;
     }
 }
+
