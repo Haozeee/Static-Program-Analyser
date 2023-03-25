@@ -85,9 +85,10 @@ bool AffectsCacheableGraph::callStatementModifiesVariable(int callStatement, std
 }
 
 void AffectsCacheableGraph::buildAll() {
-    std::unordered_set<int> currentItems = Util::getAllKeys(cache);
-    std::unordered_set<int> missingItems = Util::setDifference(assignStatements, currentItems);
+    auto currentItems = Util::getAllKeys(cache);
+    auto missingItems = Util::setDifference(assignStatements, currentItems);
     insertItemsIntoCache(missingItems);
+    fullyBuilt = true;
 }
 
 bool AffectsCacheableGraph::isEmpty() {
@@ -96,6 +97,9 @@ bool AffectsCacheableGraph::isEmpty() {
 }
 
 std::unordered_map<int, std::unordered_set<int>> AffectsCacheableGraph::getReverseCache() {
+    if (!fullyBuilt) {
+        buildAll();
+    }
     return reverseCache;
 }
 

@@ -5,23 +5,21 @@ AffectsClauseEvaluator::AffectsClauseEvaluator(Argument left, Argument right) : 
 }
 
 IntIntMap AffectsClauseEvaluator::getRelationshipCache(std::unordered_set<int> itemsToRead) {
-    cache->getAffectsCacheableGraph()->insertItemsIntoCache(itemsToRead);
-    return cache->getAffectsCacheableGraph()->getCacheData();
+    return Cache::getCacheData(cache->getAffectsCache(), itemsToRead);
 }
 
 IntIntMap AffectsClauseEvaluator::getOppositeRelationshipCache(std::unordered_set<int> itemsToRead) {
-    cache->getAffectsCacheableGraph()->buildAll();
-    return cache->getAffectsCacheableGraph()->getReverseCache();
+    return cache->getAffectsReverseCacheData();
 }
 
 IntIntMap AffectsClauseEvaluator::getRelationshipManager() {
-    return getRelationshipCache({});
+    return Cache::getEntireCacheData(cache->getAffectsCache());
 }
 
 IntIntMap AffectsClauseEvaluator::getOppositeRelationshipManager() {
-    return getOppositeRelationshipCache({});
+    return cache->getAffectsReverseCacheData();
 }
 
 bool AffectsClauseEvaluator::isRelationshipEmpty() {
-    return cache->getAffectsTCacheableGraph()->isEmpty();
+    return Cache::isCacheEmpty(cache->getAffectsCache());
 }

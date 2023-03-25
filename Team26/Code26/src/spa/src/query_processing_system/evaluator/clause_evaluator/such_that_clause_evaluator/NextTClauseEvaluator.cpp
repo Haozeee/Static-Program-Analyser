@@ -5,23 +5,21 @@ NextTClauseEvaluator::NextTClauseEvaluator(Argument left, Argument right) : IntI
 }
 
 IntIntMap NextTClauseEvaluator::getRelationshipCache(std::unordered_set<int> itemsToRead) {
-    cache->getNextTCache()->insertItemsIntoCache(itemsToRead);
-    return cache->getNextTCache()->getCacheData();
+    return Cache::getCacheData(cache->getNextTCache(), itemsToRead);
 }
 
 IntIntMap NextTClauseEvaluator::getOppositeRelationshipCache(std::unordered_set<int> itemsToRead) {
-    cache->getNextTReverseCache()->insertItemsIntoCache(itemsToRead);
-    return cache->getNextTReverseCache()->getCacheData();
+    return Cache::getCacheData(cache->getNextTReverseCache(), itemsToRead);
 }
 
 IntIntMap NextTClauseEvaluator::getRelationshipManager() {
-    return getRelationshipCache({});
+    return Cache::getEntireCacheData(cache->getNextTCache());
 }
 
 IntIntMap NextTClauseEvaluator::getOppositeRelationshipManager() {
-    return getOppositeRelationshipCache({});
+    return Cache::getEntireCacheData(cache->getNextTReverseCache());
 }
 
 bool NextTClauseEvaluator::isRelationshipEmpty() {
-    return cache->getNextTCache()->isEmpty();
+    return Cache::isCacheEmpty(cache->getNextTCache());
 }
