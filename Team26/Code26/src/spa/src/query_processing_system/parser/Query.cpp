@@ -52,6 +52,7 @@ std::vector<Clause*> Query::getAllClauses() {
 
     return clauses;
 }
+
 std::vector<SuchThatClause*> Query::getSuchThatClauses() {
     return suchThatClauses;
 }

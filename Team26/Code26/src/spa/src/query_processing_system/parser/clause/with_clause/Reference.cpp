@@ -42,3 +42,15 @@ std::variant<AttributeReference, int, std::string> Reference::getValue() {
 bool Reference::operator==(const Reference& other) const {
     return this->referenceType == other.referenceType && this->value == other.value;
 }
+
+std::string Reference::toString(Reference reference) {
+    if (std::holds_alternative<AttributeReference>(reference.getValue())) {
+        auto attrRef = std::get<AttributeReference>(reference.getValue());
+        return attrRef.getSynonym() + "." + attrRef.getAttributeName();
+    } else if (std::holds_alternative<int>(reference.getValue())) {
+        auto integer = std::get<int>(reference.getValue());
+        return std::to_string(integer);
+    } else {
+        return std::get<std::string>(reference.getValue());
+    }
+}

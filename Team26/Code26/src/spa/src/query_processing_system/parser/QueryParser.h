@@ -60,9 +60,9 @@ class QueryParser : public AbstractParser {
      * Handles parsing of relRef:
      * Follows | FollowsT | Parent | ParentT | UsesS | UsesP | ModifiesS | ModifiesP
      */
-    void parseRelRef();
+    void parseSuchThat();
 
-    void parseMultipleRelRef();
+    void parseMultipleSuchThat();
 
     /**
      * Parse Arguments of any relRef relationships.
