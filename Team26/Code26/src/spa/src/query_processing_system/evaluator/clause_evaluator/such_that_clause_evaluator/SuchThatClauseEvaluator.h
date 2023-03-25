@@ -194,30 +194,28 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
  public:
     std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage_, CachePointer cache_) override {
         setStorageLocation(storage_, cache_);
-
         auto argumentType = getClauseArgumentType(leftArg.getArgumentType(), rightArg.getArgumentType());
-        if (argumentType == ClauseArgumentTypes::VALUE_VALUE) {
-            evaluateValueValue();
-        } else if (argumentType == ClauseArgumentTypes::SYNONYM_VALUE) {
-            evaluateSynonymValue();
-        } else if (argumentType == ClauseArgumentTypes::VALUE_SYNONYM) {
-            evaluateValueSynonym();
-        } else if (argumentType == ClauseArgumentTypes::SYNONYM_SYNONYM) {
-            evaluateSynonymSynonym();
-        } else if (argumentType == ClauseArgumentTypes::SYNONYM_WILDCARD) {
-            evaluateSynonymWildcard();
-        } else if (argumentType == ClauseArgumentTypes::WILDCARD_SYNONYM) {
-            evaluateWildcardSynonym();
-        } else if (argumentType == ClauseArgumentTypes::VALUE_WILDCARD) {
-            evaluateValueWildcard();
-        } else if (argumentType == ClauseArgumentTypes::WILDCARD_VALUE) {
-            evaluateWildcardValue();
-        } else if (argumentType == ClauseArgumentTypes::WILDCARD_WILDCARD) {
-            evaluateWildcardWildcard();
-        } else {
+
+        std::unordered_map<ClauseArgumentTypes, std::function<void(void)>> evalMap {
+                {ClauseArgumentTypes::SYNONYM_SYNONYM, [this](){ evaluateSynonymSynonym(); }},
+                {ClauseArgumentTypes::SYNONYM_VALUE, [this](){ evaluateSynonymValue(); }},
+                {ClauseArgumentTypes::VALUE_SYNONYM, [this](){ evaluateValueSynonym(); }},
+                {ClauseArgumentTypes::SYNONYM_WILDCARD, [this](){ evaluateSynonymWildcard(); }},
+                {ClauseArgumentTypes::WILDCARD_SYNONYM, [this](){ evaluateWildcardSynonym(); }},
+                {ClauseArgumentTypes::VALUE_WILDCARD, [this](){ evaluateValueWildcard(); }},
+                {ClauseArgumentTypes::WILDCARD_VALUE, [this](){ evaluateWildcardValue(); }},
+                {ClauseArgumentTypes::VALUE_VALUE, [this](){ evaluateValueValue(); }},
+                {ClauseArgumentTypes::WILDCARD_WILDCARD, [this](){ evaluateWildcardWildcard(); }}
+        };
+
+        auto it = evalMap.find(argumentType);
+        if (it == evalMap.end()) {
             throw std::exception();
         }
+
+        it->second();
         optimiseResults();
+
         return clauseResultTable;
     }
 };
