@@ -109,8 +109,6 @@ class QueryParser : public AbstractParser {
 
     std::string parseShuntingYard(std::string);
 
-    std::string referenceToString(Reference);
-
  public:
     /**
      * Constructor for the query parser.

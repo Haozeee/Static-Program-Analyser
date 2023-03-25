@@ -7,9 +7,7 @@
 #include "query_processing_system/parser/clause/pattern_clause/PatternClauseFactory.h"
 #include "QueryParserUtil.h"
 
-std::unordered_set<std::string> suchThatClauses;
-std::unordered_set<std::string> patternClauses;
-std::unordered_set<std::string> withClauses;
+std::unordered_set<std::string> clauseSet;
 
 QueryParser::QueryParser(std::vector<std::shared_ptr<Token>> tokens, Query* query) :
         query(query), AbstractParser(tokens) {}
@@ -178,10 +176,10 @@ void QueryParser::parseSuchThat() {
     parseNext(")");
 
     auto tempSuchThatString = suchThatString + "(" + leftArgument.getValue() + "," + rightArgument.getValue() + ")";
-    if (suchThatClauses.find(tempSuchThatString) == suchThatClauses.end()) {
+    if (clauseSet.find(tempSuchThatString) == clauseSet.end()) {
         auto suchThatClause = SuchThatClauseFactory::createSuchThatClause(suchThatString, leftArgument, rightArgument);
         query->addSuchThatClause(suchThatClause);
-        suchThatClauses.insert(tempSuchThatString);
+        clauseSet.insert(tempSuchThatString);
     }
 }
 
@@ -262,13 +260,13 @@ void QueryParser::parsePatternClause() {
         parseNext(")");
     }
 
-    auto patternString =
-            patternArg.getValue() + "(" + leftArgument.getValue() + "," + rightArgument.getExpression() + ")";
-    if (patternClauses.find(patternString) == patternClauses.end()) {
+    auto patternString = "pattern" + patternArg.getValue() + "(" + leftArgument.getValue() + ","
+                                + rightArgument.getExpression() + ")";
+    if (clauseSet.find(patternString) == clauseSet.end()) {
         PatternClause* patternClause =
                 PatternClauseFactory::createPatternClause(patternArg, leftArgument, rightArgument);
         query->addPatternClause(patternClause);
-        patternClauses.insert(patternString);
+        clauseSet.insert(patternString);
     }
 }
 
@@ -331,23 +329,11 @@ void QueryParser::parseWithClause() {
                                     + QueryParserInvalidEqualSignInWithClause);
     Reference rightRef = parseReference();
 
-    auto withString = referenceToString(leftRef) + referenceToString(rightRef);
-    if (withClauses.find(withString) == withClauses.end()) {
+    auto withString = Reference::toString(leftRef) + "=" + Reference::toString(rightRef);
+    if (clauseSet.find(withString) == clauseSet.end()) {
         auto withClause = new WithClause(leftRef, rightRef);
         query->addWithClause(withClause);
-        withClauses.insert(withString);
-    }
-}
-
-std::string QueryParser::referenceToString(Reference reference) {
-    if (std::holds_alternative<AttributeReference>(reference.getValue())) {
-        auto attrRef = std::get<AttributeReference>(reference.getValue());
-        return attrRef.getSynonym() + "." + attrRef.getAttributeName();
-    } else if (std::holds_alternative<int>(reference.getValue())) {
-        auto integer = std::get<int>(reference.getValue());
-        return std::to_string(integer);
-    } else {
-        return std::get<std::string>(reference.getValue());
+        clauseSet.insert(withString);
     }
 }
 
@@ -456,7 +442,5 @@ void QueryParser::parse() {
         parseEndingUnexpectedToken();
     }
 
-    suchThatClauses.clear();
-    patternClauses.clear();
-    withClauses.clear();
+    clauseSet.clear();
 }
