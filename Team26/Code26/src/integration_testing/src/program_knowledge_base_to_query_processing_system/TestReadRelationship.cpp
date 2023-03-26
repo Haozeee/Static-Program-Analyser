@@ -272,6 +272,35 @@ TEST_CASE("Test reading relationships for all managers") {
     std::list<std::string> a1cResults = {};
     REQUIRE(q1cResults == a1cResults);
 
+    std::list<std::string> q1dResults;
+    std::string q1d = "Select BOOLEAN such that Follows(1, 2)";
+    queryManager.process(q1d, q1dResults, storageManager->getReadStorage());
+
+    std::list<std::string> a1dResults = {"TRUE"};
+    REQUIRE(q1dResults == a1dResults);
+
+    std::list<std::string> q1eResults;
+    std::string q1e = "Select BOOLEAN such that Follows(2, 1)";
+    queryManager.process(q1e, q1eResults, storageManager->getReadStorage());
+
+    std::list<std::string> a1eResults = {"FALSE"};
+    REQUIRE(q1eResults == a1eResults);
+
+    std::list<std::string> q1fResults;
+    std::string q1f = "stmt s; assign a; Select s such that Follows(s, a)";
+    queryManager.process(q1f, q1fResults, storageManager->getReadStorage());
+
+    std::list<std::string> a1fResults = {"1", "3", "8", "9"};
+    q1fResults.sort(compare_int_string);
+    REQUIRE(q1fResults == a1fResults);
+
+    std::list<std::string> q1gResults;
+    std::string q1g = "stmt s; assign a; Select s such that follows(s, a)";
+    queryManager.process(q1g, q1gResults, storageManager->getReadStorage());
+
+    std::list<std::string> a1gResults = {"SyntaxError"};
+    REQUIRE(q1gResults == a1gResults);
+
     // test FollowsT
     std::list<std::string> q2aResults;
     std::string q2a = "stmt s; Select s such that Follows*(1, s)";
@@ -288,6 +317,42 @@ TEST_CASE("Test reading relationships for all managers") {
     std::list<std::string> a2bResults = {"1", "2", "3", "7"};
     q2bResults.sort(compare_int_string);
     REQUIRE(q2bResults == a2bResults);
+
+    std::list<std::string> q2cResults;
+    std::string q2c = "Select BOOLEAN such that Follows*(_, 2)";
+    queryManager.process(q2c, q2cResults, storageManager->getReadStorage());
+
+    std::list<std::string> a2cResults = {"TRUE"};
+    REQUIRE(q2cResults == a2cResults);
+
+    std::list<std::string> q2dResults;
+    std::string q2d = "stmt s; print p; Select s such that Follows*(p, 3)";
+    queryManager.process(q2d, q2dResults, storageManager->getReadStorage());
+
+    std::list<std::string> a2dResults = {};
+    REQUIRE(q2dResults == a2dResults);
+
+    std::list<std::string> q2eResults;
+    std::string q2e = "assign a; while w; Select a such that Follows*(a, w)";
+    queryManager.process(q2e, q2eResults, storageManager->getReadStorage());
+
+    std::list<std::string> a2eResults = {"2", "7"};
+    q2eResults.sort(compare_int_string);
+    REQUIRE(q2eResults == a2eResults);
+
+    std::list<std::string> q2fResults;
+    std::string q2f = "if ifs; while w; Select ifs such that Follows*(ifs, w)";
+    queryManager.process(q2f, q2fResults, storageManager->getReadStorage());
+
+    std::list<std::string> a2fResults = {"3"};
+    REQUIRE(q2fResults == a2fResults);
+
+    std::list<std::string> q2gResults;
+    std::string q2g = "stmt s; constant c; Select BOOLEAN such that Follows*(s, c)";
+    queryManager.process(q2g, q2gResults, storageManager->getReadStorage());
+
+    std::list<std::string> a2gResults = {"SemanticError"};
+    REQUIRE(q2gResults == a2gResults);
 
     // test Modifies
     std::list<std::string> q3aResults;
@@ -314,6 +379,36 @@ TEST_CASE("Test reading relationships for all managers") {
     q3cResults.sort(compare_int_string);
     REQUIRE(q3cResults == a3cResults);
 
+    std::list<std::string> q3dResults;
+    std::string q3d = "procedure proc; variable v; Select v such that Modifies(proc, v)";
+    queryManager.process(q3d, q3dResults, storageManager->getReadStorage());
+
+    std::list<std::string> a3dResults = {"a", "b", "c", "x", "y"};
+    q3dResults.sort();
+    REQUIRE(q3dResults == a3dResults);
+
+    std::list<std::string> q3eResults;
+    std::string q3e = "procedure proc; Select proc such that Modifies(proc, \"x\")";
+    queryManager.process(q3e, q3eResults, storageManager->getReadStorage());
+
+    std::list<std::string> a3eResults = {"test1"};
+    REQUIRE(q3eResults == a3eResults);
+
+    std::list<std::string> q3fResults;
+    std::string q3f = "variable v; Select BOOLEAN such that Modifies(8, v)";
+    queryManager.process(q3f, q3fResults, storageManager->getReadStorage());
+
+    std::list<std::string> a3fResults = {"TRUE"};
+    REQUIRE(q3fResults == a3fResults);
+
+    std::list<std::string> q3gResults;
+    std::string q3g = "variable v; if ifs; Select ifs.stmt# such that Modifies(ifs, v)";
+    queryManager.process(q3g, q3gResults, storageManager->getReadStorage());
+
+    std::list<std::string> a3gResults = {"3", "9"};
+    q3gResults.sort(compare_int_string);
+    REQUIRE(q3gResults == a3gResults);
+
     // test Parent
     std::list<std::string> q4aResults;
     std::string q4a = "stmt s; Select s such that Parent(8, s)";
@@ -329,6 +424,44 @@ TEST_CASE("Test reading relationships for all managers") {
 
     std::list<std::string> a4bResults = {};
     REQUIRE(q4bResults == a4bResults);
+
+    std::list<std::string> q4cResults;
+    std::string q4c = "print p; Select p such that Parent(p, _)";
+    queryManager.process(q4c, q4cResults, storageManager->getReadStorage());
+
+    std::list<std::string> a4cResults = {};
+    REQUIRE(q4cResults == a4cResults);
+
+    std::list<std::string> q4dResults;
+    std::string q4d = "procedure proc; Select BOOLEAN such that Parent(proc, 3)";
+    queryManager.process(q4d, q4dResults, storageManager->getReadStorage());
+
+    std::list<std::string> a4dResults = {"SemanticError"};
+    q4dResults.sort();
+    REQUIRE(q4dResults == a4dResults);
+
+    std::list<std::string> q4eResults;
+    std::string q4e = "statement s; Select s such that Parent(s, _)";
+    queryManager.process(q4e, q4eResults, storageManager->getReadStorage());
+
+    std::list<std::string> a4eResults = {"SyntaxError"};
+    REQUIRE(q4eResults == a4eResults);
+
+    std::list<std::string> q4fResults;
+    std::string q4f = "if ifs; while w; Select <ifs, w> such that Parent(ifs, w)";
+    queryManager.process(q4f, q4fResults, storageManager->getReadStorage());
+
+    std::list<std::string> a4fResults = {};
+    REQUIRE(q4fResults == a4fResults);
+
+    std::list<std::string> q4gResults;
+    std::string q4g = "stmt s; Select s such that Parent(_, _)";
+    queryManager.process(q4g, q4gResults, storageManager->getReadStorage());
+
+    std::list<std::string> a4gResults = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+                                         "11", "12", "13", "14", "15", "16", "17", "18"};
+    q4gResults.sort(compare_int_string);
+    REQUIRE(q4gResults == a4gResults);
 
     // test ParentT
     std::list<std::string> q5aResults;
@@ -346,6 +479,42 @@ TEST_CASE("Test reading relationships for all managers") {
     std::list<std::string> a5bResults = {"4", "5", "6"};
     q5bResults.sort(compare_int_string);
     REQUIRE(q5bResults == a5bResults);
+
+    std::list<std::string> q5cResults;
+    std::string q5c = "read r; Select r such that Parent*(_, r)";
+    queryManager.process(q5c, q5cResults, storageManager->getReadStorage());
+
+    std::list<std::string> a5cResults = {};
+    REQUIRE(q5cResults == a5cResults);
+
+    std::list<std::string> q5dResults;
+    std::string q5d = "Select BOOLEAN such that Parent*(3, 4)";
+    queryManager.process(q5d, q5dResults, storageManager->getReadStorage());
+
+    std::list<std::string> a5dResults = {"TRUE"};
+    REQUIRE(q5dResults == a5dResults);
+
+    std::list<std::string> q5eResults;
+    std::string q5e = "stmt s; call cl; Select s such that Parent*(s, cl)";
+    queryManager.process(q5e, q5eResults, storageManager->getReadStorage());
+
+    std::list<std::string> a5eResults = {};
+    REQUIRE(q5eResults == a5eResults);
+
+    std::list<std::string> q5fResults;
+    std::string q5f = "while w; Select w such that Parent*(w, _)";
+    queryManager.process(q5f, q5fResults, storageManager->getReadStorage());
+
+    std::list<std::string> a5fResults = {"8"};
+    REQUIRE(q5fResults == a5fResults);
+
+    std::list<std::string> q5gResults;
+    std::string q5g = "if ifs; print p; Select ifs such that Parent*(ifs, p)";
+    queryManager.process(q5g, q5gResults, storageManager->getReadStorage());
+
+    std::list<std::string> a5gResults = {"3", "9"};
+    q5gResults.sort(compare_int_string);
+    REQUIRE(q5gResults == a5gResults);
 
     // test Uses
     std::list<std::string> q6aResults;
@@ -370,6 +539,34 @@ TEST_CASE("Test reading relationships for all managers") {
     std::list<std::string> a6cResults = {"x"};
     REQUIRE(q6cResults == a6cResults);
 
+    std::list<std::string> q6dResults;
+    std::string q6d = "procedure proc; Select BOOLEAN such that Uses(proc, \"a\")";
+    queryManager.process(q6d, q6dResults, storageManager->getReadStorage());
+
+    std::list<std::string> a6dResults = {"TRUE"};
+    REQUIRE(q6dResults == a6dResults);
+
+    std::list<std::string> q6eResults;
+    std::string q6e = "stmt s; call cl; Select s such that Uses(s, cl)";
+    queryManager.process(q6e, q6eResults, storageManager->getReadStorage());
+
+    std::list<std::string> a6eResults = {"SemanticError"};
+    REQUIRE(q6eResults == a6eResults);
+
+    std::list<std::string> q6fResults;
+    std::string q6f = "while w; Select w such that Uses(w, _)";
+    queryManager.process(q6f, q6fResults, storageManager->getReadStorage());
+
+    std::list<std::string> a6fResults = {"8"};
+    REQUIRE(q6fResults == a6fResults);
+
+    std::list<std::string> q6gResults;
+    std::string q6g = "procedure proc; Select proc such that Uses(proc, \"b\")";
+    queryManager.process(q6g, q6gResults, storageManager->getReadStorage());
+
+    std::list<std::string> a6gResults = {};
+    REQUIRE(q6gResults == a6gResults);
+
     // test Calls
     std::list<std::string> q7aResults;
     std::string q7a = "call cl; Select cl";
@@ -378,6 +575,48 @@ TEST_CASE("Test reading relationships for all managers") {
     std::list<std::string> a7aResults = {"15", "17"};
     q7aResults.sort(compare_int_string);
     REQUIRE(q7aResults == a7aResults);
+
+    std::list<std::string> q7bResults;
+    std::string q7b = "procedure proc; Select proc such that Calls(\"test2\", proc)";
+    queryManager.process(q7b, q7bResults, storageManager->getReadStorage());
+
+    std::list<std::string> a7bResults = {"test3"};
+    REQUIRE(q7bResults == a7bResults);
+
+    std::list<std::string> q7cResults;
+    std::string q7c = "procedure proc; Select proc such that Calls(_, proc)";
+    queryManager.process(q7c, q7cResults, storageManager->getReadStorage());
+
+    std::list<std::string> a7cResults = {};
+    REQUIRE(q7cResults == a7cResults);
+
+    std::list<std::string> q7dResults;
+    std::string q7d = "procedure proc; Select BOOLEAN such that Calls(proc, \"test4\")";
+    queryManager.process(q7d, q7dResults, storageManager->getReadStorage());
+
+    std::list<std::string> a7dResults = {"FALSE"};
+    REQUIRE(q7dResults == a7dResults);
+
+    std::list<std::string> q7eResults;
+    std::string q7e = "Select BOOLEAN such that Calls(\"test1\", \"test2\")";
+    queryManager.process(q7e, q7eResults, storageManager->getReadStorage());
+
+    std::list<std::string> a7eResults = {"TRUE"};
+    REQUIRE(q7eResults == a7eResults);
+
+    std::list<std::string> q7fResults;
+    std::string q7f = "while w; Select w such that Calls(w, _)";
+    queryManager.process(q7f, q7fResults, storageManager->getReadStorage());
+
+    std::list<std::string> a7fResults = {"SemanticError"};
+    REQUIRE(q7fResults == a7fResults);
+
+    std::list<std::string> q7gResults;
+    std::string q7g = "procedure proc; Select proc.procName such that Calls(\"test2\", proc)";
+    queryManager.process(q7g, q7gResults, storageManager->getReadStorage());
+
+    std::list<std::string> a7gResults = {"test3"};
+    REQUIRE(q7gResults == a7gResults);
 
     // test next
     std::list<std::string> q8aResults;
