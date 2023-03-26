@@ -21,7 +21,11 @@ RelationshipStore::RelationshipStore(const std::shared_ptr<WriteStorage>& writeS
     callPManager = writeStorage->getCallsPManager();
     callsTManager = writeStorage->getCallsTManager();
 
-    this->readStorage = readStorage;
+    procedureMangerRead = readStorage->getProcedureManager();
+    callsPManagerRead = readStorage->getCallsPManager();
+    callsTManagerRead = readStorage->getCallsTManager();
+    modifiesPManagerRead = readStorage->getModifiesPManager();
+    usesPManagerRead = readStorage->getUsesPManager();
 }
 
 void RelationshipStore::insertFollowsRelationship(const int &previousStmtNo, const int &currentStmtNo) {
@@ -95,30 +99,31 @@ void RelationshipStore::invokePreReverseRelationship() {
 }
 
 std::unordered_map<std::string, std::unordered_set<std::string>> RelationshipStore::getCallsPReversedRelationship() {
-    return readStorage->getCallsPManager()->getAllReversedRelationshipEntries();
-}
-
-std::unordered_map<std::string, std::unordered_set<std::string>> RelationshipStore::getCallsTRelationship() {
-    return readStorage->getCallsTManager()->getAllRelationshipEntries();
-}
-
-std::unordered_map<std::string, std::unordered_set<std::string>> RelationshipStore::getModifiesPRelationship() {
-    return readStorage->getModifiesPManager()->getAllRelationshipEntries();
-}
-
-std::unordered_map<std::string, std::unordered_set<std::string>> RelationshipStore::getUsesPRelationship() {
-    return readStorage->getUsesPManager()->getAllRelationshipEntries();
-}
-
-bool RelationshipStore::procedureEntitiesContains(std::string procedureName) {
-    return readStorage->getProcedureManager()->contains(procedureName);
-}
-
-std::unordered_set<std::string> RelationshipStore::getProcedureEntities() {
-    return readStorage->getProcedureManager()->getAllEntitiesEntries();
+    return callsPManagerRead->getAllReversedRelationshipEntries();
 }
 
 bool RelationshipStore::callsPReadContains(std::string procedureName1, std::string procedureName2) {
-    return readStorage->getCallsPManager()->containsMap(procedureName1, procedureName2);
+    return callsPManagerRead->containsMap(procedureName1, procedureName2);
 }
+
+std::unordered_map<std::string, std::unordered_set<std::string>> RelationshipStore::getCallsTRelationship() {
+    return callsTManagerRead->getAllRelationshipEntries();
+}
+
+std::unordered_map<std::string, std::unordered_set<std::string>> RelationshipStore::getModifiesPRelationship() {
+    return modifiesPManagerRead->getAllRelationshipEntries();
+}
+
+std::unordered_map<std::string, std::unordered_set<std::string>> RelationshipStore::getUsesPRelationship() {
+    return usesPManagerRead->getAllRelationshipEntries();
+}
+
+bool RelationshipStore::procedureEntitiesContains(std::string procedureName) {
+    return procedureMangerRead->contains(procedureName);
+}
+
+std::unordered_set<std::string> RelationshipStore::getProcedureEntities() {
+    return procedureMangerRead->getAllEntitiesEntries();
+}
+
 
