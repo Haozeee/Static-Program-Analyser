@@ -686,4 +686,109 @@ TEST_CASE("Test reading relationships for all managers") {
 
     std::list<std::string> a9gResults = {"SemanticError"};
     REQUIRE(q9gResults == a9gResults);
+
+    // test affects
+    std::list<std::string> q10aResults;
+    std::string q10a = "assign a; Select a such that Affects(a, 9)";
+    queryManager.process(q10a, q10aResults, storageManager->getReadStorage());
+
+    std::list<std::string> a10aResults = {};
+    REQUIRE(q10aResults == a10aResults);
+
+    std::list<std::string> q10bResults;
+    std::string q10b = "stmt s; Select s such that Affects(s, _)";
+    queryManager.process(q10b, q10bResults, storageManager->getReadStorage());
+
+    std::list<std::string> a10bResults = {"2", "4", "6", "7", "11", "13"};
+    q10bResults.sort(compare_int_string);
+    REQUIRE(q10bResults == a10bResults);
+
+    std::list<std::string> q10cResults;
+    std::string q10c = "Select BOOLEAN such that Affects(2, _)";
+    queryManager.process(q10c, q10cResults, storageManager->getReadStorage());
+
+    std::list<std::string> a10cResults = {"TRUE"};
+    REQUIRE(q10cResults == a10cResults);
+
+    std::list<std::string> q10dResults;
+    std::string q10d = "stmt s; assign a; Select s such that Affects(s, a)";
+    queryManager.process(q10d, q10dResults, storageManager->getReadStorage());
+
+    std::list<std::string> a10dResults = {"2", "4", "6", "7", "11", "13"};
+    q10dResults.sort(compare_int_string);
+    REQUIRE(q10dResults == a10dResults);
+
+    std::list<std::string> q10eResults;
+    std::string q10e = "assign a; while w; Select a such that Affects(a, w)";
+    queryManager.process(q10e, q10eResults, storageManager->getReadStorage());
+
+    std::list<std::string> a10eResults = {};
+    REQUIRE(q10eResults == a10eResults);
+
+    std::list<std::string> q10fResults;
+    std::string q10f = "if ifs; while w; Select ifs such that Affects(ifs, w)";
+    queryManager.process(q10f, q10fResults, storageManager->getReadStorage());
+
+    std::list<std::string> a10fResults = {};
+    REQUIRE(q10fResults == a10fResults);
+
+    std::list<std::string> q10gResults;
+    std::string q10g = "stmt s; constant c; Select BOOLEAN such that Affects(s, c)";
+    queryManager.process(q10g, q10gResults, storageManager->getReadStorage());
+
+    std::list<std::string> a10gResults = {"SemanticError"};
+    REQUIRE(q10gResults == a10gResults);
+
+    // test affectsT
+    std::list<std::string> q11aResults;
+    std::string q11a = "stmt s; Select s such that Affects*(_, s)";
+    queryManager.process(q11a, q11aResults, storageManager->getReadStorage());
+
+    std::list<std::string> a11aResults = {"4", "13", "14"};
+    q11aResults.sort(compare_int_string);
+    REQUIRE(q11aResults == a11aResults);
+
+    std::list<std::string> q11bResults;
+    std::string q11b = "stmt s; Select s such that Affects*(s, 8)";
+    queryManager.process(q11b, q11bResults, storageManager->getReadStorage());
+
+    std::list<std::string> a11bResults = {};
+    q11bResults.sort(compare_int_string);
+    REQUIRE(q11bResults == a11bResults);
+
+    std::list<std::string> q11cResults;
+    std::string q11c = "Select BOOLEAN such that Affects*(_, 11)";
+    queryManager.process(q11c, q11cResults, storageManager->getReadStorage());
+
+    std::list<std::string> a11cResults = {"FALSE"};
+    REQUIRE(q11cResults == a11cResults);
+
+    std::list<std::string> q11dResults;
+    std::string q11d = "stmt s; print p; Select s such that Affects*(p, 3)";
+    queryManager.process(q11d, q11dResults, storageManager->getReadStorage());
+
+    std::list<std::string> a11dResults = {};
+    REQUIRE(q11dResults == a11dResults);
+
+    std::list<std::string> q11eResults;
+    std::string q11e = "assign a; Select a such that Affects*(a, _)";
+    queryManager.process(q11e, q11eResults, storageManager->getReadStorage());
+
+    std::list<std::string> a11eResults = {"2", "4", "6", "7", "11", "13"};
+    q11eResults.sort(compare_int_string);
+    REQUIRE(q11eResults == a11eResults);
+
+    std::list<std::string> q11fResults;
+    std::string q11f = "if ifs; Select ifs such that Affects*(ifs, _)";
+    queryManager.process(q11f, q11fResults, storageManager->getReadStorage());
+
+    std::list<std::string> a11fResults = {};
+    REQUIRE(q11fResults == a11fResults);
+
+    std::list<std::string> q11gResults;
+    std::string q11g = "stmt s; constant c; Select BOOLEAN such that Affects*(s, c)";
+    queryManager.process(q11g, q11gResults, storageManager->getReadStorage());
+
+    std::list<std::string> a11gResults = {"SemanticError"};
+    REQUIRE(q11gResults == a11gResults);
 }
