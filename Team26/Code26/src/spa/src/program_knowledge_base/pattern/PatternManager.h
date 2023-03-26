@@ -50,21 +50,21 @@ class PatternManager: public IReadPatternManager<T, U>, public IWritePatternMana
     }
 
     bool containsIndexStmtMap(int index, int stmtNo) override {
-        bool flag = false;
         auto key = indexStmtMap.find(index);
         if (key != indexStmtMap.end()) {
-            flag = key->second == stmtNo;
+            return key->second == stmtNo;
+        } else {
+            return false;
         }
-        return flag;
     }
 
     bool containsReversedIndexStmtMap(int stmtNo, int index) override {
-        bool flag = false;
         auto key = reversedIndexStmtMap.find(stmtNo);
         if (key != reversedIndexStmtMap.end()) {
-            flag = key->second == index;
+            return key->second == index;
+        } else {
+            return false;
         }
-        return flag;
     }
 
     std::unique_ptr<std::vector<T>> getAllLhsPatternEntries() override {
