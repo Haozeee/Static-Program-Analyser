@@ -72,7 +72,7 @@ TEST_CASE("Test reading entity for all manager") {
 
     // test Assign
     std::list<std::string> q1Results;
-    std::string q1 = "assign a; Select a"; // to be declared
+    std::string q1 = "assign a; Select a";
     queryManager.process(q1, q1Results, storageManager->getReadStorage());
 
     std::list<std::string> a1Results = {"1", "4", "5", "6", "9"};
@@ -81,7 +81,7 @@ TEST_CASE("Test reading entity for all manager") {
 
     // test Call
     std::list<std::string> q2Results;
-    std::string q2 = "call cl; Select cl"; // to be declared
+    std::string q2 = "call cl; Select cl";
     queryManager.process(q2, q2Results, storageManager->getReadStorage());
 
     std::list<std::string> a2Results = {"2"};
@@ -89,7 +89,7 @@ TEST_CASE("Test reading entity for all manager") {
 
     // test Constant
     std::list<std::string> q3Results;
-    std::string q3 = "constant c; Select c"; // to be declared
+    std::string q3 = "constant c; Select c";
     queryManager.process(q3, q3Results, storageManager->getReadStorage());
 
     std::list<std::string> a3Results = {"0", "1", "3", "10"};
@@ -98,7 +98,7 @@ TEST_CASE("Test reading entity for all manager") {
 
     // test If
     std::list<std::string> q4Results;
-    std::string q4 = "if ifs; Select ifs"; // to be declared
+    std::string q4 = "if ifs; Select ifs";
     queryManager.process(q4, q4Results, storageManager->getReadStorage());
 
     std::list<std::string> a4Results = {"3"};
@@ -106,7 +106,7 @@ TEST_CASE("Test reading entity for all manager") {
 
     // test Print
     std::list<std::string> q5Results;
-    std::string q5 = "print pn; Select pn"; // to be declared
+    std::string q5 = "print pn; Select pn";
     queryManager.process(q5, q5Results, storageManager->getReadStorage());
 
     std::list<std::string> a5Results = {"8"};
@@ -114,7 +114,7 @@ TEST_CASE("Test reading entity for all manager") {
 
     // test Procedure
     std::list<std::string> q6Results;
-    std::string q6 = "procedure p; Select p"; // to be declared
+    std::string q6 = "procedure p; Select p";
     queryManager.process(q6, q6Results, storageManager->getReadStorage());
 
     std::list<std::string> a6Results = {"test1", "test2"};
@@ -122,7 +122,7 @@ TEST_CASE("Test reading entity for all manager") {
 
     // test Read
     std::list<std::string> q7Results;
-    std::string q7 = "read r; Select r"; // to be declared
+    std::string q7 = "read r; Select r";
     queryManager.process(q7, q7Results, storageManager->getReadStorage());
 
     std::list<std::string> a7Results = {"10", "11"};
@@ -131,7 +131,7 @@ TEST_CASE("Test reading entity for all manager") {
 
     // test Stmt
     std::list<std::string> q8Results;
-    std::string q8 = "stmt s; Select s"; // to be declared
+    std::string q8 = "stmt s; Select s";
     queryManager.process(q8, q8Results, storageManager->getReadStorage());
 
     std::list<std::string> a8Results = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"};
@@ -140,7 +140,7 @@ TEST_CASE("Test reading entity for all manager") {
 
     // test Variable
     std::list<std::string> q9Results;
-    std::string q9 = "variable v; Select v"; // to be declared
+    std::string q9 = "variable v; Select v";
     queryManager.process(q9, q9Results, storageManager->getReadStorage());
 
     std::list<std::string> a9Results = {"a", "b", "x", "y"};
@@ -149,7 +149,7 @@ TEST_CASE("Test reading entity for all manager") {
 
     // test While
     std::list<std::string> q10Results;
-    std::string q10 = "while w; Select w"; // to be declared
+    std::string q10 = "while w; Select w";
     queryManager.process(q10, q10Results, storageManager->getReadStorage());
 
     std::list<std::string> a10Results = {"7"};
