@@ -36,12 +36,8 @@ class PatternManager: public IReadPatternManager<T, U>, public IWritePatternMana
     }
 
     bool containsLhsVector(T left) override {
-        bool flag = false;
-        auto it = std::find(lhsVector.begin(), lhsVector.end(), left);
-        if (it != lhsVector.end()) {
-            flag = true;
-        }
-        return flag;
+        auto itr = std::find(lhsVector.begin(), lhsVector.end(), left);
+        return itr != lhsVector.end();
     }
 
     bool containsRhsVector(U right) override {
@@ -89,10 +85,10 @@ class PatternManager: public IReadPatternManager<T, U>, public IWritePatternMana
         rhsVector.push_back(right);
 
         auto insertedIndexStmtMap = indexStmtMap.insert({index, stmtNo});
-        bool flag1 = insertedIndexStmtMap.second;
+        bool isInserted = insertedIndexStmtMap.second;
         auto insertedReversedIndexStmtMap = reversedIndexStmtMap.insert({stmtNo, index});
-        bool flag2 = insertedReversedIndexStmtMap.second;
+        bool isReverseInserted = insertedReversedIndexStmtMap.second;
 
-        return flag1 && flag2;
+        return isInserted && isReverseInserted;
     }
 };
