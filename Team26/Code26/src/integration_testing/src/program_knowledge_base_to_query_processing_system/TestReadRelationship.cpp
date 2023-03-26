@@ -791,4 +791,57 @@ TEST_CASE("Test reading relationships for all managers") {
 
     std::list<std::string> a11gResults = {"SemanticError"};
     REQUIRE(q11gResults == a11gResults);
+
+    // test with
+    std::list<std::string> q12aResults;
+    std::string q12a = "constant c; Select BOOLEAN with 50 = c.value";
+    queryManager.process(q12a, q12aResults, storageManager->getReadStorage());
+
+    std::list<std::string> a12aResults = {"FALSE"};
+    REQUIRE(q12aResults == a12aResults);
+
+    std::list<std::string> q12bResults;
+    std::string q12b = "call cl; Select BOOLEAN with 15 = cl.stmt#";
+    queryManager.process(q12b, q12bResults, storageManager->getReadStorage());
+
+    std::list<std::string> a12bResults = {"TRUE"};
+    REQUIRE(q12bResults == a12bResults);
+
+    std::list<std::string> q12cResults;
+    std::string q12c = "procedure proc; Select proc with 1 = 1";
+    queryManager.process(q12c, q12cResults, storageManager->getReadStorage());
+
+    std::list<std::string> a12cResults = {"test1", "test2", "test3"};
+    q12cResults.sort();
+    REQUIRE(q12cResults == a12cResults);
+
+    std::list<std::string> q12dResults;
+    std::string q12d = "stmt s; read r; Select s with s.stmt# = r.stmt#";
+    queryManager.process(q12d, q12dResults, storageManager->getReadStorage());
+
+    std::list<std::string> a12dResults = {"1", "16", "18"};
+    q12dResults.sort(compare_int_string);
+    REQUIRE(q12dResults == a12dResults);
+
+    std::list<std::string> q12eResults;
+    std::string q12e = "read r; Select r with \"b\" = r.varName";
+    queryManager.process(q12e, q12eResults, storageManager->getReadStorage());
+
+    std::list<std::string> a12eResults = {"16"};
+    REQUIRE(q12eResults == a12eResults);
+
+    std::list<std::string> q12fResults;
+    std::string q12f = "assign a; Select a with \"x\" = a.stmt#";
+    queryManager.process(q12f, q12fResults, storageManager->getReadStorage());
+
+    std::list<std::string> a12fResults = {"SemanticError"};
+    REQUIRE(q12fResults == a12fResults);
+
+    std::list<std::string> q12gResults;
+    std::string q12g = "stmt s; assign a; Select s with s.stmt# = a.stmt#";
+    queryManager.process(q12g, q12gResults, storageManager->getReadStorage());
+
+    std::list<std::string> a12gResults = {"2", "4", "6", "7", "11", "13", "14"};
+    q12gResults.sort(compare_int_string);
+    REQUIRE(q12gResults == a12gResults);
 }
