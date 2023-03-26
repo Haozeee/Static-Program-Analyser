@@ -14,7 +14,7 @@ class TestExtractorUtil {
         int thenStmtNumber = ifNo + 1;
         int elseStmtNumber = thenStmtNumber + 1;
 
-        std::unordered_set<std::string> variables;
+        std::unordered_set<std::string> variables { "a" };
         std::unordered_set<int> constants { 1 };
 
         std::shared_ptr<CondExprNode> condExpr = std::make_shared<CondExprNode>(variables, constants);
@@ -37,7 +37,7 @@ class TestExtractorUtil {
         int whileNo = stmtNumber;
         int listStmtNo = whileNo + 1;
 
-        std::unordered_set<std::string> variables;
+        std::unordered_set<std::string> variables { "a" };
         std::unordered_set<int> constants { 1 };
 
         std::shared_ptr<CondExprNode> condExpr = std::make_shared<CondExprNode>(variables, constants);

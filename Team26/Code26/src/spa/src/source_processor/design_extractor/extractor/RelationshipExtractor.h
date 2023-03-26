@@ -43,7 +43,7 @@ class RelationshipExtractor : public BaseExtractor, public IRelationshipExtracto
 
     // UsesP, ModifiesP Statements
     void insertUsesPGroup(const std::string& procedureName, const std::string& variableName);
-    void insertModifiesPPGroup(const std::string& procedureName, const std::string& variableName);
+    void insertModifiesPGroup(const std::string& procedureName, const std::string& variableName);
 
     // Calls Statement
     void interlinkRelationships(const std::string& procedureName);
