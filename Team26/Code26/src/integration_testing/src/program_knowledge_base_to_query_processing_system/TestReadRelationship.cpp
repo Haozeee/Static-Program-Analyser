@@ -633,4 +633,57 @@ TEST_CASE("Test reading relationships for all managers") {
     std::list<std::string> a8bResults = {"10", "11"};
     q8bResults.sort(compare_int_string);
     REQUIRE(q8bResults == a8bResults);
+
+    // test nextT
+    std::list<std::string> q9aResults;
+    std::string q9a = "stmt s; read r; Select s such that Next*(s, r)";
+    queryManager.process(q9a, q9aResults, storageManager->getReadStorage());
+
+    std::list<std::string> a9aResults = {};
+    REQUIRE(q9aResults == a9aResults);
+
+    std::list<std::string> q9bResults;
+    std::string q9b = "stmt s; Select s such that Next*(11, s)";
+    queryManager.process(q9b, q9bResults, storageManager->getReadStorage());
+
+    std::list<std::string> a9bResults = {"8", "9", "10", "11", "12", "13", "14", "15"};
+    q9bResults.sort(compare_int_string);
+    REQUIRE(q9bResults == a9bResults);
+
+    std::list<std::string> q9cResults;
+    std::string q9c = "Select BOOLEAN such that Next*(9, _)";
+    queryManager.process(q9c, q9cResults, storageManager->getReadStorage());
+
+    std::list<std::string> a9cResults = {"TRUE"};
+    REQUIRE(q9cResults == a9cResults);
+
+    std::list<std::string> q9dResults;
+    std::string q9d = "stmt s; print p; Select s such that Next*(p, 3)";
+    queryManager.process(q9d, q9dResults, storageManager->getReadStorage());
+
+    std::list<std::string> a9dResults = {};
+    REQUIRE(q9dResults == a9dResults);
+
+    std::list<std::string> q9eResults;
+    std::string q9e = "assign a; while w; Select a such that Next*(a, w)";
+    queryManager.process(q9e, q9eResults, storageManager->getReadStorage());
+
+    std::list<std::string> a9eResults = {"2", "4", "6", "7", "11", "13"};
+    q9eResults.sort(compare_int_string);
+    REQUIRE(q9eResults == a9eResults);
+
+    std::list<std::string> q9fResults;
+    std::string q9f = "if ifs; while w; Select ifs such that Next*(ifs, w)";
+    queryManager.process(q9f, q9fResults, storageManager->getReadStorage());
+
+    std::list<std::string> a9fResults = {"3", "9"};
+    q9fResults.sort(compare_int_string);
+    REQUIRE(q9fResults == a9fResults);
+
+    std::list<std::string> q9gResults;
+    std::string q9g = "stmt s; constant c; Select BOOLEAN such that Next*(s, c)";
+    queryManager.process(q9g, q9gResults, storageManager->getReadStorage());
+
+    std::list<std::string> a9gResults = {"SemanticError"};
+    REQUIRE(q9gResults == a9gResults);
 }
