@@ -62,8 +62,9 @@ void EntityExtractor::extractAssign(std::shared_ptr<AssignNode> node) {
 
 void EntityExtractor::extractIf(std::shared_ptr<IfNode> node) {
     entityStore->insertIfStatement(node);
-    insertConstants(node->condExprNode->exprConstants);
-    for (auto &variable : node->condExprNode->exprVariables) {
+    auto condExpr = node->condExprNode;
+    insertConstants(condExpr->exprConstants);
+    for (auto &variable : condExpr->exprVariables) {
         entityStore->insertVariableName(variable);
         patternStore->insertCondExpressionIfStatement(node->stmtIndex, variable);
     }
@@ -73,8 +74,9 @@ void EntityExtractor::extractIf(std::shared_ptr<IfNode> node) {
 
 void EntityExtractor::extractWhile(std::shared_ptr<WhileNode> node) {
     entityStore->insertWhileStatement(node);
-    insertConstants(node->condExprNode->exprConstants);
-    for (auto &variable : node->condExprNode->exprVariables) {
+    auto condExpr = node->condExprNode;
+    insertConstants(condExpr->exprConstants);
+    for (auto &variable : condExpr->exprVariables) {
         entityStore->insertVariableName(variable);
         patternStore->insertCondExpressionWhileStatement(node->stmtIndex, variable);
     }
