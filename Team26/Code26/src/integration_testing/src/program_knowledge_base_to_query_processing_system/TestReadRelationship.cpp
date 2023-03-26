@@ -792,7 +792,7 @@ TEST_CASE("Test reading relationships for all managers") {
     std::list<std::string> a11gResults = {"SemanticError"};
     REQUIRE(q11gResults == a11gResults);
 
-    // test with
+    // test with clause
     std::list<std::string> q12aResults;
     std::string q12a = "constant c; Select BOOLEAN with 50 = c.value";
     queryManager.process(q12a, q12aResults, storageManager->getReadStorage());
