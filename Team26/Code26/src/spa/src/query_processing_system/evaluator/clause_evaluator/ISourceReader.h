@@ -11,7 +11,8 @@
 
 /**
  * An interface that is used to read contents from a given source code.
- * The purpose of the interface is to adhere to the dependency inversion principle.
+ * The data of the source code may be stored in different classes or different data structures,
+ * thus this interface allows us to adhere to the dependency inversion principle.
  */
 class ISourceReader {
  public:

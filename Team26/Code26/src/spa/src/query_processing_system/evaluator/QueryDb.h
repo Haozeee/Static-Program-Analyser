@@ -11,12 +11,12 @@
 #include "query_processing_system/parser/SelectClause.h"
 #include "program_knowledge_base/StorageUtil.h"
 #include "program_knowledge_base/StorageManager.h"
-#include "clause_evaluator/with_clause_evaluator/AttributeReferenceMap.h"
+#include "AttributeReferenceMap.h"
 
 using ResultGroups = std::unordered_map<std::string, std::deque<std::shared_ptr<ResultTable>>>;
 
 /**
- * Stores the results from evaluating each claues.
+ * Stores the results from evaluating each clause.
  */
 class QueryDb {
  private:

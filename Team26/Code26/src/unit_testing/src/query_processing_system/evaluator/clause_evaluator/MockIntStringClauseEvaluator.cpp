@@ -4,21 +4,15 @@ MockIntStringClauseEvaluator::MockIntStringClauseEvaluator(Argument left, Argume
     : IntStringClauseEvaluator(left, right) {}
 
 StmtEntityMap MockIntStringClauseEvaluator::getRelationshipMap(StmtSet &interestedValues) {
-    StmtEntityMap res {
-            {1, {"v1", "v2"}},
-            {3, {"v1"}},
-            {4, {"v4", "v5", "v6"}}
-    };
-    return res;
+    return storage->getUsesSMap(interestedValues);
 }
 
 EntityStmtMap MockIntStringClauseEvaluator::getOppositeRelationshipMap(EntitySet &interestedValues) {
-    EntityStmtMap res;
-    return res;
+    return storage->getUsesSReverseMap(interestedValues);
 }
 
 bool MockIntStringClauseEvaluator::isEmptyRelation() {
-    return false;
+    return storage->isUsesSEmpty();
 }
 
 std::shared_ptr<ResultTable> MockIntStringClauseEvaluator::getClauseResult() {

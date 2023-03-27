@@ -23,10 +23,9 @@ class WithClauseEvaluator : public ClauseEvaluator {
 
     virtual std::unordered_set<std::string> getTranslatedValues(T value, DesignEntity de) = 0;
 
-    void evaluateValueAttribute(std::unordered_set<T> values, std::unordered_set<T> attributes,
-                                DesignEntity de, std::string colName) {
+    void evaluateValueAttribute(DesignEntity de, std::string colName ) {
         std::unordered_set<T> intersect;
-        Util::setIntersection(values, attributes, intersect);
+        Util::setIntersection(getLeftRefValues(), getRightRefValues(), intersect);
 
         std::unordered_set<std::string> res;
         // Should have less than one item in intersect
@@ -72,11 +71,9 @@ class WithClauseEvaluator : public ClauseEvaluator {
         auto rightType = rightRef.getReferenceType();
 
         if (leftType != ReferenceType::ATTR_REF && rightType == ReferenceType::ATTR_REF) {
-            evaluateValueAttribute(getLeftRefValues(), getRightRefValues(), rightRef.getAttributeDesignEntity(),
-                                   rightRef.getAttributeIdentity());
+            evaluateValueAttribute(rightRef.getAttributeDesignEntity(), rightRef.getAttributeIdentity());
         } else if (leftType == ReferenceType::ATTR_REF && rightType != ReferenceType::ATTR_REF) {
-            evaluateValueAttribute(getRightRefValues(), getLeftRefValues(), leftRef.getAttributeDesignEntity(),
-                                   leftRef.getAttributeIdentity());
+            evaluateValueAttribute(leftRef.getAttributeDesignEntity(), leftRef.getAttributeIdentity());
         } else if (rightType == ReferenceType::ATTR_REF) {
             evaluateAttributeAttribute();
         } else {

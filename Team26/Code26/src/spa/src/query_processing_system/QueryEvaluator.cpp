@@ -22,11 +22,7 @@ void QueryEvaluator::evaluateClauses() {
     auto allClauses = query->getAllClauses();
 
     if (allClauses.size() > 3) {
-        // Only sort clauses of size >= 3
-        auto sortPredicate = [](Clause* a, Clause* b) {
-            return a->getOptimisationPoints() < b->getOptimisationPoints();
-        };
-        std::sort(allClauses.begin(), allClauses.end(), sortPredicate);
+        sortClauses(allClauses);
     }
 
     for (Clause* clause : allClauses) {
@@ -39,6 +35,13 @@ void QueryEvaluator::evaluateClauses() {
             break;
         }
     }
+}
+
+void QueryEvaluator::sortClauses(std::vector<Clause*> &allClauses) {
+    auto sortPredicate = [](Clause* a, Clause* b) {
+        return a->getOptimisationPoints() < b->getOptimisationPoints();
+    };
+    std::sort(allClauses.begin(), allClauses.end(), sortPredicate);
 }
 
 void QueryEvaluator::evaluateSelectClause() {

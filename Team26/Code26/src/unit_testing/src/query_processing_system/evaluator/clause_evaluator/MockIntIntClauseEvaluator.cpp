@@ -4,28 +4,15 @@ MockIntIntClauseEvaluator::MockIntIntClauseEvaluator(Argument left, Argument rig
         : IntIntClauseEvaluator(left, right) {}
 
 StmtStmtMap MockIntIntClauseEvaluator::getRelationshipMap(StmtSet &interestedValues) {
-    StmtStmtMap res {
-            {1, {2, 3}},
-            {3, {4}},
-            {4, {5, 6, 7}}
-    };
-    return res;
+    return storage->getFollowsMap(interestedValues);
 }
 
 StmtStmtMap MockIntIntClauseEvaluator::getOppositeRelationshipMap(StmtSet &interestedValues) {
-    StmtStmtMap res {
-            {2, {1}},
-            {3, {1}},
-            {4, {3}},
-            {5, {4}},
-            {6, {4}},
-            {7, {4}},
-    };
-    return res;
+    return storage->getFollowsReverseMap(interestedValues);
 }
 
 bool MockIntIntClauseEvaluator::isEmptyRelation() {
-    return false;
+    return storage->isFollowsEmpty();
 }
 
 std::shared_ptr<ResultTable> MockIntIntClauseEvaluator::getClauseResult() {
