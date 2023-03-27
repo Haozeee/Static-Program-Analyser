@@ -3,10 +3,14 @@
 ModifiesSClauseEvaluator::ModifiesSClauseEvaluator(Argument left, Argument right)
         : IntStringClauseEvaluator(left, right) {}
 
-std::unordered_map<int, std::unordered_set<std::string>> ModifiesSClauseEvaluator::getRelationshipManager() {
-    return storage->getModifiesSManager()->getAllRelationshipEntries();
+StmtEntityMap ModifiesSClauseEvaluator::getRelationshipMap(StmtSet &interestedValues) {
+    return StorageUtil::getRelationshipMap(storage->getModifiesSManager());
 }
 
-std::unordered_map<std::string, std::unordered_set<int>> ModifiesSClauseEvaluator::getOppositeRelationshipManager() {
-    return storage->getModifiesSManager()->getAllReversedRelationshipEntries();
+EntityStmtMap ModifiesSClauseEvaluator::getOppositeRelationshipMap(EntitySet &interestedValues) {
+    return StorageUtil::getReverseRelationshipMap(storage->getModifiesSManager());
+}
+
+bool ModifiesSClauseEvaluator::isEmptyRelation() {
+    return StorageUtil::isRelationEmpty(storage->getModifiesSManager());
 }

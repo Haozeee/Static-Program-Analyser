@@ -3,12 +3,14 @@
 FollowsTClauseEvaluator::FollowsTClauseEvaluator(Argument left, Argument right)
         : IntIntClauseEvaluator(left, right) {}
 
-std::unordered_map<int , std::unordered_set<int>>
-FollowsTClauseEvaluator::getRelationshipManager() {
-    return storage->getFollowsTManager()->getAllRelationshipEntries();
+StmtStmtMap FollowsTClauseEvaluator::getRelationshipMap(StmtSet &interestedValues) {
+    return StorageUtil::getRelationshipMap(storage->getFollowsTManager());
 }
 
-std::unordered_map<int , std::unordered_set<int>>
-FollowsTClauseEvaluator::getOppositeRelationshipManager() {
-    return storage->getFollowsTManager()->getAllReversedRelationshipEntries();
+StmtStmtMap FollowsTClauseEvaluator::getOppositeRelationshipMap(StmtSet &interestedValues) {
+    return StorageUtil::getReverseRelationshipMap(storage->getFollowsTManager());
+}
+
+bool FollowsTClauseEvaluator::isEmptyRelation() {
+    return StorageUtil::isRelationEmpty(storage->getFollowsTManager());
 }

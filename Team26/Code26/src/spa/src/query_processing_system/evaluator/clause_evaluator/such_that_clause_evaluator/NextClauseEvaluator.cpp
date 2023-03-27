@@ -3,11 +3,14 @@
 NextClauseEvaluator::NextClauseEvaluator(Argument left, Argument right)
     : IntIntClauseEvaluator(left, right) {}
 
-std::unordered_map<int, std::unordered_set<int>> NextClauseEvaluator::getRelationshipManager() {
-    return storage->getNextManager()->getAllRelationshipEntries();
+StmtStmtMap NextClauseEvaluator::getRelationshipMap(StmtSet &interestedValues) {
+    return StorageUtil::getRelationshipMap(storage->getNextManager());
 }
 
-std::unordered_map<int, std::unordered_set<int>>
-NextClauseEvaluator::getOppositeRelationshipManager() {
-    return storage->getNextManager()->getAllReversedRelationshipEntries();
+StmtStmtMap NextClauseEvaluator::getOppositeRelationshipMap(StmtSet &interestedValues) {
+    return StorageUtil::getReverseRelationshipMap(storage->getNextManager());
+}
+
+bool NextClauseEvaluator::isEmptyRelation() {
+    return StorageUtil::isRelationEmpty(storage->getNextManager());
 }

@@ -4,12 +4,12 @@
 #include <unordered_map>
 #include <string>
 
-using IntSet = std::unordered_set<int>;
-using StringSet = std::unordered_set<std::string>;
+using StmtSet = std::unordered_set<int>;
+using EntitySet = std::unordered_set<std::string>;
 using IntMapSet = std::unordered_map<int, std::unordered_set<int>>;
 
-IntSet setA = {1, 2, 3, 4, 5};
-IntSet setB = {3, 4, 5, 6, 7};
+StmtSet setA = {1, 2, 3, 4, 5};
+StmtSet setB = {3, 4, 5, 6, 7};
 IntMapSet mapA = {
         {1, {2, 3, 4}},
         {3, {4, 6}},
@@ -17,8 +17,8 @@ IntMapSet mapA = {
 };
 
 TEST_CASE("Test Int Set To String Set") {
-    IntSet intSet {1, 2, 3};
-    StringSet stringSet {"1", "2", "3"};
+    StmtSet intSet {1, 2, 3};
+    EntitySet stringSet {"1", "2", "3"};
     REQUIRE(stringSet == Util::intSetToStringSet(intSet));
 
     // Empty set
@@ -28,11 +28,11 @@ TEST_CASE("Test Int Set To String Set") {
 }
 
 TEST_CASE("Test Int Map To String Map") {
-    std::unordered_map<int, IntSet> intMap {
+    std::unordered_map<int, StmtSet> intMap {
             {1, {2, 4}},
             {5, {6}}
     };
-    std::unordered_map<std::string, StringSet> stringMap {
+    std::unordered_map<std::string, EntitySet> stringMap {
             {"1", {"2", "4"}},
             {"5", {"6"}}
     };
@@ -40,9 +40,9 @@ TEST_CASE("Test Int Map To String Map") {
 }
 
 TEST_CASE("Test Set Intersection") {
-    IntSet res;
+    StmtSet res;
     Util::setIntersection(setA, setB, res);
-    IntSet expectedRes {3, 4, 5};
+    StmtSet expectedRes {3, 4, 5};
     REQUIRE(res == expectedRes);
 
     // Intersection with empty set
@@ -56,10 +56,10 @@ TEST_CASE("Test Set Intersection") {
 }
 
 TEST_CASE("Test Set Union") {
-    IntSet set1 = setA;
-    IntSet set2 = setB;
+    StmtSet set1 = setA;
+    StmtSet set2 = setB;
     Util::setUnion(set1, set2);
-    IntSet expectedRes {1, 2, 3, 4, 5, 6, 7};
+    StmtSet expectedRes {1, 2, 3, 4, 5, 6, 7};
     REQUIRE(set1 == expectedRes);
 
     // Union with empty set
@@ -72,7 +72,7 @@ TEST_CASE("Test Set Union") {
 }
 
 TEST_CASE("Test Filter Map") {
-    IntSet searchKeys {3, 8};
+    StmtSet searchKeys {3, 8};
     auto res = Util::filterMap(mapA, searchKeys);
     IntMapSet expected {
             {3, {4, 6}},
@@ -89,7 +89,7 @@ TEST_CASE("Test Filter Map") {
 
 TEST_CASE("Test Map Set Intersection") {
     auto res = Util::mapSetIntersection(mapA, setA);
-    std::unordered_map<int, IntSet> expectedRes {
+    std::unordered_map<int, StmtSet> expectedRes {
             {1, {2, 3, 4}},
             {3, {4}}
     };

@@ -5,6 +5,7 @@
 #include "program_knowledge_base/StorageManager.h"
 
 using StoragePointer = std::shared_ptr<ReadStorage>;
+using StmtStmtCache = std::unordered_map<int, std::unordered_set<int>>;
 
 template<typename T, typename U>
 class CacheableGraph {
@@ -59,6 +60,11 @@ class CacheableGraph {
     std::unordered_map<T, std::unordered_set<U>> getCacheData() {
         return cache;
     }
+
+    /**
+     * Build the entire cache.
+     */
+    virtual void buildAll() = 0;
 
     virtual bool isEmpty() = 0;
 };

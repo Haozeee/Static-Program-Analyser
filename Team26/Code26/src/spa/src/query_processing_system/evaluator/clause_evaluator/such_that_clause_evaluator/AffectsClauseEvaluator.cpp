@@ -1,29 +1,15 @@
 #include "AffectsClauseEvaluator.h"
 
-AffectsClauseEvaluator::AffectsClauseEvaluator(Argument left, Argument right)
-        : IntIntClauseEvaluator(left, right, true) {}
+AffectsClauseEvaluator::AffectsClauseEvaluator(Argument left, Argument right) : IntIntClauseEvaluator(left, right) {}
 
-std::unordered_map<int, std::unordered_set<int>>
-AffectsClauseEvaluator::getRelationshipCache(std::unordered_set<int> itemsToRead) {
-    cache->getAffectsCacheableGraph()->insertItemsIntoCache(itemsToRead);
-    return cache->getAffectsCacheableGraph()->getCacheData();
+StmtStmtMap AffectsClauseEvaluator::getRelationshipMap(StmtSet &interestedValues) {
+    return Cache::getCacheData(cache->getAffectsCache(), interestedValues);
 }
 
-std::unordered_map<int, std::unordered_set<int>>
-AffectsClauseEvaluator::getOppositeRelationshipCache(std::unordered_set<int> itemsToRead) {
-    cache->getAffectsCacheableGraph()->buildAll();
-    return cache->getAffectsCacheableGraph()->getReverseCache();
+StmtStmtMap AffectsClauseEvaluator::getOppositeRelationshipMap(StmtSet &interestedValues) {
+    return cache->getAffectsReverseCacheData();
 }
 
-std::unordered_map<int, std::unordered_set<int>> AffectsClauseEvaluator::getRelationshipManager() {
-    return getRelationshipCache({});
-}
-
-std::unordered_map<int, std::unordered_set<int>>
-AffectsClauseEvaluator::getOppositeRelationshipManager() {
-    return getOppositeRelationshipCache({});
-}
-
-bool AffectsClauseEvaluator::isRelationshipEmpty() {
-    return cache->getAffectsTCacheableGraph()->isEmpty();
+bool AffectsClauseEvaluator::isEmptyRelation() {
+    return Cache::isCacheEmpty(cache->getAffectsCache());
 }

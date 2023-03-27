@@ -3,9 +3,8 @@
 MockIntIntClauseEvaluator::MockIntIntClauseEvaluator(Argument left, Argument right)
         : IntIntClauseEvaluator(left, right) {}
 
-std::unordered_map<int, std::unordered_set<int>>
-MockIntIntClauseEvaluator::getRelationshipManager() {
-    std::unordered_map<int, std::unordered_set<int>> res {
+StmtStmtMap MockIntIntClauseEvaluator::getRelationshipMap(StmtSet &interestedValues) {
+    StmtStmtMap res {
             {1, {2, 3}},
             {3, {4}},
             {4, {5, 6, 7}}
@@ -13,9 +12,8 @@ MockIntIntClauseEvaluator::getRelationshipManager() {
     return res;
 }
 
-std::unordered_map<int, std::unordered_set<int>>
-MockIntIntClauseEvaluator::getOppositeRelationshipManager() {
-    std::unordered_map<int, std::unordered_set<int>> res {
+StmtStmtMap MockIntIntClauseEvaluator::getOppositeRelationshipMap(StmtSet &interestedValues) {
+    StmtStmtMap res {
             {2, {1}},
             {3, {1}},
             {4, {3}},
@@ -24,6 +22,10 @@ MockIntIntClauseEvaluator::getOppositeRelationshipManager() {
             {7, {4}},
     };
     return res;
+}
+
+bool MockIntIntClauseEvaluator::isEmptyRelation() {
+    return false;
 }
 
 std::shared_ptr<ResultTable> MockIntIntClauseEvaluator::getClauseResult() {

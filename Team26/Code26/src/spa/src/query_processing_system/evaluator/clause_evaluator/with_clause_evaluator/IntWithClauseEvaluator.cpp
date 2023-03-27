@@ -3,23 +3,23 @@
 IntWithClauseEvaluator::IntWithClauseEvaluator(Reference left, Reference right)
     : WithClauseEvaluator<int>(left, right) {}
 
-std::unordered_set<std::string> IntWithClauseEvaluator::getTranslatedValues(int value, DesignEntity de) {
+EntitySet IntWithClauseEvaluator::getTranslatedValues(int value, DesignEntity de) {
     return {std::to_string(value)};
 }
 
-IntSet IntWithClauseEvaluator::getLeftRefValues() {
+StmtSet IntWithClauseEvaluator::getLeftRefValues() {
     return getRefValue(storage, leftRef);
 }
 
-IntSet IntWithClauseEvaluator::getRightRefValues() {
+StmtSet IntWithClauseEvaluator::getRightRefValues() {
     return getRefValue(storage, rightRef);
 }
 
-IntSet IntWithClauseEvaluator::getRefValue(StoragePointer storage, Reference ref) {
+StmtSet IntWithClauseEvaluator::getRefValue(StoragePointer storage, Reference ref) {
     return std::visit(overload{
-            [](const int& i) -> IntSet { return {i}; },
-            [](const std::string& i) -> IntSet { return {stoi(i)}; },
+            [](const int& i) -> StmtSet { return {i}; },
+            [](const std::string& i) -> StmtSet { return {stoi(i)}; },
             [storage](const AttributeReference i) ->
-                IntSet { return PkbUtil::getIntEntitiesFromPkb(storage, i.getDesignEntity()); }
+                StmtSet { return PkbUtil::getIntEntitiesFromPkb(storage, i.getDesignEntity()); }
     }, ref.getValue());
 }

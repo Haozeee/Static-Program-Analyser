@@ -3,24 +3,29 @@
 StringStringClauseEvaluator::StringStringClauseEvaluator(Argument left, Argument right)
     : SuchThatClauseEvaluator<std::string, std::string>(left, right) {}
 
-void StringStringClauseEvaluator::setLeftArgResult(std::unordered_set<std::string> result) {
-    clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), result);
+void StringStringClauseEvaluator::setLeftArgResult(EntitySet result) {
+    if (leftArg.getArgumentType() == ArgumentType::SYNONYM) {
+        clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), result);
+    }
 }
 
-void StringStringClauseEvaluator::setRightArgResult(std::unordered_set<std::string> result) {
-    clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), result);
+void StringStringClauseEvaluator::setRightArgResult(EntitySet result) {
+    if (rightArg.getArgumentType() == ArgumentType::SYNONYM) {
+        clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), result);
+    }
 }
 
-void StringStringClauseEvaluator::setLeftAndRightArgResult(std::unordered_map<std::string,
-                                                           std::unordered_set<std::string>> results) {
-    clauseResultTable = ResultTable::createTableFromMap(results, leftArg.getValue(), rightArg.getValue());
+void StringStringClauseEvaluator::setLeftAndRightArgResult(EntityEntityMap results) {
+    if (leftArg.getArgumentType() == ArgumentType::SYNONYM && rightArg.getArgumentType() == ArgumentType::SYNONYM) {
+        clauseResultTable = ResultTable::createTableFromMap(results, leftArg.getValue(), rightArg.getValue());
+    }
 }
 
-std::unordered_set<std::string> StringStringClauseEvaluator::getLeftArgEntities() {
+EntitySet StringStringClauseEvaluator::getLeftArgEntities() {
     return PkbUtil::getStringEntitiesFromPkb(storage, leftArg.getDesignEntity());
 }
 
-std::unordered_set<std::string> StringStringClauseEvaluator::getRightArgEntities() {
+EntitySet StringStringClauseEvaluator::getRightArgEntities() {
     return PkbUtil::getStringEntitiesFromPkb(storage, rightArg.getDesignEntity());
 }
 

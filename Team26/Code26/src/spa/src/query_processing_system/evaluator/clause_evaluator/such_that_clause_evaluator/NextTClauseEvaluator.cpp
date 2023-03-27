@@ -1,29 +1,15 @@
 #include "NextTClauseEvaluator.h"
 
-NextTClauseEvaluator::NextTClauseEvaluator(Argument left, Argument right)
-    : IntIntClauseEvaluator(left, right, true) {}
+NextTClauseEvaluator::NextTClauseEvaluator(Argument left, Argument right) : IntIntClauseEvaluator(left, right) {}
 
-std::unordered_map<int, std::unordered_set<int>>
-NextTClauseEvaluator::getRelationshipCache(std::unordered_set<int> itemsToRead) {
-    cache->getNextTCache()->insertItemsIntoCache(itemsToRead);
-    return cache->getNextTCache()->getCacheData();
+StmtStmtMap NextTClauseEvaluator::getRelationshipMap(StmtSet &interestedValues) {
+    return Cache::getCacheData(cache->getNextTCache(), interestedValues);
 }
 
-std::unordered_map<int, std::unordered_set<int>>
-NextTClauseEvaluator::getOppositeRelationshipCache(std::unordered_set<int> itemsToRead) {
-    cache->getNextTReverseCache()->insertItemsIntoCache(itemsToRead);
-    return cache->getNextTReverseCache()->getCacheData();
+StmtStmtMap NextTClauseEvaluator::getOppositeRelationshipMap(StmtSet &interestedValues) {
+    return Cache::getCacheData(cache->getNextTReverseCache(), interestedValues);
 }
 
-std::unordered_map<int, std::unordered_set<int>> NextTClauseEvaluator::getRelationshipManager() {
-    return getRelationshipCache({});
-}
-
-std::unordered_map<int, std::unordered_set<int>>
-NextTClauseEvaluator::getOppositeRelationshipManager() {
-    return getOppositeRelationshipCache({});
-}
-
-bool NextTClauseEvaluator::isRelationshipEmpty() {
-    return cache->getNextTCache()->isEmpty();
+bool NextTClauseEvaluator::isEmptyRelation() {
+    return Cache::isCacheEmpty(cache->getNextTCache());
 }

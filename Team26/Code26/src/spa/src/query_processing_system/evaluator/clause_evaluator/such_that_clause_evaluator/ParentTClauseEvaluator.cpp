@@ -3,10 +3,14 @@
 ParentTClauseEvaluator::ParentTClauseEvaluator(Argument left, Argument right)
         : IntIntClauseEvaluator(left, right) {}
 
-std::unordered_map<int , std::unordered_set<int>> ParentTClauseEvaluator::getRelationshipManager() {
-    return storage->getParentTManager()->getAllRelationshipEntries();
+StmtStmtMap ParentTClauseEvaluator::getRelationshipMap(StmtSet &interestedValues) {
+    return StorageUtil::getRelationshipMap(storage->getParentTManager());
 }
 
-std::unordered_map<int , std::unordered_set<int>> ParentTClauseEvaluator::getOppositeRelationshipManager() {
-    return storage->getParentTManager()->getAllReversedRelationshipEntries();
+StmtStmtMap ParentTClauseEvaluator::getOppositeRelationshipMap(StmtSet &interestedValues) {
+    return StorageUtil::getReverseRelationshipMap(storage->getParentTManager());
+}
+
+bool ParentTClauseEvaluator::isEmptyRelation() {
+    return StorageUtil::isRelationEmpty(storage->getParentTManager());
 }

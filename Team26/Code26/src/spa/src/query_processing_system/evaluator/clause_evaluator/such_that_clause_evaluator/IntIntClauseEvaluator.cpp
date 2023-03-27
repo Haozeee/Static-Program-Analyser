@@ -1,34 +1,41 @@
 #include "IntIntClauseEvaluator.h"
 
-IntIntClauseEvaluator::IntIntClauseEvaluator(Argument left, Argument right, bool cacheable)
-    : SuchThatClauseEvaluator<int, int>(left, right, cacheable) {}
+IntIntClauseEvaluator::IntIntClauseEvaluator(Argument left, Argument right)
+    : SuchThatClauseEvaluator<int, int>(left, right) {}
 
 void IntIntClauseEvaluator::evaluateEqualSynonym() {
-    auto relationshipMap = cacheable ? getRelationshipCache(getLeftArgEntities()) : getRelationshipManager();
+    StmtSet interestedValues {getLeftArg()};
+    auto relationshipMap = getRelationshipMap(interestedValues);
     if (isLeftArgAmbiguous()) {
         relationshipMap = Util::filterMap(relationshipMap, getLeftArgEntities());
     }
     setLeftArgResult(Util::getElementsWithCycles(relationshipMap));
 }
 
-void IntIntClauseEvaluator::setLeftArgResult(std::unordered_set<int> result) {
-    clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), Util::intSetToStringSet(result));
+void IntIntClauseEvaluator::setLeftArgResult(StmtSet result) {
+    if (leftArg.getArgumentType() == ArgumentType::SYNONYM) {
+        clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), Util::intSetToStringSet(result));
+    }
 }
 
-void IntIntClauseEvaluator::setRightArgResult(std::unordered_set<int> result) {
-    clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), Util::intSetToStringSet(result));
+void IntIntClauseEvaluator::setRightArgResult(StmtSet result) {
+    if (rightArg.getArgumentType() == ArgumentType::SYNONYM) {
+        clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), Util::intSetToStringSet(result));
+    }
 }
 
-void IntIntClauseEvaluator::setLeftAndRightArgResult(std::unordered_map<int, std::unordered_set<int>> results) {
-    auto res = Util::intMapTostringMap(results);
-    clauseResultTable = ResultTable::createTableFromMap(res, leftArg.getValue(), rightArg.getValue());
+void IntIntClauseEvaluator::setLeftAndRightArgResult(StmtStmtMap results) {
+    if (leftArg.getArgumentType() == ArgumentType::SYNONYM && rightArg.getArgumentType() == ArgumentType::SYNONYM) {
+        auto res = Util::intMapTostringMap(results);
+        clauseResultTable = ResultTable::createTableFromMap(res, leftArg.getValue(), rightArg.getValue());
+    }
 }
 
-std::unordered_set<int> IntIntClauseEvaluator::getLeftArgEntities() {
+StmtSet IntIntClauseEvaluator::getLeftArgEntities() {
     return PkbUtil::getIntEntitiesFromPkb(storage, leftArg.getDesignEntity());
 }
 
-std::unordered_set<int> IntIntClauseEvaluator::getRightArgEntities() {
+StmtSet IntIntClauseEvaluator::getRightArgEntities() {
     return PkbUtil::getIntEntitiesFromPkb(storage, rightArg.getDesignEntity());
 }
 

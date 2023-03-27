@@ -18,4 +18,6 @@ class TransitiveCacheableGraph : public CacheableGraph<int, int> {
 
  public:
     bool isEmpty() override;
+
+    void buildAll() override;
 };

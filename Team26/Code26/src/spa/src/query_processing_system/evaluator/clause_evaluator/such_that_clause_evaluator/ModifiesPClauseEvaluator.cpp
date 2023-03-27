@@ -3,11 +3,14 @@
 ModifiesPClauseEvaluator::ModifiesPClauseEvaluator(Argument left, Argument right)
     : StringStringClauseEvaluator(left, right) {}
 
-std::unordered_map<std::string, std::unordered_set<std::string>> ModifiesPClauseEvaluator::getRelationshipManager() {
-    return storage->getModifiesPManager()->getAllRelationshipEntries();
+EntityEntityMap ModifiesPClauseEvaluator::getRelationshipMap(EntitySet &interestedValues) {
+    return StorageUtil::getRelationshipMap(storage->getModifiesPManager());
 }
 
-std::unordered_map<std::string, std::unordered_set<std::string>>
-ModifiesPClauseEvaluator::getOppositeRelationshipManager() {
-    return storage->getModifiesPManager()->getAllReversedRelationshipEntries();
+EntityEntityMap ModifiesPClauseEvaluator::getOppositeRelationshipMap(EntitySet &interestedValues) {
+    return StorageUtil::getReverseRelationshipMap(storage->getModifiesPManager());
+}
+
+bool ModifiesPClauseEvaluator::isEmptyRelation() {
+    return StorageUtil::isRelationEmpty(storage->getModifiesPManager());
 }

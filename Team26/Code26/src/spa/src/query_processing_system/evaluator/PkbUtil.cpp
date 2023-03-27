@@ -14,18 +14,18 @@ std::unordered_set<std::string> PkbUtil::getStringEntitiesFromPkb(std::shared_pt
                                                                   DesignEntity entity) {
     switch (entity) {
         case DesignEntity::VARIABLE:
-            return storage->getVariableManager()->getAllEntitiesEntries();
+            return StorageUtil::getEntityValues(storage->getVariableManager());
         case DesignEntity::PROCEDURE:
-            return storage->getProcedureManager()->getAllEntitiesEntries();
+            return StorageUtil::getEntityValues(storage->getProcedureManager());
         case DesignEntity::CALL:
             // Get all procedures called by call statements
-            return storage->getCallProcedureManager()->getAllEntitiesEntries();
+            return StorageUtil::getEntityValues(storage->getCallProcedureManager());
         case DesignEntity::READ:
             // Get all read variables statements
-            return storage->getReadVariableManager()->getAllEntitiesEntries();
+            return StorageUtil::getEntityValues(storage->getReadVariableManager());
         case DesignEntity::PRINT:
             // Get all variables in print statements
-            return storage->getPrintVariableManager()->getAllEntitiesEntries();
+            return StorageUtil::getEntityValues(storage->getPrintVariableManager());
         default:
             return {};
     }
@@ -34,21 +34,21 @@ std::unordered_set<std::string> PkbUtil::getStringEntitiesFromPkb(std::shared_pt
 std::unordered_set<int> PkbUtil::getIntEntitiesFromPkb(std::shared_ptr<ReadStorage> storage, DesignEntity entity) {
     switch (entity) {
         case DesignEntity::ASSIGN:
-            return storage->getAssignManager()->getAllEntitiesEntries();
+            return StorageUtil::getEntityValues(storage->getAssignManager());
         case DesignEntity::STMT:
-            return storage->getStmtManager()->getAllEntitiesEntries();
+            return StorageUtil::getEntityValues(storage->getStmtManager());
         case DesignEntity::READ:
-            return storage->getReadStmtNoManager()->getAllEntitiesEntries();
+            return StorageUtil::getEntityValues(storage->getReadStmtNoManager());
         case DesignEntity::CONSTANT:
-            return storage->getConstantManager()->getAllEntitiesEntries();
+            return StorageUtil::getEntityValues(storage->getConstantManager());
         case DesignEntity::PRINT:
-            return storage->getPrintStmtNoManager()->getAllEntitiesEntries();
+            return StorageUtil::getEntityValues(storage->getPrintStmtNoManager());
         case DesignEntity::IF:
-            return storage->getIfManager()->getAllEntitiesEntries();
+            return StorageUtil::getEntityValues(storage->getIfManager());
         case DesignEntity::CALL:
-            return storage->getCallStmtNoManager()->getAllEntitiesEntries();
+            return StorageUtil::getEntityValues(storage->getCallStmtNoManager());
         case DesignEntity::WHILE:
-            return storage->getWhileManager()->getAllEntitiesEntries();
+            return StorageUtil::getEntityValues(storage->getWhileManager());
         default:
             return {};
     }

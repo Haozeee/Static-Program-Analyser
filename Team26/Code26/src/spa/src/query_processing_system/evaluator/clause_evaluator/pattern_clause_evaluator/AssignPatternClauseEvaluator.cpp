@@ -12,7 +12,7 @@ void AssignPatternClauseEvaluator::evaluateSynonym() {
 
 void AssignPatternClauseEvaluator::evaluateString() {
     auto allResults = evaluateStringHelper({leftArg.getValue()});
-    std::unordered_set<std::string> interestedResults;
+    EntitySet interestedResults;
     for (auto const& [k, v] : allResults) {
         interestedResults.insert(k);
     }
@@ -22,16 +22,16 @@ void AssignPatternClauseEvaluator::evaluateString() {
 void AssignPatternClauseEvaluator::evaluateWildcard() {
     auto identities = PkbUtil::getStringEntitiesFromPkb(storage, DesignEntity::VARIABLE);
     auto allResults = evaluateStringHelper(identities);
-    std::unordered_set<std::string> interestedResults;
+    EntitySet interestedResults;
     for (auto const& [k, v] : allResults) {
         interestedResults.insert(k);
     }
     clauseResultTable = ResultTable::createSingleColumnTable(patternArg.getValue(), interestedResults);
 }
 
-std::unordered_map<std::string, std::unordered_set<std::string>>
-AssignPatternClauseEvaluator::evaluateStringHelper(std::unordered_set<std::string> lhsValues) {
-    std::unordered_map<std::string, std::unordered_set<std::string>> res;
+EntityEntityMap AssignPatternClauseEvaluator::evaluateStringHelper(EntitySet lhsValues) {
+    EntityEntityMap res;
+    // To fix
     auto assignStatements = storage->getAssignPatternManager()->getAllPatternEntries();
     auto lhsStatements = storage->getAssignPatternManager()->getAllLhsPatternEntries();
     auto rhsStatements = storage->getAssignPatternManager()->getAllRhsPatternEntries();
