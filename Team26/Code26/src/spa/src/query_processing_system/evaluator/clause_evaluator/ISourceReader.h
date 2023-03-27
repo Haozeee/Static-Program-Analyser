@@ -56,7 +56,7 @@ class ISourceReader {
 
     virtual EntityEntityMap getCallsTMap(EntitySet &interestedValues) = 0;
 
-    virtual StmtEntityMap getCallsSMap(EntitySet &interestedValues) = 0;
+    virtual StmtEntityMap getCallsSMap(StmtSet &interestedValues) = 0;
 
     virtual StmtStmtMap getFollowsReverseMap(StmtSet &interestedValues) = 0;
 

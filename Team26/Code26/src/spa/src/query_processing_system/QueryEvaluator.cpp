@@ -7,8 +7,8 @@
 
 QueryEvaluator::QueryEvaluator(Query* query, std::shared_ptr<ReadStorage> pkbStorage) :
     query(query),
-    queryResults(QueryDb(pkbStorage)),
-    programmeStorage(std::make_shared<StorageReader>(pkbStorage)) {}
+    programmeStorage(std::make_shared<StorageReader>(pkbStorage)),
+    queryResults(QueryDb(programmeStorage)) {}
 
 QueryDb QueryEvaluator::evaluateQuery() {
     evaluateClauses();

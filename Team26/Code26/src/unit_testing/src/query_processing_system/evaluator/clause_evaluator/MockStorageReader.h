@@ -86,7 +86,7 @@ class MockStorageReader : public ISourceReader {
 
     EntityEntityMap getCallsTMap(EntitySet &interestedValues) override;
 
-    StmtEntityMap getCallsSMap(EntitySet &interestedValues) override;
+    StmtEntityMap getCallsSMap(StmtSet &interestedValues) override;
 
     StmtStmtMap getFollowsReverseMap(StmtSet &interestedValues) override;
 

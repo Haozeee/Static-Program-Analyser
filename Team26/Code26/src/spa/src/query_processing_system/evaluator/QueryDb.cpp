@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <iterator>
 
-QueryDb::QueryDb(std::shared_ptr<ReadStorage> storage) : storage(storage) {}
+QueryDb::QueryDb(std::shared_ptr<ISourceReader> storage) : storage(storage) {}
 
 void QueryDb::addResult(std::shared_ptr<ResultTable> toAdd) {
     if (!toAdd->hasNoResults() && toAdd->getColumnsNamesSet().empty()) {

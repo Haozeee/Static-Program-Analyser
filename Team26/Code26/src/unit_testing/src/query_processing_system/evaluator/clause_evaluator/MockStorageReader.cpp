@@ -71,7 +71,7 @@ EntityEntityMap MockStorageReader::getCallsTMap(EntitySet &interestedValues) {
     return testEntityEntityMap;
 }
 
-StmtEntityMap MockStorageReader::getCallsSMap(EntitySet &interestedValues) {
+StmtEntityMap MockStorageReader::getCallsSMap(StmtSet &interestedValues) {
     return testStmtEntityMap;
 }
 

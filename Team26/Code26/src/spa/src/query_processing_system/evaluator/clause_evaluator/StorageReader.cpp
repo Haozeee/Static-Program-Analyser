@@ -110,7 +110,7 @@ EntityEntityMap StorageReader::getCallsTMap(EntitySet &interestedValues) {
     return StorageUtil::getRelationshipMap(pkbStorage->getCallsTManager());
 }
 
-StmtEntityMap StorageReader::getCallsSMap(EntitySet &interestedValues) {
+StmtEntityMap StorageReader::getCallsSMap(StmtSet &interestedValues) {
     return StorageUtil::getRelationshipMap(pkbStorage->getCallsSManager());
 }
 

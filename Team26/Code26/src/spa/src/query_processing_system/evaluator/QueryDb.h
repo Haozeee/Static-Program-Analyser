@@ -9,8 +9,7 @@
 #include "ResultTable.h"
 #include "UnionFind.h"
 #include "query_processing_system/parser/SelectClause.h"
-#include "program_knowledge_base/StorageUtil.h"
-#include "program_knowledge_base/StorageManager.h"
+#include "query_processing_system/evaluator/clause_evaluator/StorageReader.h"
 #include "AttributeReferenceMap.h"
 
 using ResultGroups = std::unordered_map<std::string, std::deque<std::shared_ptr<ResultTable>>>;
@@ -33,7 +32,7 @@ class QueryDb {
      */
     std::deque<std::shared_ptr<ResultTable>> results;
 
-    std::shared_ptr<ReadStorage> storage;
+    std::shared_ptr<ISourceReader> storage;
 
     /**
      * A disjoint set data structure to store the different groups as part of optimisation.
@@ -87,7 +86,7 @@ class QueryDb {
     std::vector<std::shared_ptr<ResultTable>> evaluateGroups();
 
  public:
-    explicit QueryDb(std::shared_ptr<ReadStorage> storage);
+    explicit QueryDb(std::shared_ptr<ISourceReader> storage);
 
     /**
      * Add a new result.

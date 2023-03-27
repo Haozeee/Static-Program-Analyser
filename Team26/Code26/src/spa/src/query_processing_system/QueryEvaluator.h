@@ -13,9 +13,9 @@ class QueryEvaluator {
  private:
     Query* query;
 
-    QueryDb queryResults;
-
     std::shared_ptr<ISourceReader> programmeStorage;
+
+    QueryDb queryResults;
 
     void evaluateClauses();
 
