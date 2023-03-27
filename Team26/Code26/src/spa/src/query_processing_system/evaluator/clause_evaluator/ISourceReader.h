@@ -119,5 +119,5 @@ class ISourceReader {
 
      virtual EntityStmtMap getAllReverseWhileCondEntries() = 0;
 
-     virtual AssignStatements getAssignStatementEntries(EntitySet &interestedEntries);
+     virtual AssignStatements getAssignStatementEntries(EntitySet &interestedEntries) = 0;
 };

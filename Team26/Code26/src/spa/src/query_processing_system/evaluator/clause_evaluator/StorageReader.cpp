@@ -83,7 +83,7 @@ StmtStmtMap StorageReader::getAffectsMap(StmtSet &interestedValues) {
 }
 
 StmtStmtMap StorageReader::getAffectsTMap(StmtSet &interestedValues) {
-    return Cache::getCacheData(cacheStorage->getAffectsTReverseCache(), interestedValues);
+    return Cache::getCacheData(cacheStorage->getAffectsTCache(), interestedValues);
 }
 
 StmtEntityMap StorageReader::getUsesSMap(StmtSet &interestedValues) {
@@ -228,5 +228,13 @@ EntityStmtMap StorageReader::getAllReverseWhileCondEntries() {
 
 AssignStatements StorageReader::getAssignStatementEntries(EntitySet &interestedEntries) {
     AssignStatements results;
+    auto assignStatements = StorageUtil::getAllPatternEntries(pkbStorage->getAssignPatternManager());
+    auto lhsEntries = StorageUtil::getAllLhsPatternEntries(pkbStorage->getAssignPatternManager());
+    auto rhsEntries = StorageUtil::getAllRhsPatternEntries(pkbStorage->getAssignPatternManager());
+    for (auto const& [k, v] : assignStatements) {
+        // v = real value of the assign statement in the source code
+        results.insert({v, {lhsEntries->at(k), rhsEntries->at(k)}});
+    }
+
     return results;
 }

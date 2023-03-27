@@ -11,9 +11,9 @@ QueryEvaluator::QueryEvaluator(Query* query, std::shared_ptr<ReadStorage> pkbSto
     programmeStorage(std::make_shared<StorageReader>(pkbStorage)) {}
 
 QueryDb QueryEvaluator::evaluateQuery() {
-    evaluateSelectClause();
-
     evaluateClauses();
+
+    evaluateSelectClause();
 
     return queryResults;
 }
@@ -43,10 +43,16 @@ void QueryEvaluator::evaluateClauses() {
 
 void QueryEvaluator::evaluateSelectClause() {
     std::vector<std::pair<SelectClauseItem, DesignEntity>> selectedCols;
+    auto colsPresentInResult = queryResults.getAllColumnsInResults();
     auto selectClausesItems = query->getSelectClauseItems();
     for (const SelectClauseItem& item : *selectClausesItems) {
         std::string identity = SelectClause::getSynonym(item);
-        selectedCols.emplace_back(item, query->getSynonymDesignEntity(identity));
+        DesignEntity de = query->getSynonymDesignEntity(identity);
+        selectedCols.emplace_back(item, de);
+        if (!colsPresentInResult.count(identity)) {
+            auto resultToAdd = ResultTable::createSingleColumnTable(identity, programmeStorage->getEntitiesFromPkb(de));
+            queryResults.addResult(resultToAdd);
+        }
     }
     queryResults.setSelectedColumns(selectedCols);
 }

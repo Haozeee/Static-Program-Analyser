@@ -26,24 +26,6 @@ void QueryDb::setSelectedColumns(std::vector<std::pair<SelectClauseItem, DesignE
     unionFind.unionMultipleItems(synonymNames);
 }
 
-void QueryDb::fillMissingTables() {
-    auto allColumnsPresent = getAllColumnsInResults();
-    std::vector<std::pair<std::string, DesignEntity>> missingColumns;
-
-    for (const auto& selectedItems : selectedSynonyms) {
-        std::string syn = SelectClause::getSynonym(selectedItems.first);
-        if (!allColumnsPresent.count(syn)) {
-            missingColumns.emplace_back(syn, selectedItems.second);
-        }
-    }
-
-    for (const auto& item : missingColumns) {
-        auto entities = StorageUtil::;
-        auto resultTable = ResultTable::createSingleColumnTable(item.first, entities);
-        addResult(resultTable);
-    }
-}
-
 std::unordered_set<std::string> QueryDb::getAllColumnsInResults() {
     std::unordered_set<std::string> res;
     for (const auto& item : results) {
@@ -114,8 +96,6 @@ std::vector<std::string> QueryDb::getInterestedResults() {
         }
         return res;
     }
-
-    fillMissingTables();
 
     auto resultGroups = evaluateGroups();
 

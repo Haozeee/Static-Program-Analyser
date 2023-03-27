@@ -4,6 +4,7 @@
 #include <string>
 #include <unordered_set>
 #include <unordered_map>
+#include <vector>
 #include "program_knowledge_base/entity/entity_child_managers/AssignManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/PrintStmtNoManager.h"
 #include "program_knowledge_base/entity/entity_child_managers/PrintVariableManager.h"
@@ -245,5 +246,23 @@ class StorageUtil {
     template<typename T>
     static std::unordered_set<T> getEntityValues(std::shared_ptr<IReadEntityManager<T>> entityManager) {
         return entityManager->getAllEntitiesEntries();
+    }
+
+    template<typename T, typename U>
+    static std::unordered_map<int, int>
+    getAllPatternEntries(std::shared_ptr<IReadPatternManager<T, U>> patternManager) {
+        return patternManager->getAllPatternEntries();
+    }
+
+    template<typename T, typename U>
+    static std::unique_ptr<std::vector<T>>
+    getAllLhsPatternEntries(std::shared_ptr<IReadPatternManager<T, U>> patternManager) {
+        return patternManager->getAllLhsPatternEntries();
+    }
+
+    template<typename T, typename U>
+    static std::unique_ptr<std::vector<std::shared_ptr<ShuntNode>>>
+    getAllRhsPatternEntries(std::shared_ptr<IReadPatternManager<T, U>> patternManager) {
+        return patternManager->getAllRhsPatternEntries();
     }
 };

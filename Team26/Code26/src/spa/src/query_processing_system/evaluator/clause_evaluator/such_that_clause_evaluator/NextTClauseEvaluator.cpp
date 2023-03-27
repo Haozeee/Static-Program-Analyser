@@ -7,7 +7,7 @@ StmtStmtMap NextTClauseEvaluator::getRelationshipMap(StmtSet &interestedValues) 
 }
 
 StmtStmtMap NextTClauseEvaluator::getOppositeRelationshipMap(StmtSet &interestedValues) {
-    return storage->getNextReverseMap(interestedValues);
+    return storage->getNextTReverseMap(interestedValues);
 }
 
 bool NextTClauseEvaluator::isEmptyRelation() {

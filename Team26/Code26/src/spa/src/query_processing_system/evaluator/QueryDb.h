@@ -69,11 +69,6 @@ class QueryDb {
     std::vector<std::string> getInterestedColumns();
 
     /**
-     * After evaluating the clauses, some of the selected values may not appear as a column in the results.
-     */
-    void fillMissingTables();
-
-    /**
      * Sort the list of results tables such that the table with the least amount of rows come first.
      * This makes joining the table quicker.
      */
