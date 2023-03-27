@@ -1,8 +1,8 @@
 #include "AffectsTReverseCacheableGraph.h"
 
-AffectsTReverseCacheableGraph::AffectsTReverseCacheableGraph(StoragePointer storage)
+AffectsTReverseCacheableGraph::AffectsTReverseCacheableGraph(ProgrammeStore storage)
     : TransitiveCacheableGraph(storage) {}
 
-void AffectsTReverseCacheableGraph::setBase(StmtStmtCache newBase) {
+void AffectsTReverseCacheableGraph::setBase(StmtStmtMap newBase) {
     base = std::move(newBase);
 }

@@ -1,6 +1,6 @@
 #include "Cache.h"
 
-Cache::Cache(StoragePointer storage) :
+Cache::Cache(ProgrammeStore storage) :
         nextTCache(storage),
         nextTReverseCache(storage),
         affectsCache(storage),
@@ -47,7 +47,7 @@ AffectsTReverseCacheableGraph* Cache::getAffectsTReverseCache() {
     return &affectsTReverseCache;
 }
 
-StmtStmtCache Cache::getCacheData(CacheableGraph<int, int> *cacheGraph, std::unordered_set<int> &itemToInsert) {
+StmtStmtMap Cache::getCacheData(CacheableGraph<int, int> *cacheGraph, std::unordered_set<int> &itemToInsert) {
     insertDataToCache(cacheGraph, itemToInsert);
     return cacheGraph->getCacheData();
 }
@@ -64,7 +64,7 @@ void Cache::buildEntireCache(CacheableGraph<int, int>* cacheGraph) {
     cacheGraph->buildAll();
 }
 
-StmtStmtCache Cache::getEntireCacheData(CacheableGraph<int, int> *cacheGraph) {
+StmtStmtMap Cache::getEntireCacheData(CacheableGraph<int, int> *cacheGraph) {
     buildEntireCache(cacheGraph);
     return cacheGraph->getCacheData();
 }

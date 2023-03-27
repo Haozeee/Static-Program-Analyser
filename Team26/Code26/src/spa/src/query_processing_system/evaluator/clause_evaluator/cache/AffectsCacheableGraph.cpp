@@ -1,7 +1,7 @@
 #include "AffectsCacheableGraph.h"
 #include <stack>
 
-AffectsCacheableGraph::AffectsCacheableGraph(StoragePointer storage) : CacheableGraph<int, int>(storage) {
+AffectsCacheableGraph::AffectsCacheableGraph(ProgrammeStore storage) : CacheableGraph<int, int>(storage) {
     modifiesMap = StorageUtil::getRelationshipMap(storage->getModifiesSManager());
     usesMap = StorageUtil::getRelationshipMap(storage->getUsesSManager());
     callsSMap = StorageUtil::getRelationshipMap(storage->getCallsSManager());

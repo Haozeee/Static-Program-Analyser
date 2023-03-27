@@ -3,13 +3,13 @@
 AffectsTClauseEvaluator::AffectsTClauseEvaluator(Argument left, Argument right) : IntIntClauseEvaluator(left, right) {}
 
 StmtStmtMap AffectsTClauseEvaluator::getRelationshipMap(StmtSet &interestedValues) {
-    return Cache::getCacheData(cache->getAffectsTCache(), interestedValues);
+    return storage->getAffectsTMap(interestedValues);
 }
 
 StmtStmtMap AffectsTClauseEvaluator::getOppositeRelationshipMap(StmtSet &interestedValues) {
-    return Cache::getCacheData(cache->getAffectsTReverseCache(), interestedValues);
+    return storage->getAffectsTReverseMap(interestedValues);
 }
 
 bool AffectsTClauseEvaluator::isEmptyRelation() {
-    return Cache::isCacheEmpty(cache->getAffectsTCache());
+    return storage->isAffectsEmpty();
 }

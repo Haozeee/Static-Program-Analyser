@@ -1,7 +1,7 @@
 #include "AffectsTCacheableGraph.h"
 
-AffectsTCacheableGraph::AffectsTCacheableGraph(StoragePointer storage) : TransitiveCacheableGraph(storage) {}
+AffectsTCacheableGraph::AffectsTCacheableGraph(ProgrammeStore storage) : TransitiveCacheableGraph(storage) {}
 
-void AffectsTCacheableGraph::setBase(StmtStmtCache newBase) {
+void AffectsTCacheableGraph::setBase(StmtStmtMap newBase) {
     base = std::move(newBase);
 }

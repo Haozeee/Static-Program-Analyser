@@ -24,7 +24,7 @@ EntitySet StringWithClauseEvaluator::getRightRefValues() {
     return getRefValue(storage, rightRef);
 }
 
-EntitySet StringWithClauseEvaluator::getRefValue(StoragePointer storage, Reference ref) {
+EntitySet StringWithClauseEvaluator::getRefValue(ProgrammeStore storage, Reference ref) {
     return std::visit(overload{
             [](const int& i) -> EntitySet { return {std::to_string(i)}; },
             [](const std::string& i) -> EntitySet { return {i}; },
@@ -33,7 +33,7 @@ EntitySet StringWithClauseEvaluator::getRefValue(StoragePointer storage, Referen
     }, ref.getValue());
 }
 
-EntitySet StringWithClauseEvaluator::getReadStatements(StoragePointer storage, std::string value) {
+EntitySet StringWithClauseEvaluator::getReadStatements(ProgrammeStore storage, std::string value) {
     StmtSet res;
     auto relationshipStore = StorageUtil::getReverseRelationshipMap(storage->getModifiesSManager());
     auto it = relationshipStore.find(value);
@@ -44,7 +44,7 @@ EntitySet StringWithClauseEvaluator::getReadStatements(StoragePointer storage, s
     return Util::intSetToStringSet(res);
 }
 
-EntitySet StringWithClauseEvaluator::getPrintStatements(StoragePointer storage, std::string value) {
+EntitySet StringWithClauseEvaluator::getPrintStatements(ProgrammeStore storage, std::string value) {
     StmtSet res;
     auto relationshipStore = StorageUtil::getReverseRelationshipMap(storage->getUsesSManager());
     auto it = relationshipStore.find(value);
@@ -55,7 +55,7 @@ EntitySet StringWithClauseEvaluator::getPrintStatements(StoragePointer storage, 
     return Util::intSetToStringSet(res);
 }
 
-EntitySet StringWithClauseEvaluator::getCallStatements(StoragePointer storage, std::string value) {
+EntitySet StringWithClauseEvaluator::getCallStatements(ProgrammeStore storage, std::string value) {
     StmtSet res;
     auto relationshipStore = StorageUtil::getReverseRelationshipMap(storage->getCallsSManager());
     auto it = relationshipStore.find(value);

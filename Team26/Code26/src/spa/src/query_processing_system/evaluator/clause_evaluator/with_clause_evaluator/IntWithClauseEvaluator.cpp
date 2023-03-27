@@ -15,7 +15,7 @@ StmtSet IntWithClauseEvaluator::getRightRefValues() {
     return getRefValue(storage, rightRef);
 }
 
-StmtSet IntWithClauseEvaluator::getRefValue(StoragePointer storage, Reference ref) {
+StmtSet IntWithClauseEvaluator::getRefValue(ProgrammeStore storage, Reference ref) {
     return std::visit(overload{
             [](const int& i) -> StmtSet { return {i}; },
             [](const std::string& i) -> StmtSet { return {stoi(i)}; },

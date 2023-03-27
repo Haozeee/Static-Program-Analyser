@@ -33,7 +33,7 @@ class Cache {
      void setCacheBase();
 
  public:
-     explicit Cache(StoragePointer storage);
+     explicit Cache(ProgrammeStore storage);
 
     NextTCacheableGraph* getNextTCache();
 
@@ -50,7 +50,7 @@ class Cache {
      * data for cache, we need to get it from the affects cache.
      * @return The affects reverse cache data.
      */
-    StmtStmtCache getAffectsReverseCacheData();
+    StmtStmtMap getAffectsReverseCacheData();
 
     /**
      * Insert some data into the cache before getting the data stored in the cache.
@@ -58,7 +58,7 @@ class Cache {
      * @param itemToInsert The data that is to be inserted into the cache before reading from it.
      * @return The new data from the cache.
      */
-    static StmtStmtCache getCacheData(CacheableGraph<int, int>* cacheGraph, std::unordered_set<int> &itemToInsert);
+    static StmtStmtMap getCacheData(CacheableGraph<int, int>* cacheGraph, std::unordered_set<int> &itemToInsert);
 
     /**
      * Inset data into a cache.
@@ -85,5 +85,5 @@ class Cache {
      * we are interested in all items that can be in the cache, so that there will be no cache misses.
      * @param cacheGraph
      */
-    static StmtStmtCache getEntireCacheData(CacheableGraph<int, int>* cacheGraph);
+    static StmtStmtMap getEntireCacheData(CacheableGraph<int, int>* cacheGraph);
 };

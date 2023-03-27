@@ -32,11 +32,11 @@ void IntIntClauseEvaluator::setLeftAndRightArgResult(StmtStmtMap results) {
 }
 
 StmtSet IntIntClauseEvaluator::getLeftArgEntities() {
-    return PkbUtil::getIntEntitiesFromPkb(storage, leftArg.getDesignEntity());
+    return storage->getIntEntitiesFromPkb(leftArg.getDesignEntity());
 }
 
 StmtSet IntIntClauseEvaluator::getRightArgEntities() {
-    return PkbUtil::getIntEntitiesFromPkb(storage, rightArg.getDesignEntity());
+    return storage->getIntEntitiesFromPkb(rightArg.getDesignEntity());
 }
 
 int IntIntClauseEvaluator::getLeftArg() {
