@@ -117,7 +117,8 @@ TEST_CASE("Test reading entity for all manager") {
     std::string q6 = "procedure p; Select p";
     queryManager.process(q6, q6Results, storageManager->getReadStorage());
 
-    std::list<std::string> a6Results = {"test2", "test1"};
+    std::list<std::string> a6Results = {"test1", "test2"};
+    q6Results.sort();
     REQUIRE(q6Results == a6Results);
 
     // test Read
