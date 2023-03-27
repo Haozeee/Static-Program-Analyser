@@ -29,5 +29,5 @@ class PatternClauseEvaluator : public ClauseEvaluator {
 
     StringExpression getRightArg();
 
-    std::shared_ptr<ResultTable> evaluateClause(ProgrammeStore storage, CachePointer cache) override;
+    std::shared_ptr<ResultTable> evaluateClause(ProgrammeStore storage) override;
 };

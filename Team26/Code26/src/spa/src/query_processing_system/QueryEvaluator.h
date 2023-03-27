@@ -14,9 +14,9 @@ class QueryEvaluator {
 
     QueryDb queryResults;
 
-    std::shared_ptr<ReadStorage> storage;
+    std::shared_ptr<ReadStorage> pkbStorage;
 
-    std::shared_ptr<Cache> cache;
+    std::shared_ptr<Cache> cacheStorage;
 
     void evaluateClauses();
 

@@ -1,6 +1,6 @@
 #include "AffectsTReverseCacheableGraph.h"
 
-AffectsTReverseCacheableGraph::AffectsTReverseCacheableGraph(ProgrammeStore storage)
+AffectsTReverseCacheableGraph::AffectsTReverseCacheableGraph(CacheStorage storage)
     : TransitiveCacheableGraph(storage) {}
 
 void AffectsTReverseCacheableGraph::setBase(StmtStmtMap newBase) {

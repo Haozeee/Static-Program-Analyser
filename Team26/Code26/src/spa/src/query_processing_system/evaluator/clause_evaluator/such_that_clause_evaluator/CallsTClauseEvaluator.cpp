@@ -8,7 +8,7 @@ EntityEntityMap CallsTClauseEvaluator::getRelationshipMap(EntitySet &interestedV
 }
 
 EntityEntityMap CallsTClauseEvaluator::getOppositeRelationshipMap(EntitySet &interestedValues) {
-    return storage->getCallsTReverseMap(interestedValues)
+    return storage->getCallsTReverseMap(interestedValues);
 }
 
 bool CallsTClauseEvaluator::isEmptyRelation() {

@@ -7,7 +7,7 @@
 
 class AffectsTCacheableGraph : public TransitiveCacheableGraph {
  public:
-    explicit AffectsTCacheableGraph(ProgrammeStore storage);
+    explicit AffectsTCacheableGraph(CacheStorage storage);
 
     void setBase(StmtStmtMap newBase);
 };

@@ -33,7 +33,7 @@ class Cache {
      void setCacheBase();
 
  public:
-     explicit Cache(ProgrammeStore storage);
+     explicit Cache(std::shared_ptr<ReadStorage> storage);
 
     NextTCacheableGraph* getNextTCache();
 

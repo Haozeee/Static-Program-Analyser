@@ -37,7 +37,7 @@ class AffectsCacheableGraph : public CacheableGraph<int, int> {
     void onCacheMiss(int query) override;
 
  public:
-    explicit AffectsCacheableGraph(ProgrammeStore storage);
+    explicit AffectsCacheableGraph(CacheStorage storage);
 
     void setBase() override;
 

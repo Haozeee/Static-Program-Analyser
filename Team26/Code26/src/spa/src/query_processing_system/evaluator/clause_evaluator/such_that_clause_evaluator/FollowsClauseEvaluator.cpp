@@ -7,7 +7,7 @@ StmtStmtMap FollowsClauseEvaluator::getRelationshipMap(StmtSet &interestedValues
 }
 
 StmtStmtMap FollowsClauseEvaluator::getOppositeRelationshipMap(StmtSet &interestedValues) {
-    return storage->getFollowsReverseMap(interestedValues)
+    return storage->getFollowsReverseMap(interestedValues);
 }
 
 bool FollowsClauseEvaluator::isEmptyRelation() {

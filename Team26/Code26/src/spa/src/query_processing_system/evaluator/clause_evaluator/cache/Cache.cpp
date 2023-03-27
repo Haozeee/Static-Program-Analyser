@@ -1,6 +1,6 @@
 #include "Cache.h"
 
-Cache::Cache(ProgrammeStore storage) :
+Cache::Cache(std::shared_ptr<ReadStorage> storage) :
         nextTCache(storage),
         nextTReverseCache(storage),
         affectsCache(storage),

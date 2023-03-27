@@ -1,6 +1,6 @@
 #include "NextTReverseCacheableGraph.h"
 
-NextTReverseCacheableGraph::NextTReverseCacheableGraph(ProgrammeStore storage) : TransitiveCacheableGraph(storage) {}
+NextTReverseCacheableGraph::NextTReverseCacheableGraph(CacheStorage storage) : TransitiveCacheableGraph(storage) {}
 
 void NextTReverseCacheableGraph::setBase() {
     base = StorageUtil::getReverseRelationshipMap(storage->getNextManager());
