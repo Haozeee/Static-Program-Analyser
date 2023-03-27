@@ -65,8 +65,8 @@ class WithClauseEvaluator : public ClauseEvaluator {
     WithClauseEvaluator(Reference left, Reference right)
         : leftRef(std::move(left)), rightRef(std::move(right)) {}
 
-    std::shared_ptr<ResultTable> evaluateClause(ProgrammeStore storage_, CachePointer cache_) override {
-        setStorageLocation(storage_, cache_);
+    std::shared_ptr<ResultTable> evaluateClause(ProgrammeStore storage_) override {
+        setStorageLocation(storage_);
 
         auto leftType = leftRef.getReferenceType();
         auto rightType = rightRef.getReferenceType();

@@ -55,6 +55,8 @@ class ISourceReader {
 
     virtual EntityEntityMap getCallsTMap(EntitySet &interestedValues) = 0;
 
+    virtual StmtEntityMap getCallsSMap(EntitySet &interestedValues) = 0;
+
     virtual StmtStmtMap getFollowsReverseMap(StmtSet &interestedValues) = 0;
 
     virtual StmtStmtMap getFollowsTReverseMap(StmtSet &interestedValues) = 0;
@@ -83,6 +85,8 @@ class ISourceReader {
 
     virtual EntityEntityMap getCallsTReverseMap(EntitySet &interestedValues) = 0;
 
+    virtual EntityStmtMap getCallsSReverseMap(EntitySet &interestedValues) = 0;
+
     /**
      * Check if a given relationship in a source programme is empty
      */
@@ -103,4 +107,17 @@ class ISourceReader {
     virtual bool isUsesPEmpty() = 0;
 
     virtual bool isCallsEmpty() = 0;
+
+    /**
+     * Patterns
+     */
+     virtual StmtEntityMap getAllIfCondEntries() = 0;
+
+     virtual EntityStmtMap getAllReverseIfCondEntries() = 0;
+
+     virtual StmtEntityMap getAllWhileCondEntries() = 0;
+
+     virtual EntityStmtMap getAllReverseWhileCondEntries() = 0;
+
+     virtual AssignStatements getAssignStatementEntries(EntitySet &interestedEntries);
 };
