@@ -36,12 +36,8 @@ class PatternManager: public IReadPatternManager<T, U>, public IWritePatternMana
     }
 
     bool containsLhsVector(T left) override {
-        bool flag = false;
-        auto it = std::find(lhsVector.begin(), lhsVector.end(), left);
-        if (it != lhsVector.end()) {
-            flag = true;
-        }
-        return flag;
+        auto itr = std::find(lhsVector.begin(), lhsVector.end(), left);
+        return itr != lhsVector.end();
     }
 
     bool containsRhsVector(U right) override {
@@ -50,21 +46,21 @@ class PatternManager: public IReadPatternManager<T, U>, public IWritePatternMana
     }
 
     bool containsIndexStmtMap(int index, int stmtNo) override {
-        bool flag = false;
         auto key = indexStmtMap.find(index);
         if (key != indexStmtMap.end()) {
-            flag = key->second == stmtNo;
+            return key->second == stmtNo;
+        } else {
+            return false;
         }
-        return flag;
     }
 
     bool containsReversedIndexStmtMap(int stmtNo, int index) override {
-        bool flag = false;
         auto key = reversedIndexStmtMap.find(stmtNo);
         if (key != reversedIndexStmtMap.end()) {
-            flag = key->second == index;
+            return key->second == index;
+        } else {
+            return false;
         }
-        return flag;
     }
 
     std::unique_ptr<std::vector<T>> getAllLhsPatternEntries() override {
@@ -89,10 +85,10 @@ class PatternManager: public IReadPatternManager<T, U>, public IWritePatternMana
         rhsVector.push_back(right);
 
         auto insertedIndexStmtMap = indexStmtMap.insert({index, stmtNo});
-        bool flag1 = insertedIndexStmtMap.second;
+        bool isInserted = insertedIndexStmtMap.second;
         auto insertedReversedIndexStmtMap = reversedIndexStmtMap.insert({stmtNo, index});
-        bool flag2 = insertedReversedIndexStmtMap.second;
+        bool isReverseInserted = insertedReversedIndexStmtMap.second;
 
-        return flag1 && flag2;
+        return isInserted && isReverseInserted;
     }
 };
