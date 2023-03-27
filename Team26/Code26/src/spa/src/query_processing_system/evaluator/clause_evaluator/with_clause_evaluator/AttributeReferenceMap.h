@@ -8,6 +8,7 @@
 #include "program_knowledge_base/StorageUtil.h"
 #include "program_knowledge_base/StorageManager.h"
 
+
 using StringVector = std::vector<std::string>;
 
 void mapAttribute(const AttributeReference& attributeRef, StringVector &synonymValues,

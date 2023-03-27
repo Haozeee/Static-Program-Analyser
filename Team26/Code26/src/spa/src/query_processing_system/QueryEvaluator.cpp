@@ -5,9 +5,10 @@
 #include <utility>
 #include "query_processing_system/evaluator/clause_evaluator/StorageReader.h"
 
-QueryEvaluator::QueryEvaluator(Query* query, std::shared_ptr<ReadStorage> storage)
-    : query(query), pkbStorage(storage), queryResults(QueryDb(storage)),
-    cacheStorage(std::make_shared<Cache>(storage)) {}
+QueryEvaluator::QueryEvaluator(Query* query, std::shared_ptr<ReadStorage> pkbStorage) :
+    query(query),
+    queryResults(QueryDb(pkbStorage)),
+    programmeStorage(std::make_shared<StorageReader>(pkbStorage)) {}
 
 QueryDb QueryEvaluator::evaluateQuery() {
     evaluateSelectClause();
@@ -28,11 +29,9 @@ void QueryEvaluator::evaluateClauses() {
         std::sort(allClauses.begin(), allClauses.end(), sortPredicate);
     }
 
-    auto storageReader = std::make_shared<StorageReader>(pkbStorage, cacheStorage);
-
     for (Clause* clause : allClauses) {
         auto clauseEvaluator = clause->getClauseEvaluator();
-        auto clauseResultTable = clauseEvaluator->evaluateClause(storageReader);
+        auto clauseResultTable = clauseEvaluator->evaluateClause(programmeStorage);
         queryResults.addResult(clauseResultTable);
         delete clauseEvaluator;
         if (clauseResultTable->hasNoResults()) {

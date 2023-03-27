@@ -12,14 +12,14 @@ TEST_CASE("Test Number Number") {
     std::shared_ptr<ResultTable> res;
 
     // Has results
-    testEvaluator.evaluateClause(nullptr, nullptr);
+    testEvaluator.evaluateClause(nullptr);
     res = testEvaluator.getClauseResult();
     REQUIRE_FALSE(res->hasNoResults());
 
     // Has no results
     rightArg = Argument(ArgumentType::NUMBER, "6", DesignEntity::NONE);
     testEvaluator = MockIntIntClauseEvaluator(leftArg, rightArg);
-    testEvaluator.evaluateClause(nullptr, nullptr);
+    testEvaluator.evaluateClause(nullptr);
     res = testEvaluator.getClauseResult();
     REQUIRE(res->hasNoResults());
 }

@@ -2,6 +2,7 @@
 #include "ISourceReader.h"
 #include <memory>
 #include "program_knowledge_base/StorageUtil.h"
+#include "program_knowledge_base/StorageManager.h"
 #include "cache/Cache.h"
 
 class StorageReader : public ISourceReader {
@@ -11,7 +12,7 @@ class StorageReader : public ISourceReader {
     std::shared_ptr<Cache> cacheStorage;
 
  public:
-    StorageReader(std::shared_ptr<ReadStorage> pkbStorage_, std::shared_ptr<Cache> cacheStorage_);
+    explicit StorageReader(std::shared_ptr<ReadStorage> pkbStorage_);
 
     EntitySet getStringEntitiesFromPkb(DesignEntity entity) override;
 

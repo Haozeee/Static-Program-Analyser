@@ -7,11 +7,11 @@
 #include <vector>
 #include <utility>
 #include "ResultTable.h"
-#include "AttributeReferenceMap.h"
 #include "UnionFind.h"
 #include "query_processing_system/parser/SelectClause.h"
 #include "program_knowledge_base/StorageUtil.h"
 #include "program_knowledge_base/StorageManager.h"
+#include "clause_evaluator/with_clause_evaluator/AttributeReferenceMap.h"
 
 using ResultGroups = std::unordered_map<std::string, std::deque<std::shared_ptr<ResultTable>>>;
 

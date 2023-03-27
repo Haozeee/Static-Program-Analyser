@@ -4,13 +4,13 @@ void mapAttribute(const AttributeReference& attributeRef, StringVector &synonymV
                   std::shared_ptr<ReadStorage> storage) {
     std::unordered_map<int, std::unordered_set<std::string>> relationship;
     if (attributeRef.getDesignEntity() == DesignEntity::READ && attributeRef.getAttributeName() == varName) {
-        relationship = storage->getModifiesSManager()->getAllRelationshipEntries();
+        relationship = StorageUtil::getRelationshipMap(storage->getModifiesSManager());
         mapStatementToVariable(synonymValues, relationship);
     } else if (attributeRef.getDesignEntity() == DesignEntity::PRINT && attributeRef.getAttributeName() == varName) {
-        relationship = storage->getUsesSManager()->getAllRelationshipEntries();
+        relationship = StorageUtil::getRelationshipMap(storage->getUsesSManager());
         mapStatementToVariable(synonymValues, relationship);
     } else if (attributeRef.getDesignEntity() == DesignEntity::CALL && attributeRef.getAttributeName() == procName) {
-        relationship = storage->getCallsSManager()->getAllRelationshipEntries();
+        relationship = StorageUtil::getRelationshipMap(storage->getCallsSManager());
         mapStatementToVariable(synonymValues, relationship);
     }
 }

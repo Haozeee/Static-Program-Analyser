@@ -2,7 +2,6 @@
 #include <memory>
 #include <algorithm>
 #include <iterator>
-#include "PkbUtil.h"
 
 QueryDb::QueryDb(std::shared_ptr<ReadStorage> storage) : storage(storage) {}
 
@@ -39,7 +38,7 @@ void QueryDb::fillMissingTables() {
     }
 
     for (const auto& item : missingColumns) {
-        auto entities = PkbUtil::getEntitiesFromPkb(storage, item.second);
+        auto entities = StorageUtil::;
         auto resultTable = ResultTable::createSingleColumnTable(item.first, entities);
         addResult(resultTable);
     }
