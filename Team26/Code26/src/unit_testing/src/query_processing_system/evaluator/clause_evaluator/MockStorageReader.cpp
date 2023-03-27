@@ -1,4 +1,5 @@
 #include "MockStorageReader.h"
+#include "common/parser/ShuntingYardParser.h"
 
 MockStorageReader::MockStorageReader() = default;
 
@@ -187,6 +188,9 @@ EntityStmtMap MockStorageReader::getAllReverseWhileCondEntries() {
 }
 
 AssignStatements MockStorageReader::getAssignStatementEntries(EntitySet &interestedEntries) {
-    AssignStatements results;
+    AssignStatements results {
+            {1, {"v1", ShuntingYardParser::parse("a + b")}},
+            {4, {"v2", ShuntingYardParser::parse("v1")}}
+    };
     return results;
 }
