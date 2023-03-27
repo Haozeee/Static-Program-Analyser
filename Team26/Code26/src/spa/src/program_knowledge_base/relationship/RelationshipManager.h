@@ -25,22 +25,22 @@ class RelationshipManager: public IReadRelationshipManager<T, U>,
 
     bool containsMap(T firstParam, U secondParam) override {
         auto key = relationshipsMap.find(firstParam);
-        bool flag = false;
         if (key != relationshipsMap.end()) {
             auto res = key->second;
-            flag = res.count(secondParam);
+            return res.count(secondParam);
+        } else {
+            return false;
         }
-        return flag;
     }
 
     bool containsReversedMap(U secondParam, T firstParam) override {
         auto key = reversedRelationshipsMap.find(secondParam);
-        bool flag = false;
         if (key != reversedRelationshipsMap.end()) {
             auto res = key->second;
-            flag = res.count(firstParam);
+            return res.count(firstParam);
+        } else {
+            return false;
         }
-        return flag;
     }
 
     std::unordered_map<T, std::unordered_set<U>> getAllRelationshipEntries() override {
@@ -52,17 +52,15 @@ class RelationshipManager: public IReadRelationshipManager<T, U>,
     }
 
     bool insertRelationship(T firstParam, U secondParam) override {
-        bool flag = false;
         if (!relationshipsMap.count(firstParam)) {
             std::unordered_set<U> newSet;
             newSet.insert(secondParam);
             auto res = relationshipsMap.emplace(firstParam, newSet);
-            flag = res.second;
+            return res.second;
         } else {
             auto res = relationshipsMap[firstParam].insert(secondParam);
-            flag = res.second;
+            return res.second;
         }
-        return flag;
     }
 
     void setReverse() override {
