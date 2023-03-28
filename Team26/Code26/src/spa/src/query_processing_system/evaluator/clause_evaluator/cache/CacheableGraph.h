@@ -48,7 +48,7 @@ class CacheableGraph {
     /**
      * Insert multiple items into cache.
      */
-    void insertItemsIntoCache(std::unordered_set<T> itemsToAdd) {
+    void insertItemsIntoCache(std::unordered_set<T> &itemsToAdd) {
         for (int item : itemsToAdd) {
             insertIntoCache(item);
         }
