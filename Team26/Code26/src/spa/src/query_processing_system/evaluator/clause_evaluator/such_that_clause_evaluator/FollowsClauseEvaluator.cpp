@@ -3,13 +3,13 @@
 FollowsClauseEvaluator::FollowsClauseEvaluator(Argument left, Argument right) : IntIntClauseEvaluator(left, right) {}
 
 StmtStmtMap FollowsClauseEvaluator::getRelationshipMap(StmtSet &interestedValues) {
-    return StorageUtil::getRelationshipMap(storage->getFollowsManager());
+    return storage->getFollowsMap(interestedValues);
 }
 
 StmtStmtMap FollowsClauseEvaluator::getOppositeRelationshipMap(StmtSet &interestedValues) {
-    return StorageUtil::getReverseRelationshipMap(storage->getFollowsManager());
+    return storage->getFollowsReverseMap(interestedValues);
 }
 
 bool FollowsClauseEvaluator::isEmptyRelation() {
-    return StorageUtil::isRelationEmpty(storage->getFollowsManager());
+    return storage->isFollowsEmpty();
 }

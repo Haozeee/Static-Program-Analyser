@@ -3,28 +3,18 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <string>
-#include "cache/Cache.h"
-#include "../PkbUtil.h"
+#include "RelationResultType.h"
+#include "StorageReader.h"
 #include "../Util.h"
-#include "../../../program_knowledge_base/StorageManager.h"
 #include "../ResultTable.h"
 
-using StoragePointer = std::shared_ptr<ReadStorage>;
-using CachePointer = std::shared_ptr<Cache>;
-using StmtStmtMap = std::unordered_map<int, std::unordered_set<int>>;
-using StmtEntityMap = std::unordered_map<int, std::unordered_set<std::string>>;
-using EntityStmtMap = std::unordered_map<std::string , std::unordered_set<int>>;
-using EntityEntityMap = std::unordered_map<std::string , std::unordered_set<std::string>>;
-using StmtSet = std::unordered_set<int>;
-using EntitySet = std::unordered_set<std::string>;
+using ProgrammeStore = std::shared_ptr<ISourceReader>;
 
 class ClauseEvaluator {
  protected:
     std::shared_ptr<ResultTable> clauseResultTable = std::make_shared<ResultTable>();
 
-    StoragePointer storage;
-
-    CachePointer cache;
+    ProgrammeStore storage;
 
     /**
      * Checks if the result of this such that clause equates to false. The such that clause
@@ -34,7 +24,7 @@ class ClauseEvaluator {
      */
     void optimiseResults();
 
-    virtual void setStorageLocation(StoragePointer storage_, CachePointer cache_);
+    virtual void setStorageLocation(ProgrammeStore storage_);
 
  public:
     virtual ~ClauseEvaluator() = default;
@@ -42,5 +32,5 @@ class ClauseEvaluator {
      * Evaluate the clause.
      * @return True if clause has been evaluated successfully.
      */
-    virtual std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage, CachePointer cache) = 0;
+    virtual std::shared_ptr<ResultTable> evaluateClause(ProgrammeStore storage) = 0;
 };

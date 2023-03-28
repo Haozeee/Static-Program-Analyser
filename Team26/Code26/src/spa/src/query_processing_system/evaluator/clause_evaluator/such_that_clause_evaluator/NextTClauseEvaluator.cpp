@@ -3,13 +3,13 @@
 NextTClauseEvaluator::NextTClauseEvaluator(Argument left, Argument right) : IntIntClauseEvaluator(left, right) {}
 
 StmtStmtMap NextTClauseEvaluator::getRelationshipMap(StmtSet &interestedValues) {
-    return Cache::getCacheData(cache->getNextTCache(), interestedValues);
+    return storage->getNextTMap(interestedValues);
 }
 
 StmtStmtMap NextTClauseEvaluator::getOppositeRelationshipMap(StmtSet &interestedValues) {
-    return Cache::getCacheData(cache->getNextTReverseCache(), interestedValues);
+    return storage->getNextTReverseMap(interestedValues);
 }
 
 bool NextTClauseEvaluator::isEmptyRelation() {
-    return Cache::isCacheEmpty(cache->getNextTCache());
+    return storage->isNextEmpty();
 }

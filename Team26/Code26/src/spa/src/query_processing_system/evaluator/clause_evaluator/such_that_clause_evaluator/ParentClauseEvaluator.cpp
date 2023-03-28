@@ -4,13 +4,13 @@ ParentClauseEvaluator::ParentClauseEvaluator(Argument left, Argument right)
         : IntIntClauseEvaluator(left, right) {}
 
 StmtStmtMap ParentClauseEvaluator::getRelationshipMap(StmtSet &interestedValues) {
-    return StorageUtil::getRelationshipMap(storage->getParentManager());
+    return storage->getParentMap(interestedValues);
 }
 
 StmtStmtMap ParentClauseEvaluator::getOppositeRelationshipMap(StmtSet &interestedValues) {
-    return StorageUtil::getReverseRelationshipMap(storage->getParentManager());
+    return storage->getParentReverseMap(interestedValues);
 }
 
 bool ParentClauseEvaluator::isEmptyRelation() {
-    return StorageUtil::isRelationEmpty(storage->getParentManager());
+    return storage->isParentEmpty();
 }

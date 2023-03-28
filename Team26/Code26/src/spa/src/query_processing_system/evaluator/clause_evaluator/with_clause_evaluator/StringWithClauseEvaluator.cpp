@@ -24,40 +24,46 @@ EntitySet StringWithClauseEvaluator::getRightRefValues() {
     return getRefValue(storage, rightRef);
 }
 
-EntitySet StringWithClauseEvaluator::getRefValue(StoragePointer storage, Reference ref) {
+EntitySet StringWithClauseEvaluator::getRefValue(ProgrammeStore storage, Reference ref) {
     return std::visit(overload{
             [](const int& i) -> EntitySet { return {std::to_string(i)}; },
             [](const std::string& i) -> EntitySet { return {i}; },
             [storage](const AttributeReference i) ->
-                EntitySet { return PkbUtil::getStringEntitiesFromPkb(storage, i.getDesignEntity()); }
+                EntitySet { return storage->getStringEntitiesFromPkb(i.getDesignEntity()); }
     }, ref.getValue());
 }
 
-EntitySet StringWithClauseEvaluator::getReadStatements(StoragePointer storage, std::string value) {
+EntitySet StringWithClauseEvaluator::getReadStatements(ProgrammeStore storage, std::string value) {
     StmtSet res;
-    auto relationshipStore = StorageUtil::getReverseRelationshipMap(storage->getModifiesSManager());
+    EntitySet interestedValues {value};
+    auto relationshipStore = storage->getModifiesSReverseMap(interestedValues);
+
     auto it = relationshipStore.find(value);
     if (it != relationshipStore.end()) {
-        auto readStatements = StorageUtil::getEntityValues(storage->getReadStmtNoManager());
+        auto readStatements = storage->getIntEntitiesFromPkb(DesignEntity::READ);
         Util::setIntersection(it->second, readStatements, res);
     }
     return Util::intSetToStringSet(res);
 }
 
-EntitySet StringWithClauseEvaluator::getPrintStatements(StoragePointer storage, std::string value) {
+EntitySet StringWithClauseEvaluator::getPrintStatements(ProgrammeStore storage, std::string value) {
     StmtSet res;
-    auto relationshipStore = StorageUtil::getReverseRelationshipMap(storage->getUsesSManager());
+    EntitySet interestedValues {value};
+    auto relationshipStore = storage->getUsesSReverseMap(interestedValues);
+
     auto it = relationshipStore.find(value);
     if (it != relationshipStore.end()) {
-        auto printStatements = StorageUtil::getEntityValues(storage->getPrintStmtNoManager());
+        auto printStatements = storage->getIntEntitiesFromPkb(DesignEntity::PRINT);
         Util::setIntersection(it->second, printStatements, res);
     }
     return Util::intSetToStringSet(res);
 }
 
-EntitySet StringWithClauseEvaluator::getCallStatements(StoragePointer storage, std::string value) {
+EntitySet StringWithClauseEvaluator::getCallStatements(ProgrammeStore storage, std::string value) {
     StmtSet res;
-    auto relationshipStore = StorageUtil::getReverseRelationshipMap(storage->getCallsSManager());
+    EntitySet interestedValues {value};
+    auto relationshipStore = storage->getCallsSReverseMap(interestedValues);
+
     auto it = relationshipStore.find(value);
     if (it != relationshipStore.end()) {
         res = it->second;

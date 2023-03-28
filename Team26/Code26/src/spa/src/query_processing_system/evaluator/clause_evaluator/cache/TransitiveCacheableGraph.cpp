@@ -2,7 +2,7 @@
 #include <stack>
 #include "query_processing_system/evaluator/Util.h"
 
-TransitiveCacheableGraph::TransitiveCacheableGraph(StoragePointer storage) : CacheableGraph<int, int>(storage) {}
+TransitiveCacheableGraph::TransitiveCacheableGraph(CacheStorage storage) : CacheableGraph<int, int>(storage) {}
 
 void TransitiveCacheableGraph::onCacheMiss(int startNode) {
     if (!base.count(startNode)) {

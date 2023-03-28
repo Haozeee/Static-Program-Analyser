@@ -8,7 +8,7 @@
  */
 class TransitiveCacheableGraph : public CacheableGraph<int, int> {
  protected:
-    explicit TransitiveCacheableGraph(StoragePointer storage);
+    explicit TransitiveCacheableGraph(CacheStorage storage);
 
     /**
      * Do DFS on cache miss. Get all items that can be reached from a given starting node.

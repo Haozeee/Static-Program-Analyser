@@ -1,9 +1,5 @@
 #include "ExpressionlessPatternClauseEvaluator.h"
-
-#include <memory>
 #include <utility>
-#include <unordered_set>
-#include <unordered_map>
 
 ExpressionlessPatternClauseEvaluator::ExpressionlessPatternClauseEvaluator(Argument patternArg, Argument leftArg)
         : PatternClauseEvaluator(std::move(patternArg), std::move(leftArg)) {}

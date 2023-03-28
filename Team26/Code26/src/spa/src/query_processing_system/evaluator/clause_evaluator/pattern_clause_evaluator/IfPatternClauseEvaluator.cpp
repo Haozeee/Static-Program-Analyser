@@ -5,9 +5,9 @@ IfPatternClauseEvaluator::IfPatternClauseEvaluator(Argument patternArg, Argument
     : ExpressionlessPatternClauseEvaluator(std::move(patternArg), std::move(leftArg)) {}
 
 StmtEntityMap IfPatternClauseEvaluator::getRelationshipEntries() {
-    return StorageUtil::getRelationshipMap(storage->getIfCondManager());
+    return storage->getAllIfCondEntries();
 }
 
 EntityStmtMap IfPatternClauseEvaluator::getReverseRelationshipEntries() {
-    return StorageUtil::getReverseRelationshipMap(storage->getIfCondManager());
+    return storage->getAllReverseIfCondEntries();
 }

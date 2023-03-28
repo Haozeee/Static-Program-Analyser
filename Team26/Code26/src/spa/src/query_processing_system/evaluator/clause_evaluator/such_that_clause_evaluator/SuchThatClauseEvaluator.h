@@ -192,8 +192,8 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     virtual bool isRightArgAmbiguous() = 0;
 
  public:
-    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage_, CachePointer cache_) override {
-        setStorageLocation(storage_, cache_);
+    std::shared_ptr<ResultTable> evaluateClause(ProgrammeStore storage_) override {
+        setStorageLocation(storage_);
         auto argumentType = getClauseArgumentType(leftArg.getArgumentType(), rightArg.getArgumentType());
 
         std::unordered_map<ClauseArgumentTypes, std::function<void(void)>> evalMap {
@@ -209,11 +209,9 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
         };
 
         auto it = evalMap.find(argumentType);
-        if (it == evalMap.end()) {
-            throw std::exception();
+        if (it != evalMap.end()) {
+            it->second();
         }
-
-        it->second();
         optimiseResults();
 
         return clauseResultTable;

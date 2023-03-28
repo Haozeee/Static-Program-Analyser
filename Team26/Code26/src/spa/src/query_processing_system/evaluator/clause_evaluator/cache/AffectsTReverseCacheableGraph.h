@@ -6,7 +6,7 @@
 
 class AffectsTReverseCacheableGraph : public TransitiveCacheableGraph {
  public:
-    explicit AffectsTReverseCacheableGraph(StoragePointer storage);
+    explicit AffectsTReverseCacheableGraph(CacheStorage storage);
 
-    void setBase(StmtStmtCache newBase);
+    void setBase(StmtStmtMap newBase);
 };

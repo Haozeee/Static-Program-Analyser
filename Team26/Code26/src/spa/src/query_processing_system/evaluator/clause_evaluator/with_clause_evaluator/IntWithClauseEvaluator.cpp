@@ -15,11 +15,11 @@ StmtSet IntWithClauseEvaluator::getRightRefValues() {
     return getRefValue(storage, rightRef);
 }
 
-StmtSet IntWithClauseEvaluator::getRefValue(StoragePointer storage, Reference ref) {
+StmtSet IntWithClauseEvaluator::getRefValue(ProgrammeStore storage, Reference ref) {
     return std::visit(overload{
             [](const int& i) -> StmtSet { return {i}; },
             [](const std::string& i) -> StmtSet { return {stoi(i)}; },
             [storage](const AttributeReference i) ->
-                StmtSet { return PkbUtil::getIntEntitiesFromPkb(storage, i.getDesignEntity()); }
+                StmtSet { return storage->getIntEntitiesFromPkb(i.getDesignEntity()); }
     }, ref.getValue());
 }

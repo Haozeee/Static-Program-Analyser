@@ -4,13 +4,13 @@ UsesSClauseEvaluator::UsesSClauseEvaluator(Argument left, Argument right)
         : IntStringClauseEvaluator(left, right) {}
 
 StmtEntityMap UsesSClauseEvaluator::getRelationshipMap(StmtSet &interestedValues) {
-    return StorageUtil::getRelationshipMap(storage->getUsesSManager());
+    return storage->getUsesSMap(interestedValues);
 }
 
 EntityStmtMap UsesSClauseEvaluator::getOppositeRelationshipMap(EntitySet &interestedValues) {
-    return StorageUtil::getReverseRelationshipMap(storage->getUsesSManager());
+    return storage->getUsesSReverseMap(interestedValues);
 }
 
 bool UsesSClauseEvaluator::isEmptyRelation() {
-    return StorageUtil::isRelationEmpty(storage->getUsesSManager());
+    return storage->isUsesSEmpty();
 }

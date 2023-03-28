@@ -4,7 +4,7 @@
 
 class IntWithClauseEvaluator : public WithClauseEvaluator<int> {
  private:
-    static StmtSet getRefValue(StoragePointer storage, Reference ref);
+    static StmtSet getRefValue(ProgrammeStore storage, Reference ref);
 
  protected:
     EntitySet getTranslatedValues(int value, DesignEntity de) override;

@@ -22,11 +22,11 @@ void StringStringClauseEvaluator::setLeftAndRightArgResult(EntityEntityMap resul
 }
 
 EntitySet StringStringClauseEvaluator::getLeftArgEntities() {
-    return PkbUtil::getStringEntitiesFromPkb(storage, leftArg.getDesignEntity());
+    return storage->getStringEntitiesFromPkb(leftArg.getDesignEntity());
 }
 
 EntitySet StringStringClauseEvaluator::getRightArgEntities() {
-    return PkbUtil::getStringEntitiesFromPkb(storage, rightArg.getDesignEntity());
+    return storage->getStringEntitiesFromPkb(rightArg.getDesignEntity());
 }
 
 std::string StringStringClauseEvaluator::getLeftArg() {

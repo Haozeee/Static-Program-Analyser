@@ -7,22 +7,22 @@ class StringWithClauseEvaluator : public WithClauseEvaluator<std::string> {
     /**
      * Given a reference, get its value as a string.
      */
-    static EntitySet getRefValue(StoragePointer storage, Reference ref);
+    static EntitySet getRefValue(ProgrammeStore storage, Reference ref);
 
     /**
      * Given a read variable, find all read statement numbers that reads that variable.
      */
-    static EntitySet getReadStatements(StoragePointer storage, std::string value);
+    static EntitySet getReadStatements(ProgrammeStore storage, std::string value);
 
     /**
      * Given a print variable, find all print statement numbers that print that variable.
      */
-    static EntitySet getPrintStatements(StoragePointer storage, std::string value);
+    static EntitySet getPrintStatements(ProgrammeStore storage, std::string value);
 
     /**
      * Given a procedure value, find all call statement numbers that call that procedures.
      */
-    static EntitySet getCallStatements(StoragePointer storage, std::string value);
+    static EntitySet getCallStatements(ProgrammeStore storage, std::string value);
 
  protected:
     EntitySet getTranslatedValues(std::string value, DesignEntity de) override;

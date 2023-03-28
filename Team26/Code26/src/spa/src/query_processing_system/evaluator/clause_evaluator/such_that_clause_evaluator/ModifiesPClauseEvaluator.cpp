@@ -4,13 +4,13 @@ ModifiesPClauseEvaluator::ModifiesPClauseEvaluator(Argument left, Argument right
     : StringStringClauseEvaluator(left, right) {}
 
 EntityEntityMap ModifiesPClauseEvaluator::getRelationshipMap(EntitySet &interestedValues) {
-    return StorageUtil::getRelationshipMap(storage->getModifiesPManager());
+    return storage->getModifiesPMap(interestedValues);
 }
 
 EntityEntityMap ModifiesPClauseEvaluator::getOppositeRelationshipMap(EntitySet &interestedValues) {
-    return StorageUtil::getReverseRelationshipMap(storage->getModifiesPManager());
+    return storage->getModifiesPReverseMap(interestedValues);
 }
 
 bool ModifiesPClauseEvaluator::isEmptyRelation() {
-    return StorageUtil::isRelationEmpty(storage->getModifiesPManager());
+    return storage->isModifiesPEmpty();
 }

@@ -4,13 +4,13 @@ ModifiesSClauseEvaluator::ModifiesSClauseEvaluator(Argument left, Argument right
         : IntStringClauseEvaluator(left, right) {}
 
 StmtEntityMap ModifiesSClauseEvaluator::getRelationshipMap(StmtSet &interestedValues) {
-    return StorageUtil::getRelationshipMap(storage->getModifiesSManager());
+    return storage->getModifiesSMap(interestedValues);
 }
 
 EntityStmtMap ModifiesSClauseEvaluator::getOppositeRelationshipMap(EntitySet &interestedValues) {
-    return StorageUtil::getReverseRelationshipMap(storage->getModifiesSManager());
+    return storage->getModifiesSReverseMap(interestedValues);
 }
 
 bool ModifiesSClauseEvaluator::isEmptyRelation() {
-    return StorageUtil::isRelationEmpty(storage->getModifiesSManager());
+    return storage->isModifiesSEmpty();
 }

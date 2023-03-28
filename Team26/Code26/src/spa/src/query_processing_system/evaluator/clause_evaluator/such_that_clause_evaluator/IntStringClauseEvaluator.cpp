@@ -23,11 +23,11 @@ void IntStringClauseEvaluator::setLeftAndRightArgResult(StmtEntityMap results) {
 }
 
 StmtSet IntStringClauseEvaluator::getLeftArgEntities() {
-    return PkbUtil::getIntEntitiesFromPkb(storage, leftArg.getDesignEntity());
+    return storage->getIntEntitiesFromPkb(leftArg.getDesignEntity());
 }
 
 EntitySet IntStringClauseEvaluator::getRightArgEntities() {
-    return PkbUtil::getStringEntitiesFromPkb(storage, rightArg.getDesignEntity());
+    return storage->getStringEntitiesFromPkb(rightArg.getDesignEntity());
 }
 
 int IntStringClauseEvaluator::getLeftArg() {
