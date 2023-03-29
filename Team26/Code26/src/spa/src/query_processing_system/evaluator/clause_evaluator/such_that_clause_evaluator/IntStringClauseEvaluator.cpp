@@ -3,26 +3,31 @@
 IntStringClauseEvaluator::IntStringClauseEvaluator(Argument left, Argument right)
     : SuchThatClauseEvaluator<int, std::string>(left, right) {}
 
-void IntStringClauseEvaluator::setLeftArgResult(std::unordered_set<int> result) {
-    clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), Util::intSetToStringSet(result));
+void IntStringClauseEvaluator::setLeftArgResult(StmtSet result) {
+    if (leftArg.getArgumentType() == ArgumentType::SYNONYM) {
+        clauseResultTable = ResultTable::createSingleColumnTable(leftArg.getValue(), Util::intSetToStringSet(result));
+    }
 }
 
-void IntStringClauseEvaluator::setRightArgResult(std::unordered_set<std::string> result) {
-    clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), result);
+void IntStringClauseEvaluator::setRightArgResult(EntitySet result) {
+    if (rightArg.getArgumentType() == ArgumentType::SYNONYM) {
+        clauseResultTable = ResultTable::createSingleColumnTable(rightArg.getValue(), result);
+    }
 }
 
-std::unordered_set<int> IntStringClauseEvaluator::getLeftArgEntities() {
-    return PkbUtil::getIntEntitiesFromPkb(storage, leftArg.getDesignEntity());
+void IntStringClauseEvaluator::setLeftAndRightArgResult(StmtEntityMap results) {
+    if (leftArg.getArgumentType() == ArgumentType::SYNONYM && rightArg.getArgumentType() == ArgumentType::SYNONYM) {
+        auto res = Util::intStringMapTostringMap(results);
+        clauseResultTable = ResultTable::createTableFromMap(res, leftArg.getValue(), rightArg.getValue());
+    }
 }
 
-std::unordered_set<std::string> IntStringClauseEvaluator::getRightArgEntities() {
-    return PkbUtil::getStringEntitiesFromPkb(storage, rightArg.getDesignEntity());
+StmtSet IntStringClauseEvaluator::getLeftArgEntities() {
+    return storage->getIntEntitiesFromPkb(leftArg.getDesignEntity());
 }
 
-void IntStringClauseEvaluator::setLeftAndRightArgResult(std::unordered_map<int,
-                                                        std::unordered_set<std::string>> results) {
-    auto res = Util::intStringMapTostringMap(results);
-    clauseResultTable = ResultTable::createTableFromMap(res, leftArg.getValue(), rightArg.getValue());
+EntitySet IntStringClauseEvaluator::getRightArgEntities() {
+    return storage->getStringEntitiesFromPkb(rightArg.getDesignEntity());
 }
 
 int IntStringClauseEvaluator::getLeftArg() {

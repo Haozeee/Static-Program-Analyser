@@ -1,7 +1,7 @@
 #include "AffectsTCacheableGraph.h"
 
-AffectsTCacheableGraph::AffectsTCacheableGraph(StoragePointer storage) : TransitiveCacheableGraph(storage) {}
+AffectsTCacheableGraph::AffectsTCacheableGraph(CacheStorage storage) : TransitiveCacheableGraph(storage) {}
 
-void AffectsTCacheableGraph::setBase(std::unordered_map<int, std::unordered_set<int>> newBase) {
+void AffectsTCacheableGraph::setBase(StmtStmtMap newBase) {
     base = std::move(newBase);
 }

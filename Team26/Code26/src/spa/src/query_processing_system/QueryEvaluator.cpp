@@ -3,14 +3,17 @@
 #include <iterator>
 #include <vector>
 #include <utility>
+#include "query_processing_system/evaluator/clause_evaluator/StorageReader.h"
 
-QueryEvaluator::QueryEvaluator(Query* query, std::shared_ptr<ReadStorage> storage)
-    : query(query), storage(storage), queryResults(QueryDb(storage)), cache(std::make_shared<Cache>(storage)) {}
+QueryEvaluator::QueryEvaluator(Query* query, std::shared_ptr<ReadStorage> pkbStorage) :
+    query(query),
+    programmeStorage(std::make_shared<StorageReader>(pkbStorage)),
+    queryResults(QueryDb(programmeStorage)) {}
 
 QueryDb QueryEvaluator::evaluateQuery() {
-    evaluateSelectClause();
-
     evaluateClauses();
+
+    evaluateSelectClause();
 
     return queryResults;
 }
@@ -19,16 +22,12 @@ void QueryEvaluator::evaluateClauses() {
     auto allClauses = query->getAllClauses();
 
     if (allClauses.size() > 3) {
-        // Only sort clauses of size >= 3
-        auto sortPredicate = [](Clause* a, Clause* b) {
-            return a->getOptimisationPoints() < b->getOptimisationPoints();
-        };
-        std::sort(allClauses.begin(), allClauses.end(), sortPredicate);
+        sortClauses(allClauses);
     }
 
     for (Clause* clause : allClauses) {
         auto clauseEvaluator = clause->getClauseEvaluator();
-        auto clauseResultTable = clauseEvaluator->evaluateClause(storage, cache);
+        auto clauseResultTable = clauseEvaluator->evaluateClause(programmeStorage);
         queryResults.addResult(clauseResultTable);
         delete clauseEvaluator;
         if (clauseResultTable->hasNoResults()) {
@@ -38,13 +37,25 @@ void QueryEvaluator::evaluateClauses() {
     }
 }
 
+void QueryEvaluator::sortClauses(std::vector<Clause*> &allClauses) {
+    auto sortPredicate = [](Clause* a, Clause* b) {
+        return a->getOptimisationPoints() < b->getOptimisationPoints();
+    };
+    std::sort(allClauses.begin(), allClauses.end(), sortPredicate);
+}
+
 void QueryEvaluator::evaluateSelectClause() {
     std::vector<std::pair<SelectClauseItem, DesignEntity>> selectedCols;
-    auto selectClause = query->getSelectClause();
-    auto selectClausesItems = selectClause->getSelectClauseItems();
+    auto colsPresentInResult = queryResults.getAllColumnsInResults();
+    auto selectClausesItems = query->getSelectClauseItems();
     for (const SelectClauseItem& item : *selectClausesItems) {
         std::string identity = SelectClause::getSynonym(item);
-        selectedCols.emplace_back(item, query->getSynonymDesignEntity(identity));
+        DesignEntity de = query->getSynonymDesignEntity(identity);
+        selectedCols.emplace_back(item, de);
+        if (!colsPresentInResult.count(identity)) {
+            auto resultToAdd = ResultTable::createSingleColumnTable(identity, programmeStorage->getEntitiesFromPkb(de));
+            queryResults.addResult(resultToAdd);
+        }
     }
     queryResults.setSelectedColumns(selectedCols);
 }

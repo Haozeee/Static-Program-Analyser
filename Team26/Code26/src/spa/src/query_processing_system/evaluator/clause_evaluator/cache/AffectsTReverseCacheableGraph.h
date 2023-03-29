@@ -6,7 +6,7 @@
 
 class AffectsTReverseCacheableGraph : public TransitiveCacheableGraph {
  public:
-    explicit AffectsTReverseCacheableGraph(StoragePointer storage);
+    explicit AffectsTReverseCacheableGraph(CacheStorage storage);
 
-    void setBase(std::unordered_map<int, std::unordered_set<int>> newBase);
+    void setBase(StmtStmtMap newBase);
 };
