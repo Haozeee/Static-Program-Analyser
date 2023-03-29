@@ -11,19 +11,30 @@ class RelationshipStore : public IRelationshipStore {
  private:
     std::shared_ptr<IWriteRelationshipManager<int, int>> followsManager;
     std::shared_ptr<IWriteRelationshipManager<int, int>> followsTManager;
+
     std::shared_ptr<IWriteRelationshipManager<int, int>> parentsManager;
     std::shared_ptr<IWriteRelationshipManager<int, int>> parentsTManager;
+
     std::shared_ptr<IWriteRelationshipManager<int, std::string>> usesSManager;
     std::shared_ptr<IWriteRelationshipManager<int, std::string>> modifiesSManager;
     std::shared_ptr<IWriteRelationshipManager<std::string, std::string>> usesPManager;
     std::shared_ptr<IWriteRelationshipManager<std::string, std::string>> modifiesPManager;
+
     std::shared_ptr<IWriteRelationshipManager<int, int>> nextManager;
 
     std::shared_ptr<IWriteRelationshipManager<int, std::string>> callSManager;
     std::shared_ptr<IWriteRelationshipManager<std::string, std::string>> callPManager;
     std::shared_ptr<IWriteRelationshipManager<std::string, std::string>> callsTManager;
 
-    std::shared_ptr<ReadStorage> readStorage;
+    // Read
+    std::shared_ptr<IReadEntityManager<std::string>> procedureMangerRead;
+
+    std::shared_ptr<IReadRelationshipManager<std::string, std::string>> modifiesPManagerRead;
+    std::shared_ptr<IReadRelationshipManager<std::string, std::string>> usesPManagerRead;
+
+    std::shared_ptr<IReadRelationshipManager<std::string, std::string>> callsPManagerRead;
+    std::shared_ptr<IReadRelationshipManager<std::string, std::string>> callsTManagerRead;
+
 
  public:
     explicit RelationshipStore(const std::shared_ptr<WriteStorage>& writeStorage,
