@@ -8,7 +8,7 @@
 #include "query_processing_system/parser/Argument.h"
 
 class MockStringStringClauseEvaluator : public StringStringClauseEvaluator {
-public:
+ public:
     MockStringStringClauseEvaluator(Argument left, Argument right);
 
     EntityEntityMap getRelationshipMap(EntitySet &interestedValues) override;
