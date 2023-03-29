@@ -1,0 +1,73 @@
+procedure Example {
+    call Help;
+    a = a + 1 + 10;
+    while (a >= b) {
+        if (a != b) then {
+            b = b * 5;
+            while (c == d) {
+                print a;
+                print b;
+                a = b / a;
+                b = b + 10;
+            }
+            b = b / 2;
+        } else {
+            while (b == c) {
+                c = c + 1 * (13 + 456);
+                call GiveMeA;
+            }
+            if ((c == a) || (a == b)) then {
+                c = c + 16;
+                print c;
+            } else {
+                read d;
+                d = d + a + b + 1 / 123 * 19;
+            }
+            print d;
+            d = 2;
+            a = a + a + a + 22;
+        }
+        while (!(b != 23)) {
+            print b;
+            b = 25 + a / (c * d);
+        }
+    }
+    a = b + c;
+    call Foo;
+}
+
+procedure GiveMeA {
+    if (a > 28) then {
+        while (a < c) {
+            a = b + c + 30;
+        }
+    } else {
+        a = a * 31;
+        while (a < b) {
+            a = b + c + 33;
+        }
+    }
+}
+
+procedure Help {
+    read a;
+    read b;
+    print b;
+    call Foo;
+    while (!((b == 39) && (a == c))) {
+        read c;
+        if (c == d) then {
+            read e;
+        } else {
+            print c;
+        }
+    }
+}
+
+procedure Foo {
+    a = b;
+    b = c;
+    c = a;
+    d = a;
+    z = 48;
+}
