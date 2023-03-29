@@ -1,7 +1,8 @@
 #include "TransitiveCacheableGraph.h"
 #include <stack>
+#include "query_processing_system/evaluator/Util.h"
 
-TransitiveCacheableGraph::TransitiveCacheableGraph(StoragePointer storage) : CacheableGraph<int, int>(storage) {}
+TransitiveCacheableGraph::TransitiveCacheableGraph(CacheStorage storage) : CacheableGraph<int, int>(storage) {}
 
 void TransitiveCacheableGraph::onCacheMiss(int startNode) {
     if (!base.count(startNode)) {
@@ -46,4 +47,11 @@ void TransitiveCacheableGraph::onCacheMiss(int startNode) {
 
 bool TransitiveCacheableGraph::isEmpty() {
     return base.empty();
+}
+
+void TransitiveCacheableGraph::buildAll() {
+    auto currentItems = Util::getAllKeys(cache);
+    auto allItems = Util::getAllKeys(base);
+    auto missingItems = Util::setDifference(allItems, currentItems);
+    insertItemsIntoCache(missingItems);
 }

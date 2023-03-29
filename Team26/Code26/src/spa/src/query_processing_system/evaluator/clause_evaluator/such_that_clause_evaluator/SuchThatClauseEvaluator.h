@@ -20,9 +20,10 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
             evaluateEqualSynonym();
             return;
         }
-        auto relationshipMap = cacheable ? getRelationshipCache(getLeftArgEntities()) : getRelationshipManager();
+        auto interestedValues = getLeftArgEntities();
+        auto relationshipMap = getRelationshipMap(interestedValues);
         if (isLeftArgAmbiguous()) {
-            relationshipMap = Util::filterMap(relationshipMap, getLeftArgEntities());
+            relationshipMap = Util::filterMap(relationshipMap, interestedValues);
         }
         if (isRightArgAmbiguous()) {
             relationshipMap = Util::mapSetIntersection(relationshipMap, getRightArgEntities());
@@ -31,7 +32,8 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
     void evaluateValueSynonym() {
-        auto relationshipStore = cacheable ? getRelationshipCache({getLeftArg()}) : getRelationshipManager();
+        std::unordered_set<T> interestedValues {getLeftArg()};
+        auto relationshipStore = getRelationshipMap(interestedValues);
         auto it = relationshipStore.find(getLeftArg());
         std::unordered_set<U> res {};
         if (it != relationshipStore.end()) {
@@ -45,8 +47,8 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
     void evaluateSynonymValue() {
-        auto relationshipStore = cacheable ?
-                getOppositeRelationshipCache({getRightArg()}) : getOppositeRelationshipManager();
+        std::unordered_set<U> interestedValues {getRightArg()};
+        auto relationshipStore = getOppositeRelationshipMap(interestedValues);
         auto it = relationshipStore.find(getRightArg());
         std::unordered_set<T> res {};
         if (it != relationshipStore.end()) {
@@ -60,9 +62,10 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
     void evaluateSynonymWildcard() {
-        auto relationshipMap = cacheable ? getRelationshipCache(getLeftArgEntities()) : getRelationshipManager();
+        auto interestedValues = getLeftArgEntities();
+        auto relationshipMap = getRelationshipMap(interestedValues);
         if (isLeftArgAmbiguous()) {
-            relationshipMap = Util::filterMap(relationshipMap, getLeftArgEntities());
+            relationshipMap = Util::filterMap(relationshipMap, interestedValues);
         }
         std::unordered_set<T> res {};
         for (auto const& [k, v] : relationshipMap) {
@@ -74,10 +77,10 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
     void evaluateWildcardSynonym() {
-        auto relationshipMap = cacheable ? getOppositeRelationshipCache(getRightArgEntities())
-                : getOppositeRelationshipManager();
+        auto interestedValues = getRightArgEntities();
+        auto relationshipMap = getOppositeRelationshipMap(interestedValues);
         if (isRightArgAmbiguous()) {
-            relationshipMap = Util::filterMap(relationshipMap, getRightArgEntities());
+            relationshipMap = Util::filterMap(relationshipMap, interestedValues);
         }
         std::unordered_set<U> res {};
         for (auto const& [k, v] : relationshipMap) {
@@ -89,7 +92,8 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
     void evaluateValueValue() {
-        auto relationshipStore = cacheable ? getRelationshipCache({getLeftArg()}) : getRelationshipManager();
+        std::unordered_set<T> interestedValues {getLeftArg()};
+        auto relationshipStore = getRelationshipMap(interestedValues);
         auto iterator = relationshipStore.find(getLeftArg());
         if (iterator == relationshipStore.end() || !iterator->second.count(getRightArg())) {
             clauseResultTable->setNoResults();
@@ -97,7 +101,8 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
     void evaluateValueWildcard() {
-        auto relationshipStore = cacheable ? getRelationshipCache({getLeftArg()}) : getRelationshipManager();
+        std::unordered_set<T> interestedValues {getLeftArg()};
+        auto relationshipStore = getRelationshipMap(interestedValues);
         auto iterator = relationshipStore.find(getLeftArg());
         if (iterator == relationshipStore.end() || iterator->second.empty()) {
             clauseResultTable->setNoResults();
@@ -105,8 +110,8 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
     void evaluateWildcardValue() {
-        auto relationshipStore = cacheable ?
-                getOppositeRelationshipCache({getRightArg()}) : getOppositeRelationshipManager();
+        std::unordered_set<U> interestedValues {getRightArg()};
+        auto relationshipStore = getOppositeRelationshipMap(interestedValues);
         auto iterator = relationshipStore.find(getRightArg());
         if (iterator == relationshipStore.end() || iterator->second.empty()) {
             clauseResultTable->setNoResults();
@@ -114,7 +119,7 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
     }
 
     void evaluateWildcardWildcard() {
-        if (isRelationshipEmpty()) {
+        if (isEmptyRelation()) {
             clauseResultTable->setNoResults();
         }
     }
@@ -124,32 +129,16 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
 
     Argument rightArg;
 
-    /**
-     * Indicates if this clause is evaluated on the run by reading from a cache or if it is
-     * precomputed in which case data is read from pkb directly.
-     */
-    bool cacheable;
+    SuchThatClauseEvaluator<T, U>(Argument left, Argument right)
+        : leftArg(std::move(left)), rightArg(std::move(right)) {}
 
-    SuchThatClauseEvaluator<T, U>(Argument left, Argument right, bool cacheable = false)
-            : leftArg(std::move(left)), rightArg(std::move(right)), cacheable(cacheable) {}
-
-    virtual std::unordered_map<T, std::unordered_set<U>> getRelationshipManager() = 0;
-
-    virtual std::unordered_map<U, std::unordered_set<T>> getOppositeRelationshipManager() = 0;
-
-    /**
-     * Before reading from a cache, need to ensure all items that is gonna be read is present in the cache.
-     */
-    virtual std::unordered_map<T, std::unordered_set<U>> getRelationshipCache(std::unordered_set<T> itemsToRead) {
-        // By default, a relationship is not cached
-        return std::unordered_map<T, std::unordered_set<U>> {};
-    }
+    virtual std::unordered_map<T, std::unordered_set<U>>
+    getRelationshipMap(std::unordered_set<T> &interestedValues) = 0;
 
     virtual std::unordered_map<U, std::unordered_set<T>>
-    getOppositeRelationshipCache(std::unordered_set<U> itemsToRead) {
-        // By default, a relationship is not cached
-        return std::unordered_map<U, std::unordered_set<T>> {};
-    }
+    getOppositeRelationshipMap(std::unordered_set<U> &interestedValues) = 0;
+
+    virtual bool isEmptyRelation() = 0;
 
     /**
      * Evaluate clauses in the form of (a, a) where the 2 args refer
@@ -162,21 +151,18 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
 
     /**
      * Set the queryResults that are to be projected on to the left arguments in the clause result.
-     * Should only be used when the left argument is a synonym.
      * @param result The result to be projected.
      */
     virtual void setLeftArgResult(std::unordered_set<T> result) = 0;
 
     /**
      * Set the queryResults that are to be projected on to the right arguments in the clause result.
-     * Should only be used when the right argument is a synonym.
      * @param result The result to be projected.
      */
     virtual void setRightArgResult(std::unordered_set<U> result) = 0;
 
     /**
      * Set the queryResults that are to be projected on to the right arguments in the clause result.
-     * Should only be used when the right argument is a synonym.
      * @param result The result to be projected.
      */
     virtual void setLeftAndRightArgResult(std::unordered_map<T, std::unordered_set<U>> results) = 0;
@@ -205,37 +191,29 @@ class SuchThatClauseEvaluator : public ClauseEvaluator {
 
     virtual bool isRightArgAmbiguous() = 0;
 
-    virtual bool isRelationshipEmpty() {
-        return getRelationshipManager().empty();
-    }
-
  public:
-    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage_, CachePointer cache_) override {
-        setStorageLocation(storage_, cache_);
-
+    std::shared_ptr<ResultTable> evaluateClause(ProgrammeStore storage_) override {
+        setStorageLocation(storage_);
         auto argumentType = getClauseArgumentType(leftArg.getArgumentType(), rightArg.getArgumentType());
-        if (argumentType == ClauseArgumentTypes::VALUE_VALUE) {
-            evaluateValueValue();
-        } else if (argumentType == ClauseArgumentTypes::SYNONYM_VALUE) {
-            evaluateSynonymValue();
-        } else if (argumentType == ClauseArgumentTypes::VALUE_SYNONYM) {
-            evaluateValueSynonym();
-        } else if (argumentType == ClauseArgumentTypes::SYNONYM_SYNONYM) {
-            evaluateSynonymSynonym();
-        } else if (argumentType == ClauseArgumentTypes::SYNONYM_WILDCARD) {
-            evaluateSynonymWildcard();
-        } else if (argumentType == ClauseArgumentTypes::WILDCARD_SYNONYM) {
-            evaluateWildcardSynonym();
-        } else if (argumentType == ClauseArgumentTypes::VALUE_WILDCARD) {
-            evaluateValueWildcard();
-        } else if (argumentType == ClauseArgumentTypes::WILDCARD_VALUE) {
-            evaluateWildcardValue();
-        } else if (argumentType == ClauseArgumentTypes::WILDCARD_WILDCARD) {
-            evaluateWildcardWildcard();
-        } else {
-            throw std::exception();
+
+        std::unordered_map<ClauseArgumentTypes, std::function<void(void)>> evalMap {
+                {ClauseArgumentTypes::SYNONYM_SYNONYM, [this](){ evaluateSynonymSynonym(); }},
+                {ClauseArgumentTypes::SYNONYM_VALUE, [this](){ evaluateSynonymValue(); }},
+                {ClauseArgumentTypes::VALUE_SYNONYM, [this](){ evaluateValueSynonym(); }},
+                {ClauseArgumentTypes::SYNONYM_WILDCARD, [this](){ evaluateSynonymWildcard(); }},
+                {ClauseArgumentTypes::WILDCARD_SYNONYM, [this](){ evaluateWildcardSynonym(); }},
+                {ClauseArgumentTypes::VALUE_WILDCARD, [this](){ evaluateValueWildcard(); }},
+                {ClauseArgumentTypes::WILDCARD_VALUE, [this](){ evaluateWildcardValue(); }},
+                {ClauseArgumentTypes::VALUE_VALUE, [this](){ evaluateValueValue(); }},
+                {ClauseArgumentTypes::WILDCARD_WILDCARD, [this](){ evaluateWildcardWildcard(); }}
+        };
+
+        auto it = evalMap.find(argumentType);
+        if (it != evalMap.end()) {
+            it->second();
         }
         optimiseResults();
+
         return clauseResultTable;
     }
 };

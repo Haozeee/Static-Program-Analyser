@@ -5,7 +5,7 @@
 
 class NextTCacheableGraph : public TransitiveCacheableGraph {
  public:
-    explicit NextTCacheableGraph(StoragePointer storage);
+    explicit NextTCacheableGraph(CacheStorage storage);
 
     void setBase() override;
 };

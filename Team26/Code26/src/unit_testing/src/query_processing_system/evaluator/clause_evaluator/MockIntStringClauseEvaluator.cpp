@@ -3,20 +3,16 @@
 MockIntStringClauseEvaluator::MockIntStringClauseEvaluator(Argument left, Argument right)
     : IntStringClauseEvaluator(left, right) {}
 
-std::unordered_map<int, std::unordered_set<std::string>>
-MockIntStringClauseEvaluator::getRelationshipManager() {
-    std::unordered_map<int, std::unordered_set<std::string>> res {
-            {1, {"v1", "v2"}},
-            {3, {"v1"}},
-            {4, {"v4", "v5", "v6"}}
-    };
-    return res;
+StmtEntityMap MockIntStringClauseEvaluator::getRelationshipMap(StmtSet &interestedValues) {
+    return storage->getUsesSMap(interestedValues);
 }
 
-std::unordered_map<std::string, std::unordered_set<int>>
-MockIntStringClauseEvaluator::getOppositeRelationshipManager() {
-    std::unordered_map<std::string , std::unordered_set<int>> res;
-    return res;
+EntityStmtMap MockIntStringClauseEvaluator::getOppositeRelationshipMap(EntitySet &interestedValues) {
+    return storage->getUsesSReverseMap(interestedValues);
+}
+
+bool MockIntStringClauseEvaluator::isEmptyRelation() {
+    return storage->isUsesSEmpty();
 }
 
 std::shared_ptr<ResultTable> MockIntStringClauseEvaluator::getClauseResult() {
