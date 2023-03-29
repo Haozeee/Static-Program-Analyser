@@ -1,0 +1,190 @@
+1 - Affects: stmt, read
+stmt s; read r;
+Select s such that Affects(s, r)
+none
+5000
+2 - Affects: stmt, print
+stmt s; print p;
+Select s such that Affects(s, p)
+none
+5000
+3 - Affects: stmt, assign
+stmt s; assign a;
+Select s such that Affects(s, a)
+2, 5, 9, 10, 11, 13, 16, 21, 22, 25, 43
+5000
+4 - Affects: stmt, call
+stmt s; call c;
+Select s such that Affects(s, c)
+none
+5000
+5 - Affects: stmt, while
+stmt s; while w;
+Select s such that Affects(s, w)
+none
+5000
+6 - Affects: stmt, if
+stmt s; if ifs;
+Select s such that Affects(s, ifs)
+none
+5000
+7 - Affects: stmt, stmt number (valid)
+stmt s;
+Select s such that Affects(s, 13)
+13, 16
+5000
+8 - Affects: stmt, stmt number (none)
+stmt s;
+Select s such that Affects(s, 2)
+none
+5000
+9 - Affects: stmt, stmt (same)
+stmt s;
+Select s such that Affects(s, s)
+9, 10, 13, 16, 22
+5000
+10 - Affects: stmt, _
+stmt s;
+Select s such that Affects(s, _)
+2, 5, 9, 10, 11, 13, 16, 21, 22, 25, 43
+5000
+11 - Affects: _, stmt
+stmt s;
+Select s such that Affects(_, s)
+5, 9, 10, 11, 13, 16, 19, 22, 25, 26, 45, 46
+5000
+12 - Affects: stmt number, stmt (valid)
+stmt s;
+Select s such that Affects(9, s)
+9, 19, 22, 25
+5000
+13 - Affects: stmt, stmt
+stmt s, s1;
+Select <s, s1> such that Affects(s, s1)
+10 10, 10 11, 10 9, 11 19, 11 26, 11 5, 13 13, 13 16, 13 25, 13 26, 16 13, 16 16, 16 25, 16 26, 2 19, 2 22, 2 25, 2 9, 21 25, 22 19, 22 22, 22 25, 22 9, 25 19, 25 26, 25 5, 43 45, 43 46, 5 10, 5 11, 5 9, 9 19, 9 22, 9 25, 9 9
+5000
+14 - Affects: assign, read
+assign a; read r;
+Select a such that Affects(a, r)
+none
+5000
+15 - Affects: assign, print
+assign a; print p;
+Select a such that Affects(a, p)
+none
+5000
+16 - Affects: assign, assign
+assign a;
+Select a such that Affects(a, a)
+9, 10, 13, 16, 22
+5000
+17 - Affects: assign, call
+assign a; call c;
+Select a such that Affects(a, c)
+none
+5000
+18 - Affects: assign, while
+assign a; while w;
+Select a such that Affects(a, w)
+none
+5000
+19 - Affects: assign, if
+assign a; if ifs;
+Select a such that Affects(a, ifs)
+none
+5000
+20 - Affects: assign, stmt number (valid)
+assign a;
+Select a such that Affects(a, 13)
+13, 16
+5000
+21 - Affects: assign, stmt number (none)
+assign a;
+Select a such that Affects(a, 2)
+none
+5000
+22 - Affects: assign, assign (same)
+assign a;
+Select a such that Affects(a, a)
+9, 10, 13, 16, 22
+5000
+23 - Affects: assign, _
+assign a;
+Select a such that Affects(a, _)
+2, 5, 9, 10, 11, 13, 16, 21, 22, 25, 43
+5000
+24 - Affects: _, assign
+assign a;
+Select a such that Affects(_, a)
+5, 9, 10, 11, 13, 16, 19, 22, 25, 26, 45, 46
+5000
+25 - Affects: stmt number, assign (valid)
+assign a;
+Select a such that Affects(9, a)
+9, 19, 22, 25
+5000
+26 - Affects: assign, assign
+assign a, a1;
+Select <a, a1> such that Affects(a, a1)
+10 10, 10 11, 10 9, 11 19, 11 26, 11 5, 13 13, 13 16, 13 25, 13 26, 16 13, 16 16, 16 25, 16 26, 2 19, 2 22, 2 25, 2 9, 21 25, 22 19, 22 22, 22 25, 22 9, 25 19, 25 26, 25 5, 43 45, 43 46, 5 10, 5 11, 5 9, 9 19, 9 22, 9 25, 9 9
+5000
+27 - Affects: stmt number, stmt number (Across Procedures should return false)
+stmt s;
+Select BOOLEAN such that Affects(3, 45)
+FALSE
+5000
+28 - Affects: stmt number, stmt number
+stmt s;
+Select BOOLEAN such that Affects(10, 11)
+TRUE
+5000
+29 - Affects: stmt number, _
+assign a;
+Select BOOLEAN such that Affects(2,_)
+TRUE
+5000
+30 - Affects: stmt number, _
+assign a;
+Select BOOLEAN such that Affects(1,_)
+FALSE
+5000
+31 - Affects: _,stmt number
+assign a;
+Select BOOLEAN such that Affects(_,25)
+TRUE
+5000
+32 - Affects: _,stmt number
+assign a;
+Select BOOLEAN such that Affects(_,32)
+FALSE
+5000
+33 - Affects: _,_
+assign a;
+Select BOOLEAN such that Affects(_,_)
+TRUE
+5000
+34 - Affects: stmt number, assign
+assign a;
+Select BOOLEAN such that Affects(2,a)
+TRUE
+5000
+35 - Affects: stmt number, _
+assign a;
+Select BOOLEAN such that Affects(1,a)
+FALSE
+5000
+36 - Affects: _,stmt number
+assign a;
+Select BOOLEAN such that Affects(a,25)
+TRUE
+5000
+37 - Affects: _,stmt number
+assign a;
+Select BOOLEAN such that Affects(a,32)
+FALSE
+5000
+38 - Affects: stmt number, stmt number (In same procedure)
+stmt s;
+Select BOOLEAN such that Affects(6, 20)
+FALSE
+5000
