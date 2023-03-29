@@ -3,12 +3,14 @@
 CallsClauseEvaluator::CallsClauseEvaluator(Argument left, Argument right)
         : StringStringClauseEvaluator(left, right) {}
 
-std::unordered_map<std::string, std::unordered_set<std::string>>
-CallsClauseEvaluator::getRelationshipManager() {
-    return storage->getCallsPManager()->getAllRelationshipEntries();
+EntityEntityMap CallsClauseEvaluator::getRelationshipMap(EntitySet &interestedValues) {
+    return storage->getCallsMap(interestedValues);
 }
 
-std::unordered_map<std::string, std::unordered_set<std::string>>
-CallsClauseEvaluator::getOppositeRelationshipManager() {
-    return storage->getCallsPManager()->getAllReversedRelationshipEntries();
+EntityEntityMap CallsClauseEvaluator::getOppositeRelationshipMap(EntitySet &interestedValues) {
+    return storage->getCallsReverseMap(interestedValues);
+}
+
+bool CallsClauseEvaluator::isEmptyRelation() {
+    return storage->isCallsEmpty();
 }

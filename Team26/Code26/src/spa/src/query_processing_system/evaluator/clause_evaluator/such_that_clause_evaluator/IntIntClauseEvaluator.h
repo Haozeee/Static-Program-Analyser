@@ -1,25 +1,23 @@
 #pragma once
 #include "SuchThatClauseEvaluator.h"
 #include <memory>
-#include <unordered_set>
-#include <unordered_map>
 #include <string>
 
 class IntIntClauseEvaluator : public SuchThatClauseEvaluator<int, int> {
  protected:
-    IntIntClauseEvaluator(Argument left, Argument right, bool cacheable = false);
+    IntIntClauseEvaluator(Argument left, Argument right);
 
     void evaluateEqualSynonym() override;
 
-    void setLeftArgResult(std::unordered_set<int> result) override;
+    void setLeftArgResult(StmtSet result) override;
 
-    void setRightArgResult(std::unordered_set<int> result) override;
+    void setRightArgResult(StmtSet result) override;
 
-    void setLeftAndRightArgResult(std::unordered_map<int, std::unordered_set<int>> results) override;
+    void setLeftAndRightArgResult(StmtStmtMap results) override;
 
-    std::unordered_set<int> getLeftArgEntities() override;
+    StmtSet getLeftArgEntities() override;
 
-    std::unordered_set<int> getRightArgEntities() override;
+    StmtSet getRightArgEntities() override;
 
     int getLeftArg() override;
 

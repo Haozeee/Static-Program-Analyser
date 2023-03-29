@@ -1,13 +1,13 @@
 #include "AffectsCacheableGraph.h"
 #include <stack>
 
-AffectsCacheableGraph::AffectsCacheableGraph(StoragePointer storage) : CacheableGraph<int, int>(storage) {
-    modifiesMap = storage->getModifiesSManager()->getAllRelationshipEntries();
-    usesMap = storage->getUsesSManager()->getAllRelationshipEntries();
-    callsSMap = storage->getCallsSManager()->getAllRelationshipEntries();
-    assignStatements = storage->getAssignManager()->getAllEntitiesEntries();
-    readStatements = storage->getReadStmtNoManager()->getAllEntitiesEntries();
-    callStatements = storage->getCallStmtNoManager()->getAllEntitiesEntries();
+AffectsCacheableGraph::AffectsCacheableGraph(CacheStorage storage) : CacheableGraph<int, int>(storage) {
+    modifiesMap = StorageUtil::getRelationshipMap(storage->getModifiesSManager());
+    usesMap = StorageUtil::getRelationshipMap(storage->getUsesSManager());
+    callsSMap = StorageUtil::getRelationshipMap(storage->getCallsSManager());
+    assignStatements = StorageUtil::getEntityValues(storage->getAssignManager());
+    readStatements = StorageUtil::getEntityValues(storage->getReadStmtNoManager());
+    callStatements = StorageUtil::getEntityValues(storage->getCallStmtNoManager());
 }
 
 
@@ -50,22 +50,16 @@ void AffectsCacheableGraph::onCacheMiss(int startStatement) {
             neighbours = base.at(node);
         }
         for (auto neighbour : neighbours) {
-            if (assignStatements.count(neighbour)) {
-                if (usesMap.count(neighbour) && usesMap.at(neighbour).count(variableModified)) {
-                    results.insert(neighbour);
-                }
+            if (assignStatements.count(neighbour) && usesMap.count(neighbour) &&
+                    usesMap.at(neighbour).count(variableModified)) {
+                results.insert(neighbour);
             }
-            if (isReadOrAssign(neighbour) && modifiesMap.count(neighbour)) {
-                nodeVariable = modifiesVariable(neighbour);
-                if (variableModified == nodeVariable) {
-                    continue;
-                }
+            if (isReadOrAssign(neighbour) && modifiesMap.count(neighbour) &&
+                    variableModified == modifiesVariable(neighbour)) {
+                continue;
             }
-            if (callStatements.count(neighbour)) {
-                auto procedureCalled = *(callsSMap.at(neighbour).begin());
-                if (storage->getModifiesPManager()->containsMap(procedureCalled, variableModified)) {
-                    continue;
-                }
+            if (callStatements.count(neighbour) && callStatementModifiesVariable(neighbour, variableModified)) {
+                continue;
             }
 
             if (!visited.count(neighbour)) {
@@ -84,10 +78,16 @@ void AffectsCacheableGraph::onCacheMiss(int startStatement) {
     }
 }
 
+bool AffectsCacheableGraph::callStatementModifiesVariable(int callStatement, std::string variableModified) {
+    auto procedureCalled = *(callsSMap.at(callStatement).begin());
+    return StorageUtil::relationContains(storage->getModifiesPManager(), procedureCalled, variableModified);
+}
+
 void AffectsCacheableGraph::buildAll() {
-    std::unordered_set<int> currentItems = Util::getAllKeys(cache);
-    std::unordered_set<int> missingItems = Util::setDifference(assignStatements, currentItems);
+    auto currentItems = Util::getAllKeys(cache);
+    auto missingItems = Util::setDifference(assignStatements, currentItems);
     insertItemsIntoCache(missingItems);
+    fullyBuilt = true;
 }
 
 bool AffectsCacheableGraph::isEmpty() {
@@ -96,9 +96,12 @@ bool AffectsCacheableGraph::isEmpty() {
 }
 
 std::unordered_map<int, std::unordered_set<int>> AffectsCacheableGraph::getReverseCache() {
+    if (!fullyBuilt) {
+        buildAll();
+    }
     return reverseCache;
 }
 
 void AffectsCacheableGraph::setBase() {
-    base = storage->getNextManager()->getAllRelationshipEntries();
+    base = StorageUtil::getRelationshipMap(storage->getNextManager());
 }

@@ -1,5 +1,4 @@
 #include <utility>
-
 #include "PatternClauseEvaluator.h"
 
 PatternClauseEvaluator::PatternClauseEvaluator(Argument patternArg, Argument leftArg, StringExpression rightArg)
@@ -16,8 +15,8 @@ StringExpression PatternClauseEvaluator::getRightArg() {
     return rightArg;
 }
 
-std::shared_ptr<ResultTable> PatternClauseEvaluator::evaluateClause(StoragePointer storage_, CachePointer cache_) {
-    setStorageLocation(storage_, cache_);
+std::shared_ptr<ResultTable> PatternClauseEvaluator::evaluateClause(ProgrammeStore storage_) {
+    setStorageLocation(storage_);
     auto leftArgType = leftArg.getArgumentType();
     if (leftArgType == ArgumentType::SYNONYM) {
         evaluateSynonym();

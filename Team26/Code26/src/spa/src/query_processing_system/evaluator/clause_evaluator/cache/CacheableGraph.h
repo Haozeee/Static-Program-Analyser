@@ -2,9 +2,10 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <memory>
+#include "../RelationResultType.h"
 #include "program_knowledge_base/StorageManager.h"
 
-using StoragePointer = std::shared_ptr<ReadStorage>;
+using CacheStorage = std::shared_ptr<ReadStorage>;
 
 template<typename T, typename U>
 class CacheableGraph {
@@ -19,9 +20,9 @@ class CacheableGraph {
      */
     std::unordered_map<T, std::unordered_set<U>> base;
 
-    StoragePointer storage;
+    CacheStorage storage;
 
-    explicit CacheableGraph(StoragePointer storage) : storage(storage) {}
+    explicit CacheableGraph(CacheStorage storage) : storage(storage) {}
 
     /**
      * In the event of a cache miss, get the data from base and insert into cache.
@@ -59,6 +60,11 @@ class CacheableGraph {
     std::unordered_map<T, std::unordered_set<U>> getCacheData() {
         return cache;
     }
+
+    /**
+     * Build the entire cache.
+     */
+    virtual void buildAll() = 0;
 
     virtual bool isEmpty() = 0;
 };

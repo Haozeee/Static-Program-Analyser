@@ -313,7 +313,7 @@ assign a;
 Select a such that Modifies(a, _) pattern a(_, "q")
 15
 5000
-4 - Uses + Pattern: if,variable and variable,expression
+4 - Modifies + Pattern: if,variable and variable,expression
 if ifs; assign a; variable v;
 Select <ifs, v> such that Modifies(ifs, v) pattern a(v, _"a"_)
 5 a, 5 b, 5 x, 7 x, 17 a, 17 b, 30 a, 30 x, 40 a, 40 b, 40 var, 40 x, 46 b, 56 x
@@ -372,4 +372,104 @@ TRUE
 stmt s; variable v;
 Select s such that Modifies(s, v) with v.varName = "a"
 3, 5, 12, 13, 14, 16, 17, 18, 21, 22, 26, 27, 30, 36, 40, 41, 53
+5000
+1 - Affects + Pattern: assign,stmt number and _,expression
+assign a;
+Select a such that Affects(a, 29) pattern a(_, _"a"_)
+19, 28, 36
+5000
+2 - Affects + Pattern: assign,stmt number and variable,expression
+assign a; variable v;
+Select <a, v.varName> such that Affects(a, 19) pattern a(v, _"x"_)
+14 a
+5000
+3 - Affects + Pattern: assign,assign and _,expression
+assign a, a1;
+Select <a, a1> such that Affects(a, a1) pattern a1(_, _"x + y"_)
+1 2, 1 42, 19 29, 2 42, 26 29, 28 29, 36 29, 4 8, 41 42, 6 42, 8 42
+5000
+4 - Affects + Pattern: _,assign and variable,_
+assign a; variable v;
+Select v such that Affects(_, a) pattern a(v, _)
+a, b, print, var, x, z
+5000
+5 - Affects + Pattern: assign,assign and variable,expression
+assign a, a1; variable v;
+Select <a, v, a1> such that Affects(a, a1) pattern a1(v, _"p + q"_)
+15 x 4
+5000
+6 - Affects + Pattern: assign,assign and _,expression
+assign a, a1;
+Select BOOLEAN such that Affects(a, a1) pattern a(_, _"z"_)
+TRUE
+5000
+7 - Affects + Pattern: assign,assign and _,expression
+assign a, a1;
+Select BOOLEAN such that Affects(a, a1) pattern a1(_, "q")
+FALSE
+5000
+8 - Affects + Pattern: assign,assign and stmt number
+assign a, a1;
+Select BOOLEAN such that Affects(a, a1) with a.stmt# = 3
+FALSE
+5000
+9 - Affects + Pattern: assign,_ and stmt number
+assign a, a1;
+Select a such that Affects(a, a1) with a1.stmt# = 19
+14, 15, 19, 21
+5000
+10 - Affects + With: assign,assign and stmt number
+assign a, a1;
+Select a1 such that Affects(a, a1) with a.stmt# = 4
+6, 8, 12, 14
+5000
+1 - Affects* + Pattern: assign,stmt number and _,expression
+assign a;
+Select a such that Affects*(a, 29) pattern a(_, _"a"_)
+19, 28, 36
+5000
+2 - Affects* + Pattern: assign,stmt number and variable,expression
+assign a; variable v;
+Select <a, v.varName> such that Affects*(a, 19) pattern a(v, _"x"_)
+14 a
+5000
+3 - Affects* + Pattern: assign,assign and _,expression
+assign a, a1;
+Select <a, a1> such that Affects*(a, a1) pattern a1(_, _"x + y"_)
+1 2, 1 42, 19 29, 2 42, 26 29, 28 29, 36 29, 4 8, 41 42, 6 42, 8 42, 14 29, 14 42, 15 29, 15 42, 15 8, 19 42, 21 29, 21 42, 26 42, 36 42, 4 29, 4 42
+5000
+4 - Affects* + Pattern: _,assign and variable,_
+assign a; variable v;
+Select v such that Affects*(_, a) pattern a(v, _)
+a, b, print, var, x, z
+5000
+5 - Affects* + Pattern: assign,assign and variable,expression
+assign a, a1; variable v;
+Select <a, v, a1> such that Affects*(a, a1) pattern a1(v, _"p + q"_)
+15 x 4
+5000
+6 - Affects* + Pattern: assign,assign and _,expression
+assign a, a1;
+Select BOOLEAN such that Affects*(a, a1) pattern a(_, _"z"_)
+TRUE
+5000
+7 - Affects* + Pattern: assign,assign and _,expression
+assign a, a1;
+Select BOOLEAN such that Affects*(a, a1) pattern a1(_, "q")
+FALSE
+5000
+8 - Affects* + Pattern: assign,assign and stmt number
+assign a, a1;
+Select BOOLEAN such that Affects*(a, a1) with a.stmt# = 3
+FALSE
+5000
+9 - Affects* + Pattern: assign,_ and stmt number
+assign a, a1;
+Select a such that Affects*(a, a1) with a1.stmt# = 19
+4, 14, 15, 19, 21
+5000
+10 - Affects* + With: assign,assign and stmt number
+assign a, a1;
+Select a1 such that Affects*(a, a1) with a.stmt# = 4
+6, 8, 12, 14, 18, 19, 26, 28, 29, 36, 41, 42, 47, 53
 5000

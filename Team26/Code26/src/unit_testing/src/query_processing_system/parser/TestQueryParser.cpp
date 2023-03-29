@@ -87,7 +87,7 @@ TEST_CASE("Basic Declaration") {
     REQUIRE(query->getDeclarations()[11]->getSynonym() == Synonym("w1"));
     REQUIRE(toString(query->getDeclarations()[11]->getDesignEntity()) == "while");
 
-    for (auto const& item: *query->getSelectClause()->getSelectClauseItems()) {
+    for (auto const& item: *query->getSelectClauseItems()) {
         REQUIRE(SelectClause::getSynonym(item) == "v");
     }
     delete query;
@@ -1017,10 +1017,10 @@ TEST_CASE("With Clause") {
         QueryParser parser = QueryParser(tokens, query);
         parser.parse();
 
-        auto firstSyn = *std::get<std::shared_ptr<Synonym>>(query->getSelectClause()->getSelectClauseItems()->front());
+        auto firstSyn = *std::get<std::shared_ptr<Synonym>>(query->getSelectClauseItems()->front());
         REQUIRE(firstSyn.getIdent() == "a");
 
-        auto secondSyn = *std::get<std::shared_ptr<Synonym>>(query->getSelectClause()->getSelectClauseItems()->back());
+        auto secondSyn = *std::get<std::shared_ptr<Synonym>>(query->getSelectClauseItems()->back());
         REQUIRE(secondSyn.getIdent() == "s");
 
         AttributeReference leftAttrRef = *new AttributeReference(DesignEntity::ASSIGN, "a", "stmt#");
@@ -1260,10 +1260,10 @@ TEST_CASE("Multi Clause") {
         QueryParser parser = QueryParser(tokens, query);
         parser.parse();
 
-        auto firstSyn = *std::get<std::shared_ptr<Synonym>>(query->getSelectClause()->getSelectClauseItems()->front());
+        auto firstSyn = *std::get<std::shared_ptr<Synonym>>(query->getSelectClauseItems()->front());
         REQUIRE(firstSyn.getIdent() == "w");
 
-        auto secondSyn = *std::get<std::shared_ptr<Synonym>>(query->getSelectClause()->getSelectClauseItems()->back());
+        auto secondSyn = *std::get<std::shared_ptr<Synonym>>(query->getSelectClauseItems()->back());
         REQUIRE(secondSyn.getIdent() == "s");
 
         auto firstSuchThatClause = query->getSuchThatClauses().front();
@@ -1347,7 +1347,7 @@ TEST_CASE("Edge Case: BOOLEAN in Attribute Reference") {
     QueryParser parser = QueryParser(tokens, query);
     parser.parse();
 
-    for (auto const& item: *query->getSelectClause()->getSelectClauseItems()) {
+    for (auto const& item: *query->getSelectClauseItems()) {
         REQUIRE(SelectClause::getSynonym(item) == "BOOLEAN");
     }
 

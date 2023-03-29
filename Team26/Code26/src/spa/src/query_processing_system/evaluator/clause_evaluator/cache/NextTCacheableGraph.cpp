@@ -1,7 +1,7 @@
 #include "NextTCacheableGraph.h"
 
-NextTCacheableGraph::NextTCacheableGraph(StoragePointer storage) : TransitiveCacheableGraph(storage) {}
+NextTCacheableGraph::NextTCacheableGraph(CacheStorage storage) : TransitiveCacheableGraph(storage) {}
 
 void NextTCacheableGraph::setBase() {
-    base = storage->getNextManager()->getAllRelationshipEntries();
+    base = StorageUtil::getRelationshipMap(storage->getNextManager());
 }

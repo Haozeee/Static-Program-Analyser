@@ -19,7 +19,11 @@ class AffectsCacheableGraph : public CacheableGraph<int, int> {
 
     std::unordered_set<int> callStatements;
 
-    std::unordered_map<int, std::unordered_set<int>> reverseCache;
+    StmtStmtMap reverseCache;
+
+    bool fullyBuilt = false;
+
+    bool callStatementModifiesVariable(int callStatement, std::string variableModified);
 
     bool isReadOrAssign(int stmt);
 
@@ -33,7 +37,7 @@ class AffectsCacheableGraph : public CacheableGraph<int, int> {
     void onCacheMiss(int query) override;
 
  public:
-    explicit AffectsCacheableGraph(StoragePointer storage);
+    explicit AffectsCacheableGraph(CacheStorage storage);
 
     void setBase() override;
 
@@ -42,7 +46,7 @@ class AffectsCacheableGraph : public CacheableGraph<int, int> {
     /**
      * Complete building the entire graph.
      */
-    void buildAll();
+    void buildAll() override;
 
-    std::unordered_map<int, std::unordered_set<int>> getReverseCache();
+    StmtStmtMap getReverseCache();
 };
