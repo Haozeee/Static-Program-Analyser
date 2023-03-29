@@ -3,7 +3,7 @@
 #include "MockIntStringClauseEvaluator.h"
 #include "MockStorageReader.h"
 
-TEST_CASE("Test Number String") {
+TEST_CASE("Test Number String - int, string") {
     // Tests relation with parameter (1, "a")
     std::shared_ptr<MockStorageReader> testStorage = std::make_shared<MockStorageReader>();
 
@@ -28,7 +28,7 @@ TEST_CASE("Test Number String") {
     REQUIRE(res->hasNoResults());
 }
 
-TEST_CASE("Test Number Wildcard") {
+TEST_CASE("Test Number Wildcard - int, string") {
     // Tests relation with parameter (1, _)
     std::shared_ptr<MockStorageReader> testStorage = std::make_shared<MockStorageReader>();
 
@@ -53,7 +53,7 @@ TEST_CASE("Test Number Wildcard") {
     REQUIRE(res->hasNoResults());
 }
 
-TEST_CASE("Test Wildcard String") {
+TEST_CASE("Test Wildcard String - int, string") {
     // Tests relation with parameter (_, "a")
     std::shared_ptr<MockStorageReader> testStorage = std::make_shared<MockStorageReader>();
 
@@ -78,7 +78,7 @@ TEST_CASE("Test Wildcard String") {
     REQUIRE(res->hasNoResults());
 }
 
-TEST_CASE("Test Wildcard Synonym") {
+TEST_CASE("Test Wildcard Synonym - int, string") {
     // Tests relation with parameter (_, v)
     std::shared_ptr<MockStorageReader> testStorage = std::make_shared<MockStorageReader>();
 
@@ -96,12 +96,12 @@ TEST_CASE("Test Wildcard Synonym") {
     REQUIRE(res->getColumnValues("v") == expectedResults);
 }
 
-TEST_CASE("Test Synonym Wildcard") {
+TEST_CASE("Test Synonym Wildcard - int, string") {
     // Tests relation with parameter (s, _)
     std::shared_ptr<MockStorageReader> testStorage = std::make_shared<MockStorageReader>();
 
     // Set up
-    Argument leftArg = Argument(ArgumentType::SYNONYM, "s", DesignEntity::READ);
+    Argument leftArg = Argument(ArgumentType::SYNONYM, "s", DesignEntity::STMT);
     Argument rightArg = Argument(ArgumentType::WILDCARD, "_", DesignEntity::NONE);
     auto testEvaluator = MockIntStringClauseEvaluator(leftArg, rightArg);
 
@@ -114,7 +114,7 @@ TEST_CASE("Test Synonym Wildcard") {
     REQUIRE(res->getColumnValues("s") == expectedResults);
 }
 
-TEST_CASE("Test Value Synonym") {
+TEST_CASE("Test Value Synonym - int, string") {
     // Tests relation with parameter (1, v)
     std::shared_ptr<MockStorageReader> testStorage = std::make_shared<MockStorageReader>();
 
@@ -139,7 +139,7 @@ TEST_CASE("Test Value Synonym") {
     REQUIRE(res->hasNoResults());
 }
 
-TEST_CASE("Test Synonym Value") {
+TEST_CASE("Test Synonym Value - int, string") {
     // Tests relation with parameter (s, "a")
     std::shared_ptr<MockStorageReader> testStorage = std::make_shared<MockStorageReader>();
 
@@ -162,4 +162,24 @@ TEST_CASE("Test Synonym Value") {
     testEvaluator.evaluateClause(testStorage);
     res = testEvaluator.getClauseResult();
     REQUIRE(res->hasNoResults());
+}
+
+TEST_CASE("Test Synonym Synonym - int, string") {
+    // Tests relation with parameter (pn, v)
+    std::shared_ptr<MockStorageReader> testStorage = std::make_shared<MockStorageReader>();
+
+    // Set up
+    Argument leftArg = Argument(ArgumentType::SYNONYM, "pn", DesignEntity::PRINT);
+    Argument rightArg = Argument(ArgumentType::SYNONYM, "v", DesignEntity::VARIABLE);
+    auto testEvaluator = MockIntStringClauseEvaluator(leftArg, rightArg);
+
+    // Evaluation Results
+    std::shared_ptr<ResultTable> res;
+
+    testEvaluator.evaluateClause(testStorage);
+    res = testEvaluator.getClauseResult();
+    std::unordered_set<std::string> expectedResultsPrint {"1", "2", "3"};
+    std::unordered_set<std::string> expectedResultsVar {"a", "b", "c"};
+    REQUIRE(res->getColumnValues("pn") == expectedResultsPrint);
+    REQUIRE(res->getColumnValues("v") == expectedResultsVar);
 }
