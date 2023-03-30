@@ -137,3 +137,28 @@ TEST_CASE("Test Synonym String - string, string") {
     res = testEvaluator.getClauseResult();
     REQUIRE(res->hasNoResults());
 }
+
+TEST_CASE("Test Wildcard String - string, string") {
+    // Tests relation with parameter (_, "c")
+    std::shared_ptr<MockStorageReader> testStorage = std::make_shared<MockStorageReader>();
+
+    // Set up
+    Argument leftArg = Argument(ArgumentType::WILDCARD, "_", DesignEntity::NONE);
+    Argument rightArg = Argument(ArgumentType::CHARACTERSTRING, "c", DesignEntity::NONE);
+    auto testEvaluator = MockStringStringClauseEvaluator(leftArg, rightArg);
+
+    // Evaluation Results
+    std::shared_ptr<ResultTable> res;
+
+    // Has results
+    testEvaluator.evaluateClause(testStorage);
+    res = testEvaluator.getClauseResult();
+    REQUIRE_FALSE(res->hasNoResults());
+
+    // Has no results
+    rightArg = Argument(ArgumentType::CHARACTERSTRING, "fe", DesignEntity::NONE);
+    testEvaluator = MockStringStringClauseEvaluator(leftArg, rightArg);
+    testEvaluator.evaluateClause(testStorage);
+    res = testEvaluator.getClauseResult();
+    REQUIRE(res->hasNoResults());
+}
