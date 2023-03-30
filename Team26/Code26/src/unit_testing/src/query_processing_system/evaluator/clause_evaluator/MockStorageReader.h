@@ -1,6 +1,6 @@
 #pragma once
-#include "query_processing_system/evaluator/clause_evaluator/ISourceReader.h"
 #include <memory>
+#include "query_processing_system/evaluator/clause_evaluator/ISourceReader.h"
 
 class MockStorageReader : public ISourceReader {
  private:
