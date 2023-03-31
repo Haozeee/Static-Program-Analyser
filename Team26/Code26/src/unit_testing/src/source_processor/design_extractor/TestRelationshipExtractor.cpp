@@ -5,7 +5,7 @@
 #include "source_processor/storage_writer/interface/IStore.h"
 
 TEST_CASE("Test Relationship Extractor") {
-    SECTION("Single Procedure") {
+    SECTION("1 Procedure") {
         const std::string procedureName = "procedure";
         const std::string readNodeName = "read";
         const std::string printNodeName = "print";
@@ -128,8 +128,6 @@ TEST_CASE("Test Relationship Extractor") {
         relationshipStore->procedureStore.insert(callNodeName);
         relationshipStore->procedureStore.insert(firstProcedureName);
         relationshipExtractor->extractProgram(programNode);
-
-
     }
 
     SECTION("3 Procedure with Call") {
@@ -191,6 +189,15 @@ TEST_CASE("Test Relationship Extractor") {
     }
 
     SECTION("2 Procedure with Call including If and While") {
+        /**
+         * procedure a { call callNode1; }
+         * procedure callNode1 { if (...)
+         * then { read IfThenRead; }
+         * else { read IfElseRead; } }
+         * while (...) {
+         * read WhileRead; }
+         * **/
+
         std::shared_ptr<MockRelationshipStore> relationshipStore = std::make_shared<MockRelationshipStore>();
 
         std::unique_ptr<RelationshipExtractor> relationshipExtractor = std::make_unique<RelationshipExtractor>
@@ -198,24 +205,12 @@ TEST_CASE("Test Relationship Extractor") {
         int nodeIndex = 0;
         const std::string  firstProcedureName = "a";
         const std::string callNodeName = "callNode1";
-        const std::string printNodeName = "print";
-
-        /**
-         * procedure a { call callNode1 }
-         * procedure callNode1 { if (...)
-         * then { read IfThenRead }
-         * else { read IfElseRead } }
-         * while (...) {
-         * read WhileRead}
-         *
-         * **/
 
         std::shared_ptr<CallNode> callNode = std::make_shared<CallNode>(nodeIndex++, callNodeName);
 
         auto ifNode = TestExtractorUtil::makeSimpleIfNode(nodeIndex);
         nodeIndex = nodeIndex + 3;
         auto whileNode = TestExtractorUtil::makeSimpleWhileNode(nodeIndex);
-        nodeIndex = nodeIndex + 2;
 
         std::vector<std::shared_ptr<StmtNode>> stmtList1;
         stmtList1.emplace_back(callNode);
@@ -291,5 +286,130 @@ TEST_CASE("Test Relationship Extractor") {
         relationshipExtractor->extractProgram(programNode);
     }
 
-    
+    SECTION("2 Procedure with Nested While Call") {
+        /**
+         * procedure a { call a; } // 1
+         * procedure callNode1 { while (a > 1) { // 2
+         *   read a; // 3
+         *   print l; // 4
+         *   while (a > 2) { // 5
+         *     print c; // 6
+         *     read q; // 7
+         *     call callT; // 8 } } }
+         * procedure callT { while (a > 1) {
+         * read WhileRead; } }
+         * **/
+
+        std::shared_ptr<MockRelationshipStore> relationshipStore = std::make_shared<MockRelationshipStore>();
+        std::unique_ptr<RelationshipExtractor> relationshipExtractor = std::make_unique<RelationshipExtractor>(relationshipStore);
+
+        int nodeIndex = 0;
+        const std::string  firstProcedureName = "a";
+        const std::string callNodeName = "callNode1";
+        const std::string callNodeName3 = "callT";
+
+        // First Procedure
+        std::shared_ptr<CallNode> callNode = std::make_shared<CallNode>(nodeIndex++, callNodeName);
+        std::vector<std::shared_ptr<StmtNode>> stmtList1;
+        stmtList1.emplace_back(callNode);
+        std::shared_ptr<StmtListNode> stmtListNode1 = std::make_shared<StmtListNode>(stmtList1);
+        std::shared_ptr<ProcedureNode> procedureNode1 = std::make_shared<ProcedureNode>(firstProcedureName,stmtListNode1);
+
+        // Second Procedure
+        std::shared_ptr<WhileNode> whileNode = TestExtractorUtil::makeSimpleNestedWhileNode(nodeIndex);
+        std::vector<std::shared_ptr<StmtNode>> stmtList2;
+        stmtList2.emplace_back(whileNode);
+        std::shared_ptr<StmtListNode> stmtListNode2 = std::make_shared<StmtListNode>(stmtList2);
+        std::shared_ptr<ProcedureNode> procedureNode2 = std::make_shared<ProcedureNode>(callNodeName,stmtListNode2);
+
+        // Third Procedure
+        auto whileNode3 = TestExtractorUtil::makeSimpleWhileNode(nodeIndex);
+        std::vector<std::shared_ptr<StmtNode>> stmtList3;
+        stmtList3.emplace_back(whileNode3);
+        std::shared_ptr<StmtListNode> stmtListNode3 = std::make_shared<StmtListNode>(stmtList3);
+        std::shared_ptr<ProcedureNode> procedureNode3 = std::make_shared<ProcedureNode>(callNodeName3,
+                                                                                        stmtListNode3);
+        // Program
+        std::vector<std::shared_ptr<ProcedureNode>> procedureList;
+        procedureList.emplace_back(procedureNode1);
+        procedureList.emplace_back(procedureNode2);
+        procedureList.emplace_back(procedureNode3);
+        std::shared_ptr<ProgramNode> programNode = std::make_shared<ProgramNode>(procedureList);
+
+        // EntityStore Setup
+        relationshipStore->procedureStore.insert(callNodeName);
+        relationshipStore->procedureStore.insert(firstProcedureName);
+        relationshipStore->procedureStore.insert(callNodeName3);
+
+        // Extraction
+        relationshipExtractor->extractProgram(programNode);
+        auto x = relationshipStore;
+
+        REQUIRE(relationshipStore->findFollows(3,4));
+        REQUIRE(relationshipStore->findFollows(4,5));
+        REQUIRE(relationshipStore->findFollows(6,7));
+        REQUIRE(relationshipStore->findFollows(7,8));
+
+        REQUIRE(relationshipStore->findParents(5,6));
+        REQUIRE(relationshipStore->findParents(5,7));
+        REQUIRE(relationshipStore->findParents(5,8));
+
+        REQUIRE(relationshipStore->findParents(2,3));
+        REQUIRE(relationshipStore->findParents(2,4));
+        REQUIRE(relationshipStore->findParents(2,5));
+
+        REQUIRE(relationshipStore->findParents(8,9));
+
+//        REQUIRE(relationshipStore->findUseS(2,"print"));
+//        REQUIRE(relationshipStore->findUseS(9,"a"));
+//
+//        REQUIRE(relationshipStore->findModifiesS(1,"read"));
+
+
+    }
+
+    SECTION("Call Non Existent") {
+        std::shared_ptr<MockRelationshipStore> relationshipStore = std::make_shared<MockRelationshipStore>();
+        std::unique_ptr<RelationshipExtractor> relationshipExtractor = std::make_unique<RelationshipExtractor>
+                (relationshipStore);
+
+        int nodeIndex = 0;
+        const std::string  firstProcedureName = "a";
+        const std::string callNodeName = "callNode1";
+        std::shared_ptr<CallNode> callNode = std::make_shared<CallNode>(nodeIndex++, callNodeName);
+
+        std::vector<std::shared_ptr<StmtNode>> stmtList1;
+        stmtList1.emplace_back(callNode);
+        std::shared_ptr<StmtListNode> stmtListNode1 = std::make_shared<StmtListNode>(stmtList1);
+
+        std::shared_ptr<ProcedureNode> procedureNode1 =
+                std::make_shared<ProcedureNode>(firstProcedureName, stmtListNode1);
+        std::vector<std::shared_ptr<ProcedureNode>> procedureList;
+        procedureList.emplace_back(procedureNode1);
+        std::shared_ptr<ProgramNode> programNode = std::make_shared<ProgramNode>(procedureList);
+        relationshipStore->procedureStore.insert(firstProcedureName);
+        REQUIRE_THROWS(relationshipExtractor->extractProgram(programNode));
+    }
+
+    SECTION("Self-Call") {
+        std::shared_ptr<MockRelationshipStore> relationshipStore = std::make_shared<MockRelationshipStore>();
+        std::unique_ptr<RelationshipExtractor> relationshipExtractor = std::make_unique<RelationshipExtractor>
+                (relationshipStore);
+
+        int nodeIndex = 0;
+        const std::string callNodeName = "callNode1";
+        std::shared_ptr<CallNode> callNode = std::make_shared<CallNode>(nodeIndex++, callNodeName);
+
+        std::vector<std::shared_ptr<StmtNode>> stmtList1;
+        stmtList1.emplace_back(callNode);
+        std::shared_ptr<StmtListNode> stmtListNode1 = std::make_shared<StmtListNode>(stmtList1);
+
+        std::shared_ptr<ProcedureNode> procedureNode1 =
+                std::make_shared<ProcedureNode>(callNodeName, stmtListNode1);
+        std::vector<std::shared_ptr<ProcedureNode>> procedureList;
+        procedureList.emplace_back(procedureNode1);
+        std::shared_ptr<ProgramNode> programNode = std::make_shared<ProgramNode>(procedureList);
+        relationshipStore->procedureStore.insert(callNodeName);
+        REQUIRE_THROWS(relationshipExtractor->extractProgram(programNode));
+    }
 }

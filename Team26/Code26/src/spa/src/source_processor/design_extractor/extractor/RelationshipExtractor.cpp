@@ -50,7 +50,6 @@ void RelationshipExtractor::postProgramExtractionLink() {
     }
 }
 
-
 void RelationshipExtractor::extractProcedure(const std::shared_ptr<ProcedureNode>& node) {
     parentIndexStack.clear();
     statementStack.clear();
