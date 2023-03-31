@@ -239,7 +239,6 @@ class MockRelationshipStore : public IRelationshipStore {
         auto curr = callsTStore.find(x);
         return curr != callsTStore.end() && curr->second.find(y) != curr->second.end();
     }
-
 };
 
 class MockPatternStore : public IPatternStore {

@@ -65,7 +65,7 @@ class TestExtractorUtil {
          *
          * **/
         int start = stmtNumber + 1;
-        stmtNumber = stmtNumber + 7;
+        stmtNumber = stmtNumber + 8;
 
         // INNER WHILE
         std::unordered_set<std::string> variables2 { "a" };
