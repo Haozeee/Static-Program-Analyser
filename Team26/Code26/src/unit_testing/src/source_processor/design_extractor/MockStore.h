@@ -185,9 +185,24 @@ class MockRelationshipStore : public IRelationshipStore {
         return curr != followsStore.end() && curr->second.find(y) != curr->second.end();
     }
 
+    bool findFollowsT(int x, int y) {
+        auto curr = followsTStore.find(x);
+        return curr != followsTStore.end() && curr->second.find(y) != curr->second.end();
+    }
+
     bool findParents(int x, int y) {
         auto curr = parentsStore.find(x);
         return curr != parentsStore.end() && curr->second.find(y) != curr->second.end();
+    }
+
+    bool findParentsT(int x, int y) {
+        auto curr = parentsTStore.find(x);
+        return curr != parentsTStore.end() && curr->second.find(y) != curr->second.end();
+    }
+
+    bool findNext(int x, int y) {
+        auto curr = nextStore.find(x);
+        return curr != nextStore.end() && curr->second.find(y) != curr->second.end();
     }
 
     bool findUseS(int x, std::string y) {
@@ -195,10 +210,36 @@ class MockRelationshipStore : public IRelationshipStore {
         return curr != usesSStore.end() && curr->second.find(y) != curr->second.end();
     }
 
+    bool findUseP(std::string x, std::string y) {
+        auto curr = usesPStore.find(x);
+        return curr != usesPStore.end() && curr->second.find(y) != curr->second.end();
+    }
+
     bool findModifiesS(int x, std::string y) {
         auto curr = modifiesSStore.find(x);
         return curr != modifiesSStore.end() && curr->second.find(y) != curr->second.end();
     }
+
+    bool findModifiesP(std::string x, std::string y) {
+        auto curr = modifiesPStore.find(x);
+        return curr != modifiesPStore.end() && curr->second.find(y) != curr->second.end();
+    }
+
+    bool findCallsS(int x, std::string y) {
+        auto curr = callsSStore.find(x);
+        return curr != callsSStore.end() && curr->second.find(y) != curr->second.end();
+    }
+
+    bool findCallsP(std::string x, std::string y) {
+        auto curr = callsPStore.find(x);
+        return curr != callsPStore.end() && curr->second.find(y) != curr->second.end();
+    }
+
+    bool findCallsT(std::string x, std::string y) {
+        auto curr = callsTStore.find(x);
+        return curr != callsTStore.end() && curr->second.find(y) != curr->second.end();
+    }
+
 };
 
 class MockPatternStore : public IPatternStore {
