@@ -5,12 +5,11 @@ QueryValidator::QueryValidator(Query* query) : query(query) {}
 void QueryValidator::validateSynonymInSelectClauseWasDeclared() {
     std::unordered_set<std::string> declarationSynonyms = getDeclarationSynonyms();
 
-    auto selectClauseItem = query->getSelectClause();
-    if (selectClauseItem->getSelectClauseReturnType() == SelectClauseReturnType::BOOLEAN) {
+    if (query->isBooleanQuery()) {
         return;
     }
 
-    auto selectClauseItems = query->getSelectClause()->getSelectClauseItems();
+    auto selectClauseItems = query->getSelectClauseItems();
     std::unordered_set<std::string> selectClauseSynonyms;
     for (auto item : *selectClauseItems) {
         if (std::holds_alternative<std::shared_ptr<Synonym>>(item)) {

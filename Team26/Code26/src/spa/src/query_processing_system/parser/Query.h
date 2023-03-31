@@ -34,7 +34,7 @@ class Query {
 
     DesignEntity getSynonymDesignEntity(std::string string);
 
-    std::shared_ptr<SelectClause> getSelectClause();
+    std::shared_ptr<std::vector<SelectClauseItem>> getSelectClauseItems();
 
     void setSelectClause(std::shared_ptr<SelectClause> selectClause);
 
@@ -47,6 +47,8 @@ class Query {
     std::vector<WithClause*> getWithClause();
 
     std::vector<Clause*> getAllClauses();
+
+    bool isBooleanQuery();
 
     bool containsSynonymInDeclaration(std::string);
 

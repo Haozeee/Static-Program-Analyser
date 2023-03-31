@@ -16,9 +16,8 @@ Query::~Query() {
     }
 }
 
-/* Select Clause */
-std::shared_ptr<SelectClause> Query::getSelectClause() {
-    return selectClause;
+std::shared_ptr<std::vector<SelectClauseItem>> Query::getSelectClauseItems() {
+    return selectClause->getSelectClauseItems();
 }
 
 void Query::setSelectClause(std::shared_ptr<SelectClause> selectClause_) {
@@ -85,6 +84,10 @@ DesignEntity Query::getSynonymDesignEntity(std::string string) {
     } else {
         throw SemanticException(QueryValidatorUndeclaredSuchThatClauseArgument + string);
     }
+}
+
+bool Query::isBooleanQuery() {
+    return selectClause->getSelectClauseReturnType() == SelectClauseReturnType::BOOLEAN;
 }
 
 bool Query::operator==(const Query &other) const {

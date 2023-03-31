@@ -1,9 +1,7 @@
 #pragma once
-
 #include <memory>
 #include <variant>
 #include "query_processing_system/evaluator/clause_evaluator/ClauseEvaluator.h"
-#include "query_processing_system/evaluator/PkbUtil.h"
 #include "query_processing_system/parser/Argument.h"
 #include "query_processing_system/parser/StringExpression.h"
 
@@ -30,5 +28,5 @@ class PatternClauseEvaluator : public ClauseEvaluator {
 
     StringExpression getRightArg();
 
-    std::shared_ptr<ResultTable> evaluateClause(StoragePointer storage, CachePointer cache) override;
+    std::shared_ptr<ResultTable> evaluateClause(ProgrammeStore storage) override;
 };

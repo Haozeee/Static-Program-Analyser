@@ -1193,3 +1193,68 @@ if ifs;
 Select BOOLEAN such that pattern ifs(_, j,k)
 SyntaxError
 5000
+240 - Affects: invalid,stmt number
+stmt s; variable v;
+Select s such that Affects(v, 1)
+SemanticError
+5000
+241 - Affects: invalid,stmt number
+stmt s; constant c;
+Select s such that Affects(c, 2)
+SemanticError
+5000
+242 - Affects: invalid,stmt number
+stmt s; procedure p;
+Select s such that Affects(p, 2)
+SemanticError
+5000
+243 - Affects: stmt number,invalid
+stmt s; variable v;
+Select s such that Affects(1, v)
+SemanticError
+5000
+244 - Affects: stmt number,invalid
+stmt s; constant c;
+Select s such that Affects(2, c)
+SemanticError
+5000
+245 - Affects: stmt number,invalid
+stmt s; procedure p;
+Select s such that Affects(1, p)
+SemanticError
+5000
+246 - Affects*: invalid,stmt number
+stmt s; variable v;
+Select s such that Affects(v, 1)
+SemanticError
+5000
+247 - Affects*: invalid,stmt number
+stmt s; constant c;
+Select s such that Affects(c, 2)
+SemanticError
+5000
+248 - Affects*: invalid,stmt number
+stmt s; procedure p;
+Select s such that Affects(p, 2)
+SemanticError
+5000
+249 - Affects*: stmt number,invalid
+stmt s; variable v;
+Select s such that Affects(1, v)
+SemanticError
+5000
+250 - Affects*: stmt number,invalid
+stmt s; constant c;
+Select s such that Affects(2, c)
+SemanticError
+5000
+251 - Affects*: stmt number,invalid
+stmt s; procedure p;
+Select s such that Affects(1, p)
+SemanticError
+5000
+252 - Same declaration
+stmt s; stmt s;
+Select s such that Affects(1, p)
+SemanticError
+5000

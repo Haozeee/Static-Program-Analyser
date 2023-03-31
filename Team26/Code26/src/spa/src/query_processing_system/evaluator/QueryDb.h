@@ -7,16 +7,15 @@
 #include <vector>
 #include <utility>
 #include "ResultTable.h"
-#include "AttributeReferenceMap.h"
 #include "UnionFind.h"
 #include "query_processing_system/parser/SelectClause.h"
-#include "program_knowledge_base/StorageUtil.h"
-#include "program_knowledge_base/StorageManager.h"
+#include "query_processing_system/evaluator/clause_evaluator/StorageReader.h"
+#include "AttributeReferenceMap.h"
 
 using ResultGroups = std::unordered_map<std::string, std::deque<std::shared_ptr<ResultTable>>>;
 
 /**
- * Stores the results from evaluating each claues.
+ * Stores the results from evaluating each clause.
  */
 class QueryDb {
  private:
@@ -33,7 +32,7 @@ class QueryDb {
      */
     std::deque<std::shared_ptr<ResultTable>> results;
 
-    std::shared_ptr<ReadStorage> storage;
+    std::shared_ptr<ISourceReader> storage;
 
     /**
      * A disjoint set data structure to store the different groups as part of optimisation.
@@ -69,11 +68,6 @@ class QueryDb {
     std::vector<std::string> getInterestedColumns();
 
     /**
-     * After evaluating the clauses, some of the selected values may not appear as a column in the results.
-     */
-    void fillMissingTables();
-
-    /**
      * Sort the list of results tables such that the table with the least amount of rows come first.
      * This makes joining the table quicker.
      */
@@ -92,7 +86,7 @@ class QueryDb {
     std::vector<std::shared_ptr<ResultTable>> evaluateGroups();
 
  public:
-    explicit QueryDb(std::shared_ptr<ReadStorage> storage);
+    explicit QueryDb(std::shared_ptr<ISourceReader> storage);
 
     /**
      * Add a new result.

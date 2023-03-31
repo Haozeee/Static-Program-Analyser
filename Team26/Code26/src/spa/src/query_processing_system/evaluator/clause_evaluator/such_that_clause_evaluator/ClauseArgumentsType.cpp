@@ -3,6 +3,7 @@
 bool isValueArgumentType(ArgumentType arg) {
     return arg == ArgumentType::CHARACTERSTRING || arg == ArgumentType::NUMBER;
 }
+
 ClauseArgumentTypes getClauseArgumentType(ArgumentType leftArg, ArgumentType rightArg) {
     if (isValueArgumentType(leftArg) && isValueArgumentType(rightArg)) {
         return ClauseArgumentTypes::VALUE_VALUE;
@@ -26,3 +27,4 @@ ClauseArgumentTypes getClauseArgumentType(ArgumentType leftArg, ArgumentType rig
         return ClauseArgumentTypes::NONE;
     }
 }
+
