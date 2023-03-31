@@ -18,7 +18,8 @@ struct VectorHash {
         std::hash<std::string> hasher;
         size_t seed = v.size();
         for (auto i : v) {
-            // You can read more about why these numbers are used in the link in the function description.
+            // You can read more about why these numbers are chosen with the link below
+            // https://stackoverflow.com/questions/5889238/why-is-xor-the-default-way-to-combine-hashes
             seed ^= hasher(i) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
         }
         return seed;
