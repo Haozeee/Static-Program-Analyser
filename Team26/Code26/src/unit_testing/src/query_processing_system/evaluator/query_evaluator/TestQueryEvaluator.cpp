@@ -177,7 +177,7 @@ TEST_CASE("Select SYNONYM: int int, (1, s)") {
     auto selectClauses = std::make_shared<SelectClause>(selectClauseItems, SelectClauseReturnType::SYNONYM);
     query->setSelectClause(selectClauses);
 
-    Argument left = Argument(ArgumentType::CHARACTERSTRING, "1", DesignEntity::NONE);
+    Argument left = Argument(ArgumentType::NUMBER, "1", DesignEntity::NONE);
     Argument right = Argument(ArgumentType::SYNONYM, "s", DesignEntity::STMT);
     auto suchThatClause = MockIntIntClause(left, right);
     query->addSuchThatClause(&suchThatClause);
@@ -526,7 +526,7 @@ TEST_CASE("Select BOOLEAN: int int, TRUE") {
     auto selectClause = std::make_shared<SelectClause>(SelectClauseReturnType::BOOLEAN);
     query->setSelectClause(selectClause);
 
-    Argument left = Argument(ArgumentType::CHARACTERSTRING, "1", DesignEntity::NONE);
+    Argument left = Argument(ArgumentType::NUMBER, "1", DesignEntity::NONE);
     Argument right = Argument(ArgumentType::SYNONYM, "s", DesignEntity::STMT);
     auto suchThatClause = MockIntIntClause(left, right);
     query->addSuchThatClause(&suchThatClause);
@@ -555,7 +555,7 @@ TEST_CASE("Select BOOLEAN: int int, FALSE") {
     auto selectClause = std::make_shared<SelectClause>(SelectClauseReturnType::BOOLEAN);
     query->setSelectClause(selectClause);
 
-    Argument left = Argument(ArgumentType::CHARACTERSTRING, "5", DesignEntity::NONE);
+    Argument left = Argument(ArgumentType::NUMBER, "5", DesignEntity::NONE);
     Argument right = Argument(ArgumentType::SYNONYM, "s", DesignEntity::STMT);
     auto suchThatClause = MockIntIntClause(left, right);
     query->addSuchThatClause(&suchThatClause);
@@ -618,6 +618,160 @@ TEST_CASE("Select BOOLEAN: string string, FALSE") {
     // Evaluate query
     auto result = QE.evaluateQuery();
     std::unordered_set<std::string> expectedResult{"FALSE"};
+    auto evaluatedResultsVector = result.getInterestedResults();
+    std::unordered_set<std::string> evaluatedResults(evaluatedResultsVector.begin(), evaluatedResultsVector.end());
+    REQUIRE(evaluatedResults == expectedResult);
+}
+
+// Tests for multiple clauses
+
+TEST_CASE("Select SYNONYM: int string, (s, _) and (s, _)") {
+    // Query in the form of stmt s; Select s such that Modifies(s, _) and Follows(s, _)
+    std::shared_ptr<MockStorageReader> testStorage = std::make_shared<MockStorageReader>();
+
+    // Set up query object
+    Query *query = new Query();
+
+    Synonym stmt = Synonym("s");
+    query->addDeclaration(stmt, DesignEntity::STMT);
+
+    SelectClauseItem selectClauseItem = std::make_shared<Synonym>("s");
+    auto selectClauseItems = std::make_shared<std::vector<SelectClauseItem>>();
+    selectClauseItems->push_back(selectClauseItem);
+    auto selectClauses = std::make_shared<SelectClause>(selectClauseItems, SelectClauseReturnType::SYNONYM);
+    query->setSelectClause(selectClauses);
+
+    // Modifies(s, _)
+    Argument left1 = Argument(ArgumentType::SYNONYM, "s", DesignEntity::STMT);
+    Argument right1 = Argument(ArgumentType::WILDCARD, "_", DesignEntity::NONE);
+    auto suchThatClause1 = MockIntStringClause(left1, right1);
+    query->addSuchThatClause(&suchThatClause1);
+
+    // Follows(s, _)
+    Argument left2 = Argument(ArgumentType::SYNONYM, "s", DesignEntity::STMT);
+    Argument right2 = Argument(ArgumentType::WILDCARD, "_", DesignEntity::NONE);
+    auto suchThatClause2 = MockIntStringClause(left2, right2);
+    query->addSuchThatClause(&suchThatClause2);
+
+    // Set up query evaluator
+    QueryEvaluator QE(query, testStorage);
+
+    // Evaluate query
+    auto result = QE.evaluateQuery();
+    std::unordered_set<std::string> expectedResult{"1", "2", "3"};
+    auto evaluatedResultsVector = result.getInterestedResults();
+    std::unordered_set<std::string> evaluatedResults(evaluatedResultsVector.begin(), evaluatedResultsVector.end());
+    REQUIRE(evaluatedResults == expectedResult);
+}
+
+TEST_CASE("Select SYNONYM: int string, (s, _) and (s, _) and (a, v)") {
+    // Query in the form of stmt s; assign a; variable v;
+    // Select s such that Modifies(s, _) and Follows(s, _) and Modifies(a, v)
+    std::shared_ptr<MockStorageReader> testStorage = std::make_shared<MockStorageReader>();
+
+    // Set up query object
+    Query *query = new Query();
+
+    Synonym stmt = Synonym("s");
+    query->addDeclaration(stmt, DesignEntity::STMT);
+
+    Synonym assign = Synonym("a");
+    query->addDeclaration(assign, DesignEntity::ASSIGN);
+
+    Synonym var = Synonym("v");
+    query->addDeclaration(var, DesignEntity::VARIABLE);
+
+    SelectClauseItem selectClauseItem = std::make_shared<Synonym>("s");
+    auto selectClauseItems = std::make_shared<std::vector<SelectClauseItem>>();
+    selectClauseItems->push_back(selectClauseItem);
+    auto selectClauses = std::make_shared<SelectClause>(selectClauseItems, SelectClauseReturnType::SYNONYM);
+    query->setSelectClause(selectClauses);
+
+    // Modifies(s, _)
+    Argument left1 = Argument(ArgumentType::SYNONYM, "s", DesignEntity::STMT);
+    Argument right1 = Argument(ArgumentType::WILDCARD, "_", DesignEntity::NONE);
+    auto suchThatClause1 = MockIntStringClause(left1, right1);
+    query->addSuchThatClause(&suchThatClause1);
+
+    // Follows(s, _)
+    Argument left2 = Argument(ArgumentType::SYNONYM, "s", DesignEntity::STMT);
+    Argument right2 = Argument(ArgumentType::WILDCARD, "_", DesignEntity::NONE);
+    auto suchThatClause2 = MockIntStringClause(left2, right2);
+    query->addSuchThatClause(&suchThatClause2);
+
+    // Modifies(a, v)
+    Argument left3 = Argument(ArgumentType::SYNONYM, "a", DesignEntity::ASSIGN);
+    Argument right3 = Argument(ArgumentType::SYNONYM, "v", DesignEntity::VARIABLE);
+    auto suchThatClause3 = MockIntStringClause(left3, right3);
+    query->addSuchThatClause(&suchThatClause3);
+
+    // Set up query evaluator
+    QueryEvaluator QE(query, testStorage);
+
+    // Evaluate query
+    auto result = QE.evaluateQuery();
+    std::unordered_set<std::string> expectedResult{"1", "2", "3"};
+    auto evaluatedResultsVector = result.getInterestedResults();
+    std::unordered_set<std::string> evaluatedResults(evaluatedResultsVector.begin(), evaluatedResultsVector.end());
+    REQUIRE(evaluatedResults == expectedResult);
+}
+
+TEST_CASE("Select SYNONYM: int string, (s, _) and (s, _) and (a, v) and (proc, _)") {
+    // Query in the form of stmt s; assign a; variable v;
+    // Select s such that Modifies(s, _) and Follows(s, _) and Modifies(a, v) and Calls(proc, _)
+    std::shared_ptr<MockStorageReader> testStorage = std::make_shared<MockStorageReader>();
+
+    // Set up query object
+    Query *query = new Query();
+
+    Synonym stmt = Synonym("s");
+    query->addDeclaration(stmt, DesignEntity::STMT);
+
+    Synonym assign = Synonym("a");
+    query->addDeclaration(assign, DesignEntity::ASSIGN);
+
+    Synonym var = Synonym("v");
+    query->addDeclaration(var, DesignEntity::VARIABLE);
+
+    Synonym proc = Synonym("proc");
+    query->addDeclaration(proc, DesignEntity::PROCEDURE);
+
+    SelectClauseItem selectClauseItem = std::make_shared<Synonym>("s");
+    auto selectClauseItems = std::make_shared<std::vector<SelectClauseItem>>();
+    selectClauseItems->push_back(selectClauseItem);
+    auto selectClauses = std::make_shared<SelectClause>(selectClauseItems, SelectClauseReturnType::SYNONYM);
+    query->setSelectClause(selectClauses);
+
+    // Modifies(s, _)
+    Argument left1 = Argument(ArgumentType::SYNONYM, "s", DesignEntity::STMT);
+    Argument right1 = Argument(ArgumentType::WILDCARD, "_", DesignEntity::NONE);
+    auto suchThatClause1 = MockIntStringClause(left1, right1);
+    query->addSuchThatClause(&suchThatClause1);
+
+    // Follows(s, _)
+    Argument left2 = Argument(ArgumentType::SYNONYM, "s", DesignEntity::STMT);
+    Argument right2 = Argument(ArgumentType::WILDCARD, "_", DesignEntity::NONE);
+    auto suchThatClause2 = MockIntStringClause(left2, right2);
+    query->addSuchThatClause(&suchThatClause2);
+
+    // Modifies(a, v)
+    Argument left3 = Argument(ArgumentType::SYNONYM, "a", DesignEntity::ASSIGN);
+    Argument right3 = Argument(ArgumentType::SYNONYM, "v", DesignEntity::VARIABLE);
+    auto suchThatClause3 = MockIntStringClause(left3, right3);
+    query->addSuchThatClause(&suchThatClause3);
+
+    // Calls(proc, _)
+    Argument left4 = Argument(ArgumentType::SYNONYM, "proc", DesignEntity::PROCEDURE);
+    Argument right4 = Argument(ArgumentType::WILDCARD, "_", DesignEntity::NONE);
+    auto suchThatClause4 = MockIntStringClause(left4, right4);
+    query->addSuchThatClause(&suchThatClause4);
+
+    // Set up query evaluator
+    QueryEvaluator QE(query, testStorage);
+
+    // Evaluate query
+    auto result = QE.evaluateQuery();
+    std::unordered_set<std::string> expectedResult{"1", "2", "3"};
     auto evaluatedResultsVector = result.getInterestedResults();
     std::unordered_set<std::string> evaluatedResults(evaluatedResultsVector.begin(), evaluatedResultsVector.end());
     REQUIRE(evaluatedResults == expectedResult);
