@@ -1,7 +1,7 @@
 #include "catch.hpp"
 #include <memory>
 #include "MockIntIntClauseEvaluator.h"
-#include "MockStorageReader.h"
+#include "../mock_storage/MockStorageReader.h"
 
 TEST_CASE("Test Number Number - int, int") {
     std::shared_ptr<MockStorageReader> testStorage = std::make_shared<MockStorageReader>();
