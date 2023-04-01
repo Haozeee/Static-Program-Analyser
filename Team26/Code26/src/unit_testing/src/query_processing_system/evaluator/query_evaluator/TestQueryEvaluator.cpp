@@ -1,13 +1,14 @@
 #include "catch.hpp"
+
+#include <string>
+#include <memory>
+#include <vector>
 #include "query_processing_system/QueryEvaluator.h"
 #include "../../../source_processor/design_extractor/MockStore.h"
 #include "../mock_storage/MockStorageReader.h"
 #include "MockIntStringClause.h"
 #include "MockIntIntClause.h"
 #include "MockStringStringClause.h"
-#include <string>
-#include <memory>
-#include <vector>
 
 // Tests for Select SYNONYM
 
