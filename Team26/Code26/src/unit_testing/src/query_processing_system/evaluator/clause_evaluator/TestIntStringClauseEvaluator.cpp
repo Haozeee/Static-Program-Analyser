@@ -1,7 +1,7 @@
 #include "catch.hpp"
 #include <memory>
 #include "MockIntStringClauseEvaluator.h"
-#include "MockStorageReader.h"
+#include "../mock_storage/MockStorageReader.h"
 
 TEST_CASE("Test Number String - int, string") {
     // Tests relation with parameter (1, "a")
