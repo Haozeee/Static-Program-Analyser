@@ -5,10 +5,10 @@
 #include <utility>
 #include "query_processing_system/evaluator/clause_evaluator/StorageReader.h"
 
-QueryEvaluator::QueryEvaluator(Query* query, std::shared_ptr<ReadStorage> pkbStorage) :
+QueryEvaluator::QueryEvaluator(Query* query, std::shared_ptr<ISourceReader> programmeStorage_) :
     query(query),
-    programmeStorage(std::make_shared<StorageReader>(pkbStorage)),
-    queryResults(QueryDb(programmeStorage)) {}
+    programmeStorage(programmeStorage_),
+    queryResults(QueryDb(programmeStorage_)) {}
 
 QueryDb QueryEvaluator::evaluateQuery() {
     evaluateClauses();

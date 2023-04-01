@@ -19,7 +19,7 @@ class QueryEvaluator {
 
     void evaluateClauses();
 
-    void sortClauses(std::vector<Clause*> &allClauses);
+    static void sortClauses(std::vector<Clause*> &allClauses);
 
     /**
      * Evaluate the select clauses in the query.
@@ -27,7 +27,7 @@ class QueryEvaluator {
     void evaluateSelectClause();
 
  public:
-    explicit QueryEvaluator(Query* query, std::shared_ptr<ReadStorage> storage);
+    QueryEvaluator(Query* query, std::shared_ptr<ISourceReader> programmeStorage_);
 
     QueryDb evaluateQuery();
 };

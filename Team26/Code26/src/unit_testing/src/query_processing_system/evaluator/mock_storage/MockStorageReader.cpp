@@ -11,8 +11,16 @@ StmtSet MockStorageReader::getIntEntitiesFromPkb(DesignEntity entity) {
     return testStmtSet;
 }
 
-EntitySet MockStorageReader::getEntitiesFromPkb(DesignEntity entity) {
-    return testEntitySet;
+std::unordered_set<std::string> MockStorageReader::getEntitiesFromPkb(DesignEntity entity) {
+    if (entity == DesignEntity::VARIABLE || entity == DesignEntity::PROCEDURE) {
+        return testEntitySet;
+    } else {
+        std::unordered_set<std::string>  stringTestStmtSet;
+        std::transform(testStmtSet.begin(), testStmtSet.end(),
+                       std::inserter(stringTestStmtSet, stringTestStmtSet.begin()),
+                       [](int i) {return std::to_string(i);});
+        return stringTestStmtSet;
+    }
 }
 
 StmtStmtMap MockStorageReader::getFollowsMap(StmtSet &interestedValues) {
