@@ -25,8 +25,11 @@ void QueryManager::process(const std::string& query, std::list<std::string> &res
         auto validator = QueryValidator(queryObject);
         validator.validateQuery();
 
+        // Initialise interface to read source programme
+        auto programmeStore = std::make_shared<StorageReader>(storageUtil);
+
         // Evaluate query
-        QueryEvaluator evaluator = QueryEvaluator(queryObject, storageUtil);
+        QueryEvaluator evaluator = QueryEvaluator(queryObject, programmeStore);
         QueryDb queryDb = evaluator.evaluateQuery();
         auto queryResults = queryDb.getInterestedResults();
 

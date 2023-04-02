@@ -48,6 +48,16 @@ assign a; stmt s, s1, s2, s3; variable v, v1;
 Select a such that Uses(a, v) and Modifies(a, v1) and Follows(a, s) and Follows*(a, s1) and Parent(s1, s2) and Next*(s2, s3)
 1, 2, 4, 6, 12, 14, 15, 28, 29, 44, 55
 5000
+11 - Multi-clauses(No Pattern and No With): Affects*, Parent, Affects
+assign a, a1; if ifs; stmt s;
+Select <a, s, ifs, a1> such that Affects*(a, s) and Parent(ifs, a) and Affects(s, a1)
+19 14 17 19, 19 19 17 14, 19 19 17 18, 19 19 17 19, 19 19 17 26, 19 19 17 28, 19 19 17 29, 19 19 17 53, 19 26 17 28, 19 26 17 29, 19 26 17 36, 19 26 17 41, 19 28 17 29, 19 36 17 28, 19 36 17 29, 19 36 17 36, 19 36 17 41, 19 41 17 42, 26 28 5 29, 26 36 5 28, 26 36 5 29, 26 36 5 36, 26 36 5 41, 26 41 5 42, 36 28 30 29, 36 36 30 28, 36 36 30 29, 36 36 30 36, 36 36 30 41, 36 41 30 42, 6 47 5 53, 8 47 7 53
+5000
+12 - Multi-clauses(No Pattern and No With): Affects*, Uses, Modifies, Next*, Follows
+assign a, a1; variable v; procedure p; stmt s, s1;
+Select <v.varName, p> such that Affects*(a, s) and Uses(p, v) and Modifies(s, v) and Next*(s, s1) and Follows(s, s1)
+a double, var double, x double, x single, z double, z single
+5000
 1 - Multi-clauses(No Pattern and With): Uses, Modifies
 variable v; call c, c1;
 Select <c.procName, c, v> such that Modifies(c, v) and Uses(c1, v) with c1.procName = "single"
@@ -97,6 +107,16 @@ a, b, c, p, x, y, z
 while w; variable v; procedure proc, proc1; call c;
 Select w such that Next*(w, c) with c.procName = proc1.procName such that Calls(proc, proc1) and Modifies(proc1, v) with v.varName = "x"
 3, 13, 16, 27
+5000
+11 - Multi-clauses(No Pattern and With): Affects*, Uses, Modifies
+stmt s; assign a; procedure p; variable v;
+Select a such that Affects*(a, s) and Uses(p, v) and Modifies(s, v) with p.procName = "double" and v.varName = "x"
+4, 14, 15, 19, 21, 26, 28, 36
+5000
+12 - Multi-clauses(No Pattern and With): Calls*, Uses, Modifies, Affects
+assign a, a1; procedure p, p1; variable v;
+Select p1.procName such that Calls*(p, p1) and Uses(p, v) and Modifies(a, v) and Affects(a, a1) with p.procName = "double"
+child, child2, single
 5000
 1 - Multi-clauses(Pattern and No With): Affects, Parent, Parent*
 assign a1, a2; while w1, w2;
@@ -148,6 +168,16 @@ stmt s, s1; variable v, v1; assign a, a1; read r;
 Select s such that Parent*(s, r) and Modifies(r, v) pattern a(v, _) such that Follows*(r, a1) and Uses(a1, v1) pattern a1("a", _)
 3, 5, 27, 30
 5000
+11 - Multi-clauses(Pattern and No With): Affects, Affects*
+variable v, v1; assign a, a1;
+Select <v, v1.varName> such that Affects(a, a1) and Affects*(a1, a) pattern a(v, _"b"_) and a1(v1, _"b"_)
+a b, b a, b b
+5000
+12 - Multi-clauses(Pattern and No With): Affects*, Modifies, Uses
+variable v, v1; assign a, a1;
+Select a such that Affects*(a, a1) and Modifies(a1, v) and Uses(a, v) pattern a(v, _)
+19, 36
+5000
 1 - Multi-clauses(Pattern and With): Parent*, Next*
 assign a; while w; stmt s;
 Select a such that Parent*(w, a) and Next*(4, s) pattern a("x", _) with a.stmt# = s.stmt#
@@ -197,4 +227,14 @@ Select <s> such that Next*(s, s1) and Uses(s1, v) and Modifies(c, v) and Parent*
 while w; variable v, v1; if ifs; assign a;
 Select a such that Uses(ifs, v) and Modifies(w, v1) and Next*(ifs, w) with v.varName = v1.varName pattern a(v, _"(1 * 2 * 3)"_)
 21, 28, 36
+5000
+11 - Multi-clauses(Pattern and With): Follows*, Parent*, Affects*
+stmt s; assign a, a1; variable v, v1; while w; if ifs;
+Select w pattern w(v, _) and a(v1, _) such that Follows*(ifs, a) and Parent*(w, a1) and Affects*(a, a1) with v.varName = v1.varName
+16
+5000
+12 - Multi-clauses(Pattern and With): Affects
+stmt s; assign a; variable v; procedure p;
+Select <s, v> such that Affects(s, a) and Modifies(s, v) and Uses(p, v) and Uses(a, v) with p.procName = "double" pattern a(v, _)
+19 b, 26 a, 28 x, 36 a
 5000
