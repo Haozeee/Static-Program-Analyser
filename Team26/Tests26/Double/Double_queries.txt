@@ -473,3 +473,53 @@ assign a, a1;
 Select a1 such that Affects*(a, a1) with a.stmt# = 4
 6, 8, 12, 14, 18, 19, 26, 28, 29, 36, 41, 42, 47, 53
 5000
+1 - Calls + Pattern: procedure,procedure and entRef,_
+procedure proc, proc1; assign a;
+Select <proc, proc1.procName> such that Calls(proc, proc1) pattern a("z", _)
+double child, double child2, double single, single child, single child2
+5000
+2 - Calls + Pattern: procedure,procedure and entRef,expression
+procedure proc, proc1; assign a;
+Select BOOLEAN such that Calls(proc, proc1) pattern a("z", "x + y + 1 * 2")
+TRUE
+5000
+3 - Calls + Pattern: procedure,procedure and entRef,expression
+procedure proc, proc1; assign a;
+Select BOOLEAN such that Calls(proc, proc1) pattern a("z", "proc1")
+FALSE
+5000
+4 - Calls + With: procedure,procedure and procedure name
+procedure proc, proc1, proc2;
+Select proc2 such that Calls(proc, proc1) with proc1.procName = proc2.procName
+child, child2, single
+5000
+5 - Calls + With: procedure,procedure and procedure name
+procedure proc, proc1;
+Select proc1 such that Calls(proc, proc1) with "single" = proc.procName
+child, child2
+5000
+1 - Calls* + Pattern: procedure,procedure and entRef,_
+procedure proc, proc1; assign a;
+Select <proc, proc1.procName> such that Calls*(proc, proc1) pattern a("z", _)
+double child, double child2, double single, single child, single child2
+5000
+2 - Calls* + Pattern: procedure,procedure and entRef,expression
+procedure proc, proc1; assign a;
+Select BOOLEAN such that Calls*(proc, proc1) pattern a("z", "x + y + 1 * 2")
+TRUE
+5000
+3 - Calls* + Pattern: procedure,procedure and entRef,expression
+procedure proc, proc1; assign a;
+Select BOOLEAN such that Calls*(proc, proc1) pattern a("z", "proc1")
+FALSE
+5000
+4 - Calls* + With: procedure,procedure and procedure name
+procedure proc, proc1, proc2;
+Select proc2 such that Calls*(proc, proc1) with proc1.procName = proc2.procName
+child, child2, single
+5000
+5 - Calls* + With: procedure,procedure and procedure name
+procedure proc, proc1;
+Select proc1 such that Calls*(proc, proc1) with "single" = proc.procName
+child, child2
+5000
