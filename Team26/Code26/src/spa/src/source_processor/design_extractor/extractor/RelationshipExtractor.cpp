@@ -50,7 +50,6 @@ void RelationshipExtractor::postProgramExtractionLink() {
     }
 }
 
-
 void RelationshipExtractor::extractProcedure(const std::shared_ptr<ProcedureNode>& node) {
     parentIndexStack.clear();
     statementStack.clear();
@@ -221,7 +220,7 @@ void RelationshipExtractor::interlinkSRelationships(const std::string& procedure
 
     for (auto &variableName : modifiesPRelationships.operator[](procedureName)) {
         if (procedureCalledList.count(procedureName) > 0) {
-            insertModifiesPPGroup(procedureName, variableName);
+            insertModifiesPGroup(procedureName, variableName);
         }
     }
 }
@@ -232,7 +231,7 @@ void RelationshipExtractor::insertUsesPGroup(const std::string &procedureName, c
     }
 }
 
-void RelationshipExtractor::insertModifiesPPGroup(const std::string &procedureName, const std::string& variableName) {
+void RelationshipExtractor::insertModifiesPGroup(const std::string &procedureName, const std::string& variableName) {
     for (auto &statementIndex : *(procedureCalledList.at(procedureName))) {
         relationshipStore->insertModifiesSRelationship(statementIndex, variableName);
     }
