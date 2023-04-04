@@ -81,6 +81,11 @@ class QueryDb {
      */
     std::shared_ptr<ResultTable> getMainResultTableFromGroup(std::vector<std::shared_ptr<ResultTable>> &resultGroups);
 
+    /**
+     * We can end the evaluation early as there is no results to evaluate.
+     */
+    std::vector<std::string> earlyExit();
+
     ResultGroups getGroups();
 
     std::vector<std::shared_ptr<ResultTable>> evaluateGroups();

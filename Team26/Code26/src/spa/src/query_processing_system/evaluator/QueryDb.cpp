@@ -90,14 +90,16 @@ std::vector<std::shared_ptr<ResultTable>> QueryDb::evaluateGroups() {
 
 std::vector<std::string> QueryDb::getInterestedResults() {
     if (resultTablesHasFalse()) {
-        std::vector<std::string> res;
-        if (selectedSynonyms.empty()) {
-            res.emplace_back("FALSE");
-        }
-        return res;
+        return earlyExit();
     }
 
     auto resultGroups = evaluateGroups();
+
+    for (auto& results : resultGroups) {
+        if (!results->getColumnsNamesSet().empty() && results->getNumberOfRows() == 0) {
+            return earlyExit();
+        }
+    }
 
     if (selectedSynonyms.empty()) {
         return getBooleanResults(resultGroups);
@@ -114,6 +116,14 @@ std::vector<std::string> QueryDb::getInterestedResults() {
 
     // Filter selected columns
     return interestedResults->getInterestedValues(getInterestedColumns());
+}
+
+std::vector<std::string> QueryDb::earlyExit() {
+    std::vector<std::string> res;
+    if (selectedSynonyms.empty()) {
+        res.emplace_back("FALSE");
+    }
+    return res;
 }
 
 void QueryDb::mapAttributeReferences(std::shared_ptr<ResultTable> interestedResults) {
