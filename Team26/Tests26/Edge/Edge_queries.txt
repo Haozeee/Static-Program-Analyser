@@ -1,0 +1,50 @@
+1 - Follows: stmt, stmt
+stmt s;
+Select s such that Follows(s,s)
+none
+5000
+2 - Follows*: stmt, stmt
+stmt s;
+Select s such that Follows*(s,s)
+none
+5000
+3 - Parent: stmt, stmt
+stmt s;
+Select s such that Parent(s,s)
+none
+5000
+4 - Parent*: stmt, stmt
+stmt s;
+Select s such that Parent*(s,s)
+none
+5000
+5 - Calls: procedure, procedure
+procedure proc;
+Select proc such that Calls(proc, proc)
+none
+5000
+6 - Calls*: procedure, procedure
+procedure proc;
+Select proc such that Calls*(proc, proc)
+none
+5000
+7 - Next: stmt, stmt
+stmt s;
+Select s such that Next(s, s)
+none
+5000
+8 - Next*: stmt, stmt
+stmt s;
+Select s such that Next*(s, s)
+4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 23, 24, 25, 26
+5000
+9 - Affects: assign, assign
+assign a;
+Select a such that Affects(a, a)
+7, 8
+5000
+10 - Affects*: assign, assign
+assign a;
+Select a such that Affects*(a, a)
+7, 8, 14, 15
+5000

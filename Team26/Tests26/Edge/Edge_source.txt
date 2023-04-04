@@ -1,0 +1,43 @@
+procedure Example {
+    x = 1 - y;
+    z = x + y;
+    i = 1;
+    while (i != 0) {
+        p = q + 123;
+        if (p == q) then {
+            a = a + 1;
+            var = var + (x + y) + a - (z / 2 - (z * 2));
+            print var;
+        } else {
+            b = 54321 * 99 % c;
+            read b;
+            if (a == b) then {
+                b = b + 3 - (z * 2);
+            } else {
+                read = print;
+                print = read + if - while * assign / call;
+            }
+            x = 11 + ((((12)))) % 13;
+            y = 9*8-6%17;
+        }
+    }
+    if (x > 10) then {
+        c = (1 * 2 * 3) + c;
+        a = (1 * 2 * 3) + (12 / 13 % 14) % a;
+    } else {
+        x = x / 5;
+        y = 1;
+        while (z < a) {
+            call hello;
+            print world;
+            read b;
+        }
+        print y;
+    }
+    a = b + c - d + e + (1 * 2 * 3);
+    var = the + end - cs3203 * boooo;
+}
+
+procedure hello {
+    print bye;
+}
