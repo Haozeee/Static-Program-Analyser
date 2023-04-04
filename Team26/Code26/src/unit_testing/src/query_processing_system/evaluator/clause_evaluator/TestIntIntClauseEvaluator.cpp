@@ -212,3 +212,22 @@ TEST_CASE("Test Wildcard Number - int, int") {
     res = testEvaluator.getClauseResult();
     REQUIRE(res->hasNoResults());
 }
+
+TEST_CASE("Test Equal Synonym - int, int") {
+    // Tests relation with parameter (s, s)
+    std::shared_ptr<MockStorageReader> testStorage = std::make_shared<MockStorageReader>();
+
+    // Set up
+    Argument leftArg = Argument(ArgumentType::SYNONYM, "s", DesignEntity::STMT);
+    Argument rightArg = Argument(ArgumentType::SYNONYM, "s", DesignEntity::STMT);
+    auto testEvaluator = MockIntIntClauseEvaluator(leftArg, rightArg);
+
+    // Evaluation Results
+    std::shared_ptr<ResultTable> res;
+
+    // Has no results
+    res = testEvaluator.evaluateClause(testStorage);
+    REQUIRE(res->hasNoResults());
+    std::unordered_set<std::string> expectedResults {};
+    REQUIRE(res->getColumnValues("s") == expectedResults);
+}
