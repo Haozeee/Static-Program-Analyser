@@ -4,10 +4,10 @@ IntIntClauseEvaluator::IntIntClauseEvaluator(Argument left, Argument right)
     : SuchThatClauseEvaluator<int, int>(left, right) {}
 
 void IntIntClauseEvaluator::evaluateEqualSynonym() {
-    StmtSet interestedValues {getLeftArg()};
+    StmtSet interestedValues {getLeftArgEntities()};
     auto relationshipMap = getRelationshipMap(interestedValues);
     if (isLeftArgAmbiguous()) {
-        relationshipMap = Util::filterMap(relationshipMap, getLeftArgEntities());
+        relationshipMap = Util::filterMap(relationshipMap, interestedValues);
     }
     setLeftArgResult(Util::getElementsWithCycles(relationshipMap));
 }
