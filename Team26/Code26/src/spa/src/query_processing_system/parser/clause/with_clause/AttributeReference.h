@@ -3,13 +3,18 @@
 #include <utility>
 #include <string>
 #include <unordered_map>
+#include <vector>
+
 #include "../../DesignEntity.h"
 #include "../../Synonym.h"
+#include "query_processing_system/exception/QueryException.h"
+#include "query_processing_system/exception/QueryExceptionMessages.h"
 
 const char statementNum[] = "stmt#";
 const char constantValue[] = "value";
 const char varName[] = "varName";
 const char procName[] = "procName";
+const std::vector<std::string> validAttrRefs = {statementNum, constantValue, varName, procName};
 
 class AttributeReference {
  private:
