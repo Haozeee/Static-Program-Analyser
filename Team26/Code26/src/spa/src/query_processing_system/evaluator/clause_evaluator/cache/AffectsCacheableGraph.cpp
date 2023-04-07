@@ -68,7 +68,9 @@ void AffectsCacheableGraph::onCacheMiss(int startStatement) {
         }
     }
 
-    cache.insert({startStatement, results});
+    if (!results.empty()) {
+        cache.insert({startStatement, results});
+    }
 
     for (auto i : results) {
         if (!reverseCache.count(i)) {
