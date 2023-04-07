@@ -36,6 +36,10 @@ bool AttributeReference::isIntAttributeReference() {
 }
 
 bool AttributeReference::isValidAttributeReference() {
+    auto it = std::find(validAttrRefs.begin(), validAttrRefs.end(), attributeName);
+    if (it == validAttrRefs.end()) {
+        throw SyntaxException(QueryValidatorInvalidAttributeReference);
+    }
     return isStringAttributeReference() || isIntAttributeReference();
 }
 
