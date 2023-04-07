@@ -12,7 +12,6 @@ QueryEvaluator::QueryEvaluator(Query* query, std::shared_ptr<ISourceReader> prog
 
 QueryDb QueryEvaluator::evaluateQuery() {
     evaluateClauses();
-    queryResults.evaluateAllClauses();
     evaluateSelectClause();
 
     return queryResults;
