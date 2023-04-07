@@ -111,8 +111,6 @@ class QueryDb {
      */
     std::vector<std::string> getInterestedResults();
 
-    void evaluateAllClauses();
-
     /**
      * Get all the columns present in results.
      */

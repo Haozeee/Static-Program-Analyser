@@ -2,7 +2,7 @@
 #include <memory>
 #include <algorithm>
 #include <iterator>
-#include "math.h"
+#include <cmath>
 
 QueryDb::QueryDb(std::shared_ptr<ISourceReader> storage) : storage(storage) {}
 
@@ -51,13 +51,13 @@ void QueryDb::sortTables(std::deque<std::shared_ptr<ResultTable>> &tables) {
 
 int QueryDb::getScore(std::shared_ptr<ResultTable> tableToScore) {
     int base = tableToScore->getNumberOfRows();
-    int bias = 1;
+    int bias = 0;
     for (auto& i : tableToScore->getColumnsNamesSet()) {
         if (colCount.count(i)) {
             bias += colCount.at(i);
         }
     }
-    return base / bias;
+    return base / pow(bias, 2);
 }
 
 ResultGroups QueryDb::getGroups() {
@@ -104,15 +104,6 @@ std::vector<std::shared_ptr<ResultTable>> QueryDb::evaluateGroups() {
     }
 
     return groupResults;
-}
-
-void QueryDb::evaluateAllClauses() {
-    if (resultTablesHasFalse()) {
-        return;
-    }
-    auto resultGroups = evaluateGroups();
-    std::deque<std::shared_ptr<ResultTable>> newResults;
-    newResults.insert(newResults.begin(), resultGroups.begin(), resultGroups.end());
 }
 
 std::vector<std::string> QueryDb::getInterestedResults() {
