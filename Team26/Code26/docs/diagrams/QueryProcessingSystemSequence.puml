@@ -50,7 +50,7 @@ loop For each parsed clause
     Query -> Clause: Clause()
     activate Clause
 
-    Clause -> Query: clause
+    Clause --> Query: clause
     deactivate Clause
 end
 
@@ -68,10 +68,10 @@ create QueryDb
 QueryEvaluator -> QueryDb: QueryDb()
 activate QueryDb
 
-QueryDb -> QueryEvaluator: queryDb
+QueryDb --> QueryEvaluator: queryDb
 deactivate QueryDb
 
-QueryEvaluator -> QueryManager: evaluator
+QueryEvaluator --> QueryManager: evaluator
 deactivate QueryEvaluator
 
 QueryManager->QueryEvaluator: evaluate()
@@ -85,10 +85,10 @@ Loop For each clause
    Clause -> ClauseEvaluator: ClauseEvaluator()
    activate ClauseEvaluator
 
-   ClauseEvaluator -> Clause: evaluator
+   ClauseEvaluator --> Clause: evaluator
    deactivate ClauseEvaluator
 
-   Clause -> QueryEvaluator: evaluator
+   Clause --> QueryEvaluator: evaluator
    deactivate Clause
 
    QueryEvaluator -> ClauseEvaluator: evaluateClause()
@@ -97,20 +97,32 @@ Loop For each clause
    ClauseEvaluator -> ReadOnlyStorage: read from pkb
    activate ReadOnlyStorage
 
-   ReadOnlyStorage -> ClauseEvaluator: pkbResults
+   ReadOnlyStorage --> ClauseEvaluator: pkbResults
    deactivate ReadOnlyStorage
 
-   ClauseEvaluator -> QueryEvaluator: clauseResult
+   ClauseEvaluator --> QueryEvaluator: clauseResult
    deactivate ClauseEvaluator
 
    QueryEvaluator -> QueryDb: addClauseResult(clauseResult)
    activate QueryDb
 
-   QueryDb->QueryEvaluator
+   QueryDb-->QueryEvaluator
    deactivate QueryDb
 
     destroy ClauseEvaluator
   end
+
+QueryEvaluator -> QueryEvaluator : evaluateSelectClause()
+activate QueryEvaluator
+
+QueryEvaluator -> QueryDb : setSelectedColumns(selectedCols)
+activate QueryDb
+
+QueryDb --> QueryEvaluator
+deactivate QueryDb
+
+QueryEvaluator --> QueryEvaluator
+deactivate QueryEvaluator
 
 QueryEvaluator --> QueryManager: queryDb
 deactivate QueryEvaluator
@@ -118,7 +130,7 @@ deactivate QueryEvaluator
 QueryManager -> QueryDb: getInterestedResults()
 activate QueryDb
 
-QueryDb -> QueryManager: queryResults
+QueryDb --> QueryManager: queryResults
 deactivate QueryDb
 
 QueryManager --> UI: queryResults
