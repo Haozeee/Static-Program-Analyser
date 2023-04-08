@@ -19,7 +19,7 @@ void QueryDb::addResult(std::shared_ptr<ResultTable> toAdd) {
         if (!colCount.count(tableCol)) {
             colCount.insert({tableCol, 0});
         }
-        colCount.at(tableCol) ++;
+        colCount.at(tableCol)++;
     }
 }
 
