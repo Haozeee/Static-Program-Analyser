@@ -1,5 +1,6 @@
 #include "AttributeReference.h"
 
+#include <algorithm>
 #include <utility>
 
 std::unordered_map<DesignEntity, std::string> validIntAttributes {
