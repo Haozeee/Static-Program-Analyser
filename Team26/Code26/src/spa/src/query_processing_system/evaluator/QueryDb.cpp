@@ -2,6 +2,7 @@
 #include <memory>
 #include <algorithm>
 #include <iterator>
+#include <cmath>
 
 QueryDb::QueryDb(std::shared_ptr<ISourceReader> storage) : storage(storage) {}
 
@@ -13,6 +14,12 @@ void QueryDb::addResult(std::shared_ptr<ResultTable> toAdd) {
     results.push_back(toAdd);
     if (!toAdd->hasNoResults()) {
         unionFind.unionMultipleItems(toAdd->getColumnsNames());
+    }
+    for (auto& tableCol : toAdd->getColumnsNamesSet()) {
+        if (!colCount.count(tableCol)) {
+            colCount.insert({tableCol, 0});
+        }
+        colCount.at(tableCol)++;
     }
 }
 
@@ -36,10 +43,21 @@ std::unordered_set<std::string> QueryDb::getAllColumnsInResults() {
 }
 
 void QueryDb::sortTables(std::deque<std::shared_ptr<ResultTable>> &tables) {
-    auto comparePredicate = [](std::shared_ptr<ResultTable> const &a, std::shared_ptr<ResultTable> const &b) {
-        return a->getNumberOfRows() < b->getNumberOfRows();
+    auto comparePredicate = [this](std::shared_ptr<ResultTable> const &a, std::shared_ptr<ResultTable> const &b) {
+        return getScore(a) < getScore(b);
     };
     std::sort(tables.begin(), tables.end(), comparePredicate);
+}
+
+int QueryDb::getScore(std::shared_ptr<ResultTable> tableToScore) {
+    int base = tableToScore->getNumberOfRows();
+    int bias = 0;
+    for (auto& i : tableToScore->getColumnsNamesSet()) {
+        if (colCount.count(i)) {
+            bias += colCount.at(i);
+        }
+    }
+    return base / pow(bias, 2);
 }
 
 ResultGroups QueryDb::getGroups() {

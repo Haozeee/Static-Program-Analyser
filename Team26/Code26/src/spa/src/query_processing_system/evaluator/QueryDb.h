@@ -34,6 +34,8 @@ class QueryDb {
 
     std::shared_ptr<ISourceReader> storage;
 
+    std::unordered_map<std::string, int> colCount;
+
     /**
      * A disjoint set data structure to store the different groups as part of optimisation.
      * Tables that are part of different groups should be evaluated independently so as to avoid
@@ -71,7 +73,7 @@ class QueryDb {
      * Sort the list of results tables such that the table with the least amount of rows come first.
      * This makes joining the table quicker.
      */
-    static void sortTables(std::deque<std::shared_ptr<ResultTable>> &tables);
+    void sortTables(std::deque<std::shared_ptr<ResultTable>> &tables);
 
     /**
      * After evaluating the different groups, we get a list of results. This methods get the main interested results
@@ -89,6 +91,8 @@ class QueryDb {
     ResultGroups getGroups();
 
     std::vector<std::shared_ptr<ResultTable>> evaluateGroups();
+
+    int getScore(std::shared_ptr<ResultTable> tableToScore);
 
  public:
     explicit QueryDb(std::shared_ptr<ISourceReader> storage);
