@@ -7,6 +7,7 @@ participant ":QueryManager" as QueryManager LOGIC_COLOR
 participant ":QueryTokenizer" as QueryTokenizer LOGIC_COLOR
 participant ":QueryParser" as QueryParser LOGIC_COLOR
 participant ":Query" as Query LOGIC_COLOR
+participant ":QueryValidator" as QueryValidator LOGIC_COLOR
 participant ":QueryEvaluator" as QueryEvaluator LOGIC_COLOR
 participant ":QueryDb" as QueryDb LOGIC_COLOR
 participant ":Clause" as Clause LOGIC_COLOR
@@ -59,6 +60,19 @@ deactivate Query
 
 QueryParser --> QueryManager: Query
 deactivate QueryParser
+
+create QueryValidator
+QueryManager -> QueryValidator : QueryValidator(Query)
+activate QueryValidator
+
+QueryValidator --> QueryManager : QueryValidator
+deactivate QueryValidator
+
+QueryManager -> QueryValidator : validateQuery()
+activate QueryValidator
+
+QueryValidator --> QueryManager
+deactivate QueryValidator
 
 create QueryEvaluator
 QueryManager -> QueryEvaluator: QueryEvaluator(Query: query, ReadOnlyStorage: storage)
