@@ -250,7 +250,13 @@ void QueryParser::parsePatternClause() {
     // Third argument must be wildcard for if pattern clause, otherwise should be )
     if (patternArg.getDesignEntity() == DesignEntity::ASSIGN || patternArg.getDesignEntity() == DesignEntity::WHILE) {
         if (isValueOf(",")) {
-            throw SyntaxException("Can only have 2 arguments");
+            parseNext(",");
+            parseNext(getToken()->getValue());
+            if (isValueOf(",")) {
+                throw SyntaxException("Syntax cos 4 args");
+            } else if (isValueOf(")")) {
+                throw SemanticException("Semantic cos 3 args");
+            }
         } else if (!isValueOf(")")) {
             throw SyntaxException("Invalid second argument");
         } else {
