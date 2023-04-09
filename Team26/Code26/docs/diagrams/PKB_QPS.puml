@@ -16,7 +16,7 @@ activate QPS
 
 QPS -> ReadStorage: getStmtManager()
 activate ReadStorage
-ReadStorage --> QPS: StmtManager
+ReadStorage --> QPS: stmtManager
 deactivate ReadStorage
 
 QPS -> StmtManager: getAllEntitiesEntries()
