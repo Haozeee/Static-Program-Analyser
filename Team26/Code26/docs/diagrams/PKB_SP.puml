@@ -9,7 +9,7 @@ participant "SP" as SP LOGIC_COLOR
 participant “:WriteStorage” as WriteStorage LOGIC_COLOR
 participant “:StmtManager" as StmtManager LOGIC_COLOR
 participant ":FollowsManager" as FollowsManager LOGIC_COLOR
-participant “:PatternManager” as AssignPatternManager LOGIC_COLOR
+participant “:AssignPatternManager” as AssignPatternManager LOGIC_COLOR
 
 end box
 activate SP
@@ -39,7 +39,7 @@ activate WriteStorage
 WriteStorage --> SP: assignPatternManager
 deactivate WriteStorage
 
-SP -> AssignPatternManager: insertAssignPattern(int: stmtNo, string: left, shared_ptr<ShuntNode>: right)
+SP -> AssignPatternManager: insertPattern(int: stmtNo, string: left, shared_ptr<ShuntNode>: right)
 Activate AssignPatternManager
 AssignPatternManager --> SP: bool
 deactivate AssignPatternManager
