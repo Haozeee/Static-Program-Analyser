@@ -253,9 +253,9 @@ void QueryParser::parsePatternClause() {
             parseNext(",");
             parseNext(getToken()->getValue());
             if (isValueOf(",")) {
-                throw SyntaxException("Syntax cos 4 args");
+                throw SyntaxException("4 or more arguments in clause");
             } else if (isValueOf(")")) {
-                throw SemanticException("Semantic cos 3 args");
+                throw SemanticException("3 arguments in clause");
             }
         } else if (!isValueOf(")")) {
             throw SyntaxException("Invalid second argument");
