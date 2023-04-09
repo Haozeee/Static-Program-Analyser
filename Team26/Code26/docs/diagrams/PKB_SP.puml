@@ -16,7 +16,7 @@ activate SP
 
 SP -> WriteStorage: getStmtManager()
 activate WriteStorage
-WriteStorage --> SP: StmtManager
+WriteStorage --> SP: stmtManager
 deactivate WriteStorage
 
 SP -> StmtManager: insertEntity(int: stmtNo)
