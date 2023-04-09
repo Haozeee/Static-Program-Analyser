@@ -1,204 +1,124 @@
 @startuml SourceProcessorSystemSequence
 
 !include style.puml
-box SP
-participant ":UI" as UI LOGIC_COLOR
+box
 participant ":StaticProgramAnalyzer" as StaticProgramAnalyzer LOGIC_COLOR
 participant ":SourceManager" as SourceManager LOGIC_COLOR
-participant ":Tokenizer" as Tokenizer LOGIC_COLOR
-participant ":Parser" as Parser LOGIC_COLOR
-participant ":Store" as Store LOGIC_COLOR
-participant ":PatternStore" as PatternStore LOGIC_COLOR
-participant ":RelationshipStore" as RelationshipStore LOGIC_COLOR
-participant ":EntityStore" as EntityStore LOGIC_COLOR
+participant ":SourceTokenizer" as SourceTokenizer LOGIC_COLOR
+participant ":SourceParser" as SourceParser LOGIC_COLOR
 participant ":DesignExtractor" as DesignExtractor LOGIC_COLOR
 participant ":EntityExtractor" as EntityExtractor LOGIC_COLOR
-participant ":PatternExtractor" as PatternExtractor LOGIC_COLOR
-participant ":RelationshipExtractor" as RelationshipExtractor LOGIC_COLOR
+participant ":Store" as Store LOGIC_COLOR
+participant ":EntityStore" as EntityStore LOGIC_COLOR
 participant "PKB" as PKB LOGIC_COLOR
 end box
-activate UI
 
-UI -> StaticProgramAnalyzer:  readProgramFromFile(string: filename)
 activate StaticProgramAnalyzer
 
 StaticProgramAnalyzer -> PKB: getWriteStorage()
 activate PKB
+PKB --> StaticProgramAnalyzer: WriteStorage writeStorage
+deactivate PKB
 
-PKB --> StaticProgramAnalyzer: WriteStorage: store
+StaticProgramAnalyzer -> PKB: getReadStorage()
+activate PKB
+PKB --> StaticProgramAnalyzer: ReadStorage readStorage
+deactivate PKB
 
 create Store
-StaticProgramAnalyzer -> Store: Store(WriteStorage: store)
+StaticProgramAnalyzer -> Store: Store(WriteStorage: writeStorage, ReadStorage: readStorage)
 activate Store
 
-create PatternStore
-Store -> PatternStore: PatternStore(WriteStorage: store)
-activate PatternStore
-
-PatternStore -> PKB: getPatternManager()
-PKB --> PatternStore: PatternManager
-PatternStore --> Store: PatternStore
-deactivate PatternStore
-
-create RelationshipStore
-Store -> RelationshipStore: RelationshipStore(WriteStorage: store)
-activate RelationshipStore
-
-RelationshipStore -> PKB: getRelationshipManager()
-PKB --> RelationshipStore: RelationshipManager
-RelationshipStore --> Store: RelationshipStore
-deactivate RelationshipStore
-
 create EntityStore
-Store -> EntityStore: EntityStore(WriteStorage: store)
+Store -> EntityStore: EntityStore(WriteStorage: writeStorage)
 activate EntityStore
 
-EntityStore -> PKB: getStmtManager()
-PKB --> EntityStore: StmtManager
-EntityStore --> Store: EntityStore
+EntityStore --> Store: 
 deactivate EntityStore
 
-Store --> StaticProgramAnalyzer: <IStore>Store
+
+Store --> StaticProgramAnalyzer: IStore Store
 deactivate Store
 
-StaticProgramAnalyzer -> SourceManager: process(string: filename, IStore: store)
+StaticProgramAnalyzer -> SourceManager: process(string: file_name, IStore: store)
 activate SourceManager
 
-break Invalid file
-    SourceManager -> StaticProgramAnalyzer: SourceManagerException
-end
+create SourceTokenizer
+SourceManager -> SourceTokenizer: SourceTokenizer(ifstream: input)
+activate SourceTokenizer
 
-create Tokenizer
-SourceManager -> Tokenizer: Tokenizer(ifstream: filestream)
-activate Tokenizer
+SourceTokenizer --> SourceManager: SourceTokenizer
+deactivate SourceTokenizer
 
-Tokenizer --> SourceManager: Tokenizer
-deactivate Tokenizer
+SourceManager -> SourceTokenizer: tokenize()
+activate SourceTokenizer
 
-SourceManager -> Tokenizer: tokenize()
-activate Tokenizer
+SourceTokenizer --> SourceManager: list<Tokens>
+deactivate SourceTokenizer
 
-break contains invalid special char
-    Tokenizer -> SourceManager: TokenizerException
-end
+create SourceParser
+SourceManager -> SourceParser: SourceParser(list<Tokens>)
+activate SourceParser
 
-Tokenizer --> SourceManager: list<Tokens>
-deactivate Tokenizer
+SourceParser --> SourceManager: SourceParser
+deactivate SourceParser
 
-create Parser
-SourceManager -> Parser : Parser(list<Tokens>: input)
-activate Parser
+SourceManager -> SourceParser: parse()
+activate SourceParser
 
-Parser --> SourceManager: Parser
-deactivate Parser
+SourceParser --> SourceManager
+deactivate SourceParser
 
-SourceManager -> Parser: parse()
-activate Parser
+SourceManager -> SourceParser: getProgramNode()
+activate SourceParser
 
-break Invalid source code
-    Parser -> SourceManager: ParserException
-end
-
-Parser --> SourceManager:
-deactivate Parser
-
-SourceManager -> Parser: getProgramNode()
-activate Parser
-
-Parser --> SourceManager: ProgramNode
-deactivate Parser
+SourceParser --> SourceManager: ProgramNode programNode
+deactivate SourceParser
 
 create DesignExtractor
-SourceManager -> DesignExtractor: DesignExtractor(IStore store)
+SourceManager -> DesignExtractor: DesignExtractor(IStore: store)
 activate DesignExtractor
 
 DesignExtractor -> Store: getEntityStore()
 activate Store
 
-Store --> DesignExtractor: EntityStore
+Store --> DesignExtractor: EntityStore entityStore
 deactivate Store
 
 create EntityExtractor
-DesignExtractor -> EntityExtractor: EntityExtractor(EntityStore)
+DesignExtractor -> EntityExtractor: EntityExtractor(EntityStore: entityStore)
 activate EntityExtractor
 
 EntityExtractor --> DesignExtractor: EntityExtractor
 deactivate EntityExtractor
 
-create RelationshipExtractor
-DesignExtractor -> RelationshipExtractor: RelationshipExtractor(EntityStore)
-activate RelationshipExtractor
-
-RelationshipExtractor --> DesignExtractor: RelationshipExtractor
-deactivate RelationshipExtractor
-
-create PatternExtractor
-DesignExtractor -> PatternExtractor: PatternExtractor(EntityStore)
-activate PatternExtractor
-
-PatternExtractor --> DesignExtractor: PatternExtractor
-deactivate PatternExtractor
-
 DesignExtractor --> SourceManager: DesignExtractor
 deactivate DesignExtractor
 
-SourceManager -> DesignExtractor: extract(ProgramNode)
+SourceManager -> DesignExtractor: extract(ProgramNode: programNode)
 activate DesignExtractor
 
-DesignExtractor -> EntityExtractor: extractProgram(ProgramNode)
+DesignExtractor -> EntityExtractor: extractProgram(ProgramNode: programNode)
 activate EntityExtractor
 
 loop For each entity
-    EntityExtractor -> EntityStore: insertEntity(Node)
+    EntityExtractor -> EntityStore: insertEntity(Node: node)
     activate EntityStore
-    EntityStore -> PKB: insertEntity(int stmt_no)
-    PKB --> EntityStore
-    EntityStore -> EntityExtractor
+    EntityStore -> PKB: insertEntity(int: stmt_no)
+    activate PKB
+    PKB --> EntityStore: 
+    deactivate
+    EntityStore --> EntityExtractor: 
     deactivate EntityStore
 end
 
 EntityExtractor --> DesignExtractor:
 deactivate EntityExtractor
 
-DesignExtractor -> RelationshipExtractor: extractProgram(ProgramNode)
-activate RelationshipExtractor
-activate RelationshipStore
-
-loop For each relationship
-    RelationshipExtractor -> RelationshipStore: insertRelationship()
-    activate RelationshipStore
-    RelationshipStore -> PKB: insertRelationship(int stmt_no, int stmt_no)
-    PKB --> RelationshipStore
-    RelationshipStore -> RelationshipExtractor
-    deactivate RelationshipStore
-end
-
-deactivate RelationshipStore
-RelationshipExtractor --> DesignExtractor:
-deactivate RelationshipExtractor
-
-DesignExtractor -> PatternExtractor: extractProgram(ProgramNode)
-activate PatternExtractor
-
-loop For each pattern
-    PatternExtractor -> PatternStore: insertPattern()
-    activate PatternStore
-    PatternStore -> PKB: insertPattern(int stmt_no, string left, string right)
-    PKB --> PatternStore
-    PatternStore -> PatternExtractor
-    deactivate PatternStore
-end
-
-PatternExtractor --> DesignExtractor:
-deactivate PatternExtractor
-
-DesignExtractor --> SourceManager: 
+DesignExtractor --> SourceManager:
 deactivate DesignExtractor
 
 SourceManager --> StaticProgramAnalyzer:
 deactivate SourceManager
-
-StaticProgramAnalyzer --> UI:
-deactivate StaticProgramAnalyzer
 
 @enduml
