@@ -36,3 +36,4 @@ extern const char QueryTokenizerInvalidPunctuation[];
 extern const char QueryParserInvalidIdent[];
 extern const char QueryParserInvalidStringExpression[];
 extern const char QueryParserInvalidLanguageRules[];
+extern const char QueryParserEmptyClause[];
