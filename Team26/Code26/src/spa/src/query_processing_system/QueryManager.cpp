@@ -7,6 +7,7 @@
 #include "parser/Query.h"
 #include "evaluator/QueryDb.h"
 #include "QueryValidator.h"
+#include "common/exception/TokenizerException.h"
 
 void QueryManager::process(const std::string& query, std::list<std::string> &results,
                            std::shared_ptr<ReadStorage> storageUtil) {
@@ -40,6 +41,8 @@ void QueryManager::process(const std::string& query, std::list<std::string> &res
     } catch (QuerySyntaxException) {
         addSyntaxError(results);
     } catch (ParserException) {
+        addSyntaxError(results);
+    } catch (TokenizerException) {
         addSyntaxError(results);
     }
 

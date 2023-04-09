@@ -61,3 +61,5 @@ const char QueryParserInvalidStringExpression[] =
         " violates one or more expr grammar rules.";
 const char QueryParserInvalidLanguageRules[] =
         "One or more PQL grammar rules violated.";
+const char QueryParserEmptyClause[] =
+        "Must have value in clause.";

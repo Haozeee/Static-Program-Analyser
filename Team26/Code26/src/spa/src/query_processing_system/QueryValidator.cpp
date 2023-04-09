@@ -2,6 +2,17 @@
 
 QueryValidator::QueryValidator(Query* query) : query(query) {}
 
+void QueryValidator::validateDuplicateDeclarations() {
+    std::unordered_set<std::string> declaration;
+    for (const auto &d : query->getDeclarations()) {
+        std::string synonym = d->getSynonym().ident;
+        if (declaration.find(synonym) != declaration.end()) {
+            throw SemanticException(QueryValidatorDuplicatedSynonymInDeclaration + synonym);
+        }
+        declaration.insert(synonym);
+    }
+}
+
 void QueryValidator::validateSynonymInSelectClauseWasDeclared() {
     std::unordered_set<std::string> declarationSynonyms = getDeclarationSynonyms();
 
@@ -98,7 +109,7 @@ void QueryValidator::validatePatternClause() {
         }
         switch (validationResult) {
             case PatternClauseValidationResult::INVALID_LEFT_ARG_TYPE:
-                throw SemanticException(leftArg.getValue()
+                throw SyntaxException(leftArg.getValue()
                                            + QueryValidatorInvalidFirstArgumentTypeInRelation);
             case PatternClauseValidationResult::INVALID_LEFT_DESIGN_ENTITY:
                 throw SemanticException("The synonym "
@@ -121,6 +132,8 @@ void QueryValidator::validateWithClause() {
 }
 
 void QueryValidator::validateQuery() {
+    validateDuplicateDeclarations();
+
     validateSynonymInSelectClauseWasDeclared();
 
     validateSuchThatClause();

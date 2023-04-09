@@ -19,6 +19,8 @@ class QueryValidator {
      */
     Query* query;
 
+    void validateDuplicateDeclarations();
+
     /**
      * Validate that the Synonym in the Select Clause was previously declared.
      * Validation for Select Clauses

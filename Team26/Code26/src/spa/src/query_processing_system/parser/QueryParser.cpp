@@ -84,6 +84,9 @@ void QueryParser::parseSingleSelectClause() {
 
 void QueryParser::parseTupleSelectClause() {
     parseNext("<");
+    if (isValueOf(",") || isTypeOf(TokenType::TOKEN_INTEGER)) {
+        throw SyntaxException(QueryParserEmptyClause);
+    }
     SelectClauseItem selectClauseItem = parseReturnValue();
     auto selectClauseItems = std::make_shared<std::vector<SelectClauseItem>>();
     selectClauseItems->push_back(selectClauseItem);
@@ -247,7 +250,13 @@ void QueryParser::parsePatternClause() {
     // Third argument must be wildcard for if pattern clause, otherwise should be )
     if (patternArg.getDesignEntity() == DesignEntity::ASSIGN || patternArg.getDesignEntity() == DesignEntity::WHILE) {
         if (isValueOf(",")) {
-            throw SemanticException("Can only have 2 arguments");
+            parseNext(",");
+            parseNext(getToken()->getValue());
+            if (isValueOf(",")) {
+                throw SyntaxException("4 or more arguments in clause");
+            } else if (isValueOf(")")) {
+                throw SemanticException("3 arguments in clause");
+            }
         } else if (!isValueOf(")")) {
             throw SyntaxException("Invalid second argument");
         } else {

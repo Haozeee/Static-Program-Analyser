@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <iostream>
+#include <string>
 #include "Query.h"
 #include "query_processing_system/exception/QueryExceptionMessages.h"
 #include "query_processing_system/exception/QueryException.h"
@@ -12,6 +13,10 @@ Query::~Query() {
     }
 
     for (auto clause : patternClauses) {
+        delete clause;
+    }
+
+    for (auto  clause : withClauses) {
         delete clause;
     }
 }
