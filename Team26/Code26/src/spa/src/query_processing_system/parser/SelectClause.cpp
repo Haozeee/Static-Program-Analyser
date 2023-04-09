@@ -50,7 +50,7 @@ std::shared_ptr<std::vector<SelectClauseItem>> SelectClause::getSelectClauseItem
 std::string SelectClause::getSynonym(SelectClauseItem selectClauseItem) {
     if (std::holds_alternative<std::shared_ptr<Synonym>>(selectClauseItem)) {
         std::shared_ptr<Synonym> synonym = std::get<std::shared_ptr<Synonym>>(selectClauseItem);
-        return synonym->ident;
+        return synonym->getIdent();
     } else {
         AttributeReference attributeReference = std::get<AttributeReference>(selectClauseItem);
         return attributeReference.getSynonym();
@@ -64,7 +64,7 @@ bool SelectClause::isAttribute(SelectClauseItem selectClauseItem) {
 std::string SelectClause::getString(SelectClauseItem selectClauseItem) {
     if (std::holds_alternative<std::shared_ptr<Synonym>>(selectClauseItem)) {
         std::shared_ptr<Synonym> synonym = std::get<std::shared_ptr<Synonym>>(selectClauseItem);
-        return synonym->ident;
+        return synonym->getIdent();
     } else {
         AttributeReference attributeReference = std::get<AttributeReference>(selectClauseItem);
         return attributeReference.getSynonym() + "." + attributeReference.getAttributeName();
