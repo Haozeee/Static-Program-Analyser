@@ -31,7 +31,7 @@ deactivate ReadStorage
 
 QPS -> FollowsManager: getAllRelationshipEntries()
 Activate FollowsManager
-FollowsManager --> QPS: unordered_map<int, int>: result
+FollowsManager --> QPS: unordered_map<int, unordered_set<int>>: result
 deactivate FollowsManager
 
 QPS -> ReadStorage: getAssignPatternManager()
