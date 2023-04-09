@@ -124,7 +124,7 @@ SelectClauseItem QueryParser::parseReturnValue() {
     std::shared_ptr<Token> synonymToken = getNext();
     std::unordered_set<std::string> declaration;
     for (const auto &d : query->getDeclarations()) {
-        std::string synonym = d->getSynonym().ident;
+        std::string synonym = Synonym::getSynonymIdentity(d->getSynonym());
         if (declaration.find(synonym) != declaration.end()) {
             throw SemanticException(QueryValidatorDuplicatedSynonymInDeclaration + synonym);
         }

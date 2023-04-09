@@ -7,7 +7,20 @@
 // synonym : IDENT
 // IDENT : LETTER ( LETTER | DIGIT )*
 class Synonym {
+ private:
+    /**
+     * A string which contains the identifier as defined by Basic PQL.
+     */
+    std::string ident;
+
  public:
+    /**
+     * Constructor for the Synonym.
+     *
+     * @param ident The identifier that is a Synonym.
+     */
+    explicit Synonym(std::string ident);
+
     /**
      * Compares two Synonym objects.
      *
@@ -25,17 +38,7 @@ class Synonym {
      */
     friend std::ostream& operator << (std::ostream& ostream, const Synonym& synonym);
 
-    /**
-     * A string which contains the identifier as defined by Basic PQL.
-     */
-    std::string ident;
-
-    /**
-     * Constructor for the Synonym.
-     *
-     * @param ident The identifier that is a Synonym.
-     */
-    explicit Synonym(std::string ident);
-
     std::string getIdent() const;
+
+    static std::string getSynonymIdentity(const Synonym& synonym);
 };

@@ -5,7 +5,7 @@ QueryValidator::QueryValidator(Query* query) : query(query) {}
 void QueryValidator::validateDuplicateDeclarations() {
     std::unordered_set<std::string> declaration;
     for (const auto &d : query->getDeclarations()) {
-        std::string synonym = d->getSynonym().ident;
+        std::string synonym = Synonym::getSynonymIdentity(d->getSynonym());
         if (declaration.find(synonym) != declaration.end()) {
             throw SemanticException(QueryValidatorDuplicatedSynonymInDeclaration + synonym);
         }
@@ -44,7 +44,7 @@ std::unordered_set<std::string> QueryValidator::getDeclarationSynonyms() {
     std::unordered_set<std::string> declarationSynonyms;
     for (auto it = declarations.begin(); it != declarations.end(); ++it) {
         auto declaration = *it;
-        std::string declarationSynonym = declaration->getSynonym().ident;
+        std::string declarationSynonym = Synonym::getSynonymIdentity(declaration->getSynonym());
         declarationSynonyms.insert(declarationSynonym);
     }
     return declarationSynonyms;
